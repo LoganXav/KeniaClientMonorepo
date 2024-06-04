@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "kenia-client-monorepo",
   "private": true,
   "scripts": {
     "build": "turbo build",
