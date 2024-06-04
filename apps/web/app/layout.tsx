@@ -1,9 +1,11 @@
 import "@repo/ui/styles/global.css"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import localFont from "next/font/local"
 import { cn } from "@repo/ui"
-import { baseMetadata } from "@/constants/metadata"
+import { baseMetadata, baseViewport } from "@/constants/metadata"
+import { ThemeProvider } from "@/components/theme-provider"
+import { TailwindIndicator } from "@/components/tailwind-indicator"
 
 // Define the font styles
 const fontSans = Inter({
@@ -29,6 +31,11 @@ export const metadata: Metadata = baseMetadata
  */
 export const viewport: Viewport = baseViewport
 
+/**
+ * Define the root layout for the site
+ * Only the root layout can contain <html> and <body> tags.
+ * @see https://nextjs.org/docs/app/api-reference/file-conventions/layout#root-layouts
+ */
 export default function RootLayout({
   children
 }: {
@@ -38,12 +45,20 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={cn(
-          "min-h-screen scroll-smooth bg-background font-heading antialiased",
+          "min-h-screen scroll-smooth bg-background font-sans antialiased",
           fontSans.variable,
           fontHeading.variable
         )}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          // forcedTheme="light"
+        >
+          <div className="">{children}</div>
+          <TailwindIndicator />
+        </ThemeProvider>
       </body>
     </html>
   )
