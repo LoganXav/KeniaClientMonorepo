@@ -1,6 +1,6 @@
 import { siteConfig } from "@/config/site"
 import { absoluteUrl } from "@/lib/utils"
-import { Metadata } from "next"
+import { Metadata, Viewport } from "next"
 
 const siteName = siteConfig.name
 const siteDescription = siteConfig.description
@@ -78,12 +78,11 @@ export const baseMetadata: Metadata = {
   }
 }
 
-
 /**
  * Define the viewport for the site
  * @see https://nextjs.org/docs/app/api-reference/functions/generate-viewport
  */
 export const baseViewport: Viewport = {
   themeColor: "white",
-  colorScheme: "light",
+  colorScheme: "light"
 }
