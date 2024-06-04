@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, Label } from "@repo/ui"
+import { Button, Label, Textfield } from "@repo/ui"
 import { Input } from "@repo/ui"
 import { useTheme } from "next-themes"
 
@@ -15,6 +15,7 @@ export default function Page(): JSX.Element {
 
       <Label>First Name</Label>
       <Input type="text" />
+      <Textfield label="First Name" type="text" />
     </div>
   )
 }
