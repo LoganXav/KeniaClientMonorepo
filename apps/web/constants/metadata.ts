@@ -77,3 +77,13 @@ export const baseMetadata: Metadata = {
     telephone: false
   }
 }
+
+
+/**
+ * Define the viewport for the site
+ * @see https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ */
+export const baseViewport: Viewport = {
+  themeColor: "white",
+  colorScheme: "light",
+}

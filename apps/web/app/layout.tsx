@@ -23,6 +23,12 @@ const fontHeading = localFont({
  */
 export const metadata: Metadata = baseMetadata
 
+/**
+ * Define the viewport for the site
+ * @see https://nextjs.org/docs/app/api-reference/functions/generate-viewport
+ */
+export const viewport: Viewport = baseViewport
+
 export default function RootLayout({
   children
 }: {
