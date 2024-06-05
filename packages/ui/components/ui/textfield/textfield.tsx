@@ -4,13 +4,12 @@ import { cva } from "class-variance-authority"
 import { cn } from "../../../lib/utils"
 import { InputStyle } from "./style"
 import { LabelStyle } from "./style"
-
-export type InputProps = React.InputHTMLAttributes<HTMLInputElement>
+import { InputProps } from "../input"
 
 const inputVariants = cva(InputStyle.base)
 const labelVariants = cva(LabelStyle.base)
 
-const Textfield = forwardRef<HTMLInputElement, InputProps & { label: string }>(
+const Textfield = forwardRef<HTMLInputElement, InputProps & { label?: string }>(
   ({ className, type, label, ...props }, ref) => {
     return (
       <div className="relative">
