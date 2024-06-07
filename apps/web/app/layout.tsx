@@ -6,6 +6,7 @@ import { cn } from "@repo/ui"
 import { baseMetadata, baseViewport } from "@/constants/metadata"
 import { ThemeProvider } from "@/components/theme-provider"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
+import BaseLayout from "@/layouts/base"
 
 // Define the font styles
 const fontSans = Inter({
@@ -42,21 +43,15 @@ export default function RootLayout({
   children: React.ReactNode
 }): JSX.Element {
   return (
-    <html lang="en">
-      <body
-        className={cn(
-          "min-h-screen scroll-smooth bg-background font-sans antialiased",
-          fontSans.variable,
-          fontHeading.variable
-        )}
-      >
+    <html lang="en" className={cn(fontSans.variable, fontHeading.variable)}>
+      <body>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           // forcedTheme="light"
         >
-          <div className="min-h-screen">{children}</div>
+          <BaseLayout>{children}</BaseLayout>
           <TailwindIndicator />
         </ThemeProvider>
       </body>

@@ -1,8 +1,8 @@
 import { MetadataRoute } from "next"
-import { BASE_URL, BASE_PATH } from "@/next.constants.mjs"
+import { env } from "@/env.mjs"
 
 // This is the combination of the Application Base URL and Base PATH
-const baseUrlAndPath = `${BASE_URL}${BASE_PATH}`
+const baseUrlAndPath = `${env.NEXT_PUBLIC_BASE_URL}${env.NEXT_PUBLIC_BASE_PATH}`
 
 // This allows us to generate a `sitemap.xml` file dynamically based on the needs of the Kenia Website
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {

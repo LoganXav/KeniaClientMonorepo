@@ -1,4 +1,4 @@
-import { BASE_URL, IS_DEVELOPMENT } from './next.constants.mjs';
+import { env } from "@/env.mjs"
 
 /**
  * This is the Sentry DSN for the Node.js Website Project
@@ -11,7 +11,7 @@ export const SENTRY_DSN =
  *
  * We enable sentry by default if we're in development mode.
  */
-export const SENTRY_ENABLE = IS_DEVELOPMENT;
+export const SENTRY_ENABLE = env.IS_DEVELOPMENT;
 
 /**
  * This configures the sampling rate for Sentry
@@ -20,7 +20,7 @@ export const SENTRY_ENABLE = IS_DEVELOPMENT;
  * and not when it's on Production Mode (nodejs.org)
  */
 export const SENTRY_CAPTURE_RATE =
-  SENTRY_ENABLE && BASE_URL !== 'https://kenia.org' ? 1.0 : 0.01;
+  SENTRY_ENABLE && env.NEXT_PUBLIC_BASE_URL !== 'https://kenia.org' ? 1.0 : 0.01;
 
 /**
  * Provides the Route for Sentry's Server-Side Tunnel
