@@ -5,5 +5,6 @@ export * from "./components/ui/label"
 export * from "./components/ui/password-input"
 export * from "./components/ui/dropdown-menu"
 export * from "./components/ui/select"
+export * from "./components/ui/toast"
 
 export { cn } from "./lib/utils"

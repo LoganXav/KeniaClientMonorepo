@@ -1,5 +1,5 @@
 export const InputStyle = {
-  base: "flex h-14 w-full rounded-lg border border-input border bg-white px-3 pt-4 text-sm transition-colors file:border-0 file:bg-white file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 peer"
+  base: "flex h-14 w-full rounded-lg border border-input border bg-transparent px-3 pt-4 text-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 peer"
 }
 
 export const LabelStyle = {

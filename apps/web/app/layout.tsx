@@ -3,19 +3,20 @@ import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import localFont from "next/font/local"
 import { cn } from "@repo/ui"
+import { Toaster } from "@repo/ui"
 import { baseMetadata, baseViewport } from "@/constants/metadata"
 import { ThemeProvider } from "@/components/theme-provider"
 import { TailwindIndicator } from "@/components/tailwind-indicator"
 import BaseLayout from "@/layouts/base"
 
 // Define the font styles
-const fontSans = Inter({
+export const fontSans = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
   weight: "400"
 })
 
-const fontHeading = localFont({
+export const fontHeading = localFont({
   src: "../assets/fonts/CalSans-SemiBold.woff2",
   variable: "--font-heading"
 })
@@ -43,8 +44,8 @@ export default function RootLayout({
   children: React.ReactNode
 }): JSX.Element {
   return (
-    <html lang="en" className={cn(fontSans.variable, fontHeading.variable)}>
-      <body>
+    <html lang="en">
+      <body className={cn(fontSans.variable, fontHeading.variable)}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -52,6 +53,7 @@ export default function RootLayout({
           // forcedTheme="light"
         >
           <BaseLayout>{children}</BaseLayout>
+          <Toaster />
           <TailwindIndicator />
         </ThemeProvider>
       </body>
