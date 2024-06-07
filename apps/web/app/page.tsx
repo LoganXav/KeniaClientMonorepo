@@ -43,7 +43,7 @@ export default function Page(): JSX.Element {
       </Select>
 
       <Button onClick={() => alert("Submitted!")}>Submit</Button>
-      <Button>Cool Button</Button>
+      <Button variant="outline">Cool Button</Button>
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
