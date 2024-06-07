@@ -56,7 +56,7 @@ export default function RootLayout({
           enableSystem
           // forcedTheme="light"
         >
-          <div className="">{children}</div>
+          <div className="min-h-screen">{children}</div>
           <TailwindIndicator />
         </ThemeProvider>
       </body>

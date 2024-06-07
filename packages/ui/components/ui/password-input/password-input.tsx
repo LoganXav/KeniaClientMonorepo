@@ -20,7 +20,7 @@ const PasswordInput = forwardRef<
         id={label}
         type={showPassword ? "text" : "password"}
         className={cn(
-          "hide-password-toggle pr-10 peer h-14 pt-4",
+          "hide-password-toggle pr-10 peer h-14 pt-4 bg-white",
           className,
           !label && "pt-0 py-1"
         )}
