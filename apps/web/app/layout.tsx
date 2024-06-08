@@ -39,9 +39,13 @@ export const viewport: Viewport = baseViewport
  * @see https://nextjs.org/docs/app/api-reference/file-conventions/layout#root-layouts
  */
 export default function RootLayout({
+  public: publicPages,
+  protected: protectedPages,
   children
 }: {
   children: React.ReactNode
+  public: React.ReactNode
+  protected: React.ReactNode
 }): JSX.Element {
   return (
     <html lang="en" className={cn(fontSans.variable, fontHeading.variable)}>
@@ -52,7 +56,10 @@ export default function RootLayout({
           enableSystem
           // forcedTheme="light"
         >
-          <BaseLayout>{children}</BaseLayout>
+          <BaseLayout>
+            {children}
+            {true ? publicPages : protectedPages}
+          </BaseLayout>
           <Toaster />
           <TailwindIndicator />
         </ThemeProvider>

@@ -16,7 +16,7 @@ export default function GlobalErrorPage({ error }: { error: Error }) {
             <main>
               5OO
               <h1>Internal Server Error</h1>
-              <p className="-mt-4 max-w-sm text-center text-lg">
+              <p className="mt-4 max-w-sm text-center text-lg">
                 This page has thrown a non-recoverable error.
               </p>
               <Button>Back to Home</Button>

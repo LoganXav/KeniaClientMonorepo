@@ -8,7 +8,7 @@ export default function NotFoundPage({ error }: { error: Error }) {
     <main>
       404
       <h1>Internal Server Error</h1>
-      <p className="-mt-4 max-w-sm text-center text-lg">
+      <p className="mt-4 max-w-sm text-center text-lg">
         This page has thrown a 404 error.
       </p>
       <Button>Back to Home</Button>
