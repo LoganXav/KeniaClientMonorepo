@@ -44,8 +44,8 @@ export default function RootLayout({
   children: React.ReactNode
 }): JSX.Element {
   return (
-    <html lang="en">
-      <body className={cn(fontSans.variable, fontHeading.variable)}>
+    <html lang="en" className={cn(fontSans.variable, fontHeading.variable)}>
+      <body>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

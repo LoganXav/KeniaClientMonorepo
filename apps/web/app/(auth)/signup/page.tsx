@@ -7,7 +7,7 @@ export default function SignUpPage() {
         <h4 className="font-heading text-5xl font-bold">
           Get started with Kenia
         </h4>
-        <p>Register your school</p>
+        <p className="text-sm">Fill out this form to register your school</p>
       </div>
       <SignUpForm />
     </div>

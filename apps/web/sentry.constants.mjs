@@ -1,5 +1,4 @@
-import { env } from "@/env.mjs"
-
+import { env } from "./env.mjs"
 /**
  * This is the Sentry DSN for the Node.js Website Project
  */

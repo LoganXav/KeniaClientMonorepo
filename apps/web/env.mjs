@@ -7,9 +7,10 @@ export const env = createEnv({
     IS_DEVELOPMENT: z.string().min(1),
     NEXT_PUBLIC_BASE_PATH: z.string(),
     NEXT_PUBLIC_BASE_URL: z.string().min(1),
-  },
-  client: {
-    NEXT_PUBLIC_APP_URL: z.string().min(1),
+    },
+    client: {
+      NEXT_PUBLIC_APP_URL: z.string().min(1),
+      IS_DEVELOPMENT: z.string().min(1),
     NEXT_PUBLIC_BASE_PATH: z.string(),
     NEXT_PUBLIC_BASE_URL: z.string().min(1),
   },

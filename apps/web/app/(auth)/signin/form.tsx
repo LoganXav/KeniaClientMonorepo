@@ -1,21 +1,23 @@
 "use client"
 
-import { Button, PasswordInput, Textfield } from "@repo/ui"
+import { Button, Input, PasswordInput, Label } from "@repo/ui"
 import Link from "next/link"
 
 export default function SignInForm() {
   return (
     <>
       <div className="grid md:grid-cols-2 gap-4">
-        <Textfield label="First Name" />
-        <Textfield label="Last Name" />
-        <Textfield label="Email Address" />
-        <Textfield label="Phone Number" />
-        <PasswordInput label="Password" />
-        <PasswordInput label="Confirm Password" />
+        <div className="space-y-2">
+          <Label>Email Address</Label>
+          <Input type="text" placeholder="Type your email address" />
+        </div>
+        <div className="space-y-2">
+          <Label>Password </Label>
+          <PasswordInput placeholder="Type your password" />
+        </div>
       </div>
 
-      <p className="text-center py-8">
+      <p className="text-center py-8 text-sm">
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente
         consequatur perspiciatis iusto sit repellat dignissimos similique
         aliquid! Enim repudiandae atque, vitae hic reprehenderit itaque eaque

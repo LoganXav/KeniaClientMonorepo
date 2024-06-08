@@ -8,7 +8,7 @@ export default function SignInPage() {
           <h4 className="font-heading text-5xl font-bold">
             Continue with Kenia
           </h4>
-          <p>Login to your school</p>
+          <p className="text-sm">Login to your school</p>
         </div>
         <SignInForm />
       </div>
