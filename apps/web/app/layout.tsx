@@ -58,7 +58,7 @@ export default function RootLayout({
         >
           <BaseLayout>
             {children}
-            {true ? publicPages : protectedPages}
+            {false ? publicPages : protectedPages}
           </BaseLayout>
           <Toaster />
           <TailwindIndicator />
