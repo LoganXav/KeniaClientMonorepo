@@ -1,8 +1,7 @@
-"use client"
+"use client";
 
 import {
   Button,
-  Label,
   PasswordInput,
   Textfield,
   Input,
@@ -10,17 +9,18 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  Select,
   SelectTrigger,
   SelectValue,
   SelectItem,
-  SelectContent
-} from "@repo/ui"
-import { useTheme } from "next-themes"
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons"
+  SelectContent,
+  Label,
+  Select,
+} from "@repo/ui";
+import { useTheme } from "next-themes";
+import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 
 export default function TestPage(): JSX.Element {
-  const { setTheme } = useTheme()
+  const { setTheme } = useTheme();
 
   return (
     <div className="container flex flex-col mt-8 space-y-4">
@@ -44,6 +44,7 @@ export default function TestPage(): JSX.Element {
 
       <Button onClick={() => alert("Submitted!")}>Submit</Button>
       <Button variant="outline">Cool Button</Button>
+      <Button variant={"destructive"}>Test button</Button>
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -66,5 +67,5 @@ export default function TestPage(): JSX.Element {
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
-  )
+  );
 }

@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { Button, Input, PasswordInput, Label } from "@repo/ui"
-import Link from "next/link"
+import { Button, Input, PasswordInput, Label } from "@repo/ui";
+import Link from "next/link";
 
 export default function SignInForm() {
   return (
@@ -9,28 +9,22 @@ export default function SignInForm() {
       <div className="grid md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label>Email Address</Label>
-          <Input type="text" placeholder="Type your email address" />
+          <Input type="text" />
         </div>
         <div className="space-y-2">
           <Label>Password </Label>
-          <PasswordInput placeholder="Type your password" />
+          <PasswordInput />
         </div>
       </div>
 
-      <p className="text-center py-8 text-sm">
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sapiente
-        consequatur perspiciatis iusto sit repellat dignissimos similique
-        aliquid! Enim repudiandae atque, vitae hic reprehenderit itaque eaque
-        nam sit praesentium et?{" "}
-        <Link
-          href={"/signup"}
-          className="font-semibold text-gray-500 transition-colors hover:text-black"
-        >
-          signup.
+      <p className="text-sm">
+        Don't have an account yet?{" "}
+        <Link href={"/signup"} className="font-semibold text-muted-foreground transition-colors hover:text-blue-400">
+          Signup.
         </Link>
       </p>
 
-      <Button className="w-full py-8 rounded-full">Submit</Button>
+      <Button className="w-full py-6 rounded-lg">Signin</Button>
     </>
-  )
+  );
 }
