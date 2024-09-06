@@ -71,10 +71,11 @@ apiConfig.interceptors.response.use(
         console.groupEnd();
       }
     }
+
     return Promise.reject(
       error.response
         ? {
-            message: error.response.data?.errors?.[0]?.message || error?.response?.data?.data?.message,
+            message: error.response.data?.errors?.[0]?.message || error?.response?.data?.data?.message || error?.response?.data?.details?.[0]?.message,
             status: error.response.status,
           }
         : {
