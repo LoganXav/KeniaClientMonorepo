@@ -60,7 +60,7 @@ export default function VerifyForm() {
               name="otpToken"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Type your 6 digits security code</FormLabel>
+                  <FormLabel>Type your 5 digits security code</FormLabel>
                   <FormControl>
                     <InputOTP maxLength={5} {...field} className="flex gap-8">
                       <InputOTPGroup>
