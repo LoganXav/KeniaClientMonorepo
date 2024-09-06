@@ -1,6 +1,6 @@
 import "@repo/ui/styles/global.css";
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+// import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import { cn } from "@repo/ui";
 import { Toaster } from "@repo/ui";
@@ -8,6 +8,7 @@ import { baseMetadata, baseViewport } from "@/constants/metadata";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import BaseLayout from "@/layouts/base";
+import QueryClientContextProvider from "@/providers/query-client-provider";
 
 // Define the font styles
 // export const fontSans = Inter({
@@ -47,19 +48,21 @@ export default function RootLayout({ public: publicPages, protected: protectedPa
   return (
     <html lang="en" className={cn(fontSans.variable, fontHeading.variable)}>
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          // forcedTheme="light"
-        >
-          <BaseLayout>
-            {children}
-            {true ? publicPages : protectedPages}
-          </BaseLayout>
-          <Toaster />
-          <TailwindIndicator />
-        </ThemeProvider>
+        <QueryClientContextProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            // forcedTheme="light"
+          >
+            <BaseLayout>
+              {children}
+              {true ? publicPages : protectedPages}
+            </BaseLayout>
+            <Toaster expand={true} />
+            <TailwindIndicator />
+          </ThemeProvider>
+        </QueryClientContextProvider>
       </body>
     </html>
   );

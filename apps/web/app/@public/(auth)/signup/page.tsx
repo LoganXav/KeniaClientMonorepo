@@ -1,4 +1,4 @@
-import SignUpForm from "./_features/form";
+import SignUpForm from "./_features/signup-form";
 
 export default function SignUpPage() {
   return (
