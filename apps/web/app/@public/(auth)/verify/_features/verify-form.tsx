@@ -5,14 +5,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { VerifySchema, VerifySchemaType } from "../_validators/verify-schema";
 import { useResendOtpMutation, useVerifyOtpMutation } from "@/apis/authentication/two-factor";
+import { useSearchParams } from "next/navigation";
 
 export default function VerifyForm() {
   const verifyOtp = useVerifyOtpMutation();
   const resendOtp = useResendOtpMutation();
 
+  const searchParams = useSearchParams();
+
+  const id = searchParams.get("id");
+  const email = searchParams.get("email")!;
+
   const handleVerify = (values: VerifySchemaType) => {
     verifyOtp.verify(
-      { ...values, id: 5 },
+      { ...values, id: Number(id) },
       {
         onSuccess: (result) => {
           toast.success(result.message);
@@ -27,7 +33,7 @@ export default function VerifyForm() {
   const handleResend = async () => {
     resendOtp.resend(
       {
-        email: "sogbesansegun@gmail.com",
+        email,
       },
       {
         onSuccess: (result) => {
@@ -88,7 +94,7 @@ export default function VerifyForm() {
 
           <p className="text-sm">
             Didn{"'"}t get the code?{" "}
-            <span onClick={handleResend} className="font-semibold text-muted-foreground transition-colors hover:text-blue-400 cursor-pointer">
+            <span onClick={handleResend} className="font-semibold text-muted-foreground transition-colors hover:text-link cursor-pointer">
               Resend.
             </span>
           </p>

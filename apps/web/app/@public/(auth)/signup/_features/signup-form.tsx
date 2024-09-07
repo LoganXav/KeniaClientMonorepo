@@ -19,7 +19,7 @@ export default function SignUpForm() {
       {
         onSuccess: (result) => {
           toast.success(result.message);
-          router.push(RouteEnums.VERIFY);
+          router.push(`${RouteEnums.VERIFY}?id=${result.data.id}&email=${values.email}`);
         },
         onError: (error) => {
           toast.error(error.message);
@@ -129,7 +129,7 @@ export default function SignUpForm() {
 
           <p className="text-sm">
             Already have an account?{" "}
-            <Link href={"/signin"} className="font-semibold text-muted-foreground transition-colors hover:text-blue-400">
+            <Link href={RouteEnums.SIGNIN} className="font-semibold text-muted-foreground transition-colors hover:text-link">
               Signin.
             </Link>
           </p>

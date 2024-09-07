@@ -70,10 +70,16 @@ export default function SignInForm() {
               )}
             />
           </div>
+          <div className="flex items-center justify-between">
+            <div />
+            <Link href={RouteEnums.RESET_PASSWORD} className="text-sm font-semibold text-muted-foreground transition-colors hover:text-link">
+              Forgot password?
+            </Link>
+          </div>
 
           <p className="text-sm">
             New to Kenia?{" "}
-            <Link href={"/signup"} className="font-semibold text-muted-foreground transition-colors hover:text-blue-400">
+            <Link href={RouteEnums.SIGNUP} className="font-semibold text-muted-foreground transition-colors hover:text-link">
               Create an account.
             </Link>
           </p>

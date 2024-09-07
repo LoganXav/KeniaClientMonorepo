@@ -12,7 +12,7 @@ export const useSignUpMutation = () => {
     error,
   } = useMutation({
     mutationFn: async (payload: Omit<SignUpSchemaType, "confirmPassword">) => {
-      const { data } = await postRequest<{ number: number; tenantId: number }>({
+      const { data } = await postRequest<{ id: number; tenantId: number }>({
         endpoint: `${BASE_URL}/signup`,
         payload,
       });
