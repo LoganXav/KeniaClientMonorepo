@@ -11,6 +11,7 @@ import { RouteEnums } from "@/constants/router/route-constants";
 
 export default function SignUpForm() {
   const { signUp, isPending, error } = useSignUpMutation();
+
   const router = useRouter();
 
   const handleSignup = (values: SignUpSchemaType) => {

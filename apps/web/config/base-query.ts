@@ -16,6 +16,7 @@ interface PostRequestReturnType<T> {
     data: {
       data: T;
       message: string;
+      accessToken?: string;
     };
   };
   status: string;

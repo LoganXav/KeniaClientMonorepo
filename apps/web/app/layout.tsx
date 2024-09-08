@@ -59,7 +59,7 @@ export default function RootLayout({ public: publicPages, protected: protectedPa
               {children}
               {true ? publicPages : protectedPages}
             </BaseLayout>
-            <Toaster expand={true} />
+            <Toaster expand={true} visibleToasts={2} position="top-right" pauseWhenPageIsHidden />
             <TailwindIndicator />
           </ThemeProvider>
         </QueryClientContextProvider>

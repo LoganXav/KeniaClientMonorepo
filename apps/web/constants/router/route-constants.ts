@@ -1,4 +1,5 @@
 export const RouteEnums = {
+  HOME: "/",
   SIGNIN: "/signin",
   SIGNUP: "/signup",
   VERIFY: "/verify",

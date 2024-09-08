@@ -79,8 +79,7 @@ apiConfig.interceptors.response.use(
             status: error.response.status,
           }
         : {
-            defaultUserMessage: "Something went wrong",
-            message: "Something went wrong",
+            message: "Something went wrong. Please contact admin.",
             status: 500,
           }
     );

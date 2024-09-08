@@ -1,6 +1,7 @@
 import { SignInSchemaType } from "@/app/@public/(auth)/signin/_validators/signin-schema";
 import { SignUpSchemaType } from "@/app/@public/(auth)/signup/_validators/signup-schema";
 import { postRequest } from "@/config/base-query";
+import { AuthUserType } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 
 const BASE_URL = "auth";
@@ -31,10 +32,12 @@ export const useSignInMutation = () => {
     error,
   } = useMutation({
     mutationFn: async (payload: SignInSchemaType) => {
-      const { data } = await postRequest<unknown>({
+      const { data } = await postRequest<AuthUserType>({
         endpoint: `${BASE_URL}/signin`,
         payload,
       });
+
+      // console.log(data.data.accessToken); Provide to my root layout to provide auth state and http interceptor headers
 
       return data.data;
     },
