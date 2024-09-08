@@ -5,4 +5,6 @@ export const RouteEnums = {
   VERIFY: "/verify",
   RESET_PASSWORD: "/reset-password",
   CHANGE_PASSWORD: "/change-password",
+
+  DASHBOARD: "dashboard",
 };

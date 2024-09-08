@@ -1,5 +1,6 @@
 import { SignInSchemaType } from "@/app/@public/(auth)/signin/_validators/signin-schema";
 import { SignUpSchemaType } from "@/app/@public/(auth)/signup/_validators/signup-schema";
+import { setAuthUser } from "@/app/helpers/auth-user-action";
 import { postRequest } from "@/config/base-query";
 import { AuthUserType } from "@/types";
 import { useMutation } from "@tanstack/react-query";
@@ -37,7 +38,7 @@ export const useSignInMutation = () => {
         payload,
       });
 
-      // console.log(data.data.accessToken); Provide to my root layout to provide auth state and http interceptor headers
+      setAuthUser({ accessToken: data.data.accessToken!, data: data.data.data });
 
       return data.data;
     },

@@ -9,6 +9,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import BaseLayout from "@/layouts/base";
 import QueryClientContextProvider from "@/providers/query-client-provider";
+import { getAuthUser } from "./helpers/auth-user";
 
 // Define the font styles
 // export const fontSans = Inter({
@@ -45,6 +46,8 @@ export const viewport: Viewport = baseViewport;
  * @see https://nextjs.org/docs/app/api-reference/file-conventions/layout#root-layouts
  */
 export default function RootLayout({ public: publicPages, protected: protectedPages, children }: { children: React.ReactNode; public: React.ReactNode; protected: React.ReactNode }): JSX.Element {
+  const authUser = getAuthUser();
+
   return (
     <html lang="en" className={cn(fontSans.variable, fontHeading.variable)}>
       <body>
@@ -57,7 +60,7 @@ export default function RootLayout({ public: publicPages, protected: protectedPa
           >
             <BaseLayout>
               {children}
-              {true ? publicPages : protectedPages}
+              {authUser ? protectedPages : publicPages}
             </BaseLayout>
             <Toaster expand={true} visibleToasts={2} position="top-right" pauseWhenPageIsHidden />
             <TailwindIndicator />

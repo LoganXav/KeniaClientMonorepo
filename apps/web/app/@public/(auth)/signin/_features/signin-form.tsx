@@ -20,7 +20,7 @@ export default function SignInForm() {
         onSuccess: (result) => {
           toast.success(result.message);
           // router.push(`${RouteEnums.VERIFY}?id=${result.data.id}&email=${values.email}`);
-          router.push(RouteEnums.HOME);
+          router.push(RouteEnums.DASHBOARD);
         },
         onError: (error: any) => {
           toast.error(error.message);

@@ -131,7 +131,7 @@ export default function SignUpForm() {
           <p className="text-sm">
             Already have an account?{" "}
             <Link href={RouteEnums.SIGNIN} className="font-semibold text-muted-foreground transition-colors hover:text-link">
-              Signin.
+              Sign in.
             </Link>
           </p>
 
