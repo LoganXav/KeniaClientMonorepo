@@ -9,7 +9,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
 import BaseLayout from "@/layouts/base";
 import QueryClientContextProvider from "@/providers/query-client-provider";
-import { getAuthUser } from "./helpers/auth-user";
+import { getAuthUser } from "../helpers/auth-user";
 
 // Define the font styles
 // export const fontSans = Inter({

@@ -1,6 +1,6 @@
 import { SignInSchemaType } from "@/app/@public/(auth)/signin/_validators/signin-schema";
 import { SignUpSchemaType } from "@/app/@public/(auth)/signup/_validators/signup-schema";
-import { setAuthUser } from "@/app/helpers/auth-user-action";
+import { setAuthUser } from "@/helpers/auth-user-action";
 import { postRequest } from "@/config/base-query";
 import { AuthUserType } from "@/types";
 import { useMutation } from "@tanstack/react-query";
@@ -38,7 +38,10 @@ export const useSignInMutation = () => {
         payload,
       });
 
-      setAuthUser({ accessToken: data.data.accessToken!, data: data.data.data });
+      setAuthUser({
+        accessToken: data.data.accessToken!,
+        data: data.data.data,
+      });
 
       return data.data;
     },
@@ -46,18 +49,3 @@ export const useSignInMutation = () => {
 
   return { signIn, isPending, error };
 };
-
-// export const useResendOtpQuery = (payload: { email: string }) => {
-//   return useQuery({
-//     queryKey: ["resendOtp", payload.email],
-//     queryFn: async () => {
-//       const { data } = await getRequest<unknown>({
-//         endpoint: `${BASE_URL}/otp/refresh`,
-//         payload,
-//       });
-
-//       return data;
-//     },
-//     enabled: false,
-//   });
-// };

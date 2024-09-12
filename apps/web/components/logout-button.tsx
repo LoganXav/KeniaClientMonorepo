@@ -1,15 +1,16 @@
 "use client";
 
-import { clearAuthUser } from "@/app/helpers/auth-user-action";
+import { clearAuthUser } from "@/helpers/auth-user-action";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { Button } from "@repo/ui";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { postRequest } from "@/config/base-query";
 
 export default function LogoutButton() {
   const router = useRouter();
 
-  function handleSignOut() {
+  async function handleSignOut() {
     clearAuthUser();
     router.push(RouteEnums.HOME);
   }

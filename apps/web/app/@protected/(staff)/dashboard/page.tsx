@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function DashboardPage() {
   return (
-    <div className="h-screen container flex justify-center items-center flex-col space-y-4">
+    <div className="min-h-full container flex justify-center items-center flex-col space-y-4">
       <h5 className="text-5xl font-bold font-heading">Dashboard Page.</h5>
       <div className="grid text-center space-y-4">
         <p>

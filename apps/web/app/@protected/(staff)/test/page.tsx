@@ -1,21 +1,6 @@
 "use client";
 
-import {
-  Button,
-  PasswordInput,
-  Textfield,
-  Input,
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  SelectTrigger,
-  SelectValue,
-  SelectItem,
-  SelectContent,
-  Label,
-  Select,
-} from "@repo/ui";
+import { Button, PasswordInput, Textfield, Input, DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, SelectTrigger, SelectValue, SelectItem, SelectContent, Label, Select } from "@repo/ui";
 import { useTheme } from "next-themes";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 
@@ -24,7 +9,7 @@ export default function TestPage(): JSX.Element {
 
   return (
     <div className="container flex flex-col mt-8 space-y-4">
-      <p>Hello from my home page</p>
+      <p className="border bg-red-500">Hello from my home page</p>
 
       <Label>First Name</Label>
       <Input type="text" />
@@ -55,15 +40,9 @@ export default function TestPage(): JSX.Element {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => setTheme("light")}>
-            Light
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("dark")}>
-            Dark
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setTheme("system")}>
-            System
-          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
