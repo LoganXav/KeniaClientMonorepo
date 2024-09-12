@@ -1,5 +1,6 @@
 import { VerifySchemaType } from "@/app/@public/(auth)/verify/_validators/verify-schema";
 import { postRequest } from "@/config/base-query";
+import { setAuthUser } from "@/helpers/auth-user-action";
 import { AuthUserType } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 
@@ -17,8 +18,12 @@ export const useVerifyOtpMutation = () => {
         payload,
       });
 
-      // console.log(data.data.accessToken); Provide to my root layout to provide auth state and http interceptor headers
-      return data.data;
+      setAuthUser({
+        accessToken: data.accessToken!,
+        data: data.data,
+      });
+
+      return data;
     },
   });
 
@@ -37,7 +42,7 @@ export const useResendOtpMutation = () => {
         payload,
       });
 
-      return data.data;
+      return data;
     },
   });
 

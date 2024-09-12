@@ -15,7 +15,7 @@ export const useResetPasswordRequestMutation = () => {
         payload,
       });
 
-      return data.data;
+      return data;
     },
   });
 
@@ -28,13 +28,19 @@ export const useChangePasswordMutation = () => {
     isPending,
     error,
   } = useMutation({
-    mutationFn: async ({ payload, path }: { payload: { password: string }; path: { token: string } }) => {
+    mutationFn: async ({
+      payload,
+      path,
+    }: {
+      payload: { password: string };
+      path: { token: string };
+    }) => {
       const { data } = await postRequest<unknown>({
         endpoint: `${BASE_URL}/${path?.token}`,
         payload,
       });
 
-      return data.data;
+      return data;
     },
   });
 

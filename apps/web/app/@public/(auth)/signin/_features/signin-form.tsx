@@ -3,7 +3,18 @@
 import { useSignInMutation } from "@/apis/authentication/authentication";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input, PasswordInput, FormField, FormLabel, FormItem, Form, FormMessage, FormControl, toast } from "@repo/ui";
+import {
+  Button,
+  Input,
+  PasswordInput,
+  FormField,
+  FormLabel,
+  FormItem,
+  Form,
+  FormMessage,
+  FormControl,
+  toast,
+} from "@repo/ui";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -25,7 +36,7 @@ export default function SignInForm() {
         onError: (error: any) => {
           toast.error(error.message);
         },
-      }
+      },
     );
   };
 
@@ -73,14 +84,20 @@ export default function SignInForm() {
           </div>
           <div className="flex items-center justify-between">
             <div />
-            <Link href={RouteEnums.RESET_PASSWORD} className="text-sm font-semibold text-muted-foreground transition-colors hover:text-link">
+            <Link
+              href={RouteEnums.RESET_PASSWORD}
+              className="text-sm font-semibold text-muted-foreground transition-colors hover:text-link"
+            >
               Forgot password?
             </Link>
           </div>
 
           <p className="text-sm">
             New to Kenia?{" "}
-            <Link href={RouteEnums.SIGNUP} className="font-semibold text-muted-foreground transition-colors hover:text-link">
+            <Link
+              href={RouteEnums.SIGNUP}
+              className="font-semibold text-muted-foreground transition-colors hover:text-link"
+            >
               Create an account.
             </Link>
           </p>

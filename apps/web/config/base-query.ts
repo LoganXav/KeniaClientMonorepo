@@ -13,11 +13,9 @@ interface GetRequestPropsType {
 
 interface PostRequestReturnType<T> {
   data: {
-    data: {
-      data: T;
-      message: string;
-      accessToken?: string;
-    };
+    data: T;
+    message: string;
+    accessToken?: string;
   };
   status: string;
   statusCode: number;
@@ -34,10 +32,17 @@ interface GetRequestReturnType<T> {
   statusCode: number;
 }
 
-export const postRequest = async <T>({ endpoint, payload, config = {} }: PostRequestPropsType): Promise<PostRequestReturnType<T>> => {
+export const postRequest = async <T>({
+  endpoint,
+  payload,
+  config = {},
+}: PostRequestPropsType): Promise<PostRequestReturnType<T>> => {
   return await apiConfig.post(endpoint, payload, config);
 };
 
-export const getRequest = async <T>({ endpoint, payload }: GetRequestPropsType): Promise<GetRequestReturnType<T>> => {
+export const getRequest = async <T>({
+  endpoint,
+  payload,
+}: GetRequestPropsType): Promise<GetRequestReturnType<T>> => {
   return await apiConfig.get(endpoint, { params: payload });
 };

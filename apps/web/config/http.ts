@@ -52,6 +52,19 @@ apiConfig.interceptors.request.use(async (config) => {
 
 apiConfig.interceptors.response.use(
   (response) => {
+    if (response?.data?.encoded) {
+      const decrypted = CryptoJS.AES.decrypt(response?.data?.result, KEY, {
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7,
+        iv: IV,
+      });
+
+      // Convert decrypted WordArray to UTF-8 string
+      const decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
+
+      // Parse the decrypted text as JSON
+      response.data = JSON.parse(decryptedText);
+    }
     if (env.NODE_ENV === DEV) {
       console.groupCollapsed(`@Response`, response.config.url, response.status);
       if (response.data) {
@@ -71,12 +84,34 @@ apiConfig.interceptors.response.use(
       }
       console.groupEnd();
     }
+
     return response;
   },
   (error) => {
-    if (env.NODE_ENV === DEV) {
-      if (error?.response) {
-        console.groupCollapsed(`@Response`, error.response.config.url, error.response.status);
+    if (error?.response) {
+      if (error?.response?.data?.encoded) {
+        const decrypted = CryptoJS.AES.decrypt(
+          error?.response?.data?.result,
+          KEY,
+          {
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7,
+            iv: IV,
+          },
+        );
+
+        // Convert decrypted WordArray to UTF-8 string
+        const decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
+
+        // Parse the decrypted text as JSON
+        error.response.data = JSON.parse(decryptedText);
+      }
+      if (env.NODE_ENV === DEV) {
+        console.groupCollapsed(
+          `@Response`,
+          error.response.config.url,
+          error.response.status,
+        );
         if (error.response.data) {
           console.groupCollapsed("Data");
           console.info(error.response.data);
@@ -99,13 +134,17 @@ apiConfig.interceptors.response.use(
     return Promise.reject(
       error.response
         ? {
-            message: error.response.data?.errors?.[0]?.message || error?.response?.data?.data?.message || error?.response?.data?.message || error?.response?.data?.details?.[0]?.message,
+            message:
+              error.response.data?.errors?.[0]?.message ||
+              error?.response?.data?.data?.message ||
+              error?.response?.data?.message ||
+              error?.response?.data?.details?.[0]?.message,
             status: error.response.status,
           }
         : {
             message: "Something went wrong. Please contact admin.",
             status: 500,
-          }
+          },
     );
-  }
+  },
 );

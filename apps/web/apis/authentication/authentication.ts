@@ -19,7 +19,7 @@ export const useSignUpMutation = () => {
         payload,
       });
 
-      return data.data;
+      return data;
     },
   });
 
@@ -39,11 +39,12 @@ export const useSignInMutation = () => {
       });
 
       setAuthUser({
-        accessToken: data.data.accessToken!,
-        data: data.data.data,
+        accessToken: data.accessToken!,
+        data: data.data,
       });
 
-      return data.data;
+      delete data.accessToken;
+      return data;
     },
   });
 
