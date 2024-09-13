@@ -1,0 +1,9 @@
+.navbar__container {
+  height: 70px;
+  position: sticky;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  border-bottom: 1px grey solid;
+  background-color: aqua;
+}

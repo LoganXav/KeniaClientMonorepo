@@ -45,15 +45,7 @@ export const viewport: Viewport = baseViewport;
  * Only the root layout can contain <html> and <body> tags.
  * @see https://nextjs.org/docs/app/api-reference/file-conventions/layout#root-layouts
  */
-export default function RootLayout({
-  public: publicPages,
-  protected: protectedPages,
-  children,
-}: {
-  children: React.ReactNode;
-  public: React.ReactNode;
-  protected: React.ReactNode;
-}): JSX.Element {
+export default function RootLayout({ public: publicPages, protected: protectedPages, children }: { children: React.ReactNode; public: React.ReactNode; protected: React.ReactNode }): JSX.Element {
   const authUser = getAuthUser();
 
   return (
@@ -70,12 +62,7 @@ export default function RootLayout({
               {children}
               {authUser ? protectedPages : publicPages}
             </BaseLayout>
-            <Toaster
-              expand={true}
-              visibleToasts={2}
-              position="top-right"
-              pauseWhenPageIsHidden
-            />
+            <Toaster expand={true} visibleToasts={2} position="top-right" pauseWhenPageIsHidden />
             <TailwindIndicator />
           </ThemeProvider>
         </QueryClientContextProvider>

@@ -1,0 +1,31 @@
+.sidebar__container {
+  width: 250px;
+  padding: 10px;
+  background-color: chocolate;
+  position: fixed;
+  height: 100vh;
+}
+.sidebar__logo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sidebar__route__groups {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+.sidebar__route__group {
+  /* margin-top: 2rem; */
+}
+.sidebar__route__group__header {
+  padding-left: 1rem;
+}
+.sidebar__route {
+  /* margin-top: 2rem; */
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: red;
+  margin-top: 10px;
+}

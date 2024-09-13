@@ -1,13 +1,15 @@
-import { ProtectedNavbar } from "@/layouts/navbar";
+import ProtectedNavbar from "@/layouts/protected/navbar";
 import ProtectedSidebar from "@/layouts/protected/sidebar";
 
 export default function ProtectedLayout({ children }: React.PropsWithChildren) {
   return (
     <>
-      <ProtectedNavbar />
-      <div className="flex min-h-screen overflow-hidden">
+      <div className="flex">
         <ProtectedSidebar />
-        <main className="flex-1 overflow-y-auto pt-16 h-screen">{children}</main>
+        <div className="relative w-full bg-primary ml-[250px] flex-1">
+          <ProtectedNavbar />
+          <main className="bg-background">{children}</main>
+        </div>
       </div>
     </>
   );
