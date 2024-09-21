@@ -1,24 +1,54 @@
 "use client";
 import "./sidebar.css";
 
-import { useSidebar } from "@/hooks/use-sidebar";
 import React from "react";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  cn,
 } from "@repo/ui";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 
-type SidebarProps = {
-  className?: string;
-};
-export default function ProtectedSidebar({ className }: SidebarProps) {
-  const { isMinimized, toggle } = useSidebar();
+export default function ProtectedSidebar() {
+  const pathname = usePathname();
 
-  const handleToggle = () => {
-    toggle();
-  };
+  const routeGroups = [
+    {
+      header: "MENU",
+      routes: [
+        {
+          name: "Route",
+          path: "/route1",
+          subRoutes: [
+            { name: "Sub Route", path: "/route1/subroute1" },
+            { name: "Sub Route", path: "/route1/subroute2" },
+          ],
+        },
+        { name: "Test", path: "/test" },
+      ],
+    },
+    {
+      header: "ADMIN",
+      routes: [
+        {
+          name: "Route",
+          path: "/admin/route1",
+          subRoutes: [{ name: "Sub Route", path: "/admin/route1/subroute1" }],
+        },
+        { name: "Route", path: "/admin/route2" },
+        { name: "Route", path: "/admin/route3" },
+      ],
+    },
+  ];
+
+  const isActiveRoute = (path: string) => pathname === path;
+  const isActiveSubRoute = (subRoutes: Record<string, any>[]) =>
+    subRoutes?.some(
+      (subRoute: Record<string, any>) => pathname === subRoute.path,
+    );
 
   return (
     <nav className="sidebar__container">
@@ -26,53 +56,68 @@ export default function ProtectedSidebar({ className }: SidebarProps) {
         <div>Logo</div>
       </div>
       <div className="sidebar__route__groups">
-        <div className="sidebar__route__group">
-          <div className="sidebar__route__group__header">MENU</div>
+        {routeGroups.map((group, groupIndex) => (
+          <div className="sidebar__route__group" key={groupIndex}>
+            <div className="sidebar__route__group__header">{group.header}</div>
 
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem className="border-0" value="item-1">
-              <AccordionTrigger className="sidebar__route">
-                Route
-              </AccordionTrigger>
-              <AccordionContent className="sidebar__route">
-                Sub Route
-              </AccordionContent>
-              <AccordionContent className="sidebar__route">
-                Sub Route
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+            {group.routes.map((route, routeIndex) =>
+              route.subRoutes ? (
+                <Accordion
+                  type="single"
+                  collapsible
+                  className="w-full"
+                  key={routeIndex}
+                >
+                  <AccordionItem
+                    className="border-0"
+                    value={`item-${groupIndex}-${routeIndex}`}
+                  >
+                    <AccordionTrigger
+                      className={`sidebar__route ${
+                        isActiveRoute(route.path) ||
+                        isActiveSubRoute(route.subRoutes)
+                          ? "bg-muted"
+                          : ""
+                      }`}
+                    >
+                      {route.name}
+                    </AccordionTrigger>
 
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem className="border-0" value="item-1">
-              <AccordionTrigger className="sidebar__route">
-                Route
-              </AccordionTrigger>
-              <AccordionContent className="sidebar__route">
-                Sub Route
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-
-          <div className="sidebar__route">Route</div>
-        </div>
-        <div className="sidebar__route__group">
-          <div className="sidebar__route__group__header">ADMIN</div>
-
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem className="border-0" value="item-1">
-              <AccordionTrigger className="sidebar__route">
-                Route
-              </AccordionTrigger>
-              <AccordionContent className="sidebar__route">
-                Sub Route
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-          <div className="sidebar__route">Route</div>
-
-          <div className="sidebar__route">Route</div>
-        </div>
+                    {route.subRoutes?.map((subRoute, subRouteIndex) => (
+                      <Link
+                        className="w-full"
+                        key={subRouteIndex}
+                        href={subRoute.path}
+                      >
+                        <AccordionContent
+                          className={cn(
+                            "w-full sidebar__route",
+                            isActiveRoute(subRoute.path)
+                              ? "bg-muted-foreground"
+                              : "",
+                          )}
+                        >
+                          {subRoute.name}
+                        </AccordionContent>
+                      </Link>
+                    ))}
+                  </AccordionItem>
+                </Accordion>
+              ) : (
+                <Link href={route.path} key={routeIndex}>
+                  <div
+                    className={cn(
+                      "sidebar__route",
+                      isActiveRoute(route.path) ? "bg-muted-foreground" : "",
+                    )}
+                  >
+                    {route.name}
+                  </div>
+                </Link>
+              ),
+            )}
+          </div>
+        ))}
       </div>
     </nav>
   );

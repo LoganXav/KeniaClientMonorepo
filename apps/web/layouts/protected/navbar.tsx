@@ -1,7 +1,7 @@
 "use client";
 import { Sheet, SheetContent, SheetTrigger } from "@repo/ui";
 import "./navbar.css";
-import ProtectedMobileSidebar from "./mobile-sidebar";
+import ProtectedSidebar from "./sidebar";
 
 export default function ProtectedNavbar() {
   return (
@@ -21,7 +21,7 @@ export default function ProtectedNavbar() {
       </div>
 
       <SheetContent>
-        <ProtectedMobileSidebar />
+        <ProtectedSidebar />
       </SheetContent>
     </Sheet>
   );
