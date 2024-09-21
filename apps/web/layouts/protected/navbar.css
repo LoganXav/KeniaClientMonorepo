@@ -1,9 +1,20 @@
 .navbar__container {
-  height: 70px;
   position: sticky;
   top: 0px;
   right: 0px;
   left: 0px;
-  border-bottom: 1px grey solid;
-  background-color: aqua;
+  border-bottom: 1px solid lightgray;
+}
+
+.navbar {
+  padding: 0rem;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar__right {
+  display: flex;
+  gap: 20px;
 }

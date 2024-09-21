@@ -1,14 +1,17 @@
 .sidebar__container {
   width: 250px;
-  padding: 10px;
-  background-color: chocolate;
+  padding: 0px 10px;
   position: fixed;
   height: 100vh;
+  border-right: 1px solid lightgray;
 }
 .sidebar__logo {
+  border: 1px solid lightgray;
+  border-top: 0px;
+  height: 70px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 .sidebar__route__groups {
   margin-top: 3rem;
@@ -21,11 +24,13 @@
 }
 .sidebar__route__group__header {
   padding-left: 1rem;
+  font-size: 13px;
+  font-weight: 600;
 }
 .sidebar__route {
   /* margin-top: 2rem; */
   padding: 1rem;
   border-radius: 10px;
-  background-color: red;
+  border: 1px dashed lightgray;
   margin-top: 10px;
 }

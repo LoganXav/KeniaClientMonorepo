@@ -8,5 +8,6 @@ export * from "./components/ui/select";
 export * from "./components/ui/toast";
 export * from "./components/ui/form";
 export * from "./components/ui/otp-input";
+export * from "./components/ui/accordion";
 
 export { cn } from "./lib/utils";
