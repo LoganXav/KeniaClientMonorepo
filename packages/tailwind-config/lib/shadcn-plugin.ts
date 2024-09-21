@@ -71,7 +71,7 @@ export const shadcnPlugin = plugin(
         center: true,
         padding: "1rem",
         screens: {
-          "2xl": "1400px",
+          "2xl": "1450px",
         },
       },
       extend: {
@@ -151,5 +151,5 @@ export const shadcnPlugin = plugin(
         },
       },
     },
-  }
+  },
 );
