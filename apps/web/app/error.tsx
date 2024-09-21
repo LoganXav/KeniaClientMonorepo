@@ -1,19 +1,32 @@
-"use client"
+"use client";
 
-import { Button } from "@repo/ui"
-import { captureException } from "@sentry/nextjs"
+import { getAuthUserServer } from "@/helpers/auth-user-action";
+import { Button } from "@repo/ui";
+import { captureException } from "@sentry/nextjs";
+import Link from "next/link";
 
-export default function ErrorPage({ error }: { error: Error }) {
-  captureException(error)
+export default async function ErrorPage({ error }: { error: Error }) {
+  captureException(error);
+
+  let redirectUrl;
+  const authUser = await getAuthUserServer();
+  if (authUser) {
+    redirectUrl = "/dashboard";
+  } else {
+    redirectUrl = "/signin";
+  }
 
   return (
-    <main>
-      5OO
-      <h1>Internal Server Error</h1>
-      <p className="mt-4 max-w-sm text-center text-lg">
-        This page has thrown a 500 error.
-      </p>
-      <Button>Back to Home</Button>
-    </main>
-  )
+    <div className="min-h-screen flex justify-center items-center flex-col space-y-4">
+      <h5 className="text-5xl font-bold font-heading">
+        500. Internal Server Error.
+      </h5>
+      <div className="grid text-center space-y-4">
+        <p>This page has thrown a 500 error.</p>
+        <Link href={redirectUrl}>
+          <Button>Back to Home</Button>
+        </Link>
+      </div>
+    </div>
+  );
 }

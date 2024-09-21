@@ -76,7 +76,7 @@ export default function ProtectedSidebar() {
                       className={`sidebar__route ${
                         isActiveRoute(route.path) ||
                         isActiveSubRoute(route.subRoutes)
-                          ? "bg-muted"
+                          ? "bg-muted-foreground"
                           : ""
                       }`}
                     >
@@ -92,9 +92,7 @@ export default function ProtectedSidebar() {
                         <AccordionContent
                           className={cn(
                             "w-full sidebar__route",
-                            isActiveRoute(subRoute.path)
-                              ? "bg-muted-foreground"
-                              : "",
+                            isActiveRoute(subRoute.path) ? "bg-muted" : "",
                           )}
                         >
                           {subRoute.name}
