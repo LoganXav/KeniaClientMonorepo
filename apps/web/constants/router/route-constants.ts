@@ -13,4 +13,5 @@ export const RouteEnums = {
 
   // STAFF
   STAFF_EMPLOYMENT: "/staff/staff-employment",
+  STAFF_LIST: "/staff/staff-list",
 };
