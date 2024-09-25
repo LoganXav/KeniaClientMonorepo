@@ -10,5 +10,6 @@ export * from "./components/ui/form";
 export * from "./components/ui/otp-input";
 export * from "./components/ui/accordion";
 export * from "./components/ui/sheet";
+export * from "./components/ui/card";
 
 export { cn } from "./lib/utils";

@@ -17,34 +17,104 @@ export default function ProtectedSidebar() {
 
   const routeGroups = [
     {
-      header: "MENU",
+      header: "GENERAL",
       routes: [
         {
-          name: "Route",
-          path: "/route1",
-          subRoutes: [
-            { name: "Sub Route", path: "/route1/subroute1" },
-            { name: "Sub Route", path: "/route1/subroute2" },
-          ],
+          name: "Dashboard",
+          path: "/dashboard",
         },
-        { name: "Test", path: "/test" },
+        // {
+        //   name: "Notifications",
+        //   path: "/notifications",
+        // },
+      ],
+    },
+    // {
+    //   header: "TEACHER PORTAL",
+    //   routes: [
+    //     {
+    //       name: "My Classes",
+    //       path: "/teacher/classes",
+    //       subRoutes: [
+    //         { name: "Class List", path: "/teacher/classes/list" },
+    //         { name: "Timetable", path: "/teacher/classes/timetable" },
+    //         { name: "Attendance", path: "/teacher/classes/attendance" },
+    //         { name: "Assignments", path: "/teacher/classes/assignments" },
+    //         { name: "Exams & Grades", path: "/teacher/classes/exams-grades" },
+    //       ],
+    //     },
+    //     {
+    //       name: "Student Management",
+    //       path: "/teacher/students",
+    //       subRoutes: [
+    //         { name: "Student List", path: "/teacher/students/list" },
+    //         { name: "Attendance", path: "/teacher/students/attendance" },
+    //         { name: "Grades", path: "/teacher/students/grades" },
+    //       ],
+    //     },
+    //   ],
+    // },
+    {
+      header: "ADMIN PORTAL",
+      routes: [
+        {
+          name: "Staff",
+          path: "/staff",
+        },
+        // {
+        //   name: "Student Management",
+        //   path: "/admin/students",
+        //   subRoutes: [
+        //     { name: "Admissions", path: "/admin/students/admissions" },
+        //     { name: "Student List", path: "/admin/students/list" },
+        //     { name: "Attendance", path: "/admin/students/attendance" },
+        //     { name: "Grades", path: "/admin/students/grades" },
+        //   ],
+        // },
+        // {
+        //   name: "Class Management",
+        //   path: "/admin/classes",
+        //   subRoutes: [
+        //     { name: "Manage Classes", path: "/admin/classes/manage" },
+        //     { name: "Timetable", path: "/admin/classes/timetable" },
+        //     { name: "Attendance", path: "/admin/classes/attendance" },
+        //   ],
+        // },
+        // {
+        //   name: "Finance",
+        //   path: "/admin/finance",
+        //   subRoutes: [
+        //     { name: "Fee Management", path: "/admin/finance/fees" },
+        //     { name: "Payment Records", path: "/admin/finance/payments" },
+        //   ],
+        // },
+        // {
+        //   name: "Exams & Grades",
+        //   path: "/admin/exams-grades",
+        //   subRoutes: [
+        //     { name: "Exam Setup", path: "/admin/exams-grades/exams" },
+        //     { name: "Grade Management", path: "/admin/exams-grades/grades" },
+        //   ],
+        // },
       ],
     },
     {
-      header: "ADMIN",
+      header: "SETTINGS",
       routes: [
         {
-          name: "Route",
-          path: "/admin/route1",
-          subRoutes: [{ name: "Sub Route", path: "/admin/route1/subroute1" }],
+          name: "Settings",
+          path: "/admin/settings",
+          subRoutes: [
+            { name: "General Settings", path: "/admin/settings/general" },
+            { name: "System Logs", path: "/admin/settings/logs" },
+            { name: "Permissions", path: "/admin/settings/permissions" },
+          ],
         },
-        { name: "Route", path: "/admin/route2" },
-        { name: "Route", path: "/admin/route3" },
       ],
     },
   ];
-
-  const isActiveRoute = (path: string) => pathname === path;
+  const isActiveRoute = (path: string) =>
+    pathname === path || pathname.split("/").includes(path.split("/")[1]);
   const isActiveSubRoute = (subRoutes: Record<string, any>[]) =>
     subRoutes?.some(
       (subRoute: Record<string, any>) => pathname === subRoute.path,
@@ -76,7 +146,7 @@ export default function ProtectedSidebar() {
                       className={`sidebar__route ${
                         isActiveRoute(route.path) ||
                         isActiveSubRoute(route.subRoutes)
-                          ? "bg-muted-foreground"
+                          ? "text-white bg-foreground"
                           : ""
                       }`}
                     >
@@ -106,7 +176,9 @@ export default function ProtectedSidebar() {
                   <div
                     className={cn(
                       "sidebar__route",
-                      isActiveRoute(route.path) ? "bg-muted-foreground" : "",
+                      isActiveRoute(route.path)
+                        ? "text-white bg-foreground"
+                        : "",
                     )}
                   >
                     {route.name}

@@ -8,7 +8,9 @@ export default function ProtectedLayout({ children }: React.PropsWithChildren) {
         <ProtectedSidebar />
         <div className="relative w-full bg-background ml-[0px] lg:ml-[250px] flex-1">
           <ProtectedNavbar />
-          <main className="container min-h-[calc(100vh-70px)]">{children}</main>
+          <main className="container mt-12 min-h-[calc(100vh-70px)]">
+            {children}
+          </main>
         </div>
       </div>
     </>
