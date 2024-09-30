@@ -15,7 +15,7 @@ export const useResetPasswordRequestMutation = () => {
         payload,
       });
 
-      return data;
+      return data.result;
     },
   });
 
@@ -40,7 +40,7 @@ export const useChangePasswordMutation = () => {
         payload,
       });
 
-      return data;
+      return data.result;
     },
   });
 

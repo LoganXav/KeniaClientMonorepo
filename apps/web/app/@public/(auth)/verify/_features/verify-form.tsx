@@ -1,17 +1,34 @@
 "use client";
 
-import { Button, toast, Form, FormField, FormItem, FormLabel, FormControl, FormMessage, InputOTPGroup, InputOTP, InputOTPSlot } from "@repo/ui";
+import {
+  Button,
+  toast,
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+  InputOTPGroup,
+  InputOTP,
+  InputOTPSlot,
+} from "@repo/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { VerifySchema, VerifySchemaType } from "../_validators/verify-schema";
-import { useResendOtpMutation, useVerifyOtpMutation } from "@/apis/authentication/two-factor";
-import { useSearchParams } from "next/navigation";
+import {
+  useResendOtpMutation,
+  useVerifyOtpMutation,
+} from "@/apis/authentication/two-factor";
+import { useRouter, useSearchParams } from "next/navigation";
+import { RouteEnums } from "@/constants/router/route-constants";
 
 export default function VerifyForm() {
   const verifyOtp = useVerifyOtpMutation();
   const resendOtp = useResendOtpMutation();
 
   const searchParams = useSearchParams();
+  const router = useRouter();
 
   const id = searchParams.get("id");
   const email = searchParams.get("email")!;
@@ -22,11 +39,12 @@ export default function VerifyForm() {
       {
         onSuccess: (result) => {
           toast.success(result.message);
+          router.push(RouteEnums.DASHBOARD);
         },
         onError: (error) => {
           toast.error(error.message);
         },
-      }
+      },
     );
   };
 
@@ -42,7 +60,7 @@ export default function VerifyForm() {
         onError: (error) => {
           toast.error(error.message);
         },
-      }
+      },
     );
   };
 
@@ -94,12 +112,18 @@ export default function VerifyForm() {
 
           <p className="text-sm">
             Didn{"'"}t get the code?{" "}
-            <span onClick={handleResend} className="font-semibold text-muted-foreground transition-colors hover:text-link cursor-pointer">
+            <span
+              onClick={handleResend}
+              className="font-semibold text-muted-foreground transition-colors hover:text-link cursor-pointer"
+            >
               Resend.
             </span>
           </p>
 
-          <Button className="w-full py-6 rounded-lg" loading={verifyOtp.isPending || resendOtp.isPending}>
+          <Button
+            className="w-full py-6 rounded-lg"
+            loading={verifyOtp.isPending || resendOtp.isPending}
+          >
             Verify My Account
           </Button>
         </form>

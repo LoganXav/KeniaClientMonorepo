@@ -39,13 +39,15 @@ apiConfig.interceptors.request.use(async (config) => {
   }
   // data.tenantId = env.TENANT_ID;
 
-  config.data = {
-    request: CryptoJS.AES.encrypt(JSON.stringify(data), KEY, {
-      mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.Pkcs7,
-      iv: IV,
-    }).toString(),
-  };
+  if (env.NODE_ENV !== DEV) {
+    config.data = {
+      request: CryptoJS.AES.encrypt(JSON.stringify(data), KEY, {
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7,
+        iv: IV,
+      }).toString(),
+    };
+  }
 
   return config;
 });
@@ -138,7 +140,10 @@ apiConfig.interceptors.response.use(
               error.response.data?.errors?.[0]?.message ||
               error?.response?.data?.data?.message ||
               error?.response?.data?.message ||
-              error?.response?.data?.details?.[0]?.message,
+              error?.response?.data?.details?.[0]?.message ||
+              error?.response?.data?.result?.message?.name ||
+              error?.response?.data?.result?.message,
+
             status: error.response.status,
           }
         : {

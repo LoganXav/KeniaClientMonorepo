@@ -13,9 +13,11 @@ interface GetRequestPropsType {
 
 interface PostRequestReturnType<T> {
   data: {
-    data: T;
-    message: string;
-    accessToken?: string;
+    result: {
+      data: T;
+      message: string;
+      accessToken?: string;
+    };
   };
   status: string;
   statusCode: number;

@@ -19,11 +19,11 @@ export const useVerifyOtpMutation = () => {
       });
 
       setAuthUser({
-        accessToken: data.accessToken!,
-        data: data.data,
+        accessToken: data.result.accessToken!,
+        data: data.result.data,
       });
 
-      return data;
+      return data.result;
     },
   });
 
@@ -42,7 +42,7 @@ export const useResendOtpMutation = () => {
         payload,
       });
 
-      return data;
+      return data.result;
     },
   });
 
