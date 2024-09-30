@@ -12,13 +12,14 @@ export const ButtonStyle = {
       "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
 
     ghost: "hover:bg-accent hover:text-accent-foreground",
-    link: "text-primary underline-offset-4 hover:underline"
+    link: "text-primary underline-offset-4 hover:underline",
   },
   sizes: {
     lg: "h-11 px-8 rounded-md",
     md: "h-10 py-2 px-4",
     sm: "h-9 px-6 rounded-md",
     xs: "h-9 px-3 rounded-md",
-    icon: "size-10 rounded-full"
-  }
-}
+    icon: "size-10 rounded-full",
+    page: "px-2 py-2",
+  },
+};

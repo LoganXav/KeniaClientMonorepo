@@ -15,21 +15,21 @@ function Staff({}: Props) {
             desc: "Oversee all staff activities, employment details, and departmental assignments.",
             url: RouteEnums.STAFF_LIST,
           },
-          {
-            label: "Manage Staff",
-            desc: "Oversee all staff activities, employment details, and departmental assignments.",
-            url: RouteEnums.STAFF_LIST,
-          },
-          {
-            label: "Manage Staff",
-            desc: "Oversee all staff activities, employment details, and departmental assignments.",
-            url: RouteEnums.STAFF_LIST,
-          },
-          {
-            label: "Manage Staff",
-            desc: "Oversee all staff activities, employment details, and departmental assignments.",
-            url: RouteEnums.STAFF_LIST,
-          },
+          //   {
+          //     label: "Manage Staff",
+          //     desc: "Oversee all staff activities, employment details, and departmental assignments.",
+          //     url: RouteEnums.STAFF_LIST,
+          //   },
+          //   {
+          //     label: "Manage Staff",
+          //     desc: "Oversee all staff activities, employment details, and departmental assignments.",
+          //     url: RouteEnums.STAFF_LIST,
+          //   },
+          //   {
+          //     label: "Manage Staff",
+          //     desc: "Oversee all staff activities, employment details, and departmental assignments.",
+          //     url: RouteEnums.STAFF_LIST,
+          //   },
         ].map(({ label, desc, url }: Record<string, any>, idx: number) => (
           <Link
             key={idx}
