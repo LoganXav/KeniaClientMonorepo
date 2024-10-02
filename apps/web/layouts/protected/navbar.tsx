@@ -7,7 +7,7 @@ export default function ProtectedNavbar() {
   return (
     <Sheet>
       <div className="navbar__container">
-        <nav className="container navbar">
+        <nav className="container navbar bg-background">
           <div className="flex gap-4">
             <SheetTrigger className="lg:hidden">Menu Trigger</SheetTrigger>
             <div>Global Search</div>

@@ -22,7 +22,7 @@ export function DataTableColumnHeader<TData, TValue>({
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         className="flex items-center space-x-1 p-0 text-primary"
       >
-        <span>{title}</span>
+        <span className="text-base font-heading">{title.toUpperCase()}</span>
         <CaretSortIcon className="h-4 w-4" aria-hidden="true" />
       </Button>
     </div>

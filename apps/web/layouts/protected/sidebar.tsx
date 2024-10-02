@@ -11,6 +11,7 @@ import {
 } from "@repo/ui";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { RouteEnums } from "@/constants/router/route-constants";
 
 export default function ProtectedSidebar() {
   const pathname = usePathname();
@@ -21,7 +22,7 @@ export default function ProtectedSidebar() {
       routes: [
         {
           name: "Dashboard",
-          path: "/dashboard",
+          path: RouteEnums.DASHBOARD,
         },
         // {
         //   name: "Notifications",
@@ -29,37 +30,37 @@ export default function ProtectedSidebar() {
         // },
       ],
     },
-    {
-      header: "TEACHER PORTAL",
-      routes: [
-        {
-          name: "My Classes",
-          path: "/teacher/classes",
-          subRoutes: [
-            { name: "Class List", path: "/teacher/classes/list" },
-            { name: "Timetable", path: "/teacher/classes/timetable" },
-            { name: "Attendance", path: "/teacher/classes/attendance" },
-            { name: "Assignments", path: "/teacher/classes/assignments" },
-            { name: "Exams & Grades", path: "/teacher/classes/exams-grades" },
-          ],
-        },
-        {
-          name: "Student Management",
-          path: "/teacher/students",
-          subRoutes: [
-            { name: "Student List", path: "/teacher/students/list" },
-            { name: "Attendance", path: "/teacher/students/attendance" },
-            { name: "Grades", path: "/teacher/students/grades" },
-          ],
-        },
-      ],
-    },
+    // {
+    //   header: "TEACHER PORTAL",
+    //   routes: [
+    //     {
+    //       name: "My Classes",
+    //       path: "/teacher/classes",
+    //       subRoutes: [
+    //         { name: "Class List", path: "/teacher/classes/list" },
+    //         { name: "Timetable", path: "/teacher/classes/timetable" },
+    //         { name: "Attendance", path: "/teacher/classes/attendance" },
+    //         { name: "Assignments", path: "/teacher/classes/assignments" },
+    //         { name: "Exams & Grades", path: "/teacher/classes/exams-grades" },
+    //       ],
+    //     },
+    //     {
+    //       name: "Student Management",
+    //       path: "/teacher/students",
+    //       subRoutes: [
+    //         { name: "Student List", path: "/teacher/students/list" },
+    //         { name: "Attendance", path: "/teacher/students/attendance" },
+    //         { name: "Grades", path: "/teacher/students/grades" },
+    //       ],
+    //     },
+    //   ],
+    // },
     {
       header: "ADMIN PORTAL",
       routes: [
         {
           name: "Staff",
-          path: "/staff",
+          path: RouteEnums.STAFF,
         },
         // {
         //   name: "Student Management",
@@ -71,31 +72,31 @@ export default function ProtectedSidebar() {
         //     { name: "Grades", path: "/admin/students/grades" },
         //   ],
         // },
-        {
-          name: "Class",
-          path: "/admin/classes",
-          subRoutes: [
-            { name: "Manage Classes", path: "/admin/classes/manage" },
-            { name: "Timetable", path: "/admin/classes/timetable" },
-            { name: "Attendance", path: "/admin/classes/attendance" },
-          ],
-        },
-        {
-          name: "Finance",
-          path: "/admin/finance",
-          subRoutes: [
-            { name: "Fee Management", path: "/admin/finance/fees" },
-            { name: "Payment Records", path: "/admin/finance/payments" },
-          ],
-        },
-        {
-          name: "Exams & Grades",
-          path: "/admin/exams-grades",
-          subRoutes: [
-            { name: "Exam Setup", path: "/admin/exams-grades/exams" },
-            { name: "Grade Management", path: "/admin/exams-grades/grades" },
-          ],
-        },
+        // {
+        //   name: "Class",
+        //   path: "/admin/classes",
+        //   subRoutes: [
+        //     { name: "Manage Classes", path: "/admin/classes/manage" },
+        //     { name: "Timetable", path: "/admin/classes/timetable" },
+        //     { name: "Attendance", path: "/admin/classes/attendance" },
+        //   ],
+        // },
+        // {
+        //   name: "Finance",
+        //   path: "/admin/finance",
+        //   subRoutes: [
+        //     { name: "Fee Management", path: "/admin/finance/fees" },
+        //     { name: "Payment Records", path: "/admin/finance/payments" },
+        //   ],
+        // },
+        // {
+        //   name: "Exams & Grades",
+        //   path: "/admin/exams-grades",
+        //   subRoutes: [
+        //     { name: "Exam Setup", path: "/admin/exams-grades/exams" },
+        //     { name: "Grade Management", path: "/admin/exams-grades/grades" },
+        //   ],
+        // },
       ],
     },
     {
@@ -123,12 +124,14 @@ export default function ProtectedSidebar() {
   return (
     <nav className="sidebar__container">
       <div className="sidebar__logo">
-        <div>Logo</div>
+        <div className="font-heading">LOGO</div>
       </div>
       <div className="sidebar__route__groups">
         {routeGroups.map((group, groupIndex) => (
           <div className="sidebar__route__group" key={groupIndex}>
-            <div className="sidebar__route__group__header">{group.header}</div>
+            <div className="sidebar__route__group__header font-heading text-sm">
+              {group.header}
+            </div>
 
             {group.routes.map((route, routeIndex) =>
               route.subRoutes ? (

@@ -9,9 +9,10 @@ export const RouteEnums = {
   CHANGE_PASSWORD: "/change-password",
 
   // DASHBOARD
-  DASHBOARD: "dashboard",
+  DASHBOARD: "/dashboard",
 
   // STAFF
-  STAFF_EMPLOYMENT: "/staff/staff-employment",
-  STAFF_LIST: "/staff/staff-list",
+  STAFF: "/staff",
+  STAFF_CREATE: "/staff/create",
+  STAFF_LIST: "/staff/list",
 };

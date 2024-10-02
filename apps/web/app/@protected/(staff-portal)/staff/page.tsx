@@ -37,12 +37,8 @@ function Staff({}: Props) {
             className="block hover:shadow-md transition-shadow duration-200"
           >
             <Card className="rounded-lg border p-6 space-y-2">
-              <CardTitle className="font-semibold leading-tight">
-                {label}
-              </CardTitle>
-              <CardDescription className="text-sm text-gray-600">
-                {desc}
-              </CardDescription>
+              <CardTitle className="font-heading">{label}</CardTitle>
+              <CardDescription>{desc}</CardDescription>
             </Card>
           </Link>
         ))}
