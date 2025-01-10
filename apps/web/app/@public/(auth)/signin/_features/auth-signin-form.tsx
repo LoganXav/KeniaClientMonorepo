@@ -3,28 +3,17 @@
 import { useSignInMutation } from "@/apis/authentication/authentication";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Button,
-  Input,
-  PasswordInput,
-  FormField,
-  FormLabel,
-  FormItem,
-  Form,
-  FormMessage,
-  FormControl,
-  toast,
-} from "@repo/ui";
+import { Button, Input, PasswordInput, FormField, FormLabel, FormItem, Form, FormMessage, FormControl, toast } from "@repo/ui";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { SignInSchema, SignInSchemaType } from "../_validators/signin-schema";
+import { AuthSignInSchema, AuthSignInSchemaType } from "../_validators/auth-signin-schema";
 
-export default function SignInForm() {
+export default function AuthSignInForm() {
   const { signIn, isPending, error } = useSignInMutation();
   const router = useRouter();
 
-  const handleSignIn = (values: SignInSchemaType) => {
+  const handleSignIn = (values: AuthSignInSchemaType) => {
     signIn(
       { ...values, userType: "staff" },
       {
@@ -36,7 +25,7 @@ export default function SignInForm() {
         onError: (error: any) => {
           toast.error(error.message);
         },
-      },
+      }
     );
   };
 
@@ -45,8 +34,8 @@ export default function SignInForm() {
     password: "",
   };
 
-  const form = useForm<SignInSchemaType>({
-    resolver: zodResolver(SignInSchema),
+  const form = useForm<AuthSignInSchemaType>({
+    resolver: zodResolver(AuthSignInSchema),
     defaultValues,
     mode: "onSubmit",
   });
@@ -54,15 +43,14 @@ export default function SignInForm() {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSignIn)} className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid gap-4">
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email Address</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input placeholder="Email Address" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -73,9 +61,8 @@ export default function SignInForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <PasswordInput {...field} />
+                    <PasswordInput placeholder="Password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -84,26 +71,23 @@ export default function SignInForm() {
           </div>
           <div className="flex items-center justify-between">
             <div />
-            <Link
-              href={RouteEnums.RESET_PASSWORD}
-              className="text-sm font-semibold text-muted-foreground transition-colors hover:text-link"
-            >
+            <Link href={RouteEnums.RESET_PASSWORD} className="underline text-sm font-semibold text-muted-foreground transition-colors hover:text-link">
               Forgot password?
             </Link>
           </div>
 
-          <p className="text-sm">
-            New to Kenia?{" "}
-            <Link
-              href={RouteEnums.SIGNUP}
-              className="font-semibold text-muted-foreground transition-colors hover:text-link"
-            >
-              Create an account.
-            </Link>
-          </p>
+          {/* <p className="text-sm"> */}
+          {/*   New to Kenia?{" "} */}
+          {/*   <Link */}
+          {/*     href={RouteEnums.SIGNUP} */}
+          {/*     className="font-semibold text-muted-foreground transition-colors hover:text-link" */}
+          {/*   > */}
+          {/*     Create an account. */}
+          {/*   </Link> */}
+          {/* </p> */}
 
           <Button loading={isPending} className="w-full py-6 rounded-lg">
-            Signin
+            Sign in
           </Button>
         </form>
       </Form>

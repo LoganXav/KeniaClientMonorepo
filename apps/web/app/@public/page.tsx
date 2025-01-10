@@ -9,8 +9,8 @@ export default function HomePage(): JSX.Element {
         <p>To check out the authentication screens,</p>
         <p>
           Navigate to{" "}
-          <Link href={RouteEnums.SIGNUP} className="underline hover:text-link">
-            Sign up
+          <Link href={RouteEnums.LOBBY} className="underline hover:text-link">
+            Get Started
           </Link>{" "}
         </p>
       </div>

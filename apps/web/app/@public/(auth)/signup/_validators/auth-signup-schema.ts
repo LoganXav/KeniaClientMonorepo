@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const SignUpSchema = z
+export const AuthSignUpSchema = z
   .object({
     firstName: z.string().min(2, { message: "First name is too short" }).max(50, { message: "First name is too long" }),
     lastName: z.string().min(2, { message: "Last name is too short" }).max(50, { message: "Last name is too long" }),
@@ -21,4 +21,4 @@ export const SignUpSchema = z
     message: "Passwords do not match",
   });
 
-export type SignUpSchemaType = z.infer<typeof SignUpSchema>;
+export type AuthSignUpSchemaType = z.infer<typeof AuthSignUpSchema>;

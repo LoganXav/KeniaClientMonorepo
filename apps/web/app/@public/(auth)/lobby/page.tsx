@@ -1,17 +1,18 @@
-import AuthSignUpForm from "./_features/auth-signup-form";
-import Link from "next/link";
+import React from "react";
+import AuthLobbyTabs from "./_features/auth-lobby-tabs";
 import { RouteEnums } from "@/constants/router/route-constants";
+import Link from "next/link";
 
-export default function AuthSignUpPage() {
+function AuthLobby() {
   return (
     <div className="w-full grid md:grid-cols-5 p-4 gap-4">
       <div />
       <div className="grid space-y-8 md:col-span-2 mt-20 max-w-xl">
         <div className="w-full space-y-2">
-          <h4 className="font-heading text-3xl md:text-4xl font-bold">Get started with Kenia</h4>
-          <p className="text-sm text-muted-foreground">Fill out this form to register your school</p>
+          <h4 className="font-heading text-3xl md:text-4xl font-bold">How will you use Kenia?</h4>
+          <p className="text-sm text-muted-foreground">Please select an option below.</p>
         </div>
-        <AuthSignUpForm />
+        <AuthLobbyTabs />
       </div>
       <div className="flex md:col-span-2 md:justify-end h-min items-center gap-4">
         {/* <p className="text-sm text-muted-foreground text-nowrap md:border-l md:px-4 py-1"> */}
@@ -33,3 +34,5 @@ export default function AuthSignUpPage() {
     </div>
   );
 }
+
+export default AuthLobby;

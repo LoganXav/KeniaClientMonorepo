@@ -6,15 +6,15 @@ export const shadcnPlugin = plugin(
   function ({ addBase }) {
     addBase({
       ":root": {
-        "--background": "0 0% 100%",
+        "--background": "0 10% 96.08%",
         "--foreground": "222.2 84% 4.9%",
         "--muted": "210 40% 96.1%",
-        "--muted-foreground": "215.4 16.3% 46.9%",
+        "--muted-foreground": "190 0% 50%",
         "--popover": "0 0% 100%",
         "--popover-foreground": "222.2 84% 4.9%",
         "--card": "0 0% 100%",
         "--card-foreground": "222.2 84% 4.9%",
-        "--border": "214.3 31.8% 91.4%",
+        "--border": "0 0% 90%",
         "--input": "214.3 31.8% 91.4%",
         "--primary": "222.2 47.4% 11.2%",
         "--primary-foreground": "210 40% 98%",
@@ -25,7 +25,7 @@ export const shadcnPlugin = plugin(
         "--destructive": "0 84.2% 60.2%",
         "--destructive-foreground": "210 40% 98%",
         "--ring": "215 20.2% 65.1%",
-        "--radius": "0.5rem",
+        "--radius": "0.7rem",
 
         "--link": "213.12 93.9% 67.84%",
       },
@@ -151,5 +151,5 @@ export const shadcnPlugin = plugin(
         },
       },
     },
-  },
+  }
 );

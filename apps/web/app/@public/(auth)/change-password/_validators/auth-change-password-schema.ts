@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const ChangePasswordSchema = z
+export const AuthChangePasswordSchema = z
   .object({
     token: z.string().min(5, { message: "Invalid confirmation code" }).max(5, { message: "Invalid confirmation code" }),
     password: z
@@ -18,4 +18,4 @@ export const ChangePasswordSchema = z
     message: "Passwords do not match",
   });
 
-export type ChangePasswordSchemaType = z.infer<typeof ChangePasswordSchema>;
+export type AuthChangePasswordSchemaType = z.infer<typeof AuthChangePasswordSchema>;

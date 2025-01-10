@@ -1,20 +1,19 @@
 "use client";
 
 import { useSignUpMutation } from "@/apis/authentication/authentication";
-import { Button, PasswordInput, Input, toast, Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@repo/ui";
+import { Button, PasswordInput, Input, toast, Form, FormField, FormItem, FormControl, FormMessage } from "@repo/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import Link from "next/link";
-import { SignUpSchema, SignUpSchemaType } from "../_validators/signup-schema";
+import { AuthSignUpSchema, AuthSignUpSchemaType } from "../_validators/auth-signup-schema";
 import { useRouter } from "next/navigation";
 import { RouteEnums } from "@/constants/router/route-constants";
 
-export default function SignUpForm() {
+export default function AuthSignUpForm() {
   const { signUp, isPending, error } = useSignUpMutation();
 
   const router = useRouter();
 
-  const handleSignup = (values: SignUpSchemaType) => {
+  const handleSignup = (values: AuthSignUpSchemaType) => {
     signUp(
       { ...values },
       {
@@ -37,8 +36,8 @@ export default function SignUpForm() {
     password: "",
   };
 
-  const form = useForm<SignUpSchemaType>({
-    resolver: zodResolver(SignUpSchema),
+  const form = useForm<AuthSignUpSchemaType>({
+    resolver: zodResolver(AuthSignUpSchema),
     defaultValues,
     mode: "onSubmit",
   });
@@ -47,15 +46,14 @@ export default function SignUpForm() {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSignup)} className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4">
             <FormField
               control={form.control}
               name="firstName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>First Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input placeholder="First Name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -66,9 +64,8 @@ export default function SignUpForm() {
               name="lastName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Last Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input placeholder="Last Name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -79,9 +76,8 @@ export default function SignUpForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email Address</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input placeholder="Email Address" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -92,9 +88,8 @@ export default function SignUpForm() {
               name="phoneNumber"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input placeholder="Phone Number" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -105,9 +100,8 @@ export default function SignUpForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <PasswordInput {...field} />
+                    <PasswordInput placeholder="Password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -118,9 +112,8 @@ export default function SignUpForm() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <PasswordInput {...field} />
+                    <PasswordInput placeholder="Confirm Password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -128,16 +121,11 @@ export default function SignUpForm() {
             />
           </div>
 
-          <p className="text-sm">
-            Already have an account?{" "}
-            <Link href={RouteEnums.SIGNIN} className="font-semibold text-muted-foreground transition-colors hover:text-link">
-              Sign in.
-            </Link>
-          </p>
-
           <Button className="w-full py-6 rounded-lg" loading={isPending}>
-            Create My Account
+            Create Your Kenia Account
           </Button>
+
+          <p className="text-sm text-muted-foreground">By clicking "Create Your Kenia Account", you agree to our Terms of Service, our Product T&C's and that you have read and understood our Privacy Policy.</p>
         </form>
       </Form>
     </>

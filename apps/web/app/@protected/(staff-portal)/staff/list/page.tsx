@@ -1,53 +1,44 @@
 "use client";
 import { DataTable, DataTableColumnHeader } from "@/components/data-table";
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@repo/ui";
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@repo/ui";
 import React from "react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { RouteEnums } from "@/constants/router/route-constants";
 import Link from "next/link";
+import { useGetStaffListQuery } from "@/apis/staff/staff";
+import { CellContext, ColumnDef, RowData } from "@tanstack/react-table";
 
 type Props = {};
 
-function page({}: Props) {
+function StaffListPage({}: Props) {
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
       {
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Province" />
+        header: "Expatriate Name",
+        accessorKey: "name",
+        cell: ({ row }: CellContext<any, unknown>) => (
+          <div className="flex space-x-2">
+            <p>{row?.original?.user?.firstName}</p>
+            <p>{row?.original?.user?.lastName}</p>
+          </div>
         ),
-        accessorKey: "province",
       },
       {
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Occupation" />
-        ),
-        accessorKey: "occupation",
+        header: "Passport Number",
+        accessorKey: "passportNumber",
       },
       {
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Gender" />
-        ),
-        accessorKey: "gender",
+        header: "Applicant Type",
+        accessorKey: "applicantType",
       },
       {
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Occupation" />
-        ),
-        accessorKey: "occupation",
+        header: "Request Type",
+        accessorKey: "requestType",
+        cell: ({ row }) => <p>{row.original.user.phoneNumber}</p>,
       },
       {
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Gender" />
-        ),
-        accessorKey: "gender",
+        header: "Date Applied",
+        accessorKey: "dateApplied",
       },
 
       {
@@ -75,144 +66,22 @@ function page({}: Props) {
         },
       },
     ],
-    [],
+    []
   );
+
+  const { data } = useGetStaffListQuery();
 
   return (
     <div className="pb-8">
       <div className="flex justify-between w-full pb-4">
         <div />
         <Link href={RouteEnums.STAFF_CREATE}>
-          <Button>Create Staff</Button>
+          <Button className="py-6 rounded-lg">Create Staff</Button>
         </Link>
       </div>
-      <DataTable
-        data={[
-          {
-            id: 1,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 2,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 3,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 4,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 5,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 6,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 7,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 7,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 7,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 7,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 7,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 7,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 7,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 7,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 7,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 7,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 7,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 7,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 7,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-          {
-            id: 7,
-            province: "Lagos Island",
-            occupation: "Student",
-            gender: "Male",
-          },
-        ]}
-        columns={columns}
-      />
+      <DataTable data={data?.data} columns={columns} />
     </div>
   );
 }
 
-export default page;
+export default StaffListPage;

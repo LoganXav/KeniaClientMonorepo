@@ -1,7 +1,7 @@
 export const ButtonStyle = {
   base: "inline-flex gap-2 items-center justify-center rounded-md text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background",
   variants: {
-    default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
+    default: "bg-foreground text-primary-foreground shadow hover:bg-primary/90",
     secondary:
       "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
     brand:
@@ -9,7 +9,7 @@ export const ButtonStyle = {
     destructive:
       "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
     outline:
-      "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+      "border border-foreground bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
 
     ghost: "hover:bg-accent hover:text-accent-foreground",
     link: "text-primary underline-offset-4 hover:underline",
@@ -18,7 +18,7 @@ export const ButtonStyle = {
     lg: "h-11 px-8 rounded-md",
     md: "h-10 py-2 px-4",
     sm: "h-9 px-6 rounded-md",
-    xs: "h-9 px-3 rounded-md",
+    xs: "h-9 px-3 rounded-md text-xs",
     icon: "size-10 rounded-full",
     page: "px-2 py-2",
   },

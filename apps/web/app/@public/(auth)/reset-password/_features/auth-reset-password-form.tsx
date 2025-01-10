@@ -6,14 +6,14 @@ import { useForm } from "react-hook-form";
 import { RouteEnums } from "@/constants/router/route-constants";
 import Link from "next/link";
 import { useResetPasswordRequestMutation } from "@/apis/authentication/reset-password";
-import { ResetPasswordRequestSchema, ResetPasswordRequestSchemaType } from "../_validators/reset-password-schema";
+import { AuthResetPasswordRequestSchema, AuthResetPasswordRequestSchemaType } from "../_validators/auth-reset-password-schema";
 import { useRouter } from "next/navigation";
 
-export default function ResetPasswordRequestForm() {
+export default function AuthResetPasswordRequestForm() {
   const resetPasswordRequest = useResetPasswordRequestMutation();
   const router = useRouter();
 
-  const handleResetPassword = (values: ResetPasswordRequestSchemaType) => {
+  const handleResetPassword = (values: AuthResetPasswordRequestSchemaType) => {
     resetPasswordRequest.resetPasswordRequest(
       { ...values },
       {
@@ -32,8 +32,8 @@ export default function ResetPasswordRequestForm() {
     email: "",
   };
 
-  const form = useForm<ResetPasswordRequestSchemaType>({
-    resolver: zodResolver(ResetPasswordRequestSchema),
+  const form = useForm<AuthResetPasswordRequestSchemaType>({
+    resolver: zodResolver(AuthResetPasswordRequestSchema),
     defaultValues,
     mode: "onSubmit",
   });
@@ -49,9 +49,8 @@ export default function ResetPasswordRequestForm() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email Address</FormLabel>
                     <FormControl>
-                      <Input placeholder="" {...field} />
+                      <Input placeholder="Email Address" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

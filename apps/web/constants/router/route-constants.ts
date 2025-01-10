@@ -2,6 +2,7 @@ export const RouteEnums = {
   HOME: "/",
 
   // AUTH
+  LOBBY: "/lobby",
   SIGNIN: "/signin",
   SIGNUP: "/signup",
   VERIFY: "/verify",

@@ -1,7 +1,6 @@
 "use client";
 import "./sidebar.css";
 
-import React from "react";
 import {
   Accordion,
   AccordionContent,
@@ -149,7 +148,7 @@ export default function ProtectedSidebar() {
                       className={`sidebar__route ${
                         isActiveRoute(route.path) ||
                         isActiveSubRoute(route.subRoutes)
-                          ? "text-white bg-foreground"
+                          ? "text-background bg-foreground"
                           : ""
                       }`}
                     >
@@ -180,7 +179,7 @@ export default function ProtectedSidebar() {
                     className={cn(
                       "sidebar__route",
                       isActiveRoute(route.path)
-                        ? "text-white bg-foreground"
+                        ? "text-muted-foreground  bg-foreground"
                         : "",
                     )}
                   >

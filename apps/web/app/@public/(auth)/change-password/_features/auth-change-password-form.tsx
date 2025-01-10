@@ -5,14 +5,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { useChangePasswordMutation } from "@/apis/authentication/reset-password";
-import { ChangePasswordSchema, ChangePasswordSchemaType } from "../_validators/change-password-schema";
+import { AuthChangePasswordSchema, AuthChangePasswordSchemaType } from "../_validators/auth-change-password-schema";
 import { useRouter } from "next/navigation";
 
 export default function ChangePasswordForm() {
   const changePassword = useChangePasswordMutation();
   const router = useRouter();
 
-  const handleResetPassword = (values: ChangePasswordSchemaType) => {
+  const handleResetPassword = (values: AuthChangePasswordSchemaType) => {
     changePassword.changePassword(
       { payload: { password: values.password }, path: { token: values.token } },
       {
@@ -32,8 +32,8 @@ export default function ChangePasswordForm() {
     token: "",
   };
 
-  const form = useForm<ChangePasswordSchemaType>({
-    resolver: zodResolver(ChangePasswordSchema),
+  const form = useForm<AuthChangePasswordSchemaType>({
+    resolver: zodResolver(AuthChangePasswordSchema),
     defaultValues,
     mode: "onSubmit",
   });
@@ -42,8 +42,8 @@ export default function ChangePasswordForm() {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleResetPassword)} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-2">
+          <div className="grid grid-cols-1 gap-4">
+            <div className="">
               <FormField
                 control={form.control}
                 name="token"
@@ -79,9 +79,8 @@ export default function ChangePasswordForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>New Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input placeholder="New Password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -92,9 +91,8 @@ export default function ChangePasswordForm() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="" {...field} />
+                    <Input placeholder="Confirm Password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

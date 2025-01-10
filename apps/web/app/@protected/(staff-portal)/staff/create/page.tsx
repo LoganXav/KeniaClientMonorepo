@@ -53,7 +53,7 @@ function page({}: Props) {
 
   return (
     <div>
-      <Card className="grid lg:grid-cols-3 gap-8 p-4 my-8 md:p-8">
+      <Card className="border-none shadow-none grid lg:grid-cols-3 gap-8 p-4 my-8 md:p-8">
         <div className="space-y-4">
           <CardTitle className="font-heading">Personal Information</CardTitle>
           <CardDescription>
@@ -208,10 +208,12 @@ function page({}: Props) {
 
       <div className="flex items-center justify-center gap-4">
         <Link href={RouteEnums.STAFF_LIST}>
-          <Button variant={"outline"}>Cancel</Button>
+          <Button variant={"outline"} className="py-6 rounded-lg">
+            Cancel
+          </Button>
         </Link>
 
-        <Button>Submit</Button>
+        <Button className="py-6 rounded-lg">Submit</Button>
       </div>
     </div>
   );

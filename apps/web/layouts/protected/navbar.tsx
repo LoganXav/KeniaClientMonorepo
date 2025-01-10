@@ -1,7 +1,8 @@
 "use client";
-import { Sheet, SheetContent, SheetTrigger } from "@repo/ui";
+import { SearchInput, Sheet, SheetContent, SheetTrigger } from "@repo/ui";
 import "./navbar.css";
 import ProtectedSidebar from "./sidebar";
+import { ThemeToggler } from "@/components/theme-tooggler";
 
 export default function ProtectedNavbar() {
   return (
@@ -10,10 +11,14 @@ export default function ProtectedNavbar() {
         <nav className="container navbar bg-background">
           <div className="flex gap-4">
             <SheetTrigger className="lg:hidden">Menu Trigger</SheetTrigger>
-            <div>Global Search</div>
+
+            <div>
+              <SearchInput placeholder="Search..." />
+            </div>
           </div>
 
           <div className="navbar__right">
+            <ThemeToggler />
             <div>Notification</div>
             <div>Avatar</div>
           </div>
