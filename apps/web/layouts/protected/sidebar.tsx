@@ -1,13 +1,7 @@
 "use client";
 import "./sidebar.css";
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-  cn,
-} from "@repo/ui";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, cn } from "@repo/ui";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { RouteEnums } from "@/constants/router/route-constants";
@@ -113,80 +107,37 @@ export default function ProtectedSidebar() {
       ],
     },
   ];
-  const isActiveRoute = (path: string) =>
-    pathname === path || pathname.split("/").includes(path.split("/")[1]);
-  const isActiveSubRoute = (subRoutes: Record<string, any>[]) =>
-    subRoutes?.some(
-      (subRoute: Record<string, any>) => pathname === subRoute.path,
-    );
+  const isActiveRoute = (path: string) => pathname === path || pathname.split("/").includes(path.split("/")[1]);
+  const isActiveSubRoute = (subRoutes: Record<string, any>[]) => subRoutes?.some((subRoute: Record<string, any>) => pathname === subRoute.path);
 
   return (
-    <nav className="sidebar__container">
+    <nav className="sidebar__container bg-card">
       <div className="sidebar__logo">
-        <div className="font-heading">LOGO</div>
+        <div className="font-heading">KENIA .</div>
       </div>
       <div className="sidebar__route__groups">
         {routeGroups.map((group, groupIndex) => (
           <div className="sidebar__route__group" key={groupIndex}>
-            <div className="sidebar__route__group__header font-heading text-sm">
-              {group.header}
-            </div>
+            <div className="sidebar__route__group__header font-heading text-sm">{group.header}</div>
 
             {group.routes.map((route, routeIndex) =>
               route.subRoutes ? (
-                <Accordion
-                  type="single"
-                  collapsible
-                  className="w-full"
-                  key={routeIndex}
-                >
-                  <AccordionItem
-                    className="border-0"
-                    value={`item-${groupIndex}-${routeIndex}`}
-                  >
-                    <AccordionTrigger
-                      className={`sidebar__route ${
-                        isActiveRoute(route.path) ||
-                        isActiveSubRoute(route.subRoutes)
-                          ? "text-background bg-foreground"
-                          : ""
-                      }`}
-                    >
-                      {route.name}
-                    </AccordionTrigger>
+                <Accordion type="single" collapsible className="w-full" key={routeIndex}>
+                  <AccordionItem className="border-0" value={`item-${groupIndex}-${routeIndex}`}>
+                    <AccordionTrigger className={`sidebar__route ${isActiveRoute(route.path) || isActiveSubRoute(route.subRoutes) ? "text-background bg-red-500" : ""}`}>{route.name}</AccordionTrigger>
 
                     {route.subRoutes?.map((subRoute, subRouteIndex) => (
-                      <Link
-                        className="w-full"
-                        key={subRouteIndex}
-                        href={subRoute.path}
-                      >
-                        <AccordionContent
-                          className={cn(
-                            "w-full sidebar__route",
-                            isActiveRoute(subRoute.path) ? "bg-muted" : "",
-                          )}
-                        >
-                          {subRoute.name}
-                        </AccordionContent>
+                      <Link className="w-full" key={subRouteIndex} href={subRoute.path}>
+                        <AccordionContent className={cn("w-full sidebar__route", isActiveRoute(subRoute.path) ? "bg-transparent/10" : "")}>{subRoute.name}</AccordionContent>
                       </Link>
                     ))}
                   </AccordionItem>
                 </Accordion>
               ) : (
                 <Link href={route.path} key={routeIndex}>
-                  <div
-                    className={cn(
-                      "sidebar__route",
-                      isActiveRoute(route.path)
-                        ? "text-muted-foreground  bg-foreground"
-                        : "",
-                    )}
-                  >
-                    {route.name}
-                  </div>
+                  <div className={cn("sidebar__route hover:bg-muted", isActiveRoute(route.path) ? "text-foreground  bg-transparent/10" : "")}>{route.name}</div>
                 </Link>
-              ),
+              )
             )}
           </div>
         ))}

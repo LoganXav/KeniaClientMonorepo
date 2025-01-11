@@ -5,17 +5,20 @@ import { RouteEnums } from "@/constants/router/route-constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input, PasswordInput, FormField, FormLabel, FormItem, Form, FormMessage, FormControl, toast } from "@repo/ui";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { AuthSignInSchema, AuthSignInSchemaType } from "../_validators/auth-signin-schema";
 
 export default function AuthSignInForm() {
   const { signIn, isPending, error } = useSignInMutation();
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const userType = searchParams.get("userType");
 
   const handleSignIn = (values: AuthSignInSchemaType) => {
     signIn(
-      { ...values, userType: "staff" },
+      { ...values, userType },
       {
         onSuccess: (result) => {
           toast.success(result.message);

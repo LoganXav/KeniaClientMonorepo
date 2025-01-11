@@ -92,15 +92,11 @@ apiConfig.interceptors.response.use(
   (error) => {
     if (error?.response) {
       if (error?.response?.data?.encoded) {
-        const decrypted = CryptoJS.AES.decrypt(
-          error?.response?.data?.result,
-          KEY,
-          {
-            mode: CryptoJS.mode.CBC,
-            padding: CryptoJS.pad.Pkcs7,
-            iv: IV,
-          },
-        );
+        const decrypted = CryptoJS.AES.decrypt(error?.response?.data?.result, KEY, {
+          mode: CryptoJS.mode.CBC,
+          padding: CryptoJS.pad.Pkcs7,
+          iv: IV,
+        });
 
         // Convert decrypted WordArray to UTF-8 string
         const decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
@@ -109,11 +105,7 @@ apiConfig.interceptors.response.use(
         error.response.data = JSON.parse(decryptedText);
       }
       if (env.NODE_ENV === DEV) {
-        console.groupCollapsed(
-          `@Response`,
-          error.response.config.url,
-          error.response.status,
-        );
+        console.groupCollapsed(`@Response`, error.response.config.url, error.response.status);
         if (error.response.data) {
           console.groupCollapsed("Data");
           console.info(error.response.data);
@@ -136,20 +128,14 @@ apiConfig.interceptors.response.use(
     return Promise.reject(
       error.response
         ? {
-            message:
-              error.response.data?.errors?.[0]?.message ||
-              error?.response?.data?.data?.message ||
-              error?.response?.data?.message ||
-              error?.response?.data?.details?.[0]?.message ||
-              error?.response?.data?.result?.message?.name ||
-              error?.response?.data?.result?.message,
+            message: error.response.data?.errors?.[0]?.message || error?.response?.data?.data?.message || error?.response?.data?.message || error?.response?.data?.details?.[0]?.message || error?.response?.data?.result?.message?.name || error?.response?.data?.result?.message,
 
             status: error.response.status,
           }
         : {
             message: "Something went wrong. Please contact admin.",
             status: 500,
-          },
+          }
     );
-  },
+  }
 );

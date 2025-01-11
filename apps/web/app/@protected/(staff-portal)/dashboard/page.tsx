@@ -1,4 +1,4 @@
-import LogoutButton from "@/components/logout-button";
+// import LogoutButton from "@/components/logout-button";
 import Link from "next/link";
 
 export default function DashboardPage() {
@@ -10,9 +10,9 @@ export default function DashboardPage() {
           To check out the ui components, navigate to{" "}
           <Link href={"/test"} className="underline hover:text-link">
             Test page
-          </Link>{" "}
+          </Link>
         </p>
-        <LogoutButton />
+        {/* <LogoutButton /> */}
       </div>
     </div>
   );

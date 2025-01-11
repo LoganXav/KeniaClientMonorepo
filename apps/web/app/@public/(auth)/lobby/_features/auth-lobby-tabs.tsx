@@ -2,6 +2,7 @@
 
 import { RouteEnums } from "@/constants/router/route-constants";
 import { Button, Card, CardContent, Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
+import { BadgeCheck, Check } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -20,15 +21,18 @@ function AuthLobbyTabs() {
         <TabsContent value="student">
           <Card className="py-5 px-4">
             <CardContent className="flex gap-4">
-              <div className="space-y-2">
-                <p className="text-lg font-bold">Log in to as a student to</p>
-                <div>
-                  <p className="text-muted-foreground text-sm">Get access to course content you need.</p>
-                  <p className="text-muted-foreground text-sm">Get access to some more course content.</p>
-                  <p className="text-muted-foreground text-sm">Get access to course content.</p>
+              <div className="space-y-2 md:w-[75%]">
+                <p className="text-lg font-bold">Log in as a student to</p>
+                <div className="space-y-2">
+                  {["Access all your course materials.", "Submit assignments.", "Get course announcements."].map((item, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <Check color="white" size={15} className="bg-green-700 rounded-full p-[2px]" />
+                      <p className="text-muted-foreground text-sm">{item}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
-              <div className="flex items-center justify-center flex-1 relative">
+              <div className="hidden md:flex items-center justify-center flex-1 relative">
                 <Image src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/backgrounds/login-security.svg" fill alt="placeholder-img" className="h-full w-full object-center dark:brightness-[0.2] dark:grayscale" />
               </div>
             </CardContent>
@@ -37,15 +41,18 @@ function AuthLobbyTabs() {
         <TabsContent value="staff">
           <Card className="py-5 px-4">
             <CardContent className="flex gap-4">
-              <div className="space-y-2">
-                <p className="text-lg font-bold">Log in to as a staff to</p>
-                <div>
-                  <p className="text-muted-foreground text-sm">Upload your course content materials.</p>
-                  <p className="text-muted-foreground text-sm">See your students information.</p>
-                  <p className="text-muted-foreground text-sm">Get access to course content.</p>
+              <div className="space-y-2 md:w-[75%]">
+                <p className="text-lg font-bold">Log in as a staff to</p>
+                <div className="space-y-2">
+                  {["Manage and upload course materials.", "View and manage student information.", "Track course progress and grading."].map((item, index) => (
+                    <div key={index} className="w-full flex items-center space-x-2">
+                      <Check color="white" size={15} className="bg-green-700 rounded-full p-[2px]" />
+                      <p className="text-muted-foreground text-sm">{item}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
-              <div className="flex items-center justify-center flex-1 relative">
+              <div className="hidden md:flex items-center justify-center flex-1 relative">
                 <Image src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/backgrounds/login-security.svg" fill alt="placeholder-img" className="h-full w-full object-center dark:brightness-[0.2] dark:grayscale" />
               </div>
             </CardContent>
