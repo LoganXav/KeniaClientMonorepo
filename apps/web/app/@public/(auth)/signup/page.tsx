@@ -18,7 +18,7 @@ export default function AuthSignUpPage() {
         <Earth size={15} />
         <p className="border-l border-foreground pl-4 text-sm">
           Already have an account?{" "}
-          <Link href={RouteEnums.SIGNIN} className="font-semibold text-muted-foreground transition-colors hover:text-link underline pl-1">
+          <Link href={RouteEnums.LOBBY} className="font-semibold text-muted-foreground transition-colors hover:text-link underline pl-1">
             Log in.
           </Link>
         </p>

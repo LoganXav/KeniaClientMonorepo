@@ -60,7 +60,7 @@ export default function AuthResetPasswordRequestForm() {
             <Button className="w-full py-6 rounded-lg bg-destructive" loading={resetPasswordRequest.isPending}>
               Reset Password
             </Button>
-            <Link href={RouteEnums.SIGNIN}>
+            <Link href={RouteEnums.LOBBY}>
               <Button type="button" className="w-full py-6 rounded-lg" disabled={resetPasswordRequest.isPending}>
                 Back to Signin
               </Button>

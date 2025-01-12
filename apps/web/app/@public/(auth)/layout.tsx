@@ -6,7 +6,7 @@ export default function AuthLayout({ children }: React.PropsWithChildren) {
   return (
     <div className="h-screen grid grid-cols-1 md:grid-cols-5">
       <div className="hidden md:flex items-center justify-center flex-col w-full">
-        <div className="h-1/3 bg-white w-full p-4">
+        <div className="hidden 2xl:flex 2xl:h-1/3 bg-white w-full p-4">
           <div className="w-full space-y-8">
             <Link href={RouteEnums.HOME} className="font-heading text-2xl font-bold">
               KENIA .
@@ -17,7 +17,7 @@ export default function AuthLayout({ children }: React.PropsWithChildren) {
             </div>
           </div>
         </div>
-        <div className="relative h-2/3 bg-primary w-full">
+        <div className="relative h-full 2xl:h-2/3 bg-primary w-full">
           <Image src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/backgrounds/login-security.svg" fill alt="placeholder-img" className="w-full object-center dark:brightness-[0.2] dark:grayscale" />
         </div>
       </div>

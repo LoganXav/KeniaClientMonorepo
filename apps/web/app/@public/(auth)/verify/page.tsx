@@ -18,7 +18,7 @@ export default function AuthVerifyPage() {
       <div className="flex xl:col-span-2 xl:justify-end h-min items-center gap-4">
         <Earth size={15} />
         <p className="border-l border-foreground pl-4 text-sm">
-          New to Kenia?{" "}
+          Want to register a new school?{" "}
           <Link href={RouteEnums.SIGNUP} className="font-semibold text-muted-foreground transition-colors hover:text-link underline pl-1">
             Sign up.
           </Link>

@@ -1,4 +1,4 @@
-import { VerifySchemaType } from "@/app/@public/(auth)/verify/_validators/verify-schema";
+import { AuthVerifySchemaType } from "@/app/@public/(auth)/verify/_validators/auth-verify-schema";
 import { postRequest } from "@/config/base-query";
 import { setAuthUser } from "@/helpers/auth-user-action";
 import { AuthUserType } from "@/types";
@@ -12,7 +12,7 @@ export const useVerifyOtpMutation = () => {
     isPending,
     error,
   } = useMutation({
-    mutationFn: async (payload: VerifySchemaType) => {
+    mutationFn: async (payload: AuthVerifySchemaType) => {
       const { data } = await postRequest<AuthUserType>({
         endpoint: `${BASE_URL}/otp/verify`,
         payload,

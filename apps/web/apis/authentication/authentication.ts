@@ -1,9 +1,9 @@
-import { SignInSchemaType } from "@/app/@public/(auth)/signin/_validators/signin-schema";
-import { SignUpSchemaType } from "@/app/@public/(auth)/signup/_validators/signup-schema";
 import { setAuthUser } from "@/helpers/auth-user-action";
 import { postRequest } from "@/config/base-query";
 import { AuthUserType } from "@/types";
 import { useMutation } from "@tanstack/react-query";
+import { AuthSignUpSchemaType } from "@/app/@public/(auth)/signup/_validators/auth-signup-schema";
+import { AuthSignInSchemaType } from "@/app/@public/(auth)/signin/_validators/auth-signin-schema";
 
 const BASE_URL = "auth";
 
@@ -13,7 +13,7 @@ export const useSignUpMutation = () => {
     isPending,
     error,
   } = useMutation({
-    mutationFn: async (payload: Omit<SignUpSchemaType, "confirmPassword">) => {
+    mutationFn: async (payload: Omit<AuthSignUpSchemaType, "confirmPassword">) => {
       const { data } = await postRequest<{ id: number; tenantId: number }>({
         endpoint: `${BASE_URL}/signup`,
         payload,
@@ -32,7 +32,7 @@ export const useSignInMutation = () => {
     isPending,
     error,
   } = useMutation({
-    mutationFn: async (payload: SignInSchemaType) => {
+    mutationFn: async (payload: AuthSignInSchemaType) => {
       const { data } = await postRequest<AuthUserType>({
         endpoint: `${BASE_URL}/signin`,
         payload,

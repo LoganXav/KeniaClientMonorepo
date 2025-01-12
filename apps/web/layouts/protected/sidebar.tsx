@@ -107,7 +107,8 @@ export default function ProtectedSidebar() {
       ],
     },
   ];
-  const isActiveRoute = (path: string) => pathname === path || pathname.split("/").includes(path.split("/")[1]);
+  const isActiveRoute = (path: string) => pathname === path;
+
   const isActiveSubRoute = (subRoutes: Record<string, any>[]) => subRoutes?.some((subRoute: Record<string, any>) => pathname === subRoute.path);
 
   return (
@@ -124,18 +125,18 @@ export default function ProtectedSidebar() {
               route.subRoutes ? (
                 <Accordion type="single" collapsible className="w-full" key={routeIndex}>
                   <AccordionItem className="border-0" value={`item-${groupIndex}-${routeIndex}`}>
-                    <AccordionTrigger className={`sidebar__route ${isActiveRoute(route.path) || isActiveSubRoute(route.subRoutes) ? "text-background bg-red-500" : ""}`}>{route.name}</AccordionTrigger>
+                    <AccordionTrigger className={`sidebar__route border ${isActiveRoute(route.path) || isActiveSubRoute(route.subRoutes) ? "bg-transparent/5" : "hover:bg-transparent/5"}`}>{route.name}</AccordionTrigger>
 
                     {route.subRoutes?.map((subRoute, subRouteIndex) => (
                       <Link className="w-full" key={subRouteIndex} href={subRoute.path}>
-                        <AccordionContent className={cn("w-full sidebar__route", isActiveRoute(subRoute.path) ? "bg-transparent/10" : "")}>{subRoute.name}</AccordionContent>
+                        <AccordionContent className={cn("w-full sidebar__route", isActiveRoute(subRoute.path) ? "bg-transparent/10 border border-foreground" : "border hover:bg-transparent/5")}>{subRoute.name}</AccordionContent>
                       </Link>
                     ))}
                   </AccordionItem>
                 </Accordion>
               ) : (
                 <Link href={route.path} key={routeIndex}>
-                  <div className={cn("sidebar__route hover:bg-muted", isActiveRoute(route.path) ? "text-foreground  bg-transparent/10" : "")}>{route.name}</div>
+                  <div className={cn("sidebar__route", isActiveRoute(route.path) ? "text-foreground  bg-transparent/10 border border-foreground" : "hover:bg-transparent/5 border")}>{route.name}</div>
                 </Link>
               )
             )}
