@@ -3,7 +3,7 @@ import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMe
 import "./navbar.css";
 import ProtectedSidebar from "./sidebar";
 import { ThemeToggler } from "@/components/theme-tooggler";
-import { Bell, CircleAlert, Menu, User, UserCircle, X } from "lucide-react";
+import { Bell, CircleAlert, Menu, UserCircle, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { clearAuthUser } from "@/helpers/auth-user-action";
 import { RouteEnums } from "@/constants/router/route-constants";
@@ -52,7 +52,7 @@ export default function ProtectedNavbar() {
                     </Button>
                   </DropdownMenuLabel>
 
-                  <Tabs value={notificationType} onValueChange={(value) => setNotificationType(value)} className="w-full space-y-4 py-8">
+                  <Tabs value={notificationType} onValueChange={(value) => setNotificationType(value)} className="w-full space-y-8 py-6">
                     <TabsList className="grid grid-cols-2 h-9">
                       <TabsTrigger className="h-9 text-sm" value="all">
                         All
