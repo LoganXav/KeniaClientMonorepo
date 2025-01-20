@@ -8,13 +8,9 @@
 4. [Folder Structure](#folder-structure)
 5. [Setup Instructions](#setup-instructions)
 
----
-
 ## Introduction
 
 This monorepo contains the frontend components of the Kenia School Management System. It is built using Turborepo for efficient management of multiple packages and applications. The system includes dedicated portals for staff and students, providing tools for managing academic records, attendance, assignments, and administrative tasks. This architecture ensures a streamlined experience across all user roles, promoting efficient school operations.
-
----
 
 ## Project Overview
 
@@ -32,8 +28,6 @@ The monorepo consists of the following projects:
    - **typescript-config**: Shared TypeScript configuration.
 
 </details>
-
----
 
 ## Code Architecture
 
@@ -53,8 +47,6 @@ The project uses a modular architecture where shared packages are extracted into
 The monorepo structure is managed using Turborepo, allowing for efficient builds and dependency management.
 
 </details>
-
----
 
 ## Folder Structure
 
