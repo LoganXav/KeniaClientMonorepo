@@ -4,7 +4,7 @@ import { Button, toast, Form, FormField, FormItem, FormLabel, FormControl, FormM
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { AuthVerifySchema, AuthVerifySchemaType } from "../_validators/auth-verify-schema";
-import { useResendOtpMutation, useVerifyOtpMutation } from "@/apis/authentication/two-factor";
+import { useResendOtpMutation, useVerifyOtpMutation } from "@/apis/core-authentication-api/two-factor";
 import { useRouter, useSearchParams } from "next/navigation";
 import { RouteEnums } from "@/constants/router/route-constants";
 

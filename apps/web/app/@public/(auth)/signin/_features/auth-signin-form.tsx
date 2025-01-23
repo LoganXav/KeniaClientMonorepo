@@ -1,6 +1,6 @@
 "use client";
 
-import { useSignInMutation } from "@/apis/authentication/authentication";
+import { useSignInMutation } from "@/apis/core-authentication-api/authentication";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input, PasswordInput, FormField, FormLabel, FormItem, Form, FormMessage, FormControl, toast } from "@repo/ui";

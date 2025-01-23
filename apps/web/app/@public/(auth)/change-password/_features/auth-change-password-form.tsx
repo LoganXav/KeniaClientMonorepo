@@ -4,7 +4,7 @@ import { Button, toast, Form, FormField, FormItem, FormLabel, FormControl, FormM
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { RouteEnums } from "@/constants/router/route-constants";
-import { useChangePasswordMutation } from "@/apis/authentication/reset-password";
+import { useChangePasswordMutation } from "@/apis/core-authentication-api/reset-password";
 import { AuthChangePasswordSchema, AuthChangePasswordSchemaType } from "../_validators/auth-change-password-schema";
 import { useRouter } from "next/navigation";
 

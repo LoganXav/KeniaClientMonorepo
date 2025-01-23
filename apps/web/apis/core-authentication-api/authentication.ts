@@ -1,9 +1,10 @@
-import { setAuthUser } from "@/helpers/auth-user-action";
+import { setAuthUser } from "@/helpers/server/auth-user-action";
 import { postRequest } from "@/config/base-query";
 import { AuthUserType } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 import { AuthSignUpSchemaType } from "@/app/@public/(auth)/signup/_validators/auth-signup-schema";
 import { AuthSignInSchemaType } from "@/app/@public/(auth)/signin/_validators/auth-signin-schema";
+import { useAuthUserClient } from "@/hooks/use-auth-user";
 
 const BASE_URL = "auth";
 
@@ -27,6 +28,8 @@ export const useSignUpMutation = () => {
 };
 
 export const useSignInMutation = () => {
+  const { setAuthUserClient } = useAuthUserClient();
+
   const {
     mutate: signIn,
     isPending,
@@ -42,6 +45,8 @@ export const useSignInMutation = () => {
         accessToken: data.result.accessToken!,
         data: data.result.data,
       });
+
+      setAuthUserClient(data.result.data);
 
       delete data.result.accessToken;
       return data.result;

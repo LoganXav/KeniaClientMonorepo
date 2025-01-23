@@ -5,9 +5,9 @@ interface PostRequestPropsType {
   payload: Record<string, any>;
   config?: any;
 }
-interface GetRequestPropsType {
+export interface GetRequestPropsType {
   endpoint: string;
-  payload: Record<string, any>;
+  payload?: Record<string, any>;
   config?: any;
 }
 
@@ -23,7 +23,7 @@ interface PostRequestReturnType<T> {
   statusCode: number;
 }
 
-interface GetRequestReturnType<T> {
+export interface GetRequestReturnType<T> {
   data: {
     data: {
       data: T;
@@ -34,17 +34,10 @@ interface GetRequestReturnType<T> {
   statusCode: number;
 }
 
-export const postRequest = async <T>({
-  endpoint,
-  payload,
-  config = {},
-}: PostRequestPropsType): Promise<PostRequestReturnType<T>> => {
+export const postRequest = async <T>({ endpoint, payload, config = {} }: PostRequestPropsType): Promise<PostRequestReturnType<T>> => {
   return await apiConfig.post(endpoint, payload, config);
 };
 
-export const getRequest = async <T>({
-  endpoint,
-  payload,
-}: GetRequestPropsType): Promise<GetRequestReturnType<T>> => {
-  return await apiConfig.get(endpoint, { params: payload });
+export const getRequest = async <T>({ endpoint, payload, config = {} }: GetRequestPropsType): Promise<GetRequestReturnType<T>> => {
+  return await apiConfig.get(endpoint, { params: payload, ...config });
 };

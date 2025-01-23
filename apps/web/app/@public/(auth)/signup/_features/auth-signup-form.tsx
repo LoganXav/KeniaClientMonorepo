@@ -1,6 +1,6 @@
 "use client";
 
-import { useSignUpMutation } from "@/apis/authentication/authentication";
+import { useSignUpMutation } from "@/apis/core-authentication-api/authentication";
 import { Button, PasswordInput, Input, toast, Form, FormField, FormItem, FormControl, FormMessage } from "@repo/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

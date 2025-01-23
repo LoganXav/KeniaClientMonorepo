@@ -1,6 +1,6 @@
 import { AuthVerifySchemaType } from "@/app/@public/(auth)/verify/_validators/auth-verify-schema";
 import { postRequest } from "@/config/base-query";
-import { setAuthUser } from "@/helpers/auth-user-action";
+import { setAuthUser } from "@/helpers/server/auth-user-action";
 import { AuthUserType } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 

@@ -6,9 +6,6 @@
   - Define a getAuthUser function that's literally grabbing the auth user from the cookies (NOTE: either store the entire auth user object in there or the access token only. You can always fetch the object when you need the data)
 - Another option is to use redux toolkit for global state management and use the workaround for the useDispatch and useSelector hooks in server components (WILL SCALE BETTER!!)
 
-
 **_ Todo List_**
 
-- Start Implementing the fetchbase function
-- Validate form inputs for sign in
-- Proceed to dashboard of user hasVerified
+- Add a call to action if tenant onboarding status not complete and the logged in user is the school owner

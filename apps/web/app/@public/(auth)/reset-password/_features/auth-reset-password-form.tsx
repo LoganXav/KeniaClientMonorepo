@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { RouteEnums } from "@/constants/router/route-constants";
 import Link from "next/link";
-import { useResetPasswordRequestMutation } from "@/apis/authentication/reset-password";
+import { useResetPasswordRequestMutation } from "@/apis/core-authentication-api/reset-password";
 import { AuthResetPasswordRequestSchema, AuthResetPasswordRequestSchemaType } from "../_validators/auth-reset-password-schema";
 import { useRouter } from "next/navigation";
 

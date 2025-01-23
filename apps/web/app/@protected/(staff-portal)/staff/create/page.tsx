@@ -1,21 +1,8 @@
 "use client";
-import { useSignUpMutation } from "@/apis/authentication/authentication";
+import { useSignUpMutation } from "@/apis/core-authentication-api/authentication";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Button,
-  Card,
-  CardDescription,
-  CardTitle,
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-  Input,
-  toast,
-} from "@repo/ui";
+import { Button, Card, CardDescription, CardTitle, Form, FormControl, FormField, FormItem, FormLabel, FormMessage, Input, toast } from "@repo/ui";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -39,7 +26,7 @@ function page({}: Props) {
         onError: (error) => {
           toast.error(error.message);
         },
-      },
+      }
     );
   };
 
@@ -56,18 +43,11 @@ function page({}: Props) {
       <Card className="border-none shadow-none grid lg:grid-cols-3 gap-8 p-4 my-8 md:p-8">
         <div className="space-y-4">
           <CardTitle className="font-heading">Personal Information</CardTitle>
-          <CardDescription>
-            Personal identification numbers: social security number (SSN),
-            passport number, driver's license number, taxpayer identification
-            number, patient identification number.
-          </CardDescription>
+          <CardDescription>Personal identification numbers: social security number (SSN), passport number, driver's license number, taxpayer identification number, patient identification number.</CardDescription>
         </div>
         <div className="col-span-2">
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleCreateStaff)}
-              className="space-y-4"
-            >
+            <form onSubmit={form.handleSubmit(handleCreateStaff)} className="space-y-4">
               <div className="grid gap-4">
                 <FormField
                   control={form.control}

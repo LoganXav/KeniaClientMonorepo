@@ -1,6 +1,6 @@
 "use client";
 
-import { clearAuthUser } from "@/helpers/auth-user-action";
+import { clearAuthUser } from "@/helpers/server/auth-user-action";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { Button } from "@repo/ui";
 import { useRouter } from "next/navigation";

@@ -1,5 +1,5 @@
 import { env } from "@/env.mjs";
-import { getAuthUserServer } from "@/helpers/auth-user-action";
+import { getAuthUserServer } from "@/helpers/server/auth-user-action";
 import axios from "axios";
 import CryptoJS from "crypto-js";
 
@@ -13,6 +13,30 @@ export const apiConfig = axios.create({
 });
 
 apiConfig.interceptors.request.use(async (config) => {
+  const authUser = await getAuthUserServer();
+
+  let data: Record<string, any> = {
+    tenantId: authUser?.data?.tenantId,
+  };
+
+  if (authUser?.accessToken) {
+    data.authorization = `Bearer ${authUser?.accessToken}`;
+    Object.assign(data, config.data ?? {});
+    config.data = data;
+  } else {
+    data = config.data ?? data;
+  }
+
+  if (env.NODE_ENV !== DEV) {
+    config.data = {
+      request: CryptoJS.AES.encrypt(JSON.stringify(data), KEY, {
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7,
+        iv: IV,
+      }).toString(),
+    };
+  }
+
   if (env.NODE_ENV === DEV) {
     console.groupCollapsed(`@Request`, config.url);
     if (config.params) {
@@ -28,26 +52,7 @@ apiConfig.interceptors.request.use(async (config) => {
     console.groupEnd();
   }
 
-  let data: Record<string, any> = {};
-  const authUser = await getAuthUserServer();
-
-  if (authUser?.accessToken) {
-    data.authorization = `Bearer ${authUser?.accessToken}`;
-    Object.assign(data, config.data);
-  } else {
-    data = config.data ?? data;
-  }
-  // data.tenantId = env.TENANT_ID;
-
-  if (env.NODE_ENV !== DEV) {
-    config.data = {
-      request: CryptoJS.AES.encrypt(JSON.stringify(data), KEY, {
-        mode: CryptoJS.mode.CBC,
-        padding: CryptoJS.pad.Pkcs7,
-        iv: IV,
-      }).toString(),
-    };
-  }
+  config.method = "POST";
 
   return config;
 });

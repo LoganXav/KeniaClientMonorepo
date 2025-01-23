@@ -1,3 +1,4 @@
+import { CallToActionPrompt } from "@/components/globals/call-to-action";
 import ProtectedNavbar from "@/layouts/protected/navbar";
 import ProtectedSidebar from "@/layouts/protected/sidebar";
 
@@ -8,7 +9,12 @@ export default function ProtectedLayout({ children }: React.PropsWithChildren) {
         <ProtectedSidebar />
         <div className="relative w-full bg-background ml-[0px] lg:ml-[250px] flex-1">
           <ProtectedNavbar />
-          <main className="container pt-12 min-h-[calc(100vh-70px)]">{children}</main>
+          <main className="container  min-h-[calc(100vh-70px)]">
+            <div className="mt-2 mb-8">
+              <CallToActionPrompt />
+            </div>
+            <div>{children}</div>
+          </main>
         </div>
       </div>
     </>

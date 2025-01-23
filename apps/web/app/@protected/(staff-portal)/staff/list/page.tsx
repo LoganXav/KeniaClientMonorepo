@@ -5,7 +5,7 @@ import React from "react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { RouteEnums } from "@/constants/router/route-constants";
 import Link from "next/link";
-import { useGetStaffListQuery } from "@/apis/staff/staff";
+import { useGetStaffListQuery } from "@/apis/core-staff-api/staff";
 import { CellContext, ColumnDef, RowData } from "@tanstack/react-table";
 
 type Props = {};
