@@ -1,6 +1,7 @@
 "use client";
 import { useGetTenantQuery } from "@/apis/core-tenant-api/tenant";
 import { useAuthUserClient } from "@/hooks/use-auth-user";
+import { useIsMounted } from "@/hooks/use-mounted";
 import { Button, Card, CardContent } from "@repo/ui";
 import { CircleAlert } from "lucide-react";
 import React from "react";
@@ -8,6 +9,8 @@ import React from "react";
 type Props = {};
 
 export function CallToActionPrompt({}: Props) {
+  const isMounted = useIsMounted();
+
   const { authUserClient } = useAuthUserClient();
   const tenantId = authUserClient?.tenantId;
 
@@ -17,7 +20,7 @@ export function CallToActionPrompt({}: Props) {
   const statusKey = String(status);
   const completedSteps = statusKey in onboardingStatusEnums ? onboardingStatusEnums[statusKey as keyof typeof onboardingStatusEnums] : 0;
 
-  if (authUserClient?.staff?.role?.rank != 1 || completedSteps == 3) {
+  if (!isMounted || authUserClient?.staff?.role?.rank != 1 || completedSteps == 3) {
     return null;
   }
   return (

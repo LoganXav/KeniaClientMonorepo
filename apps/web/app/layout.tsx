@@ -49,7 +49,7 @@ export default function RootLayout({ public: publicPages, protected: protectedPa
   const authUser = getAuthUser();
 
   return (
-    <html lang="en" className={cn(fontSans.variable, fontHeading.variable)}>
+    <html lang="en" className={cn(fontSans.variable, fontHeading.variable)} suppressHydrationWarning>
       <body>
         <QueryClientContextProvider>
           <ThemeProvider
