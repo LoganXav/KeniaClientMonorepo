@@ -20,6 +20,7 @@ import { onboardingStatusEnums } from "@/constants/enums/tenant-enums";
 import { useOnboardingPersonalStepMutation, useOnboardingResidentialStepMutation, useOnboardingSchoolStepMutation } from "@/apis/core-onboarding-api/onboarding";
 import { useGetAuthUserQuery } from "@/apis/core-user-api/user";
 import useDataRef from "@/hooks/use-data-ref";
+import SchoolProfileOnboardingSuccessStep from "./school-profile-onboarding-success-step";
 
 type Props = {};
 
@@ -37,7 +38,8 @@ function SchoolProfileOnboardingForm({}: Props) {
 
   const tenantId = authUser?.tenantId;
   const tenantQueryResult = useGetTenantQuery(React.useMemo(() => ({ tenantId: tenantId }), [tenantId]));
-  const status = tenantQueryResult?.data?.data?.onboardingStatus;
+  const tenant = tenantQueryResult?.data?.data;
+  const status = tenant?.onboardingStatus;
 
   const statusKey = String(status);
   const completedSteps = statusKey in onboardingStatusEnums ? onboardingStatusEnums[statusKey as keyof typeof onboardingStatusEnums] : 0;
@@ -51,9 +53,9 @@ function SchoolProfileOnboardingForm({}: Props) {
     dateOfBirth: "",
 
     residentialAddress: "",
-    residentialLgaId: 0,
-    residentialStateId: 0,
-    residentialCountryId: 0,
+    residentialLgaId: "",
+    residentialStateId: "",
+    residentialCountryId: "",
     residentialZipCode: "",
 
     name: "",
@@ -63,10 +65,10 @@ function SchoolProfileOnboardingForm({}: Props) {
     establishedDate: "",
     logoUrl: "",
     address: "",
-    stateId: 0,
-    lgaId: 0,
+    stateId: "",
+    lgaId: "",
     zipCode: "",
-    countryId: 0,
+    countryId: "",
     postalCode: "",
   };
 
@@ -100,6 +102,12 @@ function SchoolProfileOnboardingForm({}: Props) {
       content: <SchoolProfileOnboardingSchoolStep {...stepProps} />,
       fields: [""],
     },
+    {
+      id: 3,
+      label: "Success",
+      content: <SchoolProfileOnboardingSuccessStep />,
+      fields: [""],
+    },
   ];
 
   const dataRef = useDataRef({ form });
@@ -123,18 +131,18 @@ function SchoolProfileOnboardingForm({}: Props) {
         residentialCountryId: authUser?.residentialCountryId || values.residentialCountryId,
         residentialZipCode: authUser?.residentialZipCode || values.residentialZipCode,
 
-        name: authUser?.name || values.name,
-        registrationNo: authUser?.registrationNo || values.registrationNo,
-        contactEmail: authUser?.contactEmail || values.contactEmail,
-        contactPhone: authUser?.contactPhone || values.contactPhone,
-        establishedDate: authUser?.establishedDate || values.establishedDate,
-        logoUrl: authUser?.logoUrl || values.logoUrl,
-        address: authUser?.address || values.address,
-        stateId: authUser?.stateId || values.stateId,
-        lgaId: authUser?.lgaId || values.lgaId,
-        zipCode: authUser?.zipCode || values.zipCode,
-        countryId: authUser?.countryId || values.countryId,
-        postalCode: authUser?.postalCode || values.postalCode,
+        name: tenant?.name || values.name,
+        registrationNo: tenant?.registrationNo || values.registrationNo,
+        contactEmail: tenant?.contactEmail || values.contactEmail,
+        contactPhone: tenant?.contactPhone || values.contactPhone,
+        establishedDate: tenant?.establishedDate || values.establishedDate,
+        logoUrl: tenant?.logoUrl || values.logoUrl,
+        address: tenant?.address || values.address,
+        stateId: tenant?.stateId || values.stateId,
+        lgaId: tenant?.lgaId || values.lgaId,
+        zipCode: tenant?.zipCode || values.zipCode,
+        countryId: tenant?.countryId || values.countryId,
+        postalCode: tenant?.postalCode || values.postalCode,
       }));
     }
   }, [authUser, dataRef]);
@@ -146,6 +154,7 @@ function SchoolProfileOnboardingForm({}: Props) {
 
   const isFirstStep = stepper.step === 0;
   const isLastStep = stepper.step === steps.length - 1;
+  const isSecondToLastStep = stepper.step === steps.length - 2;
 
   const handleOnboarding = (values: SchoolProfileFormSchemaType) => {
     switch (stepper.step) {
@@ -186,19 +195,21 @@ function SchoolProfileOnboardingForm({}: Props) {
       case 2:
         onboardingSchoolStep(
           {
-            payload: { ...values, zipCode: Number(values.zipCode) },
+            payload: { ...values, userId: authUser?.id, postalCode: String(values.postalCode), zipCode: Number(values.zipCode), stateId: Number(values.stateId), lgaId: Number(values.lgaId), countryId: Number(values.countryId) },
             params: { tenantId: authUser?.tenantId },
           },
           {
             onSuccess: (result) => {
               toast.success(result.message);
-              // router.push("/school/profile");
             },
             onError: (error) => {
               toast.error(error.message);
             },
           }
         );
+        break;
+      case 3:
+        router.push(RouteEnums.DASHBOARD);
         break;
       default:
         return null;
@@ -226,9 +237,9 @@ function SchoolProfileOnboardingForm({}: Props) {
   return (
     <div className="grid gap-8 w-full">
       <Card className="flex items-center md:justify-center p-4 gap-4 w-full md:max-w-min mx-auto overflow-x-scroll">
-        {steps.map((step, i) => (
+        {steps.slice(0, 3).map((step, i) => (
           <div key={i}>
-            <StepperButton stepper={stepper} completedSteps={completedSteps} selected={stepper.step === i} step={i + 1} i={i}>
+            <StepperButton complete={completedSteps === 3} stepper={stepper} completedSteps={completedSteps} selected={stepper.step === i} step={i + 1} i={i}>
               {step.label}
             </StepperButton>
           </div>
@@ -239,11 +250,11 @@ function SchoolProfileOnboardingForm({}: Props) {
           <div className="max-w-4xl mx-auto pb-24"> {steps?.[stepper.step]?.content}</div>
 
           <div className="grid md:grid-cols-2 md:max-w-lg gap-4 mx-auto">
-            <Button variant={"outline"} type="button" onClick={previous} disabled={isFirstStep || onboardingPersonalStepPending || onboardingResidentialStepPending || onboardingSchoolStepPending}>
+            <Button variant={"outline"} type="button" onClick={previous} disabled={isFirstStep || isLastStep || onboardingPersonalStepPending || onboardingResidentialStepPending || onboardingSchoolStepPending}>
               Previous
             </Button>
             <Button type="button" onClick={next} loading={onboardingPersonalStepPending || onboardingResidentialStepPending || onboardingSchoolStepPending}>
-              {isLastStep ? "Complete" : "Next"}
+              {isSecondToLastStep ? "Complete" : isLastStep ? "Go To Dashboard" : "Next"}
             </Button>
           </div>
         </form>

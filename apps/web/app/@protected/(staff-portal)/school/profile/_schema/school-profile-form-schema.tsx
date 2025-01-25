@@ -56,21 +56,22 @@ export const SchoolProfileFormResidentialSchema = z.object({
     })
     .min(1, "Residential address must be at least 1 character")
     .max(255, "Residential address is too long"),
-  residentialLgaId: z.number({
+  residentialLgaId: z.union([z.string(), z.number()], {
     required_error: "Local government is required",
   }),
-  residentialStateId: z.number({
+  residentialStateId: z.union([z.string(), z.number()], {
     required_error: "State is required",
   }),
-  residentialCountryId: z.number({
+  residentialCountryId: z.union([z.string(), z.number()], {
     required_error: "Country is required",
   }),
-  residentialZipCode: z.any({
+  residentialZipCode: z.union([z.string(), z.number()], {
     required_error: "Zip code is required",
   }),
 });
 
 export const SchoolProfileFormSchoolSchema = z.object({
+  userId: z.number().optional(),
   name: z
     .string({
       required_error: "School name is required",
@@ -85,12 +86,12 @@ export const SchoolProfileFormSchoolSchema = z.object({
     .max(50, "Registration number cannot exceed 50 characters"),
   contactEmail: z
     .string({
-      required_error: "School contact email is required",
+      required_error: "School's contact email is required",
     })
     .email("Invalid email address for school"),
   contactPhone: z
     .string({
-      required_error: "School contact phone is required",
+      required_error: "School's contact phone is required",
     })
     .min(10, "Contact phone must be at least 10 digits")
     .max(15, "Contact phone cannot exceed 15 digits"),
@@ -113,7 +114,7 @@ export const SchoolProfileFormSchoolSchema = z.object({
   // .transform((val) => (val ? new Date(val) : undefined)),
   logoUrl: z
     .string({
-      invalid_type_error: "Logo URL must be a string",
+      invalid_type_error: "School's logo URL must be a string",
     })
     .url("Invalid URL for school logo")
     .optional(),
@@ -123,17 +124,17 @@ export const SchoolProfileFormSchoolSchema = z.object({
     })
     .min(1, "School address must be at least 1 character")
     .max(255, "School address is too long"),
-  stateId: z.number({
+  stateId: z.union([z.string(), z.number()], {
     required_error: "School state is required",
   }),
-  lgaId: z.number({
-    required_error: "Local Government Area (LGA) is required",
+  lgaId: z.union([z.string(), z.number()], {
+    required_error: "School's local government area (LGA) is required",
   }),
-  zipCode: z.any({
-    required_error: "Zip Code is required",
+  zipCode: z.union([z.string(), z.number()], {
+    required_error: "School's zip code is required",
   }),
-  countryId: z.number({
-    required_error: "Country is required",
+  countryId: z.union([z.string(), z.number()], {
+    required_error: "School's country is required",
   }),
   postalCode: z
     .string({

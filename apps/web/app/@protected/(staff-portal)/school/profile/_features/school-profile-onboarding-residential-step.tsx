@@ -1,5 +1,5 @@
 import React from "react";
-import { FormControl, FormField, FormItem, FormMessage, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, toast } from "@repo/ui";
+import { FormControl, FormField, FormItem, FormMessage, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { SchoolProfileFormReturn } from "../_types/school-profile-form-types";
 import { useGetOnboardingTemplateQuery } from "@/apis/core-onboarding-api/onboarding";
 
@@ -9,28 +9,37 @@ type StepProps = {
 
 export function SchoolProfileOnboardingResidentialStep({ form }: StepProps) {
   const residentialStateId = form.watch("residentialStateId");
-  const onboardingTemplateQuery = useGetOnboardingTemplateQuery({ codeValue: residentialStateId });
+  const onboardingTemplateQuery = useGetOnboardingTemplateQuery(
+    React.useMemo(
+      () => ({
+        codeValue: Number(residentialStateId),
+      }),
+      [residentialStateId]
+    )
+  );
 
   return (
     <div className="grid md:grid-cols-2 gap-4">
-      <FormField
-        control={form.control}
-        name="residentialAddress"
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <Input placeholder="Address" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      <div className="md:col-span-2">
+        <FormField
+          control={form.control}
+          name="residentialAddress"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="Address" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
       <FormField
         control={form.control}
         name="residentialCountryId"
         render={({ field }) => (
           <FormItem>
-            <Select onValueChange={field.onChange} defaultValue={String(field.value)}>
+            <Select onValueChange={field.onChange} value={String(field.value)}>
               <FormControl>
                 <SelectTrigger>
                   <SelectValue placeholder="Country">{onboardingTemplateQuery?.data?.data?.countryIdOptions?.find((country) => String(country?.codeValue) === String(field.value))?.name || "Country"}</SelectValue>
@@ -54,15 +63,15 @@ export function SchoolProfileOnboardingResidentialStep({ form }: StepProps) {
         name="residentialStateId"
         render={({ field }) => (
           <FormItem>
-            <Select onValueChange={field.onChange} defaultValue={String(field.value)}>
+            <Select value={String(field.value || "")} onValueChange={field.onChange}>
               <FormControl>
                 <SelectTrigger>
-                  <SelectValue placeholder="State">{onboardingTemplateQuery?.data?.data?.stateIdOptions?.find((state) => String(state?.codeValue) === String(field.value))?.name || "State"}</SelectValue>
+                  <SelectValue placeholder="State" />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
                 {onboardingTemplateQuery?.data?.data?.stateIdOptions?.map((state, idx) => (
-                  <SelectItem key={idx} value={String(state?.codeValue)}>
+                  <SelectItem key={idx} value={String(state?.id)}>
                     {state?.name}
                   </SelectItem>
                 ))}
@@ -78,19 +87,15 @@ export function SchoolProfileOnboardingResidentialStep({ form }: StepProps) {
         name="residentialLgaId"
         render={({ field }) => (
           <FormItem>
-            <Select
-              onValueChange={field.onChange}
-              value={String(field.value || "")} // Use `value` instead of `defaultValue` for proper reactivity
-              disabled={onboardingTemplateQuery?.isLoading || !onboardingTemplateQuery?.data?.data?.lgaIdOptions?.length}
-            >
+            <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={onboardingTemplateQuery?.isLoading || !onboardingTemplateQuery?.data?.data?.lgaIdOptions?.length}>
               <FormControl>
                 <SelectTrigger>
-                  <SelectValue placeholder="Local Government">{onboardingTemplateQuery?.data?.data?.lgaIdOptions?.find((lga) => String(lga?.codeValue) === String(field.value))?.name || "Local Government"}</SelectValue>
+                  <SelectValue placeholder="Local Government" />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
                 {onboardingTemplateQuery?.data?.data?.lgaIdOptions?.map((lga, idx) => (
-                  <SelectItem key={lga?.codeValue} value={String(lga?.codeValue)}>
+                  <SelectItem key={idx} value={String(lga?.id)}>
                     {lga?.name}
                   </SelectItem>
                 ))}

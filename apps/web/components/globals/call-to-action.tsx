@@ -14,22 +14,32 @@ type Props = {};
 
 export function CallToActionPrompt({}: Props) {
   const isMounted = useIsMounted();
-
   const { authUserIds } = useAuthUser();
+
+  // Fetch auth user data
   const authUserQueryResult = useGetAuthUserQuery(React.useMemo(() => ({ userId: authUserIds?.id }), [authUserIds?.id]));
   const authUser = authUserQueryResult?.data?.data;
 
   const tenantId = authUser?.tenantId;
 
-  const { data } = useGetTenantQuery(React.useMemo(() => ({ tenantId: tenantId }), [tenantId]));
-  const status = data?.data?.onboardingStatus;
+  // Fetch tenant data
+  const tenantQueryResult = useGetTenantQuery(React.useMemo(() => ({ tenantId: tenantId }), [tenantId]));
+  const tenant = tenantQueryResult?.data?.data;
 
+  const status = tenant?.onboardingStatus;
   const statusKey = String(status);
   const completedSteps = statusKey in onboardingStatusEnums ? onboardingStatusEnums[statusKey as keyof typeof onboardingStatusEnums] : 0;
 
-  if (!isMounted || authUser?.staff?.role?.rank != 1 || completedSteps == 3) {
+  // Handle loading state for tenant query
+  if (authUserQueryResult?.isLoading || tenantQueryResult?.isLoading || !tenant || !authUser) {
     return null;
   }
+
+  // Ensure all conditions are met before rendering
+  if (!(authUser?.staff?.role?.rank === 1 && completedSteps !== 3 && isMounted)) {
+    return null; // Don't render anything if conditions aren't met
+  }
+
   return (
     <Card className="bg-blue-500/10 border border-blue-300">
       <CardContent className="flex flex-col md:flex-row gap-4 justify-between items-center">
