@@ -126,10 +126,10 @@ function SchoolProfileOnboardingForm({}: Props) {
         dateOfBirth: authUser?.dateOfBirth || values.dateOfBirth,
 
         residentialAddress: authUser?.residentialAddress || values.residentialAddress,
-        residentialLgaId: authUser?.residentialLgaId || values.residentialLgaId,
-        residentialStateId: authUser?.residentialStateId || values.residentialStateId,
-        residentialCountryId: authUser?.residentialCountryId || values.residentialCountryId,
-        residentialZipCode: authUser?.residentialZipCode || values.residentialZipCode,
+        residentialLgaId: Number(authUser?.residentialLgaId) || values.residentialLgaId,
+        residentialStateId: Number(authUser?.residentialStateId) || values.residentialStateId,
+        residentialCountryId: Number(authUser?.residentialCountryId) || values.residentialCountryId,
+        residentialZipCode: Number(authUser?.residentialZipCode) || values.residentialZipCode,
 
         name: tenant?.name || values.name,
         registrationNo: tenant?.registrationNo || values.registrationNo,
@@ -138,10 +138,10 @@ function SchoolProfileOnboardingForm({}: Props) {
         establishedDate: tenant?.establishedDate || values.establishedDate,
         logoUrl: tenant?.logoUrl || values.logoUrl,
         address: tenant?.address || values.address,
-        stateId: tenant?.stateId || values.stateId,
-        lgaId: tenant?.lgaId || values.lgaId,
-        zipCode: tenant?.zipCode || values.zipCode,
-        countryId: tenant?.countryId || values.countryId,
+        stateId: Number(tenant?.stateId) || values.stateId,
+        lgaId: Number(tenant?.lgaId) || values.lgaId,
+        zipCode: Number(tenant?.zipCode) || values.zipCode,
+        countryId: Number(tenant?.countryId) || values.countryId,
         postalCode: tenant?.postalCode || values.postalCode,
       }));
     }
@@ -162,7 +162,7 @@ function SchoolProfileOnboardingForm({}: Props) {
         onboardingPersonalStep(
           {
             payload: { ...values, userId: authUser?.id },
-            params: { tenantId: authUser?.tenantId },
+            params: { tenantId },
           },
           {
             onSuccess: (result) => {
@@ -179,7 +179,7 @@ function SchoolProfileOnboardingForm({}: Props) {
         onboardingResidentialStep(
           {
             payload: { ...values, userId: authUser?.id, residentialCountryId: Number(values.residentialCountryId), residentialStateId: Number(values.residentialStateId), residentialLgaId: Number(values.residentialLgaId), residentialZipCode: Number(values.residentialZipCode) },
-            params: { tenantId: authUser?.tenantId },
+            params: { tenantId },
           },
           {
             onSuccess: (result) => {
@@ -196,7 +196,7 @@ function SchoolProfileOnboardingForm({}: Props) {
         onboardingSchoolStep(
           {
             payload: { ...values, userId: authUser?.id, postalCode: String(values.postalCode), zipCode: Number(values.zipCode), stateId: Number(values.stateId), lgaId: Number(values.lgaId), countryId: Number(values.countryId) },
-            params: { tenantId: authUser?.tenantId },
+            params: { tenantId },
           },
           {
             onSuccess: (result) => {

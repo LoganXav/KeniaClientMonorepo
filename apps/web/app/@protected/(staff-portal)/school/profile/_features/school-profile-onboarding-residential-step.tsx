@@ -18,6 +18,8 @@ export function SchoolProfileOnboardingResidentialStep({ form }: StepProps) {
     )
   );
 
+  console.log(onboardingTemplateQuery?.data?.data, "template00000000000000");
+
   return (
     <div className="grid md:grid-cols-2 gap-4">
       <div className="md:col-span-2">
@@ -42,12 +44,12 @@ export function SchoolProfileOnboardingResidentialStep({ form }: StepProps) {
             <Select onValueChange={field.onChange} value={String(field.value)}>
               <FormControl>
                 <SelectTrigger>
-                  <SelectValue placeholder="Country">{onboardingTemplateQuery?.data?.data?.countryIdOptions?.find((country) => String(country?.codeValue) === String(field.value))?.name || "Country"}</SelectValue>
+                  <SelectValue placeholder="Country" />
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
                 {onboardingTemplateQuery?.data?.data?.countryIdOptions?.map((country, idx) => (
-                  <SelectItem key={idx} value={String(country?.codeValue)}>
+                  <SelectItem key={idx} value={String(country?.id)}>
                     {country?.name}
                   </SelectItem>
                 ))}
