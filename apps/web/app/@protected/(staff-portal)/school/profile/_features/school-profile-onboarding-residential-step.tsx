@@ -18,8 +18,6 @@ export function SchoolProfileOnboardingResidentialStep({ form }: StepProps) {
     )
   );
 
-  console.log(onboardingTemplateQuery?.data?.data, "template00000000000000");
-
   return (
     <div className="grid md:grid-cols-2 gap-4">
       <div className="md:col-span-2">
