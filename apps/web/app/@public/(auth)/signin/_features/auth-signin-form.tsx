@@ -14,7 +14,7 @@ export default function AuthSignInForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const userType = searchParams.get("userType");
+  const userType = searchParams.get("userType")!;
 
   const handleSignIn = (values: AuthSignInSchemaType) => {
     signIn(

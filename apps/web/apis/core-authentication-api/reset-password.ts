@@ -10,12 +10,12 @@ export const useResetPasswordRequestMutation = () => {
     error,
   } = useMutation({
     mutationFn: async (payload: { email: string }) => {
-      const { data } = await postRequest<unknown>({
+      const data = await postRequest<unknown>({
         endpoint: `${BASE_URL}/request`,
         payload,
       });
 
-      return data.result;
+      return data;
     },
   });
 
@@ -28,19 +28,13 @@ export const useChangePasswordMutation = () => {
     isPending,
     error,
   } = useMutation({
-    mutationFn: async ({
-      payload,
-      path,
-    }: {
-      payload: { password: string };
-      path: { token: string };
-    }) => {
-      const { data } = await postRequest<unknown>({
+    mutationFn: async ({ payload, path }: { payload: { password: string }; path: { token: string } }) => {
+      const data = await postRequest<unknown>({
         endpoint: `${BASE_URL}/${path?.token}`,
         payload,
       });
 
-      return data.result;
+      return data;
     },
   });
 

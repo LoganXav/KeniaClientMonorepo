@@ -5,7 +5,7 @@ import ProtectedSidebar from "./sidebar";
 import { ThemeToggler } from "@/components/theme-tooggler";
 import { Bell, CircleAlert, Menu, UserCircle, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { clearAuthUser } from "@/helpers/server/auth-user-action";
+import { clearAuthUserAction } from "@/helpers/server/auth-user-action";
 import { RouteEnums } from "@/constants/router/route-constants";
 import Link from "next/link";
 import React from "react";
@@ -16,7 +16,7 @@ export default function ProtectedNavbar() {
   const [isOpen, setIsOpen] = React.useState(false);
 
   async function handleSignOut() {
-    clearAuthUser();
+    clearAuthUserAction();
     router.push(RouteEnums.HOME);
   }
 

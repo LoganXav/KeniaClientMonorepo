@@ -1,6 +1,6 @@
 import { AuthVerifySchemaType } from "@/app/@public/(auth)/verify/_validators/auth-verify-schema";
 import { postRequest } from "@/config/base-query";
-import { setAuthUser } from "@/helpers/server/auth-user-action";
+import { setAuthUserAction } from "@/helpers/server/auth-user-action";
 import { AuthUserType } from "@/types";
 import { useMutation } from "@tanstack/react-query";
 
@@ -13,17 +13,17 @@ export const useVerifyOtpMutation = () => {
     error,
   } = useMutation({
     mutationFn: async (payload: AuthVerifySchemaType) => {
-      const { data } = await postRequest<AuthUserType>({
+      const data = await postRequest<AuthUserType>({
         endpoint: `${BASE_URL}/otp/verify`,
         payload,
       });
 
-      setAuthUser({
-        accessToken: data.result.accessToken!,
-        data: data.result.data,
+      setAuthUserAction({
+        accessToken: data?.accessToken!,
+        data: data?.data,
       });
 
-      return data.result;
+      return data;
     },
   });
 
@@ -37,12 +37,12 @@ export const useResendOtpMutation = () => {
     error,
   } = useMutation({
     mutationFn: async (payload: { email: string }) => {
-      const { data } = await postRequest<unknown>({
+      const data = await postRequest<unknown>({
         endpoint: `${BASE_URL}/otp/refresh`,
         payload,
       });
 
-      return data.result;
+      return data;
     },
   });
 

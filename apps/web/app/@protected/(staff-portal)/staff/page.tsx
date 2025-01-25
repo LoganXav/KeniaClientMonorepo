@@ -5,7 +5,7 @@ import React from "react";
 
 type Props = {};
 
-function Staff({}: Props) {
+function StaffMenu({}: Props) {
   return (
     <>
       <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -43,4 +43,4 @@ function Staff({}: Props) {
   );
 }
 
-export default Staff;
+export default StaffMenu;

@@ -4,16 +4,17 @@ import { useQuery } from "@tanstack/react-query";
 
 const BASE_URL = "tenant";
 
-export const useGetTenantQuery = (params?: Record<string, any>) => {
+export const useGetTenantQuery = (params?: { tenantId?: number }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.STAFF, params],
+    queryKey: [QueryTagEnums.TENANT, params?.tenantId],
     queryFn: async () => {
       return await getRequest<Record<string, any>>({
         endpoint: `${BASE_URL}`,
         config: { params },
       });
     },
+    enabled: !!params?.tenantId,
   });
 
-  return { data: data?.data?.result, isLoading, error, refetch };
+  return { data, isLoading, error, refetch };
 };

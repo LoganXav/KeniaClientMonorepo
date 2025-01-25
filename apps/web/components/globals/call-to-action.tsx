@@ -1,9 +1,13 @@
 "use client";
 import { useGetTenantQuery } from "@/apis/core-tenant-api/tenant";
-import { useAuthUserClient } from "@/hooks/use-auth-user";
+import { useGetAuthUserQuery } from "@/apis/core-user-api/user";
+import { onboardingStatusEnums } from "@/constants/enums/tenant-enums";
+import { RouteEnums } from "@/constants/router/route-constants";
+import { useAuthUser } from "@/hooks/use-auth-user";
 import { useIsMounted } from "@/hooks/use-mounted";
 import { Button, Card, CardContent } from "@repo/ui";
 import { CircleAlert } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 type Props = {};
@@ -11,8 +15,11 @@ type Props = {};
 export function CallToActionPrompt({}: Props) {
   const isMounted = useIsMounted();
 
-  const { authUserClient } = useAuthUserClient();
-  const tenantId = authUserClient?.tenantId;
+  const { authUserIds } = useAuthUser();
+  const authUserQueryResult = useGetAuthUserQuery(React.useMemo(() => ({ userId: authUserIds?.id }), [authUserIds?.id]));
+  const authUser = authUserQueryResult?.data?.data;
+
+  const tenantId = authUser?.tenantId;
 
   const { data } = useGetTenantQuery(React.useMemo(() => ({ tenantId: tenantId }), [tenantId]));
   const status = data?.data?.onboardingStatus;
@@ -20,7 +27,7 @@ export function CallToActionPrompt({}: Props) {
   const statusKey = String(status);
   const completedSteps = statusKey in onboardingStatusEnums ? onboardingStatusEnums[statusKey as keyof typeof onboardingStatusEnums] : 0;
 
-  if (!isMounted || authUserClient?.staff?.role?.rank != 1 || completedSteps == 3) {
+  if (!isMounted || authUser?.staff?.role?.rank != 1 || completedSteps == 3) {
     return null;
   }
   return (
@@ -33,17 +40,12 @@ export function CallToActionPrompt({}: Props) {
           </div>
           <div>{completedSteps} / 3</div>
         </div>
-        <Button className="w-full md:w-auto" variant={"outline"}>
-          Complete Registration
-        </Button>
+        <Link href={RouteEnums.SCHOOL_PROFILE}>
+          <Button className="w-full md:w-auto" variant={"outline"}>
+            Complete Registration
+          </Button>
+        </Link>
       </CardContent>
     </Card>
   );
 }
-
-const onboardingStatusEnums = {
-  PERSONAL: 0,
-  RESIDENTIAL: 1,
-  SCHOOL: 2,
-  COMPLETE: 3,
-};

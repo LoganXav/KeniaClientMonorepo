@@ -1,5 +1,5 @@
 import { RouteEnums } from "@/constants/router/route-constants";
-import { getAuthUserServer } from "@/helpers/server/auth-user-action";
+import { getAuthUserAction } from "@/helpers/server/auth-user-action";
 import { Button } from "@repo/ui";
 import { captureException } from "@sentry/nextjs";
 import Link from "next/link";
@@ -8,7 +8,7 @@ export default async function NotFoundPage({ error }: { error: Error }) {
   captureException(error);
 
   let redirectUrl;
-  const authUser = await getAuthUserServer();
+  const authUser = await getAuthUserAction();
 
   if (authUser) {
     redirectUrl = RouteEnums.DASHBOARD;

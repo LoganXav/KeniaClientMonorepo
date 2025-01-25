@@ -1,6 +1,7 @@
 "use client";
 
-import { getAuthUserServer } from "@/helpers/server/auth-user-action";
+import { RouteEnums } from "@/constants/router/route-constants";
+import { getAuthUserAction } from "@/helpers/server/auth-user-action";
 import { Button } from "@repo/ui";
 import { captureException } from "@sentry/nextjs";
 import Link from "next/link";
@@ -9,11 +10,11 @@ export default async function ErrorPage({ error }: { error: Error }) {
   captureException(error);
 
   let redirectUrl;
-  const authUser = await getAuthUserServer();
+  const authUser = await getAuthUserAction();
   if (authUser) {
-    redirectUrl = "/dashboard";
+    redirectUrl = RouteEnums.DASHBOARD;
   } else {
-    redirectUrl = "/signin";
+    redirectUrl = RouteEnums.SIGNIN;
   }
 
   return (

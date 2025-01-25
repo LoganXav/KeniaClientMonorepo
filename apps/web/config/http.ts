@@ -1,5 +1,6 @@
+import { RouteEnums } from "@/constants/router/route-constants";
 import { env } from "@/env.mjs";
-import { getAuthUserServer } from "@/helpers/server/auth-user-action";
+import { clearAuthUserAction, getAuthUserAction } from "@/helpers/server/auth-user-action";
 import axios from "axios";
 import CryptoJS from "crypto-js";
 
@@ -13,7 +14,7 @@ export const apiConfig = axios.create({
 });
 
 apiConfig.interceptors.request.use(async (config) => {
-  const authUser = await getAuthUserServer();
+  const authUser = await getAuthUserAction();
 
   let data: Record<string, any> = {
     tenantId: authUser?.data?.tenantId,
@@ -92,9 +93,9 @@ apiConfig.interceptors.response.use(
       console.groupEnd();
     }
 
-    return response;
+    return response.data.result;
   },
-  (error) => {
+  async (error) => {
     if (error?.response) {
       if (error?.response?.data?.encoded) {
         const decrypted = CryptoJS.AES.decrypt(error?.response?.data?.result, KEY, {
@@ -109,6 +110,12 @@ apiConfig.interceptors.response.use(
         // Parse the decrypted text as JSON
         error.response.data = JSON.parse(decryptedText);
       }
+
+      if (error.response.status == 403) {
+        await clearAuthUserAction();
+        window.location.href = RouteEnums.HOME;
+      }
+
       if (env.NODE_ENV === DEV) {
         console.groupCollapsed(`@Response`, error.response.config.url, error.response.status);
         if (error.response.data) {

@@ -1,7 +1,7 @@
 import { AuthUserType } from "@/types";
 import { cookies } from "next/headers";
 
-export const getAuthUser = (): { data: AuthUserType; accessToken: string } | null => {
+export const getAuthUserServer = (): { data: AuthUserType; accessToken: string } | null => {
   const cookieStore = cookies();
   const authUser = cookieStore.get("authUser");
 

@@ -65,6 +65,11 @@ export default function ProtectedSidebar() {
         //     { name: "Grades", path: "/admin/students/grades" },
         //   ],
         // },
+        {
+          name: "School",
+          path: RouteEnums.SCHOOL,
+          subRoutes: [{ name: "Profile", path: RouteEnums.SCHOOL_PROFILE }],
+        },
         // {
         //   name: "Class",
         //   path: "/admin/classes",

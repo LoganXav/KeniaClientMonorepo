@@ -1,6 +1,6 @@
 "use client";
 
-import { clearAuthUser } from "@/helpers/server/auth-user-action";
+import { clearAuthUserAction } from "@/helpers/server/auth-user-action";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { Button } from "@repo/ui";
 import { useRouter } from "next/navigation";
@@ -10,7 +10,7 @@ export default function LogoutButton() {
   const router = useRouter();
 
   async function handleSignOut() {
-    clearAuthUser();
+    clearAuthUserAction();
     router.push(RouteEnums.HOME);
   }
 

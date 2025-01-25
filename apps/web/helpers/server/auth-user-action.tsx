@@ -4,7 +4,7 @@ import { env } from "@/env.mjs";
 import { AuthUserType } from "@/types";
 import { cookies } from "next/headers";
 
-export const getAuthUserServer = async (): Promise<{
+export const getAuthUserAction = async (): Promise<{
   data: AuthUserType;
   accessToken: string;
 } | null> => {
@@ -24,10 +24,7 @@ export const getAuthUserServer = async (): Promise<{
   }
 };
 
-export const setAuthUser = async (user: {
-  data: AuthUserType;
-  accessToken: string;
-}) => {
+export const setAuthUserAction = async (user: { data: AuthUserType; accessToken: string }) => {
   const cookieStore = cookies();
   const userData = JSON.stringify(user);
 
@@ -42,7 +39,7 @@ export const setAuthUser = async (user: {
   });
 };
 
-export const clearAuthUser = async () => {
+export const clearAuthUserAction = async () => {
   const cookieStore = cookies();
   cookieStore.delete("authUser");
 };
