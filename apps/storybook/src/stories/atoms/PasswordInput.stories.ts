@@ -1,10 +1,9 @@
+import { PasswordInput } from "@repo/ui";
 import type { Meta, StoryObj } from "@storybook/react";
 
-import { Input } from "@repo/ui";
-
 const meta = {
-  title: "Atoms/Input",
-  component: Input,
+  title: "Atoms/PasswordInput",
+  component: PasswordInput,
   argTypes: {
     placeholder: {
       description: "Input placeholder text",
@@ -33,13 +32,13 @@ const meta = {
       },
     },
   },
-} satisfies Meta<typeof Input>;
+} satisfies Meta<typeof PasswordInput>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    placeholder: "My input placeholder",
+    placeholder: "Enter your password",
   },
 };
