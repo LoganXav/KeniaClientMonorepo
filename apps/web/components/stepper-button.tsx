@@ -1,7 +1,7 @@
 "use client";
 import { Stepper } from "@/hooks/use-stepper";
 import { Button, cn } from "@repo/ui";
-import { Check, CheckCheckIcon, UserCheck } from "lucide-react";
+import { UserCheck } from "lucide-react";
 import React from "react";
 
 interface StepperButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
