@@ -16,8 +16,6 @@ export function CallToActionPrompt({}: Props) {
   const isMounted = useIsMounted();
   const { authUserIds } = useAuthUser();
 
-  console.log(authUserIds);
-
   // Fetch auth user data
   const authUserQueryResult = useGetAuthUserQuery(React.useMemo(() => ({ userId: authUserIds?.id }), [authUserIds?.id]));
   const authUser = authUserQueryResult?.data?.data;

@@ -1,5 +1,4 @@
 "use client";
-import "./sidebar.css";
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, cn } from "@repo/ui";
 import { usePathname } from "next/navigation";
@@ -117,31 +116,31 @@ export default function ProtectedSidebar() {
   const isActiveSubRoute = (subRoutes: Record<string, any>[]) => subRoutes?.some((subRoute: Record<string, any>) => pathname === subRoute.path);
 
   return (
-    <nav className="sidebar__container bg-card">
-      <div className="sidebar__logo">
+    <nav className="w-[250px] px-2 pb-20 fixed overflow-scroll h-screen border-r border-gray-300 bg-card">
+      <div className="border border-gray-300 h-[70px] flex items-center justify-center">
         <div className="font-heading">KENIA .</div>
       </div>
-      <div className="sidebar__route__groups">
+      <div className="mt-4 flex flex-col gap-8">
         {routeGroups.map((group, groupIndex) => (
-          <div className="sidebar__route__group" key={groupIndex}>
-            <div className="sidebar__route__group__header font-heading text-sm">{group.header}</div>
+          <div key={groupIndex}>
+            <div className="pl-4 text-[13px] font-semibold font-heading">{group.header}</div>
 
             {group.routes.map((route, routeIndex) =>
               route.subRoutes ? (
                 <Accordion type="single" collapsible className="w-full" key={routeIndex}>
                   <AccordionItem className="border-0" value={`item-${groupIndex}-${routeIndex}`}>
-                    <AccordionTrigger className={`sidebar__route border ${isActiveRoute(route.path) || isActiveSubRoute(route.subRoutes) ? "bg-transparent/5" : "hover:bg-transparent/5"}`}>{route.name}</AccordionTrigger>
+                    <AccordionTrigger className={`w-full p-4 rounded-lg border mt-2 ${isActiveRoute(route.path) || isActiveSubRoute(route.subRoutes) ? "bg-black/5" : "hover:bg-black/5"}`}>{route.name}</AccordionTrigger>
 
                     {route.subRoutes?.map((subRoute, subRouteIndex) => (
                       <Link className="w-full" key={subRouteIndex} href={subRoute.path}>
-                        <AccordionContent className={cn("w-full sidebar__route", isActiveRoute(subRoute.path) ? "bg-transparent/10 border border-foreground" : "border hover:bg-transparent/5")}>{subRoute.name}</AccordionContent>
+                        <AccordionContent className={`w-full p-4 rounded-lg mt-2 ${isActiveRoute(subRoute.path) ? "bg-black/10 border border-foreground" : "border hover:bg-black/5"}`}>{subRoute.name}</AccordionContent>
                       </Link>
                     ))}
                   </AccordionItem>
                 </Accordion>
               ) : (
                 <Link href={route.path} key={routeIndex}>
-                  <div className={cn("sidebar__route", isActiveRoute(route.path) ? "text-foreground  bg-transparent/10 border border-foreground" : "hover:bg-transparent/5 border")}>{route.name}</div>
+                  <div className={`w-full p-4 rounded-lg border mt-2 ${isActiveRoute(route.path) ? "text-foreground bg-black/10 border border-foreground" : "hover:bg-black/5"}`}>{route.name}</div>
                 </Link>
               )
             )}

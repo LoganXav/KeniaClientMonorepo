@@ -1,6 +1,6 @@
 "use client";
+
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, SearchInput, Sheet, SheetContent, SheetTrigger, Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
-import "./navbar.css";
 import ProtectedSidebar from "./sidebar";
 import { ThemeToggler } from "@/components/theme-tooggler";
 import { Bell, CircleAlert, Menu, UserCircle, X } from "lucide-react";
@@ -25,8 +25,8 @@ export default function ProtectedNavbar() {
 
   return (
     <Sheet>
-      <div className="navbar__container">
-        <nav className="container navbar bg-card">
+      <div className="sticky top-0 h-[70px] right-0 left-0 border-b border-gray-300 z-50">
+        <nav className="h-full container flex items-center justify-between bg-card">
           <div className="flex gap-4">
             <SheetTrigger className="lg:hidden">
               <Menu />
@@ -37,7 +37,7 @@ export default function ProtectedNavbar() {
             </div>
           </div>
 
-          <div className="navbar__right">
+          <div className="flex items-center gap-8">
             <ThemeToggler />
 
             <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>

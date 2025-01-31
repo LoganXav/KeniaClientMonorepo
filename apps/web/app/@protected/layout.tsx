@@ -1,10 +1,11 @@
 import { CallToActionPrompt } from "@/components/globals/call-to-action";
 import ProtectedNavbar from "@/layouts/protected/navbar";
 import ProtectedSidebar from "@/layouts/protected/sidebar";
+import ClientWrapperProvider from "@/providers/client-wrapper-provider";
 
 export default function ProtectedLayout({ children }: React.PropsWithChildren) {
   return (
-    <>
+    <ClientWrapperProvider>
       <div className="relative flex">
         <ProtectedSidebar />
         <div className="relative w-full bg-background ml-[0px] lg:ml-[250px] flex-1">
@@ -17,6 +18,6 @@ export default function ProtectedLayout({ children }: React.PropsWithChildren) {
           </main>
         </div>
       </div>
-    </>
+    </ClientWrapperProvider>
   );
 }
