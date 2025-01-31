@@ -11,6 +11,8 @@ function AuthLobbyTabs() {
   const router = useRouter();
   const [userType, setUserType] = React.useState("student");
 
+  console.log(localStorage.getItem("authUser"), "=====");
+
   return (
     <div className="space-y-8 max-w-xl">
       <Tabs value={userType} className="w-full space-y-4" onValueChange={(value) => setUserType(value)}>

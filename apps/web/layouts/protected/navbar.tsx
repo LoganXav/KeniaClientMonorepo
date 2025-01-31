@@ -9,13 +9,16 @@ import { clearAuthUserAction } from "@/helpers/server/auth-user-action";
 import { RouteEnums } from "@/constants/router/route-constants";
 import Link from "next/link";
 import React from "react";
+import { useAuthUser } from "@/hooks/use-auth-user";
 
 export default function ProtectedNavbar() {
   const router = useRouter();
   const [notificationType, setNotificationType] = React.useState("all");
   const [isOpen, setIsOpen] = React.useState(false);
+  const { deleteAuthUserIds } = useAuthUser();
 
   async function handleSignOut() {
+    deleteAuthUserIds();
     clearAuthUserAction();
     router.push(RouteEnums.HOME);
   }

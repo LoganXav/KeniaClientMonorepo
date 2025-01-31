@@ -113,6 +113,7 @@ apiConfig.interceptors.response.use(
 
       if (error.response.status == 403) {
         await clearAuthUserAction();
+        localStorage.removeItem("authUser");
         window.location.href = RouteEnums.HOME;
       }
 
