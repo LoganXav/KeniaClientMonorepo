@@ -1,6 +1,8 @@
+import { StaffCreateFormSchemaType, StaffTemplateOptions } from "@/app/@protected/(staff-portal)/staff/create/_types/staff-create-form-types";
 import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { StaffType } from "@/types";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const BASE_URL = "staff";
 
@@ -15,29 +17,43 @@ export const useGetStaffListQuery = (params?: any) => {
     },
   });
 
-  return { data: data?.data?.result, isLoading, error, refetch };
+  return { data, isLoading, error, refetch };
 };
 
-// export const useVerifyOtpMutation = () => {
-//   const {
-//     mutate: verify,
-//     isPending,
-//     error,
-//   } = useMutation({
-//     mutationFn: async (payload: VerifySchemaType) => {
-//       const { data } = await postRequest<AuthUserType>({
-//         endpoint: `${BASE_URL}/otp/verify`,
-//         payload,
-//       });
-//
-//       setAuthUser({
-//         accessToken: data.result.accessToken!,
-//         data: data.result.data,
-//       });
-//
-//       return data.result;
-//     },
-//   });
-//
-//   return { verify, isPending, error };
-// };
+export const useStaffCreeateMutation = () => {
+  const queryClient = useQueryClient();
+  const {
+    mutate: staffCreate,
+    isPending: staffCreatePending,
+    error: staffCreateError,
+  } = useMutation({
+    mutationFn: async ({ payload, params }: { payload: StaffCreateFormSchemaType; params?: { tenantId?: number } }) => {
+      const data = await postRequest<StaffType>({
+        endpoint: `${BASE_URL}/create`,
+        payload,
+        config: { params },
+      });
+
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF] });
+    },
+  });
+
+  return { staffCreate, staffCreatePending, staffCreateError };
+};
+
+export const useGetStaffTemplateQuery = (params: { codeValue?: number }) => {
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: [QueryTagEnums.USER, params?.codeValue],
+    queryFn: async () => {
+      return await getRequest<StaffTemplateOptions>({
+        endpoint: `${BASE_URL}/template`,
+        config: { params },
+      });
+    },
+  });
+
+  return { data, isLoading, error, refetch };
+};

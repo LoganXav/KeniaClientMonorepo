@@ -1,6 +1,5 @@
 import "@repo/ui/styles/global.css";
 import type { Metadata, Viewport } from "next";
-// import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import { cn } from "@repo/ui";
 import { Toaster } from "@repo/ui";
@@ -12,12 +11,6 @@ import QueryClientContextProvider from "@/providers/query-client-provider";
 import { getAuthUserServer } from "../helpers/auth-user";
 
 // Define the font styles
-// export const fontSans = Inter({
-//   variable: "--font-sans",
-//   subsets: ["latin"],
-//   weight: "400",
-// });
-
 export const fontHeading = localFont({
   src: "../assets/fonts/CalSans-SemiBold.woff2",
   variable: "--font-heading",

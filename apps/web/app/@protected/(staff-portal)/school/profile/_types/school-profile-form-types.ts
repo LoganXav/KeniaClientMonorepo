@@ -24,7 +24,6 @@ export type SchoolProfileFormTemplateType = {
     id: number;
     codeValue: number;
     name: string;
-    acronym: string;
   }[];
   lgaIdOptions: {
     id: number;

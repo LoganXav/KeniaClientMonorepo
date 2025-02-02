@@ -2,7 +2,7 @@
 
 import { RouteEnums } from "@/constants/router/route-constants";
 import { Button, Card, CardContent, Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
-import { BadgeCheck, Check } from "lucide-react";
+import { Check } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -10,8 +10,6 @@ import React from "react";
 function AuthLobbyTabs() {
   const router = useRouter();
   const [userType, setUserType] = React.useState("student");
-
-  console.log(localStorage.getItem("authUser"), "=====");
 
   return (
     <div className="space-y-8 max-w-xl">

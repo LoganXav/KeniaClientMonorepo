@@ -111,6 +111,7 @@ export default function ProtectedSidebar() {
       ],
     },
   ];
+
   const isActiveRoute = (path: string) => pathname === path;
 
   const isActiveSubRoute = (subRoutes: Record<string, any>[]) => subRoutes?.some((subRoute: Record<string, any>) => pathname === subRoute.path);
