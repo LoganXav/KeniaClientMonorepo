@@ -11,7 +11,7 @@ type StepProps = {
 export function StaffCreateFormPersonalStep({ form }: StepProps) {
   return (
     <div>
-      <div className="grid gap-4">
+      <div className="grid gap-4 md:grid-cols-2">
         <FormField
           control={form.control}
           name="firstName"
@@ -41,7 +41,7 @@ export function StaffCreateFormPersonalStep({ form }: StepProps) {
           control={form.control}
           name="phoneNumber"
           render={({ field }) => (
-            <FormItem className="md:col-span-2">
+            <FormItem>
               <FormControl>
                 <Input placeholder="Phone Number" {...field} />
               </FormControl>
@@ -53,7 +53,7 @@ export function StaffCreateFormPersonalStep({ form }: StepProps) {
           control={form.control}
           name="email"
           render={({ field }) => (
-            <FormItem className="md:col-span-2">
+            <FormItem>
               <FormControl>
                 <Input placeholder="Email Address" {...field} />
               </FormControl>

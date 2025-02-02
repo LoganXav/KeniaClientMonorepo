@@ -160,7 +160,7 @@ export function StaffCreateForm({}: Props) {
         ))}
       </Card>
       {steps?.[stepper.step]?.label && (
-        <Card className="border-none shadow-none grid gap-2 p-4 my-8 md:p-8">
+        <Card className="border shadow-none grid gap-2 p-4 my-8 md:p-8">
           <CardTitle className="font-heading">{steps?.[stepper.step]?.label}</CardTitle>
           <CardDescription className="max-w-xl">{steps?.[stepper.step]?.description}</CardDescription>
         </Card>
