@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Card, CardDescription, CardTitle, Form, toast } from "@repo/ui";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { useGetStaffTemplateQuery, useStaffCreeateMutation } from "@/apis/core-staff-api/staff";
+import { useGetStaffTemplateQuery, useStaffCreateMutation } from "@/apis/core-staff-api/staff";
 import { StaffCreateFormFieldName, StaffCreateFormSchemaType, StaffTemplateOptions } from "../_types/staff-create-form-types";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { StaffCreateFormSchema } from "../_schema/staff-create-form-schema";
@@ -26,15 +26,16 @@ export function StaffCreateForm({}: Props) {
   const { authUserIds } = useAuthUser();
   const [completedSteps, setCompletedSteps] = React.useState(0);
 
-  const { staffCreate, staffCreatePending, staffCreateError } = useStaffCreeateMutation();
+  const { staffCreate, staffCreatePending, staffCreateError } = useStaffCreateMutation();
 
   const handleCreateStaff = (values: StaffCreateFormSchemaType) => {
     staffCreate(
-      { payload: { ...values, tenantId: authUserIds?.tenantId } },
+      { payload: { ...values, tenantId: authUserIds?.tenantId, residentialCountryId: Number(values.residentialCountryId), residentialStateId: Number(values.residentialStateId), residentialLgaId: Number(values.residentialLgaId), residentialZipCode: Number(values.residentialZipCode) } },
       {
         onSuccess: (result) => {
           toast.success(result.message);
-          router.push("/");
+          setCompletedSteps((prev) => prev + 1);
+          stepper.next(undefined);
         },
         onError: (error) => {
           toast.error(error.message);
@@ -44,15 +45,15 @@ export function StaffCreateForm({}: Props) {
   };
 
   const defaultValues = {
-    tenantId: 0,
-    roleId: 0,
+    tenantId: authUserIds?.tenantId,
+    roleId: 1,
 
     firstName: "",
     lastName: "",
     phoneNumber: "",
     gender: "",
     email: "",
-    dateOfBirth: "",
+    // dateOfBirth: new Date(),
 
     residentialAddress: "",
     residentialLgaId: "",
@@ -124,7 +125,7 @@ export function StaffCreateForm({}: Props) {
 
   const isFirstStep = stepper.step === 0;
   const isLastStep = stepper.step === steps.length - 1;
-  const isSecondToLastStep = stepper.step === steps.length - 1;
+  const isSecondToLastStep = stepper.step === steps.length - 2;
 
   // Form Step Control Buttons
   const next = async () => {
@@ -135,10 +136,14 @@ export function StaffCreateForm({}: Props) {
     });
     if (!output) return;
 
-    setCompletedSteps((prev) => prev + 1);
-
-    stepper.next(undefined);
-    // handleCreateStaff(form.getValues());
+    if (isSecondToLastStep) {
+      handleCreateStaff(form.getValues());
+    } else if (isLastStep) {
+      router.push(RouteEnums.STAFF_LIST);
+    } else {
+      setCompletedSteps((prev) => prev + 1);
+      stepper.next(undefined);
+    }
   };
 
   const previous = () => {
@@ -178,7 +183,7 @@ export function StaffCreateForm({}: Props) {
           Previous
         </Button>
         <Button type="button" onClick={next} loading={staffCreatePending}>
-          {isSecondToLastStep ? "Complete" : isLastStep ? "Go To Dashboard" : "Next"}
+          {isSecondToLastStep ? "Complete" : isLastStep ? "Go To Staff List" : "Next"}
         </Button>
       </div>
     </>

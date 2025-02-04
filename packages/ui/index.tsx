@@ -19,5 +19,6 @@ export * from "./components/ui/search-input";
 export * from "./components/ui/popover";
 // export * from "./components/ui/date-picker";
 export * from "./components/ui/scroll-area";
+export * from "./components/ui/breadcrumbs";
 
 export { cn } from "./lib/utils";

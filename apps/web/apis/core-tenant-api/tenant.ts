@@ -14,7 +14,6 @@ export const useGetTenantQuery = (params?: { tenantId?: number }) => {
         config: { params },
       });
     },
-    enabled: !!params?.tenantId,
   });
 
   return { data, isLoading, error, refetch };

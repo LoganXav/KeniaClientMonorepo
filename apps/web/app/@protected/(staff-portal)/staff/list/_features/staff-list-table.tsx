@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useGetStaffListQuery } from "@/apis/core-staff-api/staff";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
 import { formatDateToString } from "@/lib/dates";
+import { useAuthUser } from "@/hooks/use-auth-user";
 
 type Props = {};
 
@@ -73,6 +74,8 @@ export function StaffListTable({}: Props) {
     ],
     []
   );
+
+  const { authUserIds } = useAuthUser();
 
   const { data } = useGetStaffListQuery();
 

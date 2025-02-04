@@ -75,6 +75,18 @@ export function StaffCreateFormPersonalStep({ form }: StepProps) {
         />
         <FormField
           control={form.control}
+          name="nin"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="NIN" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* <FormField
+          control={form.control}
           name="dateOfBirth"
           render={({ field }) => (
             <FormItem>
@@ -84,7 +96,7 @@ export function StaffCreateFormPersonalStep({ form }: StepProps) {
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
       </div>
     </div>
   );

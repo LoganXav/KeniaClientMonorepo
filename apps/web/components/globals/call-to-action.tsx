@@ -1,9 +1,9 @@
 "use client";
+
 import { useGetTenantQuery } from "@/apis/core-tenant-api/tenant";
 import { useGetAuthUserQuery } from "@/apis/core-user-api/user";
 import { onboardingStatusEnums } from "@/constants/enums/tenant-enums";
 import { RouteEnums } from "@/constants/router/route-constants";
-import { useAuthUser } from "@/hooks/use-auth-user";
 import { useIsMounted } from "@/hooks/use-mounted";
 import { Button, Card, CardContent } from "@repo/ui";
 import { CircleAlert } from "lucide-react";
@@ -14,16 +14,13 @@ type Props = {};
 
 export function CallToActionPrompt({}: Props) {
   const isMounted = useIsMounted();
-  const { authUserIds } = useAuthUser();
 
   // Fetch auth user data
-  const authUserQueryResult = useGetAuthUserQuery(React.useMemo(() => ({ userId: authUserIds?.id }), [authUserIds?.id]));
+  const authUserQueryResult = useGetAuthUserQuery();
   const authUser = authUserQueryResult?.data?.data;
 
-  const tenantId = authUser?.tenantId;
-
   // Fetch tenant data
-  const tenantQueryResult = useGetTenantQuery(React.useMemo(() => ({ tenantId: tenantId }), [tenantId]));
+  const tenantQueryResult = useGetTenantQuery();
   const tenant = tenantQueryResult?.data?.data;
 
   const status = tenant?.onboardingStatus;

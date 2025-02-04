@@ -14,7 +14,6 @@ import { SchoolProfileOnboardingSchoolStep } from "./school-profile-onboarding-s
 import { SchoolProfileFormFieldName, SchoolProfileFormSchemaType } from "../_types/school-profile-form-types";
 import { SchoolProfileFormSchema } from "../_schema/school-profile-form-schema";
 import StepperButton from "@/components/stepper-button";
-import { useAuthUser } from "@/hooks/use-auth-user";
 import { useGetTenantQuery } from "@/apis/core-tenant-api/tenant";
 import { onboardingStatusEnums } from "@/constants/enums/tenant-enums";
 import { useOnboardingPersonalStepMutation, useOnboardingResidentialStepMutation, useOnboardingSchoolStepMutation } from "@/apis/core-onboarding-api/onboarding";
@@ -28,16 +27,14 @@ function SchoolProfileOnboardingForm({}: Props) {
   const router = useRouter();
   const stepper = useStepper();
 
-  const { authUserIds } = useAuthUser();
   const { onboardingPersonalStep, onboardingPersonalStepPending } = useOnboardingPersonalStepMutation();
   const { onboardingResidentialStep, onboardingResidentialStepPending } = useOnboardingResidentialStepMutation();
   const { onboardingSchoolStep, onboardingSchoolStepPending } = useOnboardingSchoolStepMutation();
 
-  const authUserQueryResult = useGetAuthUserQuery(React.useMemo(() => ({ userId: authUserIds?.id }), [authUserIds?.id]));
+  const authUserQueryResult = useGetAuthUserQuery();
   const authUser = authUserQueryResult?.data?.data;
 
-  const tenantId = authUser?.tenantId;
-  const tenantQueryResult = useGetTenantQuery(React.useMemo(() => ({ tenantId: tenantId }), [tenantId]));
+  const tenantQueryResult = useGetTenantQuery();
   const tenant = tenantQueryResult?.data?.data;
   const status = tenant?.onboardingStatus;
 
@@ -162,7 +159,6 @@ function SchoolProfileOnboardingForm({}: Props) {
         onboardingPersonalStep(
           {
             payload: { ...values, userId: authUser?.id },
-            params: { tenantId },
           },
           {
             onSuccess: (result) => {
@@ -179,7 +175,6 @@ function SchoolProfileOnboardingForm({}: Props) {
         onboardingResidentialStep(
           {
             payload: { ...values, userId: authUser?.id, residentialCountryId: Number(values.residentialCountryId), residentialStateId: Number(values.residentialStateId), residentialLgaId: Number(values.residentialLgaId), residentialZipCode: Number(values.residentialZipCode) },
-            params: { tenantId },
           },
           {
             onSuccess: (result) => {
@@ -196,7 +191,6 @@ function SchoolProfileOnboardingForm({}: Props) {
         onboardingSchoolStep(
           {
             payload: { ...values, userId: authUser?.id, postalCode: String(values.postalCode), zipCode: Number(values.zipCode), stateId: Number(values.stateId), lgaId: Number(values.lgaId), countryId: Number(values.countryId) },
-            params: { tenantId },
           },
           {
             onSuccess: (result) => {

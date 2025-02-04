@@ -1,3 +1,4 @@
+import { PageBreadcrumbs } from "@/components/breadcrumbs";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { Card, CardDescription, CardTitle } from "@repo/ui";
 import Link from "next/link";
@@ -6,9 +7,18 @@ import React from "react";
 type Props = {};
 
 function StaffMenu({}: Props) {
+  const pageBreadcrumbs = [
+    {
+      title: "Dashboard",
+      path: RouteEnums.DASHBOARD,
+    },
+    { title: "Staff", path: RouteEnums.STAFF },
+  ];
+
   return (
     <>
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+      <PageBreadcrumbs pages={pageBreadcrumbs} />
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
         {[
           {
             label: "Manage Staff",

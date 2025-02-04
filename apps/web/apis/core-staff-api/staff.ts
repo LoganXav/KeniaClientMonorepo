@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const BASE_URL = "staff";
 
-export const useGetStaffListQuery = (params?: any) => {
+export const useGetStaffListQuery = (params?: { tenantId?: number; jobTitle?: string }) => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.STAFF],
     queryFn: async () => {
@@ -20,7 +20,7 @@ export const useGetStaffListQuery = (params?: any) => {
   return { data, isLoading, error, refetch };
 };
 
-export const useStaffCreeateMutation = () => {
+export const useStaffCreateMutation = () => {
   const queryClient = useQueryClient();
   const {
     mutate: staffCreate,

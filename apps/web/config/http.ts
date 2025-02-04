@@ -17,6 +17,7 @@ apiConfig.interceptors.request.use(async (config) => {
   const authUser = await getAuthUserAction();
 
   let data: Record<string, any> = {
+    userId: authUser?.data?.id,
     tenantId: authUser?.data?.tenantId,
   };
 
