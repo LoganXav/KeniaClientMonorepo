@@ -21,7 +21,7 @@ function StaffListPage({}: Props) {
   return (
     <div className="pb-8">
       <PageBreadcrumbs pages={pageBreadcrumbs} />
-      <div className="flex justify-between w-full pb-4">
+      <div className="flex justify-between w-full pb-4 mt-8">
         <div className="hidden md:flex md:flex-1" />
         <Link className="w-full md:w-auto" href={RouteEnums.STAFF_CREATE}>
           <Button className="w-full">

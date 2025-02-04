@@ -17,8 +17,16 @@ export const fontHeading = localFont({
 });
 
 export const fontSans = localFont({
-  src: "../assets/fonts/PlusJakartaSans-Regular.ttf",
+  src: "../assets/fonts/Nunito-Regular.ttf",
   variable: "--font-sans",
+});
+export const fontSansSemiBold = localFont({
+  src: "../assets/fonts/Nunito-SemiBold.ttf",
+  variable: "--font-sans-semibold",
+});
+export const fontSansMedium = localFont({
+  src: "../assets/fonts/Nunito-Medium.ttf",
+  variable: "--font-sans-medium",
 });
 
 /**
@@ -42,7 +50,7 @@ export default function RootLayout({ public: publicPages, protected: protectedPa
   const authUser = getAuthUserServer();
 
   return (
-    <html lang="en" className={cn(fontSans.variable, fontHeading.variable)} suppressHydrationWarning>
+    <html lang="en" className={cn(fontSans.variable, fontHeading.variable, fontSansMedium.variable, fontSansSemiBold.variable)} suppressHydrationWarning>
       <body>
         <QueryClientContextProvider>
           <ThemeProvider

@@ -24,6 +24,7 @@ export const useOnboardingPersonalStepMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF] });
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.TENANT] });
     },
   });
@@ -49,6 +50,7 @@ export const useOnboardingResidentialStepMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF] });
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.TENANT] });
     },
   });
@@ -74,6 +76,7 @@ export const useOnboardingSchoolStepMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF] });
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.TENANT] });
     },
   });

@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useGetStaffListQuery } from "@/apis/core-staff-api/staff";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
 import { formatDateToString } from "@/lib/dates";
-import { useAuthUser } from "@/hooks/use-auth-user";
+import { LoadingContent } from "@/components/loading-content";
 
 type Props = {};
 
@@ -21,8 +21,9 @@ export function StaffListTable({}: Props) {
         accessorKey: "name",
         cell: ({ row }: CellContext<any, unknown>) => (
           <div className="flex space-x-2">
-            <p>{row?.original?.user?.firstName}</p>
-            <p>{row?.original?.user?.lastName}</p>
+            <p>
+              {row?.original?.user?.firstName} {row?.original?.user?.lastName}
+            </p>
           </div>
         ),
       },
@@ -75,13 +76,13 @@ export function StaffListTable({}: Props) {
     []
   );
 
-  const { authUserIds } = useAuthUser();
-
-  const { data } = useGetStaffListQuery();
+  const staffListQueryResult = useGetStaffListQuery();
 
   return (
     <Card className="p-4">
-      <DataTable data={data?.data} columns={columns} />
+      <LoadingContent loading={staffListQueryResult?.isLoading} error={staffListQueryResult?.error} data={staffListQueryResult.data} retry={staffListQueryResult?.refetch}>
+        <DataTable data={staffListQueryResult?.data?.data} columns={columns} />
+      </LoadingContent>
     </Card>
   );
 }

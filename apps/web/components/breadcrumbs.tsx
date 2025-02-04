@@ -1,38 +1,42 @@
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@repo/ui";
+"use client";
+
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button } from "@repo/ui";
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 type Props = { pages: { title: string; path: string }[] };
 
 export function PageBreadcrumbs({ pages }: Props) {
+  const router = useRouter();
   return (
-    <Breadcrumb>
-      <BreadcrumbList className="flex items-center space-x-0">
-        {pages
-          .slice(0, pages.length - 1)
-          .map((page: { title: string; path: string }, idx: number) => (
-            <div key={idx} className="flex items-center space-x-2">
-              <BreadcrumbItem>
-                <BreadcrumbLink>
-                  <Link href={page.path} className="underline">
-                    {page.title}
-                  </Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-            </div>
-          ))}
-        <BreadcrumbItem>
-          <BreadcrumbPage>{pages[pages.length - 1].title}</BreadcrumbPage>
-        </BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
+    <div className="flex items-center gap-4">
+      <Button variant={"outline"} className="border-border bg-card" onClick={() => router.back()}>
+        <ChevronLeft strokeWidth={1} />
+      </Button>
+      <div>
+        <h3 className="font-heading text-3xl">{pages[pages.length - 1]?.title}</h3>
+        <Breadcrumb>
+          <BreadcrumbList className="flex items-center space-x-0">
+            {pages.slice(0, pages.length - 1).map((page: { title: string; path: string }, idx: number) => (
+              <div key={idx} className="flex items-center space-x-2">
+                <BreadcrumbItem>
+                  <BreadcrumbLink>
+                    <Link href={page.path} className="underline">
+                      {page.title}
+                    </Link>
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+              </div>
+            ))}
+            <BreadcrumbItem>
+              <BreadcrumbPage>{pages[pages.length - 1]?.title}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
+    </div>
   );
 }

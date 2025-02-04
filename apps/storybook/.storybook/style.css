@@ -1,4 +1,7 @@
 :root {
-  --font-sans: "Inter";
+  --font-sans: "Nunito-Regular";
+  --font-sans-medium: "Nunito-Medium";
+  --font-sans-semibold: "Nunito-SemiBold";
+
   --font-heading: "CalSans-SemiBold";
 }

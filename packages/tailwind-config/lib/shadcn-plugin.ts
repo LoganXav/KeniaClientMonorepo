@@ -120,6 +120,8 @@ export const shadcnPlugin = plugin(
         },
         fontFamily: {
           sans: ["var(--font-sans)", ...fontFamily.sans],
+          "sans-medium": ["var(--font-sans-medium)", ...fontFamily.sans],
+          "sans-semibold": ["var(--font-sans-semibold)", ...fontFamily.sans],
           heading: ["var(--font-heading)", ...fontFamily.sans],
         },
         keyframes: {

@@ -38,6 +38,7 @@ export const useStaffCreateMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER] });
     },
   });
 

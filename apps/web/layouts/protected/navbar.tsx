@@ -10,6 +10,7 @@ import { RouteEnums } from "@/constants/router/route-constants";
 import Link from "next/link";
 import React from "react";
 import { useAuthUser } from "@/hooks/use-auth-user";
+import { useGetAuthUserQuery } from "@/apis/core-user-api/user";
 
 export default function ProtectedNavbar() {
   const router = useRouter();
@@ -22,6 +23,10 @@ export default function ProtectedNavbar() {
     clearAuthUserAction();
     router.push(RouteEnums.HOME);
   }
+
+  // Fetch auth user data
+  const authUserQueryResult = useGetAuthUserQuery();
+  const authUser = authUserQueryResult?.data?.data;
 
   return (
     <Sheet>
@@ -100,7 +105,9 @@ export default function ProtectedNavbar() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuLabel>
+                  {authUser?.firstName} <span className="font-sans-semibold">{authUser?.lastName}</span>
+                </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleSignOut}>Log out</DropdownMenuItem>
               </DropdownMenuContent>

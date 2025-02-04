@@ -20,6 +20,7 @@ import { useOnboardingPersonalStepMutation, useOnboardingResidentialStepMutation
 import { useGetAuthUserQuery } from "@/apis/core-user-api/user";
 import useDataRef from "@/hooks/use-data-ref";
 import SchoolProfileOnboardingSuccessStep from "./school-profile-onboarding-success-step";
+import { LoadingContent } from "@/components/loading-content";
 
 type Props = {};
 
@@ -229,31 +230,33 @@ function SchoolProfileOnboardingForm({}: Props) {
   };
 
   return (
-    <div className="grid gap-8 w-full">
-      <Card className="flex items-center md:justify-center p-4 gap-4 w-full md:max-w-min mx-auto overflow-x-scroll">
-        {steps.slice(0, 3).map((step, i) => (
-          <div key={i}>
-            <StepperButton complete={completedSteps === 3} stepper={stepper} completedSteps={completedSteps} selected={stepper.step === i} step={i + 1} i={i}>
-              {step.label}
-            </StepperButton>
-          </div>
-        ))}
-      </Card>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleOnboarding)} className="space-y-4">
-          <div className="max-w-4xl mx-auto pb-24"> {steps?.[stepper.step]?.content}</div>
+    <LoadingContent loading={authUserQueryResult?.isLoading} error={authUserQueryResult?.error} retry={authUserQueryResult?.refetch} data={authUserQueryResult?.data}>
+      <div className="grid gap-8 w-full">
+        <Card className="flex items-center md:justify-center p-4 gap-4 w-full md:max-w-min mx-auto overflow-x-scroll">
+          {steps.slice(0, 3).map((step, i) => (
+            <div key={i}>
+              <StepperButton complete={completedSteps === 3} stepper={stepper} completedSteps={completedSteps} selected={stepper.step === i} step={i + 1} i={i}>
+                {step.label}
+              </StepperButton>
+            </div>
+          ))}
+        </Card>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleOnboarding)} className="space-y-4">
+            <div className="max-w-4xl mx-auto pb-24"> {steps?.[stepper.step]?.content}</div>
 
-          <div className="grid md:grid-cols-2 md:max-w-lg gap-4 mx-auto">
-            <Button variant={"outline"} type="button" onClick={previous} disabled={isFirstStep || isLastStep || onboardingPersonalStepPending || onboardingResidentialStepPending || onboardingSchoolStepPending}>
-              Previous
-            </Button>
-            <Button type="button" onClick={next} loading={onboardingPersonalStepPending || onboardingResidentialStepPending || onboardingSchoolStepPending}>
-              {isSecondToLastStep ? "Complete" : isLastStep ? "Go To Dashboard" : "Next"}
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </div>
+            <div className="grid md:grid-cols-2 md:max-w-lg gap-4 mx-auto">
+              <Button variant={"outline"} type="button" onClick={previous} disabled={isFirstStep || isLastStep || onboardingPersonalStepPending || onboardingResidentialStepPending || onboardingSchoolStepPending}>
+                Previous
+              </Button>
+              <Button type="button" onClick={next} loading={onboardingPersonalStepPending || onboardingResidentialStepPending || onboardingSchoolStepPending}>
+                {isSecondToLastStep ? "Complete" : isLastStep ? "Go To Dashboard" : "Next"}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </div>
+    </LoadingContent>
   );
 }
 
