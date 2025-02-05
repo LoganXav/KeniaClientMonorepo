@@ -1,104 +1,218 @@
 # Kenia Client Monorepo
 
+A modern, scalable frontend monorepo for the Kenia School Management System built with Turborepo, Next.js, and TypeScript.
+
 ## Table of Contents
 
 1. [Introduction](#introduction)
 2. [Project Overview](#project-overview)
-3. [Code Architecture](#code-architecture)
-4. [Folder Structure](#folder-structure)
-5. [Setup Instructions](#setup-instructions)
+3. [Technology Stack](#technology-stack)
+4. [Applications](#applications)
+5. [Packages](#packages)
+6. [Getting Started](#getting-started)
+7. [Development Workflow](#development-workflow)
+8. [Architecture Decisions](#architecture-decisions)
+9. [Contributing](#contributing)
 
 ## Introduction
 
-This monorepo contains the frontend components of the Kenia School Management System. It is built using Turborepo for efficient management of multiple packages and applications. The system includes dedicated portals for staff and students, providing tools for managing academic records, attendance, assignments, and administrative tasks. This architecture ensures a streamlined experience across all user roles, promoting efficient school operations.
+This monorepo contains the frontend components of the Kenia School Management System. It uses Turborepo for efficient management of multiple packages and applications, providing a streamlined development experience across all components.
 
-## Project Overview
+## Technology Stack
 
-<details>
-<summary>[-]</summary>
+- **Build Tool**: Turborepo
+- **Package Manager**: Yarn
+- **Core Language**: TypeScript
+- **Main Framework**: Next.js
+- **UI Components**: React
+- **Styling**: Tailwind CSS + shadcn/ui
+- **Documentation**: Storybook
+- **Code Quality**: ESLint, Prettier
+- **Testing**: Jest, React Testing Library
 
-The monorepo consists of the following projects:
+## Applications
 
-1. **Web App**: A Next.js application for the main user interface.
-2. **Storybook**: A Storybook setup for UI component documentation and testing.
-3. **Shared Packages**:
-   - **@repo/ui**: A component library built using `shadcn`.
-   - **tailwind-config**: Shared Tailwind CSS configuration.
-   - **eslint-config**: Shared ESLint configuration.
-   - **typescript-config**: Shared TypeScript configuration.
+### 1. Web App (`apps/web`)
 
-</details>
+The main Next.js application serving the Kenia School Management System.
 
-## Code Architecture
+#### Features
 
-<details>
-<summary>[-]</summary>
+- Server-side rendering
+- API route handling
+- Authentication flows
+- Role-based access control
+- Responsive design
+- Progressive Web App capabilities
 
-The project uses a modular architecture where shared packages are extracted into standalone libraries, promoting reusability and consistency across applications.
-
-- **Web App**: Contains the main Next.js application.
-- **Storybook**: Hosts the Storybook instance for visualizing and testing UI components.
-- **Packages**:
-  - **@repo/ui**: Shared component library.
-  - **tailwind-config**: Centralized Tailwind CSS configuration for consistent styling.
-  - **eslint-config**: Shared ESLint rules.
-  - **typescript-config**: Shared TypeScript configuration for type safety.
-
-The monorepo structure is managed using Turborepo, allowing for efficient builds and dependency management.
-
-</details>
-
-## Folder Structure
-
-<details>
-<summary>[-]</summary>
+#### Key Directories
 
 ```bash
-
-kenia/
-├── apps/
-│   ├── web/
-│   ├── storybook/
-├── packages/
-│   ├── ui/
-│   ├── tailwind-config/
-│   ├── eslint-config/
-│   ├── typescript-config/
-├── .turbo.json/
-├── package.json
-└── README.md
-
+apps/web/
+├── app/             # Next.js app directory
+├── components/      # React components
+├── lib/            # Utility functions
+├── styles/         # Global styles
+└── types/          # TypeScript definitions
 ```
 
-## Setup Instructions
+### 2. Storybook (`apps/storybook`)
 
-<details>
-<summary>[-]</summary>
+Component documentation and testing environment.
 
-To set up Kenia locally, follow these steps:
+#### Features
 
-- Set environment variables in .env.dev file based on .env.example.
+- Component playground
+- Documentation
+- Visual testing
+- Interaction testing
+- Accessibility checks
 
-1. **Clone the repository**:
+#### Key Directories
 
-   ```bash
-   git clone https://github.com/LoganXav/KeniaClientMonorepo.git
-   ```
+```bash
+apps/storybook/
+├── .storybook/     # Storybook configuration
+├── src/
+│   ├── stories/    # Component stories
+│   └── hooks/      # Custom hooks
+└── public/         # Static assets
+```
 
-2. **Navigate to the project directory**:
+## Packages
 
-   ```bash
-   cd KeniaClientMonorepo
-   ```
+### 1. UI Library (`packages/ui`)
 
-3. **Install the dependencies**:
+Shared component library built with shadcn/ui.
 
-   ```bash
-   yarn
-   ```
+#### Features
 
-4. **Start the application**:
+- Atomic design structure
+- Theme customization
+- Accessibility-first components
+- TypeScript support
+- Storybook documentation
 
-   ```bash
-   turbo dev
-   ```
+### 2. Configuration Packages
+
+#### Tailwind Config (`packages/tailwind-config`)
+
+- Shared Tailwind configuration
+- Custom theme settings
+- Utility classes
+
+#### ESLint Config (`packages/eslint-config`)
+
+- Shared ESLint rules
+- TypeScript support
+- React best practices
+
+#### TypeScript Config (`packages/typescript-config`)
+
+- Base TypeScript configuration
+- Path aliases
+- Strict type checking
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js >= 18
+- Yarn >= 1.22
+- Git
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/LoganXav/KeniaClientMonorepo.git
+cd KeniaClientMonorepo
+```
+
+2. Install dependencies:
+
+```bash
+yarn install
+```
+
+3. Set up environment variables:
+
+```bash
+cd apps/web
+cp .env.example .env.local
+```
+
+4. Start development servers:
+
+```bash
+yarn dev
+```
+
+This will start:
+
+- Web app on http://localhost:3000
+- Storybook on http://localhost:6006
+
+## Development Workflow
+
+### Commands
+
+```bash
+# Start all applications
+yarn dev
+
+# Build all applications
+yarn build
+
+# Run tests
+yarn test
+
+# Lint code
+yarn lint
+
+# Format code
+yarn format
+
+# Clean build artifacts
+yarn clean
+```
+
+## Architecture Decisions
+
+### Monorepo Structure
+
+```bash
+kenia/
+├── apps/
+│   ├── web/           # Next.js application
+│   └── storybook/     # Component documentation
+├── packages/
+│   ├── ui/            # Shared components
+│   ├── tailwind-config/
+│   ├── eslint-config/
+│   └── typescript-config/
+├── .turbo/
+└── package.json
+```
+
+### Code Organization
+
+- **Atomic Design**: Components are organized following atomic design principles
+- **Feature-First**: Business logic is organized by feature
+- **Shared Utils**: Common utilities are extracted into shared packages
+- **Type Safety**: Strict TypeScript configuration across all packages
+
+## Contributing
+
+1. Create a feature branch
+2. Make your changes
+3. Run tests and linting
+4. Submit a pull request
+
+### Code Style
+
+- Follow the ESLint configuration
+- Write meaningful commit messages
+- Include tests for new features
+- Document components in Storybook

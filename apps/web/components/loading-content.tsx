@@ -31,7 +31,9 @@ export const LoadingContent: React.FC<LoadingContentProps> = ({ children, data, 
           <Button variant={"outline"} onClick={() => toast.info("Feature not implemented yet!.")}>
             Send Report
           </Button>
-          <Button onClick={retry}>Retry</Button>
+          <Button disabled={loading} onClick={retry}>
+            Retry
+          </Button>
         </div>
       </div>
     );
