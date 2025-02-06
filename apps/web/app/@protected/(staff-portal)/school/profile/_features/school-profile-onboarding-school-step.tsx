@@ -1,7 +1,8 @@
 import React from "react";
-import { FormControl, FormField, FormItem, FormMessage, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
+import { DatePicker, FormControl, FormField, FormItem, FormMessage, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { SchoolProfileFormReturn } from "../_types/school-profile-form-types";
 import { useGetOnboardingTemplateQuery } from "@/apis/core-onboarding-api/onboarding";
+import { FileUpload } from "@/components/file-upload";
 
 type StepProps = {
   form: SchoolProfileFormReturn;
@@ -69,30 +70,18 @@ export function SchoolProfileOnboardingSchoolStep({ form }: StepProps) {
           </FormItem>
         )}
       />
+
       <FormField
         control={form.control}
         name="establishedDate"
         render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <Input placeholder="School Established Date" {...field} />
-            </FormControl>
+          <FormItem className="flex flex-col">
+            <DatePicker field={field} placeholder="School Established Date" />
             <FormMessage />
           </FormItem>
         )}
       />
-      <FormField
-        control={form.control}
-        name="logoUrl"
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <Input placeholder="School Logo Url" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+
       <div className="md:col-span-2">
         <FormField
           control={form.control}
@@ -107,6 +96,21 @@ export function SchoolProfileOnboardingSchoolStep({ form }: StepProps) {
           )}
         />
       </div>
+
+      <FormField
+        control={form.control}
+        name="logoUrl"
+        render={({ field }) => (
+          <FormItem className="flex flex-col">
+            <FormControl>
+              <FileUpload field={field} placeholder="Upload School Logo" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <div className="hidden md:block" />
 
       <FormField
         control={form.control}

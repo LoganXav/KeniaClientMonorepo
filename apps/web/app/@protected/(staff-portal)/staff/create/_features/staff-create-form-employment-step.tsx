@@ -2,7 +2,8 @@
 
 import React from "react";
 import { StaffCreateFormReturn, StaffTemplateOptions } from "../_types/staff-create-form-types";
-import { FormControl, FormField, FormItem, FormMessage, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
+import { DatePicker, FormControl, FormField, FormItem, FormMessage, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
+import { FileUpload } from "@/components/file-upload";
 
 type StepProps = {
   form: StaffCreateFormReturn;
@@ -91,22 +92,20 @@ export function StaffCreateFormEmploymentStep({ form, staffTemplateQuery }: Step
         control={form.control}
         name="startDate"
         render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <Input placeholder="Start Date" {...field} />
-            </FormControl>
+          <FormItem className="flex flex-col">
+            <DatePicker field={field} placeholder="Resumption Date" />
             <FormMessage />
           </FormItem>
         )}
       />
-
+      <div className="hidden md:block" />
       <FormField
         control={form.control}
-        name="cvUrl"
+        name="cvFile"
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="flex flex-col">
             <FormControl>
-              <Input placeholder="CV" {...field} />
+              <FileUpload field={field} placeholder="Upload CV" />
             </FormControl>
             <FormMessage />
           </FormItem>

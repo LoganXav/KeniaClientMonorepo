@@ -2,7 +2,7 @@
 
 import React from "react";
 import { StaffCreateFormReturn } from "../_types/staff-create-form-types";
-import { FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@repo/ui";
+import { DatePicker, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@repo/ui";
 
 type StepProps = {
   form: StaffCreateFormReturn;
@@ -85,18 +85,16 @@ export function StaffCreateFormPersonalStep({ form }: StepProps) {
             </FormItem>
           )}
         />
-        {/* <FormField
+        <FormField
           control={form.control}
           name="dateOfBirth"
           render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="Date of Birth" {...field} />
-              </FormControl>
+            <FormItem className="flex flex-col">
+              <DatePicker field={field} placeholder="Date of Birth" />
               <FormMessage />
             </FormItem>
           )}
-        /> */}
+        />
       </div>
     </div>
   );

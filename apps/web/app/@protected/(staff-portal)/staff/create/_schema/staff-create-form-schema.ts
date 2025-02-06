@@ -29,9 +29,12 @@ export const StaffCreateFormSchema = z.object({
     invalid_type_error: "Gender must be a string",
   }),
 
-  dateOfBirth: z.string({
-    required_error: "Date of birth is required",
-  }),
+  dateOfBirth: z
+    .date({
+      required_error: "Date of birth is required",
+      invalid_type_error: "Invalid date format",
+    })
+    .transform((date) => date.toISOString()),
 
   email: z
     .string({
@@ -75,15 +78,16 @@ export const StaffCreateFormSchema = z.object({
   }),
 
   startDate: z
-    .string({
-      required_error: "Start date is required",
-      invalid_type_error: "Start date must be a valid ISO date string",
+    .date({
+      required_error: "Resumption date is required",
+      invalid_type_error: "Invalid date format",
     })
-    .datetime("Invalid start date format"),
+    .transform((date) => date.toISOString()),
 
   tin: z.string().optional(),
 
   highestLevelEdu: z.string().optional(),
 
   cvUrl: z.string().url("Invalid CV URL").optional(),
+  cvFile: z.instanceof(File).optional(),
 });

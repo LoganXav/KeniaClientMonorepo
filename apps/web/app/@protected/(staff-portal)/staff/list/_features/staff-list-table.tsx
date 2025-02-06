@@ -10,7 +10,7 @@ import { useGetStaffListQuery } from "@/apis/core-staff-api/staff";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
 import { formatDateToString } from "@/lib/dates";
 import { LoadingContent } from "@/components/loading-content";
-import { CirclePlus } from "lucide-react";
+import { CirclePlus, UserRound } from "lucide-react";
 
 type Props = {};
 
@@ -66,7 +66,9 @@ export function StaffListTable({}: Props) {
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <Link href={`${RouteEnums.STAFF}/${staff.id}`}>
-                  <DropdownMenuItem>View</DropdownMenuItem>
+                  <DropdownMenuItem className="flex justify-between">
+                    View <UserRound className="ml-2" size={15} strokeWidth={1} />
+                  </DropdownMenuItem>
                 </Link>
               </DropdownMenuContent>
             </DropdownMenu>

@@ -30,7 +30,7 @@ export function StaffCreateForm({}: Props) {
 
   const handleCreateStaff = (values: StaffCreateFormSchemaType) => {
     staffCreate(
-      { payload: { ...values, tenantId: authUserIds?.tenantId, residentialCountryId: Number(values.residentialCountryId), residentialStateId: Number(values.residentialStateId), residentialLgaId: Number(values.residentialLgaId), residentialZipCode: Number(values.residentialZipCode) } },
+      { payload: { ...values, tenantId: authUserIds?.tenantId, residentialCountryId: Number(values.residentialCountryId), residentialStateId: Number(values.residentialStateId), residentialLgaId: Number(values.residentialLgaId), residentialZipCode: Number(values.residentialZipCode), cvUrl: "" } },
       {
         onSuccess: (result) => {
           toast.success(result.message);
@@ -53,7 +53,7 @@ export function StaffCreateForm({}: Props) {
     phoneNumber: "",
     gender: "",
     email: "",
-    // dateOfBirth: new Date(),
+    dateOfBirth: "",
 
     residentialAddress: "",
     residentialLgaId: "",
@@ -65,6 +65,7 @@ export function StaffCreateForm({}: Props) {
     tin: "",
 
     cvUrl: "",
+    cvFile: undefined,
     jobTitle: "",
     employmentType: "",
     startDate: "",
@@ -155,7 +156,7 @@ export function StaffCreateForm({}: Props) {
 
   return (
     <>
-      <Card className="flex items-center md:justify-center p-4 gap-4 w-full md:max-w-min mx-auto overflow-x-scroll my-8">
+      <Card className="flex items-center xl:justify-center p-4 gap-4 w-full md:max-w-min mx-auto overflow-x-scroll my-8">
         {steps.slice(0, steps.length - 1).map((step, i) => (
           <div key={i}>
             <StepperButton stepper={stepper} completedSteps={completedSteps} complete={steps.length - 1 == completedSteps} selected={stepper.step === i} step={i + 1} i={i}>
@@ -178,7 +179,7 @@ export function StaffCreateForm({}: Props) {
         </Form>
       </div>
 
-      <div className="grid md:grid-cols-2 md:max-w-lg gap-4 mx-auto mt-12">
+      <div className="grid md:grid-cols-2 md:max-w-lg gap-4 mx-auto my-12">
         <Button variant={"outline"} type="button" onClick={previous} disabled={isFirstStep || isLastStep || staffCreatePending}>
           Previous
         </Button>
@@ -188,16 +189,4 @@ export function StaffCreateForm({}: Props) {
       </div>
     </>
   );
-}
-
-{
-  /* <div className="flex items-center justify-center gap-4">
-          <Link href={RouteEnums.STAFF_LIST}>
-            <Button variant={"outline"} className="py-6 rounded-lg">
-              Cancel
-            </Button>
-          </Link>
-
-          <Button className="py-6 rounded-lg">Submit</Button>
-        </div> */
 }

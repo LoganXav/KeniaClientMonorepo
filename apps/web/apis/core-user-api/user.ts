@@ -7,7 +7,7 @@ const BASE_URL = "user";
 
 export const useGetAuthUserQuery = (params?: { userId?: number }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.USER, params?.userId],
+    queryKey: [QueryTagEnums.USER],
     queryFn: async () => {
       return await getRequest<UserWithRelationsType>({
         endpoint: `${BASE_URL}/me`,

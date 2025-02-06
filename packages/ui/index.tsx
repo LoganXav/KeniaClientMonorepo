@@ -15,9 +15,9 @@ export * from "./components/ui/card";
 export * from "./components/ui/table";
 export * from "./components/ui/search-input";
 
-// export * from "./components/ui/calendar";
+export * from "./components/ui/calendar";
 export * from "./components/ui/popover";
-// export * from "./components/ui/date-picker";
+export * from "./components/ui/date-picker";
 export * from "./components/ui/scroll-area";
 export * from "./components/ui/breadcrumbs";
 

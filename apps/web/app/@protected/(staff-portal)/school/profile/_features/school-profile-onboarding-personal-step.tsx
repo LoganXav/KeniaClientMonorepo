@@ -1,5 +1,5 @@
 import React from "react";
-import { FormControl, FormField, FormItem, FormMessage, Input, toast } from "@repo/ui";
+import { DatePicker, FormControl, FormField, FormItem, FormMessage, Input, toast } from "@repo/ui";
 import { SchoolProfileFormReturn } from "../_types/school-profile-form-types";
 
 type StepProps = {
@@ -74,10 +74,8 @@ export default function SchoolProfileOnboardingPersonalStep({ form }: StepProps)
         control={form.control}
         name="dateOfBirth"
         render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <Input placeholder="Date of Birth" {...field} />
-            </FormControl>
+          <FormItem className="flex flex-col">
+            <DatePicker field={field} placeholder="Date of Birth" />
             <FormMessage />
           </FormItem>
         )}

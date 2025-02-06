@@ -62,6 +62,7 @@ function SchoolProfileOnboardingForm({}: Props) {
     contactPhone: "",
     establishedDate: "",
     logoUrl: "",
+    logoFile: undefined,
     address: "",
     stateId: "",
     lgaId: "",
@@ -191,7 +192,7 @@ function SchoolProfileOnboardingForm({}: Props) {
       case 2:
         onboardingSchoolStep(
           {
-            payload: { ...values, userId: authUser?.id, postalCode: String(values.postalCode), zipCode: Number(values.zipCode), stateId: Number(values.stateId), lgaId: Number(values.lgaId), countryId: Number(values.countryId) },
+            payload: { ...values, userId: authUser?.id, postalCode: String(values.postalCode), zipCode: Number(values.zipCode), stateId: Number(values.stateId), lgaId: Number(values.lgaId), countryId: Number(values.countryId), logoUrl: "" },
           },
           {
             onSuccess: (result) => {
@@ -242,10 +243,10 @@ function SchoolProfileOnboardingForm({}: Props) {
           ))}
         </Card>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleOnboarding)} className="space-y-4">
-            <div className="max-w-4xl mx-auto pb-24"> {steps?.[stepper.step]?.content}</div>
+          <form onSubmit={form.handleSubmit(handleOnboarding)} className="">
+            <div className="max-w-4xl mx-auto"> {steps?.[stepper.step]?.content}</div>
 
-            <div className="grid md:grid-cols-2 md:max-w-lg gap-4 mx-auto">
+            <div className="grid md:grid-cols-2 md:max-w-lg gap-4 mx-auto my-12">
               <Button variant={"outline"} type="button" onClick={previous} disabled={isFirstStep || isLastStep || onboardingPersonalStepPending || onboardingResidentialStepPending || onboardingSchoolStepPending}>
                 Previous
               </Button>

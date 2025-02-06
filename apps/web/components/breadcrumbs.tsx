@@ -22,10 +22,8 @@ export function PageBreadcrumbs({ pages }: Props) {
             {pages.slice(0, pages.length - 1).map((page: { title: string; path: string }, idx: number) => (
               <div key={idx} className="flex items-center space-x-2">
                 <BreadcrumbItem>
-                  <BreadcrumbLink>
-                    <Link href={page.path} className="underline">
-                      {page.title}
-                    </Link>
+                  <BreadcrumbLink href={page.path} className="underline">
+                    {page.title}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
