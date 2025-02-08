@@ -7,20 +7,21 @@ import { CircleX } from "lucide-react";
 
 interface LoadingContentProps {
   children: React.ReactNode;
-  data: any;
-  loading: boolean;
-  error: Error | null;
-  retry: () => Promise<any>;
+  data?: any;
+  loading?: boolean;
+  error?: Error | null;
+  retry?: () => Promise<any>;
+  shouldLoad?: boolean;
 }
 
-export const LoadingContent: React.FC<LoadingContentProps> = ({ children, data, loading, error, retry }) => {
+export const LoadingContent: React.FC<LoadingContentProps> = ({ children, data = null, loading = false, error = null, retry = () => Promise.resolve(), shouldLoad = false }) => {
   if (loading)
     return (
       <div className="w-full h-full flex justify-center items-center p-8">
         <Loader />
       </div>
     );
-  if (error || (!loading && !data))
+  if (shouldLoad && (error || (!loading && !data)))
     return (
       <div className="flex flex-col items-center justify-center p-8 gap-4">
         <div className="flex flex-col items-center space-y-2">

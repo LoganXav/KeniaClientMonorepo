@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Card, CardDescription, CardTitle, Form, toast } from "@repo/ui";
@@ -17,19 +16,31 @@ import StepperButton from "@/components/stepper-button";
 import StaffCreateFormSuccessStep from "./staff-create-form-success-step";
 import { StaffCreateFormResidentialStep } from "./staff-create-form-residential-step";
 import { StaffCreateFormEmploymentStep } from "./staff-create-form-employment-step";
+import useDataRef from "@/hooks/use-data-ref";
+import { useGetSingleStaffQuery, useStaffUpdateMutation } from "@/apis/core-staff-api/staff";
+import { LoadingContent } from "@/components/loading-content";
 
-type Props = {};
+type Props = {
+  staffId?: number;
+};
 
-export function StaffCreateForm({}: Props) {
+export function StaffCreateForm({ staffId }: Props) {
   const router = useRouter();
   const stepper = useStepper();
   const { authUserIds } = useAuthUser();
   const [completedSteps, setCompletedSteps] = React.useState(0);
 
   const { staffCreate, staffCreatePending, staffCreateError } = useStaffCreateMutation();
+  const staffQueryResult = staffId ? useGetSingleStaffQuery({ staffId }) : null;
+  const staff = staffQueryResult?.data?.data;
+
+  const isEdit = !!staffId;
+
+  const { staffUpdate, staffUpdatePending, staffUpdateError } = useStaffUpdateMutation({ staffId });
 
   const handleCreateStaff = (values: StaffCreateFormSchemaType) => {
-    staffCreate(
+    const mutate = isEdit ? staffUpdate : staffCreate;
+    mutate(
       { payload: { ...values, tenantId: authUserIds?.tenantId, residentialCountryId: Number(values.residentialCountryId), residentialStateId: Number(values.residentialStateId), residentialLgaId: Number(values.residentialLgaId), residentialZipCode: Number(values.residentialZipCode), cvUrl: "" } },
       {
         onSuccess: (result) => {
@@ -47,23 +58,19 @@ export function StaffCreateForm({}: Props) {
   const defaultValues = {
     tenantId: authUserIds?.tenantId,
     roleId: 1,
-
     firstName: "",
     lastName: "",
     phoneNumber: "",
     gender: "",
     email: "",
     dateOfBirth: "",
-
     residentialAddress: "",
     residentialLgaId: "",
     residentialStateId: "",
     residentialCountryId: "",
     residentialZipCode: "",
-
     nin: "",
     tin: "",
-
     cvUrl: "",
     cvFile: undefined,
     jobTitle: "",
@@ -78,6 +85,35 @@ export function StaffCreateForm({}: Props) {
     mode: "onSubmit",
   });
 
+  const dataRef = useDataRef({ form });
+
+  // Initial Values
+  React.useEffect(() => {
+    if (staff) {
+      dataRef.current.form.reset((values: StaffCreateFormSchemaType) => ({
+        ...values,
+        firstName: staff?.user?.firstName || values.firstName,
+        lastName: staff?.user?.lastName || values.lastName,
+        phoneNumber: staff?.user?.phoneNumber || values.phoneNumber,
+        gender: staff?.user?.gender || values.gender,
+        email: staff?.user?.email || values.email,
+        dateOfBirth: staff?.user?.dateOfBirth || values.dateOfBirth,
+        residentialAddress: staff?.user?.residentialAddress || values.residentialAddress,
+        residentialLgaId: Number(staff?.user?.residentialLgaId) || values.residentialLgaId,
+        residentialStateId: Number(staff?.user?.residentialStateId) || values.residentialStateId,
+        residentialCountryId: Number(staff?.user?.residentialCountryId) || values.residentialCountryId,
+        residentialZipCode: Number(staff?.user?.residentialZipCode) || values.residentialZipCode,
+        nin: staff?.nin || values.nin,
+        tin: staff?.tin || values.tin,
+        cvUrl: staff?.cvUrl || values.cvUrl,
+        jobTitle: staff?.jobTitle || values.jobTitle,
+        employmentType: staff?.employmentType || values.employmentType,
+        startDate: staff?.startDate || values.startDate,
+        highestLevelEdu: staff?.highestLevelEdu || values.highestLevelEdu,
+      }));
+    }
+  }, [staff, dataRef]);
+
   const residentialStateId = form.watch("residentialStateId");
   const staffTemplateQuery = useGetStaffTemplateQuery(
     React.useMemo(
@@ -90,6 +126,7 @@ export function StaffCreateForm({}: Props) {
 
   const stepProps = {
     form,
+    isEdit,
     staffTemplateQuery: staffTemplateQuery as StaffTemplateOptions,
   };
 
@@ -118,7 +155,7 @@ export function StaffCreateForm({}: Props) {
     {
       id: 4,
       label: "Submission Successful !",
-      description: "Your staff profile has been successfully created.",
+      description: isEdit ? "Your staff profile has been successfully edited." : "Your staff profile has been successfully created.",
       content: <StaffCreateFormSuccessStep />,
       fields: [""],
     },
@@ -155,7 +192,7 @@ export function StaffCreateForm({}: Props) {
   };
 
   return (
-    <>
+    <LoadingContent loading={staffQueryResult?.isLoading} error={staffQueryResult?.error} retry={staffQueryResult?.refetch} data={staffQueryResult?.data} shouldLoad={!!staffId}>
       <Card className="flex items-center xl:justify-center p-4 gap-4 w-full md:max-w-min mx-auto overflow-x-scroll my-8">
         {steps.slice(0, steps.length - 1).map((step, i) => (
           <div key={i}>
@@ -180,13 +217,13 @@ export function StaffCreateForm({}: Props) {
       </div>
 
       <div className="grid md:grid-cols-2 md:max-w-lg gap-4 mx-auto my-12">
-        <Button variant={"outline"} type="button" onClick={previous} disabled={isFirstStep || isLastStep || staffCreatePending}>
+        <Button variant={"outline"} type="button" onClick={previous} disabled={isFirstStep || isLastStep || staffCreatePending || staffUpdatePending}>
           Previous
         </Button>
-        <Button type="button" onClick={next} loading={staffCreatePending}>
+        <Button type="button" onClick={next} loading={staffCreatePending || staffUpdatePending}>
           {isSecondToLastStep ? "Complete" : isLastStep ? "Go To Staff List" : "Next"}
         </Button>
       </div>
-    </>
+    </LoadingContent>
   );
 }

@@ -6,9 +6,10 @@ import { DatePicker, FormControl, FormField, FormItem, FormLabel, FormMessage, I
 
 type StepProps = {
   form: StaffCreateFormReturn;
+  isEdit: boolean;
 };
 
-export function StaffCreateFormPersonalStep({ form }: StepProps) {
+export function StaffCreateFormPersonalStep({ form, isEdit }: StepProps) {
   return (
     <div>
       <div className="grid gap-4 md:grid-cols-2">
@@ -55,7 +56,7 @@ export function StaffCreateFormPersonalStep({ form }: StepProps) {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Email Address" {...field} />
+                <Input placeholder="Email Address" disabled={isEdit} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

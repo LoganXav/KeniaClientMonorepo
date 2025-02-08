@@ -73,3 +73,28 @@ export const useGetSingleStaffQuery = (path?: { staffId: number }, params?: Reco
 
   return { data, isLoading, error, refetch };
 };
+
+export const useStaffUpdateMutation = (path?: { staffId?: number }) => {
+  const queryClient = useQueryClient();
+  const {
+    mutate: staffUpdate,
+    isPending: staffUpdatePending,
+    error: staffUpdateError,
+  } = useMutation({
+    mutationFn: async ({ payload, params }: { payload: StaffCreateFormSchemaType; params?: { tenantId?: number } }) => {
+      const data = await postRequest<StaffType>({
+        endpoint: `${BASE_URL}/update/${path?.staffId}`,
+        payload,
+        config: { params },
+      });
+
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER] });
+    },
+  });
+
+  return { staffUpdate, staffUpdatePending, staffUpdateError };
+};

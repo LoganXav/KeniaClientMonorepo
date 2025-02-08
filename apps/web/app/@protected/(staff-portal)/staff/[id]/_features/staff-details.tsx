@@ -34,7 +34,7 @@ function StaffDetails({ staffId }: { staffId: number }) {
               ))}
             </SelectContent>
           </Select>
-          <Link className="" href={RouteEnums.STAFF_CREATE}>
+          <Link className="" href={`${RouteEnums.STAFF_CREATE}?id=${staff?.data?.id}`}>
             <Button className="w-full">
               Edit Staff <UserRoundPen size={18} strokeWidth={1} />
             </Button>

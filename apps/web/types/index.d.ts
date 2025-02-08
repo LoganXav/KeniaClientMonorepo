@@ -50,6 +50,11 @@ export interface StaffType {
   user: UserWithRelations;
   roleId: number;
   role: Role | null;
+  nin: string | null;
+  tin: string | null;
+  cvUrl: string | null;
+  employmentType: string | null;
+  highestLevelEdu: string | null;
   group: Group[];
   classes: Class[];
   subjects: Subject[];
