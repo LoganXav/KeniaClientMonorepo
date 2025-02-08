@@ -130,11 +130,11 @@ export default function ProtectedSidebar() {
               route.subRoutes ? (
                 <Accordion type="single" collapsible className="w-full" key={routeIndex}>
                   <AccordionItem className="border-0" value={`item-${groupIndex}-${routeIndex}`}>
-                    <AccordionTrigger className={`w-full p-4 rounded-lg border mt-2 ${isActiveRoute(route.path) || isActiveSubRoute(route.subRoutes) ? "bg-black/5" : "hover:bg-black/5"}`}>{route.name}</AccordionTrigger>
+                    <AccordionTrigger className={`w-full p-4 rounded-lg border mt-2  ${isActiveRoute(route.path) || isActiveSubRoute(route.subRoutes) ? "bg-black/5" : "hover:bg-black/5"}`}>{route.name}</AccordionTrigger>
 
                     {route.subRoutes?.map((subRoute, subRouteIndex) => (
                       <Link className="w-full" key={subRouteIndex} href={subRoute.path}>
-                        <AccordionContent className={`w-full p-4 rounded-lg mt-2 ${isActiveRoute(subRoute.path) ? "bg-black/10 border border-foreground" : "border hover:bg-black/5"}`}>{subRoute.name}</AccordionContent>
+                        <AccordionContent className={`w-full p-4 border rounded-lg mt-2 ${isActiveRoute(subRoute.path) ? "bg-black/10 border-foreground" : "hover:bg-black/5"}`}>{subRoute.name}</AccordionContent>
                       </Link>
                     ))}
                   </AccordionItem>

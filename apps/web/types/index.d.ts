@@ -55,6 +55,7 @@ export interface StaffType {
   subjects: Subject[];
   tenantId: number;
   tenant: Tenant;
+  startDate: string;
 }
 
 export interface StudentType {

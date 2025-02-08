@@ -51,7 +51,7 @@ export default function ProtectedNavbar() {
                   <Bell strokeWidth={1} />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-[375px]" align="end">
+              <DropdownMenuContent className="w-[400px]" align="end">
                 <div className="px-1 md:px-4 pt-4">
                   <DropdownMenuLabel className="flex justify-between items-center">
                     <p className="text-base">Notifications</p>

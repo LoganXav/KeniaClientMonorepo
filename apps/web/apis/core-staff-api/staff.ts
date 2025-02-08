@@ -58,3 +58,18 @@ export const useGetStaffTemplateQuery = (params: { codeValue?: number }) => {
 
   return { data, isLoading, error, refetch };
 };
+
+export const useGetSingleStaffQuery = (path?: { staffId: number }, params?: Record<string, any>) => {
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: [QueryTagEnums.STAFF, path?.staffId],
+    queryFn: async () => {
+      return await getRequest<StaffType>({
+        endpoint: `${BASE_URL}/info/${path?.staffId}`,
+        config: { params },
+      });
+    },
+    enabled: !!path?.staffId,
+  });
+
+  return { data, isLoading, error, refetch };
+};

@@ -7,10 +7,6 @@ type Props = {};
 
 function StaffCreatePage({}: Props) {
   const pageBreadcrumbs = [
-    {
-      title: "Dashboard",
-      path: RouteEnums.DASHBOARD,
-    },
     { title: "Staff", path: RouteEnums.STAFF },
     { title: "Staff List", path: RouteEnums.STAFF_LIST },
     { title: "Employ Staff", path: RouteEnums.STAFF_CREATE },

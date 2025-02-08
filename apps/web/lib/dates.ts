@@ -1,6 +1,8 @@
 import { format, parseISO } from "date-fns";
 
-export const formatDateToString = (dateString: string): string => {
+export const formatDateToString = (dateString: string | undefined): string => {
+  if (!dateString) return "";
+
   const date = parseISO(dateString);
   const day = Number(format(date, "d")); // Convert to number
   const monthYear = format(date, "MMMM, yyyy");

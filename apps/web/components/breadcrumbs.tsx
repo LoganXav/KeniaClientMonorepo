@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-type Props = { pages: { title: string; path: string }[] };
+type Props = { pages: { title: string; path?: string }[] };
 
 export function PageBreadcrumbs({ pages }: Props) {
   const router = useRouter();
@@ -19,10 +19,10 @@ export function PageBreadcrumbs({ pages }: Props) {
         <h3 className="font-heading text-3xl">{pages[pages.length - 1]?.title}</h3>
         <Breadcrumb>
           <BreadcrumbList className="flex items-center space-x-0">
-            {pages.slice(0, pages.length - 1).map((page: { title: string; path: string }, idx: number) => (
+            {pages.slice(0, pages.length - 1).map((page: { title: string; path?: string }, idx: number) => (
               <div key={idx} className="flex items-center space-x-2">
                 <BreadcrumbItem>
-                  <BreadcrumbLink href={page.path} className="underline">
+                  <BreadcrumbLink href={page.path || ""} className="underline">
                     {page.title}
                   </BreadcrumbLink>
                 </BreadcrumbItem>

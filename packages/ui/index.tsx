@@ -21,4 +21,7 @@ export * from "./components/ui/date-picker";
 export * from "./components/ui/scroll-area";
 export * from "./components/ui/breadcrumbs";
 
+export * from "./components/ui/multiselect";
+export * from "./components/ui/dialog";
+
 export { cn } from "./lib/utils";

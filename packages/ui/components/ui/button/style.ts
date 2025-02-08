@@ -1,5 +1,5 @@
 export const ButtonStyle = {
-  base: "inline-flex gap-2 items-center justify-center rounded-md text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:border-muted-foreground disabled:pointer-events-none ring-offset-background",
+  base: "inline-flex gap-2 items-center justify-center rounded-md text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:border-foreground focus-visible:rounded-md disabled:opacity-50 disabled:border-muted-foreground disabled:pointer-events-none ring-offset-background",
   variants: {
     default: "bg-foreground text-primary-foreground shadow hover:bg-primary/90",
     secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",

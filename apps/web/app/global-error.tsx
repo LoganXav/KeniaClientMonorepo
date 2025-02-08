@@ -7,9 +7,9 @@ import { useEffect } from "react";
 import * as Sentry from "@sentry/nextjs";
 
 export default function GlobalErrorPage({ error }: { error: Error }) {
-  useEffect(() => {
-    Sentry.captureException(error);
-  }, [error]);
+  // useEffect(() => {
+  //   Sentry.captureException(error);
+  // }, [error]);
 
   return (
     <html>
