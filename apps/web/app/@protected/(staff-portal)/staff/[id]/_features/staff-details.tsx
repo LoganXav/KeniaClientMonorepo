@@ -9,6 +9,10 @@ import { UserRoundPen } from "lucide-react";
 import { useGetSingleStaffQuery } from "@/apis/core-staff-api/staff";
 import { LoadingContent } from "@/components/loading-content";
 import { formatDateToString } from "@/lib/dates";
+import { StaffDetailsPersonalInfoTab } from "./staff-details-personal-info-tab";
+import { StaffDetailsRoutineTab } from "./staff-details-routine-tab";
+import { StaffDetailsAttendanceTab } from "./staff-details-attendance-tab";
+import { StaffDetailsSalaryTab } from "./staff-details-salary-tab";
 
 function StaffDetails({ staffId }: { staffId: number }) {
   const { data: staff, isLoading, error, refetch } = useGetSingleStaffQuery({ staffId });
@@ -55,10 +59,13 @@ function StaffDetails({ staffId }: { staffId: number }) {
               </div>
               <div className="p-4 space-y-2">
                 <div className="uppercase text-sm font-heading pb-2">Basic Information</div>
-                {[1, 2, 3].map((info, idx) => (
-                  <div key={idx} className="flex flex-col">
-                    <p>Class & Section</p>
-                    <p className="text-muted-foreground">III, A</p>
+                {[
+                  { label: "Gender", value: staff?.data?.user?.gender },
+                  { label: "Date of Birth", value: formatDateToString(staff?.data?.user?.dateOfBirth) },
+                ].map((info, idx) => (
+                  <div key={idx} className="flex justify-between md:flex-col">
+                    <p>{info.label}</p>
+                    <p className="text-muted-foreground">{info.value}</p>
                   </div>
                 ))}
               </div>
@@ -66,10 +73,13 @@ function StaffDetails({ staffId }: { staffId: number }) {
             <Card>
               <div className="p-4 space-y-2">
                 <div className="uppercase text-sm font-heading pb-2">Contact Information</div>
-                {[1, 2, 3].map((info, idx) => (
-                  <div key={idx} className="flex items-center gap-2 justify-between">
-                    <p>Class & Section</p>
-                    <p className="text-muted-foreground">III, A</p>
+                {[
+                  { label: "Email", value: staff?.data?.user?.email },
+                  { label: "Phone", value: staff?.data?.user?.phoneNumber },
+                ].map((info, idx) => (
+                  <div key={idx} className="flex justify-between md:flex-col">
+                    <p>{info.label}</p>
+                    <p className="text-muted-foreground">{info.value}</p>
                   </div>
                 ))}
               </div>
@@ -88,34 +98,21 @@ function StaffDetails({ staffId }: { staffId: number }) {
                 </div>
                 <ScrollBar orientation="horizontal" />
               </ScrollArea>
+
               <TabsContent value="personal">
-                <div className="space-y-4">
-                  <Card>
-                    <div className="p-4 border-b font-heading uppercase text-sm">Profile Details</div>
-                    <div className="p-4">Details</div>
-                  </Card>
-                  <Card>
-                    <div className="p-4 border-b font-heading uppercase text-sm">Address</div>
-                    <div className="p-4">Address</div>
-                  </Card>
-                  <Card>
-                    <div className="p-4 border-b font-heading uppercase text-sm">Work Details</div>
-                    <div className="p-4">Details</div>
-                  </Card>
-                  <Card>
-                    <div className="p-4 border-b font-heading uppercase text-sm">Social Media</div>
-                    <div className="p-4">Links</div>
-                  </Card>
-                </div>
+                <StaffDetailsPersonalInfoTab />
               </TabsContent>
+
               <TabsContent value="routine">
-                <Card className="p-4">Routine</Card>
+                <StaffDetailsRoutineTab />
               </TabsContent>
+
               <TabsContent value="attendance">
-                <Card className="p-4">Leave & Attendance</Card>
+                <StaffDetailsAttendanceTab />
               </TabsContent>
+
               <TabsContent value="salary">
-                <Card className="p-4">Salary</Card>
+                <StaffDetailsSalaryTab />
               </TabsContent>
             </Tabs>
           </div>
