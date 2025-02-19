@@ -14,7 +14,7 @@ interface LoadingContentProps {
   shouldLoad?: boolean;
 }
 
-export const LoadingContent: React.FC<LoadingContentProps> = ({ children, data = null, loading = false, error = null, retry = () => Promise.resolve(), shouldLoad = false }) => {
+export const LoadingContent: React.FC<LoadingContentProps> = ({ children, data = null, loading = false, error = null, retry = () => Promise.resolve(), shouldLoad = true }) => {
   if (loading)
     return (
       <div className="w-full h-full flex justify-center items-center p-8">

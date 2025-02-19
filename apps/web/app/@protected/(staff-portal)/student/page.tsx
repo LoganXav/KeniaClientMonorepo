@@ -6,13 +6,13 @@ import React from "react";
 
 type Props = {};
 
-function StaffMenu({}: Props) {
+function StudentMenu({}: Props) {
   const pageBreadcrumbs = [
     {
       title: "Dashboard",
       path: RouteEnums.DASHBOARD,
     },
-    { title: "Staff", path: RouteEnums.STAFF },
+    { title: "Student", path: RouteEnums.STUDENT },
   ];
 
   return (
@@ -21,14 +21,9 @@ function StaffMenu({}: Props) {
       <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
         {[
           {
-            label: "Manage Staff",
-            desc: "Oversee all staff activities and departmental assignments.",
-            url: RouteEnums.STAFF_LIST,
-          },
-          {
-            label: "Manage Payroll",
-            desc: "Oversee all staff payment and payment history.",
-            url: RouteEnums.STAFF_LIST,
+            label: "Manage Students",
+            desc: "Oversee all student activities and academic records.",
+            url: RouteEnums.STUDENT_LIST,
           },
         ].map(({ label, desc, url }: Record<string, any>, idx: number) => (
           <Link key={idx} href={url} className="block">
@@ -45,4 +40,4 @@ function StaffMenu({}: Props) {
   );
 }
 
-export default StaffMenu;
+export default StudentMenu;

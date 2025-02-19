@@ -3,7 +3,7 @@
 import React from "react";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Card, CardDescription, CardTitle, Form, toast } from "@repo/ui";
+import { Button, Card, CardDescription, CardTitle, Form, toast, Typography } from "@repo/ui";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useGetStaffTemplateQuery, useStaffCreateMutation } from "@/apis/core-staff-api/staff";
@@ -98,12 +98,14 @@ export function StaffCreateForm({ staffId }: Props) {
         gender: staff?.user?.gender || values.gender,
         email: staff?.user?.email || values.email,
         dateOfBirth: staff?.user?.dateOfBirth || values.dateOfBirth,
+        nin: staff?.nin || values.nin,
+
         residentialAddress: staff?.user?.residentialAddress || values.residentialAddress,
         residentialLgaId: Number(staff?.user?.residentialLgaId) || values.residentialLgaId,
         residentialStateId: Number(staff?.user?.residentialStateId) || values.residentialStateId,
         residentialCountryId: Number(staff?.user?.residentialCountryId) || values.residentialCountryId,
         residentialZipCode: Number(staff?.user?.residentialZipCode) || values.residentialZipCode,
-        nin: staff?.nin || values.nin,
+
         tin: staff?.tin || values.tin,
         cvUrl: staff?.cvUrl || values.cvUrl,
         jobTitle: staff?.jobTitle || values.jobTitle,
@@ -112,7 +114,7 @@ export function StaffCreateForm({ staffId }: Props) {
         highestLevelEdu: staff?.highestLevelEdu || values.highestLevelEdu,
       }));
     }
-  }, [staff, dataRef]);
+  }, [isEdit, staff, dataRef]);
 
   const residentialStateId = form.watch("residentialStateId");
   const staffTemplateQuery = useGetStaffTemplateQuery(
@@ -192,7 +194,7 @@ export function StaffCreateForm({ staffId }: Props) {
   };
 
   return (
-    <LoadingContent loading={staffQueryResult?.isLoading} error={staffQueryResult?.error} retry={staffQueryResult?.refetch} data={staffQueryResult?.data} shouldLoad={!!staffId}>
+    <LoadingContent loading={staffQueryResult?.isLoading} error={staffQueryResult?.error} retry={staffQueryResult?.refetch} data={staffQueryResult?.data} shouldLoad={isEdit}>
       <Card className="flex items-center xl:justify-center p-4 gap-4 w-full md:max-w-min mx-auto overflow-x-scroll my-8">
         {steps.slice(0, steps.length - 1).map((step, i) => (
           <div key={i}>
@@ -202,12 +204,14 @@ export function StaffCreateForm({ staffId }: Props) {
           </div>
         ))}
       </Card>
+
       {steps?.[stepper.step]?.label && (
         <Card className="border shadow-none grid gap-2 p-4 my-8 md:p-8">
           <CardTitle className="font-heading">{steps?.[stepper.step]?.label}</CardTitle>
           <CardDescription className="max-w-xl">{steps?.[stepper.step]?.description}</CardDescription>
         </Card>
       )}
+
       <div className="col-span-2">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleCreateStaff)} className="space-y-4">

@@ -6,15 +6,12 @@ import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, Drop
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { RouteEnums } from "@/constants/router/route-constants";
 import Link from "next/link";
-import { useGetStaffListQuery } from "@/apis/core-staff-api/staff";
+import { useGetStudentListQuery } from "@/apis/core-student-api/student";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
-import { formatDateToString } from "@/lib/dates";
 import { LoadingContent } from "@/components/loading-content";
-import { CirclePlus, UserRound } from "lucide-react";
+import { CirclePlus } from "lucide-react";
 
-type Props = {};
-
-export function StaffListTable({}: Props) {
+export function StudentListTable() {
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
       {
@@ -29,31 +26,19 @@ export function StaffListTable({}: Props) {
         ),
       },
       {
-        header: "Phone Number",
-        accessorKey: "phoneNumber",
+        header: "Email",
+        accessorKey: "email",
+        cell: ({ row }) => <p>{row?.original?.user?.email}</p>,
+      },
+      {
+        header: "Phone",
+        accessorKey: "phone",
         cell: ({ row }) => <p>{row?.original?.user?.phoneNumber}</p>,
       },
       {
-        header: "Gender",
-        accessorKey: "gender",
-        cell: ({ row }) => <p>{row?.original?.user?.gender}</p>,
-      },
-      {
-        header: "Job Title",
-        accessorKey: "jobTitle",
-      },
-
-      {
-        header: "Date Joined",
-        accessorKey: "startDate",
-        cell: ({ row }) => <p>{formatDateToString(row?.original?.startDate)}</p>,
-      },
-
-      {
         id: "actions",
         cell: ({ row }) => {
-          const staff = row.original;
-
+          const student = row.original;
           return (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -65,9 +50,9 @@ export function StaffListTable({}: Props) {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <Link href={`${RouteEnums.STAFF}/${staff.id}`}>
+                <Link href={`${RouteEnums.STUDENT}/${student.id}`}>
                   <DropdownMenuItem className="flex justify-between">
-                    View <UserRound className="ml-2" size={15} strokeWidth={1} />
+                    View <span className="ml-2">👁️</span>
                   </DropdownMenuItem>
                 </Link>
               </DropdownMenuContent>
@@ -79,35 +64,35 @@ export function StaffListTable({}: Props) {
     []
   );
 
-  const staffListQueryResult = useGetStaffListQuery();
+  const studentListQueryResult = useGetStudentListQuery();
 
   return (
     <>
       <div className="flex w-full pb-4 mt-8">
         <div className="hidden md:flex md:flex-1" />
         <div className="grid md:grid-cols-2 gap-4 w-full md:w-auto">
-          <Select onValueChange={() => null} value={String("")}>
+          <Select onValueChange={() => null} value={""}>
             <SelectTrigger className="w-auto h-10">
               <SelectValue placeholder="Filter by" />
             </SelectTrigger>
             <SelectContent>
-              {["Job title", "Gender"].map((item, idx) => (
-                <SelectItem key={idx} value={String(item)}>
+              {["Class", "Gender"].map((item, idx) => (
+                <SelectItem key={idx} value={item}>
                   {item}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
-          <Link className="" href={RouteEnums.STAFF_CREATE}>
+          <Link href={RouteEnums.STUDENT_CREATE}>
             <Button className="w-full">
-              Employ Staff <CirclePlus size={18} strokeWidth={1} />
+              Enroll Student <CirclePlus size={18} strokeWidth={1} />
             </Button>
           </Link>
         </div>
       </div>
       <Card className="overflow-hidden">
-        <LoadingContent loading={staffListQueryResult?.isLoading} error={staffListQueryResult?.error} data={staffListQueryResult.data} retry={staffListQueryResult?.refetch}>
-          <DataTable data={staffListQueryResult?.data?.data} columns={columns} />
+        <LoadingContent loading={studentListQueryResult?.isLoading} error={studentListQueryResult?.error} data={studentListQueryResult.data} retry={studentListQueryResult?.refetch}>
+          <DataTable data={studentListQueryResult?.data?.data} columns={columns} />
         </LoadingContent>
       </Card>
     </>

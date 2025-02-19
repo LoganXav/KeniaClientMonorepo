@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, SearchInput, Sheet, SheetContent, SheetTrigger, Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, SearchInput, Sheet, SheetContent, SheetTrigger, Tabs, TabsContent, TabsList, TabsTrigger, DialogTitle } from "@repo/ui";
 import ProtectedSidebar from "./sidebar";
 import { ThemeToggler } from "@/components/theme-tooggler";
 import { Bell, CircleAlert, Menu, UserCircle, X } from "lucide-react";

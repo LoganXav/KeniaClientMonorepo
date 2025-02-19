@@ -1,6 +1,6 @@
 "use client";
 
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button } from "@repo/ui";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Typography } from "@repo/ui";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -16,7 +16,9 @@ export function PageBreadcrumbs({ pages }: Props) {
         <ChevronLeft strokeWidth={1} />
       </Button>
       <div>
-        <h3 className="font-heading text-3xl">{pages[pages.length - 1]?.title}</h3>
+        <Typography size={"h3"} className="font-heading">
+          {pages[pages.length - 1]?.title}
+        </Typography>
         <Breadcrumb>
           <BreadcrumbList className="flex items-center space-x-0">
             {pages.slice(0, pages.length - 1).map((page: { title: string; path?: string }, idx: number) => (

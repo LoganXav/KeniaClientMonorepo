@@ -23,5 +23,6 @@ export * from "./components/ui/breadcrumbs";
 
 export * from "./components/ui/multiselect";
 export * from "./components/ui/dialog";
+export * from "./components/ui/typography";
 
 export { cn } from "./lib/utils";

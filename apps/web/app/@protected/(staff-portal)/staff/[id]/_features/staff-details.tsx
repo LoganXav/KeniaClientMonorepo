@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, ScrollBar, ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger, SelectValue, Select, SelectTrigger, SelectContent, SelectItem, Button } from "@repo/ui";
+import { Card, ScrollBar, ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger, SelectValue, Select, SelectTrigger, SelectContent, SelectItem, Button, Typography } from "@repo/ui";
 import React from "react";
 import Image from "next/image";
 import { RouteEnums } from "@/constants/router/route-constants";
@@ -34,7 +34,7 @@ function StaffDetails({ staffId }: { staffId: number }) {
               ))}
             </SelectContent>
           </Select>
-          <Link className="" href={`${RouteEnums.STAFF_CREATE}?id=${staff?.data?.id}`}>
+          <Link href={`${RouteEnums.STAFF_CREATE}?id=${staff?.data?.id}`}>
             <Button className="w-full">
               Edit Staff <UserRoundPen size={18} strokeWidth={1} />
             </Button>
@@ -50,11 +50,11 @@ function StaffDetails({ staffId }: { staffId: number }) {
                   <Image src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/backgrounds/login-security.svg" alt="staff-image" fill className="object-cover rounded-full" />
                 </div>
                 <div>
-                  <p className="font-heading">
+                  <Typography className="font-heading">
                     {staff?.data?.user?.firstName} {staff?.data?.user?.lastName}
-                  </p>
-                  <p className="text-sm text-muted-foreground">{staff?.data?.jobTitle}</p>
-                  <p className="text-sm text-muted-foreground">Joined: {formatDateToString(staff?.data?.startDate)}</p>
+                  </Typography>
+                  <Typography>{staff?.data?.jobTitle}</Typography>
+                  <Typography>Joined: {formatDateToString(staff?.data?.startDate)}</Typography>
                 </div>
               </div>
               <div className="p-4 space-y-2">
@@ -64,8 +64,10 @@ function StaffDetails({ staffId }: { staffId: number }) {
                   { label: "Date of Birth", value: formatDateToString(staff?.data?.user?.dateOfBirth) },
                 ].map((info, idx) => (
                   <div key={idx} className="flex justify-between md:flex-col">
-                    <p>{info.label}</p>
-                    <p className="text-muted-foreground">{info.value}</p>
+                    <Typography size="small" color="muted">
+                      {info.label}
+                    </Typography>
+                    <Typography>{info.value}</Typography>
                   </div>
                 ))}
               </div>
@@ -78,8 +80,10 @@ function StaffDetails({ staffId }: { staffId: number }) {
                   { label: "Phone", value: staff?.data?.user?.phoneNumber },
                 ].map((info, idx) => (
                   <div key={idx} className="flex justify-between md:flex-col">
-                    <p>{info.label}</p>
-                    <p className="text-muted-foreground">{info.value}</p>
+                    <Typography size="small" color="muted">
+                      {info.label}
+                    </Typography>
+                    <Typography>{info.value}</Typography>
                   </div>
                 ))}
               </div>

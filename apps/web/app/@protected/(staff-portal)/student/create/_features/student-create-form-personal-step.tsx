@@ -1,15 +1,15 @@
 "use client";
 
 import React from "react";
-import { StaffCreateFormReturn } from "../_types/staff-create-form-types";
-import { DatePicker, FormControl, FormField, FormItem, FormLabel, FormMessage, Input } from "@repo/ui";
+import { StudentCreateFormReturn } from "../_types/student-create-form-types";
+import { DatePicker, FormControl, FormField, FormItem, FormMessage, Input } from "@repo/ui";
 
 type StepProps = {
-  form: StaffCreateFormReturn;
+  form: StudentCreateFormReturn;
   isEdit: boolean;
 };
 
-export function StaffCreateFormPersonalStep({ form, isEdit }: StepProps) {
+export function StudentCreateFormPersonalStep({ form, isEdit }: StepProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2">
       <FormField
@@ -73,18 +73,7 @@ export function StaffCreateFormPersonalStep({ form, isEdit }: StepProps) {
           </FormItem>
         )}
       />
-      <FormField
-        control={form.control}
-        name="nin"
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <Input placeholder="NIN" {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+
       <FormField
         control={form.control}
         name="dateOfBirth"

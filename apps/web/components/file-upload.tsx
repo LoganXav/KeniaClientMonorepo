@@ -34,8 +34,8 @@ export function FileUpload({ field, placeholder = "Upload file", className }: { 
               <Image strokeWidth={1} className="h-8 w-8 text-foreground" aria-hidden="true" />
             </div>
             <div>
-              <CardTitle className="text-sm font-normal">{field.value.name}</CardTitle>
-              <CardDescription className="text-xs text-foreground">{(field.value.size / 1024 / 1024).toFixed(2)} MB</CardDescription>
+              <CardTitle className="text-base font-normal">{field.value.name}</CardTitle>
+              <CardDescription className="text-sm text-foreground">{(field.value.size / 1024 / 1024).toFixed(2)} MB</CardDescription>
             </div>
           </div>
         </Card>
@@ -49,11 +49,11 @@ export function FileUpload({ field, placeholder = "Upload file", className }: { 
           )}
         >
           <input {...getInputProps()} />
-          <Card className={cn("flex w-full space-x-2 bg-transparent border-none", className)}>
+          <Card className={cn("flex w-full space-x-2 bg-transparent border-none items-center", className)}>
             <Image strokeWidth={1} className="size-8 text-muted-foreground" aria-hidden="true" />
             <div className="flex flex-col items-start text-center">
-              <CardTitle className="text-muted-foreground font-normal text-sm">{placeholder}</CardTitle>
-              <CardDescription className="text-xs">Click or drag and drop to upload a file (max 10MB)</CardDescription>
+              <CardTitle className="text-muted-foreground font-normal text-base">{placeholder}</CardTitle>
+              <CardDescription className="text-sm">Click or drag and drop to upload a file (max 10MB)</CardDescription>
             </div>
           </Card>
         </div>

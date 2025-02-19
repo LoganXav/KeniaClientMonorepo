@@ -13,7 +13,7 @@ export function DatePicker({ field, placeholder = "Select date" }: { field: any;
     <Popover>
       <PopoverTrigger asChild>
         <FormControl>
-          <Button variant={"outline"} className={cn("w-full h-12 border border-border shadow-none placeholder-muted-foreground bg-card pl-3 text-left font-normal text-sm hover:text-muted-foreground focus:border-foreground", !field.value && "text-muted-foreground")}>
+          <Button variant={"outline"} className={cn("w-full h-12 border border-border shadow-none placeholder-muted-foreground bg-card pl-3 text-left font-normal hover:text-muted-foreground focus:border-foreground", !field.value && "text-muted-foreground")}>
             {field.value ? format(parseISO(field.value), "PPP") : <span>{placeholder}</span>}
             <CalendarIcon className="ml-auto h-4 w-4 text-muted-foreground" />
           </Button>

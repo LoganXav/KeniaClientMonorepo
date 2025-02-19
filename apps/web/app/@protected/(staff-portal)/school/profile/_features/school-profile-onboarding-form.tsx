@@ -144,7 +144,7 @@ function SchoolProfileOnboardingForm({}: Props) {
         postalCode: tenant?.postalCode || values.postalCode,
       }));
     }
-  }, [authUser, dataRef]);
+  }, [authUser, dataRef, tenant]);
 
   // Stepper Buttons
   React.useEffect(() => {

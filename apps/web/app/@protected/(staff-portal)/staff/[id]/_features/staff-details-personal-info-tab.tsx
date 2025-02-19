@@ -1,29 +1,35 @@
-import { Card } from "@repo/ui";
+import { Card, Typography } from "@repo/ui";
 import React from "react";
 
 type Props = {};
 
 function StaffDetailsPersonalInfoTab({}: Props) {
   return (
-    <div>
-      <div className="space-y-4">
-        <Card>
-          <div className="p-4 border-b font-heading uppercase text-sm">Profile Details</div>
-          <div className="p-4">Details</div>
-        </Card>
-        <Card>
-          <div className="p-4 border-b font-heading uppercase text-sm">Address</div>
-          <div className="p-4">Address</div>
-        </Card>
-        <Card>
-          <div className="p-4 border-b font-heading uppercase text-sm">Work Details</div>
-          <div className="p-4">Details</div>
-        </Card>
-        <Card>
-          <div className="p-4 border-b font-heading uppercase text-sm">Social Media</div>
-          <div className="p-4">Links</div>
-        </Card>
-      </div>
+    <div className="space-y-4">
+      <Card>
+        <Typography size="small" className="p-4 border-b font-heading uppercase">
+          Profile Details
+        </Typography>
+        <Typography className="p-4">Details</Typography>
+      </Card>
+      <Card>
+        <Typography size="small" className="p-4 border-b font-heading uppercase">
+          Address
+        </Typography>
+        <Typography className="p-4">Address</Typography>
+      </Card>
+      <Card>
+        <Typography size="small" className="p-4 border-b font-heading uppercase">
+          Work Details
+        </Typography>
+        <Typography className="p-4">Details</Typography>
+      </Card>
+      <Card>
+        <Typography size="small" className="p-4 border-b font-heading uppercase">
+          Social Media
+        </Typography>
+        <Typography className="p-4">Links</Typography>
+      </Card>
     </div>
   );
 }

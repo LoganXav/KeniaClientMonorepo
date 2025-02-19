@@ -14,7 +14,7 @@ const SelectTrigger = forwardRef<React.ElementRef<typeof SelectPrimitive.Trigger
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex h-12 bg-card rounded-lg w-full items-center justify-between whitespace-nowrap border border-border px-3 py-2 text-sm ring-offset-background placeholder-muted-foreground focus-visible:outline-none focus:border-foreground focus-visible:border-foreground focus-visible:ring-foreground disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+      "flex h-12 bg-card rounded-lg w-full items-center justify-between whitespace-nowrap border border-border px-3 py-2 text-[15px] ring-offset-background placeholder-muted-foreground focus-visible:outline-none focus:border-foreground focus-visible:border-foreground focus-visible:ring-foreground disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
       className
     )}
     {...props}
@@ -71,7 +71,7 @@ const SelectLabel = forwardRef<React.ElementRef<typeof SelectPrimitive.Label>, R
 SelectLabel.displayName = SelectPrimitive.Label.displayName;
 
 const SelectItem = forwardRef<React.ElementRef<typeof SelectPrimitive.Item>, React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>>(({ className, children, ...props }, ref) => (
-  <SelectPrimitive.Item ref={ref} className={cn("relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50", className)} {...props}>
+  <SelectPrimitive.Item ref={ref} className={cn("relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-[15px] outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50", className)} {...props}>
     <span className="absolute right-2 flex size-3.5 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
         <CheckIcon className="size-4" />

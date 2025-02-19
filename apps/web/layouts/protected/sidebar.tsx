@@ -1,9 +1,10 @@
 "use client";
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, cn } from "@repo/ui";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, cn, Typography } from "@repo/ui";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { RouteEnums } from "@/constants/router/route-constants";
+import { Home, Users, User, Building2, Settings, Sliders, FileText, Shield } from "lucide-react";
 
 export default function ProtectedSidebar() {
   const pathname = usePathname();
@@ -15,85 +16,30 @@ export default function ProtectedSidebar() {
         {
           name: "Dashboard",
           path: RouteEnums.DASHBOARD,
+          icon: Home,
         },
-        // {
-        //   name: "Notifications",
-        //   path: "/notifications",
-        // },
       ],
     },
-    // {
-    //   header: "TEACHER PORTAL",
-    //   routes: [
-    //     {
-    //       name: "My Classes",
-    //       path: "/teacher/classes",
-    //       subRoutes: [
-    //         { name: "Class List", path: "/teacher/classes/list" },
-    //         { name: "Timetable", path: "/teacher/classes/timetable" },
-    //         { name: "Attendance", path: "/teacher/classes/attendance" },
-    //         { name: "Assignments", path: "/teacher/classes/assignments" },
-    //         { name: "Exams & Grades", path: "/teacher/classes/exams-grades" },
-    //       ],
-    //     },
-    //     {
-    //       name: "Student Management",
-    //       path: "/teacher/students",
-    //       subRoutes: [
-    //         { name: "Student List", path: "/teacher/students/list" },
-    //         { name: "Attendance", path: "/teacher/students/attendance" },
-    //         { name: "Grades", path: "/teacher/students/grades" },
-    //       ],
-    //     },
-    //   ],
-    // },
+
     {
       header: "ADMIN PORTAL",
       routes: [
         {
           name: "Staff",
           path: RouteEnums.STAFF,
+          icon: Users,
         },
-        // {
-        //   name: "Student Management",
-        //   path: "/admin/students",
-        //   subRoutes: [
-        //     { name: "Admissions", path: "/admin/students/admissions" },
-        //     { name: "Student List", path: "/admin/students/list" },
-        //     { name: "Attendance", path: "/admin/students/attendance" },
-        //     { name: "Grades", path: "/admin/students/grades" },
-        //   ],
-        // },
+        {
+          name: "Student",
+          path: RouteEnums.STUDENT,
+          icon: User,
+        },
         {
           name: "School",
           path: RouteEnums.SCHOOL,
-          subRoutes: [{ name: "Profile", path: RouteEnums.SCHOOL_PROFILE }],
+          icon: Building2,
+          subRoutes: [{ name: "Profile", path: RouteEnums.SCHOOL_PROFILE, icon: User }],
         },
-        // {
-        //   name: "Class",
-        //   path: "/admin/classes",
-        //   subRoutes: [
-        //     { name: "Manage Classes", path: "/admin/classes/manage" },
-        //     { name: "Timetable", path: "/admin/classes/timetable" },
-        //     { name: "Attendance", path: "/admin/classes/attendance" },
-        //   ],
-        // },
-        // {
-        //   name: "Finance",
-        //   path: "/admin/finance",
-        //   subRoutes: [
-        //     { name: "Fee Management", path: "/admin/finance/fees" },
-        //     { name: "Payment Records", path: "/admin/finance/payments" },
-        //   ],
-        // },
-        // {
-        //   name: "Exams & Grades",
-        //   path: "/admin/exams-grades",
-        //   subRoutes: [
-        //     { name: "Exam Setup", path: "/admin/exams-grades/exams" },
-        //     { name: "Grade Management", path: "/admin/exams-grades/grades" },
-        //   ],
-        // },
       ],
     },
     {
@@ -102,10 +48,11 @@ export default function ProtectedSidebar() {
         {
           name: "Settings",
           path: "/admin/settings",
+          icon: Settings,
           subRoutes: [
-            { name: "General Settings", path: "/admin/settings/general" },
-            { name: "System Logs", path: "/admin/settings/logs" },
-            { name: "Permissions", path: "/admin/settings/permissions" },
+            { name: "General Settings", path: "/admin/settings/general", icon: Sliders },
+            { name: "System Logs", path: "/admin/settings/logs", icon: FileText },
+            { name: "Permissions", path: "/admin/settings/permissions", icon: Shield },
           ],
         },
       ],
@@ -124,24 +71,41 @@ export default function ProtectedSidebar() {
       <div className="mt-4 flex flex-col gap-8">
         {routeGroups.map((group, groupIndex) => (
           <div key={groupIndex}>
-            <div className="pl-4 text-[13px] font-semibold font-heading">{group.header}</div>
+            <Typography size="small" className="pl-4 font-heading">
+              {group.header}
+            </Typography>
 
             {group.routes.map((route, routeIndex) =>
               route.subRoutes ? (
                 <Accordion type="single" collapsible className="w-full" key={routeIndex}>
                   <AccordionItem className="border-0" value={`item-${groupIndex}-${routeIndex}`}>
-                    <AccordionTrigger className={`w-full p-4 rounded-lg border mt-2  ${isActiveRoute(route.path) || isActiveSubRoute(route.subRoutes) ? "bg-black/5" : "hover:bg-black/5"}`}>{route.name}</AccordionTrigger>
+                    <AccordionTrigger className={`w-full p-4 rounded-lg border mt-2 ${isActiveRoute(route.path) || isActiveSubRoute(route.subRoutes) ? "bg-black/5" : "hover:bg-black/5"}`}>
+                      <div className="flex items-center gap-2">
+                        {route.icon && <route.icon strokeWidth={1} size={16} />}
+                        <Typography>{route.name}</Typography>
+                      </div>
+                    </AccordionTrigger>
 
                     {route.subRoutes?.map((subRoute, subRouteIndex) => (
                       <Link className="w-full" key={subRouteIndex} href={subRoute.path}>
-                        <AccordionContent className={`w-full p-4 border rounded-lg mt-2 ${isActiveRoute(subRoute.path) ? "bg-black/10 border-foreground" : "hover:bg-black/5"}`}>{subRoute.name}</AccordionContent>
+                        <AccordionContent className={`w-full p-4 border rounded-lg mt-2 ${isActiveRoute(subRoute.path) ? "bg-black/10 border-foreground" : "hover:bg-black/5"}`}>
+                          <div className="flex items-center gap-2">
+                            {subRoute.icon && <subRoute.icon strokeWidth={1} size={16} />}
+                            <Typography>{subRoute.name}</Typography>
+                          </div>
+                        </AccordionContent>
                       </Link>
                     ))}
                   </AccordionItem>
                 </Accordion>
               ) : (
                 <Link href={route.path} key={routeIndex}>
-                  <div className={`w-full p-4 rounded-lg border mt-2 ${isActiveRoute(route.path) ? "text-foreground bg-black/10 border border-foreground" : "hover:bg-black/5"}`}>{route.name}</div>
+                  <div className={`w-full p-4 rounded-lg border mt-2 ${isActiveRoute(route.path) ? "text-foreground bg-black/10 border border-foreground" : "hover:bg-black/5"}`}>
+                    <div className="flex items-center gap-2">
+                      {route.icon && <route.icon strokeWidth={1} size={16} />}
+                      <Typography>{route.name}</Typography>
+                    </div>
+                  </div>
                 </Link>
               )
             )}
