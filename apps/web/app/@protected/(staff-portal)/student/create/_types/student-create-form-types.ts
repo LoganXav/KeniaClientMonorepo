@@ -25,6 +25,9 @@ export type StudentTemplateOptions =
             lgaIdOptions: { codeValue: string; id: number; name: string }[];
             stateIdOptions: { codeValue: string; id: number; name: string }[];
             classOptions: { id: number; type: string }[];
+            religionOptions: string[];
+            genderOptions: string[];
+            bloodGroupOptions: string[];
           }>
         | undefined;
       isLoading: boolean;

@@ -102,6 +102,8 @@ export interface UserWithRelationsType {
   gender?: string | null;
   dateOfBirth?: string | null; // ISO Date string
   phoneNumber: string;
+  religion?: string | null;
+  bloodGroup?: string | null;
   email: string;
   password: string;
   hasVerified: boolean;

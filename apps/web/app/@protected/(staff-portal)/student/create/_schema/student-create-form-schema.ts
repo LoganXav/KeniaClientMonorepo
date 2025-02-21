@@ -29,6 +29,16 @@ export const StudentCreateFormSchema = z.object({
     invalid_type_error: "Gender must be a string",
   }),
 
+  bloodGroup: z.string({
+    required_error: "Blood group is required",
+    invalid_type_error: "Blood group must be a string",
+  }),
+
+  religion: z.string({
+    required_error: "Religion is required",
+    invalid_type_error: "Religion must be a string",
+  }),
+
   dateOfBirth: z
     .date({
       required_error: "Date of birth is required",
@@ -108,15 +118,13 @@ export const StudentCreateFormSchema = z.object({
         })
         .email("Invalid email address"),
 
-      residentialCountryId: z.string(),
-      residentialStateId: z.string(),
-      residentialLgaId: z.string(),
-      residentialZipCode: z.string(),
-      residentialAddress: z.string(),
+      residentialAddress: z.string().optional(),
+      residentialStateId: z.union([z.string(), z.number()]).optional(),
+      residentialLgaId: z.union([z.string(), z.number()]).optional(),
+      residentialCountryId: z.union([z.string(), z.number()]).optional(),
+      residentialZipCode: z.union([z.string(), z.number()]).optional(),
     })
   ),
 
   classId: z.number(),
-  religion: z.string().optional(),
-  bloodGroup: z.string().optional(),
 });

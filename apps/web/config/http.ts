@@ -150,7 +150,7 @@ apiConfig.interceptors.response.use(
               error?.response?.data?.message ||
               error?.response?.data?.details?.[0]?.message ||
               error?.response?.data?.result?.message?.name ||
-              // error?.response?.data?.result?.message ||
+              error?.response?.data?.result?.message ||
               "Something went wrong. Please contact admin.",
 
             status: error.response.status,

@@ -45,14 +45,25 @@ export function StudentCreateForm({ studentId }: Props) {
         payload: {
           ...values,
           tenantId: authUserIds?.tenantId,
+          residentialCountryId: Number(values.residentialCountryId),
+          residentialStateId: Number(values.residentialStateId),
+          residentialLgaId: Number(values.residentialLgaId),
+          residentialZipCode: Number(values.residentialZipCode),
           classId: Number(values.classId),
+          guardians: values.guardians.map((guardian) => ({
+            ...guardian,
+            residentialCountryId: Number(guardian.residentialCountryId),
+            residentialStateId: Number(guardian.residentialStateId),
+            residentialLgaId: Number(guardian.residentialLgaId),
+            residentialZipCode: Number(guardian.residentialZipCode),
+          })),
         },
       },
       {
         onSuccess: (result) => {
           toast.success(result.message);
           setCompletedSteps((prev) => prev + 1);
-          stepper.next(undefined);
+          // stepper.next(undefined);
         },
         onError: (error) => {
           toast.error(error.message);
@@ -69,6 +80,8 @@ export function StudentCreateForm({ studentId }: Props) {
     email: "",
     dateOfBirth: "",
     phoneNumber: "",
+    bloodGroup: "",
+    religion: "",
 
     residentialAddress: "",
     residentialLgaId: "",
@@ -76,11 +89,24 @@ export function StudentCreateForm({ studentId }: Props) {
     residentialCountryId: "",
     residentialZipCode: "",
 
-    guardians: [{ id: "", firstName: "", lastName: "", email: "", phoneNumber: "", residentialAddress: "", residentialLgaId: "", residentialStateId: "" }],
+    guardians: [
+      {
+        id: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        phoneNumber: "",
+        residentialAddress: "",
+        residentialLgaId: "",
+        residentialStateId: "",
+        residentialCountryId: "",
+        residentialZipCode: "",
+        gender: "",
+        dateOfBirth: "",
+      },
+    ],
 
     classId: 0,
-    religion: "",
-    bloodGroup: "",
   };
 
   const form = useForm<StudentCreateFormSchemaType>({
@@ -102,6 +128,8 @@ export function StudentCreateForm({ studentId }: Props) {
         email: student?.user?.email || values.email,
         dateOfBirth: student?.user?.dateOfBirth || values.dateOfBirth,
         phoneNumber: student?.user?.phoneNumber || values.phoneNumber,
+        religion: student?.user?.religion || values.religion,
+        bloodGroup: student?.user?.bloodGroup || values.bloodGroup,
 
         residentialAddress: student?.user?.residentialAddress || values.residentialAddress,
         residentialLgaId: Number(student?.user?.residentialLgaId) || values.residentialLgaId,
@@ -119,15 +147,13 @@ export function StudentCreateForm({ studentId }: Props) {
             gender: guardian.gender,
             dateOfBirth: guardian.dateOfBirth,
             residentialAddress: guardian.residentialAddress,
-            residentialCountryId: guardian.residentialCountryId,
-            residentialLgaId: guardian.residentialLgaId,
-            residentialStateId: guardian.residentialStateId,
-            residentialZipCode: guardian.residentialZipCode,
+            residentialCountryId: Number(guardian.residentialCountryId),
+            residentialLgaId: Number(guardian.residentialLgaId),
+            residentialStateId: Number(guardian.residentialStateId),
+            residentialZipCode: Number(guardian.residentialZipCode),
           })) || values.guardians,
 
         classId: student?.class?.id || values.classId,
-        religion: student?.religion || values.religion,
-        bloodGroup: student?.bloodGroup || values.bloodGroup,
       }));
     }
   }, [student, dataRef]);
@@ -202,6 +228,7 @@ export function StudentCreateForm({ studentId }: Props) {
 
     if (isSecondToLastStep) {
       handleCreateStudent(form.getValues());
+      // stepper.next(undefined);
     } else if (isLastStep) {
       router.push(RouteEnums.STUDENT_LIST);
     } else {

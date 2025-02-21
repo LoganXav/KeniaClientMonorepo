@@ -1,15 +1,16 @@
 "use client";
 
 import React from "react";
-import { StudentCreateFormReturn } from "../_types/student-create-form-types";
-import { DatePicker, FormControl, FormField, FormItem, FormMessage, Input } from "@repo/ui";
+import { StudentCreateFormReturn, StudentTemplateOptions } from "../_types/student-create-form-types";
+import { DatePicker, FormControl, FormField, FormItem, FormMessage, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 
 type StepProps = {
   form: StudentCreateFormReturn;
   isEdit: boolean;
+  studentTemplateQuery: StudentTemplateOptions;
 };
 
-export function StudentCreateFormPersonalStep({ form, isEdit }: StepProps) {
+export function StudentCreateFormPersonalStep({ form, isEdit, studentTemplateQuery }: StepProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2">
       <FormField
@@ -67,7 +68,20 @@ export function StudentCreateFormPersonalStep({ form, isEdit }: StepProps) {
         render={({ field }) => (
           <FormItem>
             <FormControl>
-              <Input placeholder="Gender" {...field} />
+              <Select onValueChange={field.onChange} value={String(field.value)}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Gender" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {studentTemplateQuery?.data?.data?.genderOptions?.map((gender, idx) => (
+                    <SelectItem key={idx} value={String(gender)}>
+                      {gender}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -90,7 +104,20 @@ export function StudentCreateFormPersonalStep({ form, isEdit }: StepProps) {
         name="religion"
         render={({ field }) => (
           <FormItem className="flex flex-col">
-            <Input placeholder="Religion" />
+            <Select onValueChange={field.onChange} value={String(field.value)}>
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder="Religion" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                {studentTemplateQuery?.data?.data?.religionOptions?.map((religion, idx) => (
+                  <SelectItem key={idx} value={String(religion)}>
+                    {religion}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <FormMessage />
           </FormItem>
         )}
@@ -101,7 +128,20 @@ export function StudentCreateFormPersonalStep({ form, isEdit }: StepProps) {
         name="bloodGroup"
         render={({ field }) => (
           <FormItem className="flex flex-col">
-            <Input placeholder="Blood Group" />
+            <Select onValueChange={field.onChange} value={String(field.value)}>
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder="Blood Group" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                {studentTemplateQuery?.data?.data?.bloodGroupOptions?.map((bloodGroup, idx) => (
+                  <SelectItem key={idx} value={String(bloodGroup)}>
+                    {bloodGroup}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <FormMessage />
           </FormItem>
         )}

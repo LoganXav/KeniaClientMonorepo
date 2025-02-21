@@ -41,7 +41,17 @@ export function StaffCreateForm({ staffId }: Props) {
   const handleCreateStaff = (values: StaffCreateFormSchemaType) => {
     const mutate = isEdit ? staffUpdate : staffCreate;
     mutate(
-      { payload: { ...values, tenantId: authUserIds?.tenantId, residentialCountryId: Number(values.residentialCountryId), residentialStateId: Number(values.residentialStateId), residentialLgaId: Number(values.residentialLgaId), residentialZipCode: Number(values.residentialZipCode), cvUrl: "" } },
+      {
+        payload: {
+          ...values,
+          tenantId: authUserIds?.tenantId,
+          residentialCountryId: Number(values.residentialCountryId),
+          residentialStateId: Number(values.residentialStateId),
+          residentialLgaId: Number(values.residentialLgaId),
+          residentialZipCode: Number(values.residentialZipCode),
+          cvUrl: "",
+        },
+      },
       {
         onSuccess: (result) => {
           toast.success(result.message);

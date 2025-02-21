@@ -202,9 +202,20 @@ export function StudentCreateFormGuardianStep({ form, isEdit, studentTemplateQue
               name={`guardians.${idx}.gender`}
               render={({ field }) => (
                 <FormItem>
-                  <FormControl>
-                    <Input placeholder="Guardian Gender" {...field} />
-                  </FormControl>
+                  <Select onValueChange={field.onChange} value={String(field.value)}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Guardian Gender" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {studentTemplateQuery?.data?.data?.genderOptions?.map((gender, idx) => (
+                        <SelectItem key={idx} value={String(gender)}>
+                          {gender}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
