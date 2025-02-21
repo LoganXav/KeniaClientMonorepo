@@ -84,6 +84,28 @@ export function StudentCreateFormPersonalStep({ form, isEdit }: StepProps) {
           </FormItem>
         )}
       />
+
+      <FormField
+        control={form.control}
+        name="religion"
+        render={({ field }) => (
+          <FormItem className="flex flex-col">
+            <Input placeholder="Religion" />
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
+        name="bloodGroup"
+        render={({ field }) => (
+          <FormItem className="flex flex-col">
+            <Input placeholder="Blood Group" />
+            <FormMessage />
+          </FormItem>
+        )}
+      />
     </div>
   );
 }

@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useGetStudentListQuery } from "@/apis/core-student-api/student";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
 import { LoadingContent } from "@/components/loading-content";
-import { CirclePlus } from "lucide-react";
+import { CirclePlus, UserRound } from "lucide-react";
 
 export function StudentListTable() {
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
@@ -52,7 +52,7 @@ export function StudentListTable() {
                 <DropdownMenuSeparator />
                 <Link href={`${RouteEnums.STUDENT}/${student.id}`}>
                   <DropdownMenuItem className="flex justify-between">
-                    View <span className="ml-2">👁️</span>
+                    View <UserRound className="ml-2" size={15} strokeWidth={1} />
                   </DropdownMenuItem>
                 </Link>
               </DropdownMenuContent>

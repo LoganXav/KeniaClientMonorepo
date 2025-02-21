@@ -3,4 +3,5 @@ export const QueryTagEnums = {
   USER: "user",
   TENANT: "tenant",
   STUDENT: "student",
+  GUARDIAN: "guardian",
 };

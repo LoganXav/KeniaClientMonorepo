@@ -16,6 +16,9 @@ import { LoadingContent } from "@/components/loading-content";
 import StepperButton from "@/components/stepper-button";
 import { StudentCreateFormPersonalStep } from "./student-create-form-personal-step";
 import StudentCreateFormSuccessStep from "./student-create-form-success-step";
+import { StudentCreateFormResidentialStep } from "./student-create-form-residential-step";
+import { StudentCreateFormGuardianStep } from "./student-create-form-guardian-step";
+import { StudentCreateFormAdmissionStep } from "./student-create-form-admission.step";
 
 type Props = {
   studentId?: number;
@@ -28,7 +31,7 @@ export function StudentCreateForm({ studentId }: Props) {
   const [completedSteps, setCompletedSteps] = React.useState(0);
 
   const { studentCreate, studentCreatePending, studentCreateError } = useStudentCreateMutation();
-  const studentQueryResult = studentId ? useGetSingleStudentQuery({ studentId }) : null;
+  const studentQueryResult = useGetSingleStudentQuery({ studentId });
   const student = studentQueryResult?.data?.data;
 
   const isEdit = !!studentId;
@@ -42,6 +45,7 @@ export function StudentCreateForm({ studentId }: Props) {
         payload: {
           ...values,
           tenantId: authUserIds?.tenantId,
+          classId: Number(values.classId),
         },
       },
       {
@@ -65,7 +69,18 @@ export function StudentCreateForm({ studentId }: Props) {
     email: "",
     dateOfBirth: "",
     phoneNumber: "",
+
     residentialAddress: "",
+    residentialLgaId: "",
+    residentialStateId: "",
+    residentialCountryId: "",
+    residentialZipCode: "",
+
+    guardians: [{ id: "", firstName: "", lastName: "", email: "", phoneNumber: "", residentialAddress: "", residentialLgaId: "", residentialStateId: "" }],
+
+    classId: 0,
+    religion: "",
+    bloodGroup: "",
   };
 
   const form = useForm<StudentCreateFormSchemaType>({
@@ -87,12 +102,38 @@ export function StudentCreateForm({ studentId }: Props) {
         email: student?.user?.email || values.email,
         dateOfBirth: student?.user?.dateOfBirth || values.dateOfBirth,
         phoneNumber: student?.user?.phoneNumber || values.phoneNumber,
+
         residentialAddress: student?.user?.residentialAddress || values.residentialAddress,
+        residentialLgaId: Number(student?.user?.residentialLgaId) || values.residentialLgaId,
+        residentialStateId: Number(student?.user?.residentialStateId) || values.residentialStateId,
+        residentialCountryId: Number(student?.user?.residentialCountryId) || values.residentialCountryId,
+        residentialZipCode: Number(student?.user?.residentialZipCode) || values.residentialZipCode,
+
+        guardians:
+          student?.guardians?.map((guardian) => ({
+            id: guardian.id,
+            firstName: guardian.firstName,
+            lastName: guardian.lastName,
+            email: guardian.email,
+            phoneNumber: guardian.phoneNumber,
+            gender: guardian.gender,
+            dateOfBirth: guardian.dateOfBirth,
+            residentialAddress: guardian.residentialAddress,
+            residentialCountryId: guardian.residentialCountryId,
+            residentialLgaId: guardian.residentialLgaId,
+            residentialStateId: guardian.residentialStateId,
+            residentialZipCode: guardian.residentialZipCode,
+          })) || values.guardians,
+
+        classId: student?.class?.id || values.classId,
+        religion: student?.religion || values.religion,
+        bloodGroup: student?.bloodGroup || values.bloodGroup,
       }));
     }
   }, [student, dataRef]);
 
   const residentialStateId = form.watch("residentialStateId");
+
   const studentTemplateQuery = useGetStudentTemplateQuery(
     React.useMemo(
       () => ({
@@ -118,6 +159,27 @@ export function StudentCreateForm({ studentId }: Props) {
     },
     {
       id: 1,
+      label: "Residential Information",
+      description: "Enter your residential details such as state, lga, address, and postal code.",
+      content: <StudentCreateFormResidentialStep {...stepProps} />,
+      fields: [""],
+    },
+    {
+      id: 2,
+      label: "Guardian Information",
+      description: "Enter your guardian details such as name, gender, date of birth, and email address.",
+      content: <StudentCreateFormGuardianStep {...stepProps} />,
+      fields: [""],
+    },
+    {
+      id: 3,
+      label: "Admission Information",
+      description: "Enter your admission details such as class, admission number, and enrollment date.",
+      content: <StudentCreateFormAdmissionStep {...stepProps} />,
+      fields: [""],
+    },
+    {
+      id: 4,
       label: "Submission Successful!",
       description: isEdit ? "Your student profile has been successfully edited." : "The student has been successfully registered.",
       content: <StudentCreateFormSuccessStep />,
@@ -156,8 +218,8 @@ export function StudentCreateForm({ studentId }: Props) {
   };
 
   return (
-    <LoadingContent loading={studentQueryResult?.isLoading} error={studentQueryResult?.error} retry={studentQueryResult?.refetch} data={studentQueryResult?.data} shouldLoad={!!studentId}>
-      <Card className="flex items-center xl:justify-center p-4 gap-4 w-full md:max-w-min mx-auto overflow-x-scroll my-8">
+    <LoadingContent loading={studentQueryResult?.isLoading} error={studentQueryResult?.error} retry={studentQueryResult?.refetch} data={studentQueryResult?.data} shouldLoad={isEdit}>
+      <Card className="flex items-center 2xl:justify-center p-4 gap-4 w-full md:max-w-2xl xl:max-w-4xl 2xl:max-w-min mx-auto overflow-x-scroll my-8">
         {steps.slice(0, steps.length - 1).map((step, i) => (
           <div key={i}>
             <StepperButton stepper={stepper} completedSteps={completedSteps} complete={steps.length - 1 === completedSteps} selected={stepper.step === i} step={i + 1} i={i}>

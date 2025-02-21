@@ -24,6 +24,7 @@ export type StudentTemplateOptions =
             employmentTypeOptions: string[];
             lgaIdOptions: { codeValue: string; id: number; name: string }[];
             stateIdOptions: { codeValue: string; id: number; name: string }[];
+            classOptions: { id: number; type: string }[];
           }>
         | undefined;
       isLoading: boolean;

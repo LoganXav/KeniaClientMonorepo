@@ -139,10 +139,19 @@ apiConfig.interceptors.response.use(
       }
     }
 
+    console.log();
+
     return Promise.reject(
       error.response
         ? {
-            message: error.response.data?.errors?.[0]?.message || error?.response?.data?.data?.message || error?.response?.data?.message || error?.response?.data?.details?.[0]?.message || error?.response?.data?.result?.message?.name || error?.response?.data?.result?.message,
+            message:
+              error.response.data?.errors?.[0]?.message ||
+              error?.response?.data?.data?.message ||
+              error?.response?.data?.message ||
+              error?.response?.data?.details?.[0]?.message ||
+              error?.response?.data?.result?.message?.name ||
+              // error?.response?.data?.result?.message ||
+              "Something went wrong. Please contact admin.",
 
             status: error.response.status,
           }

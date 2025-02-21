@@ -59,7 +59,7 @@ export const useGetStudentTemplateQuery = (params: { codeValue?: number }) => {
   return { data, isLoading, error, refetch };
 };
 
-export const useGetSingleStudentQuery = (path?: { studentId: number }, params?: Record<string, any>) => {
+export const useGetSingleStudentQuery = (path?: { studentId?: number }, params?: Record<string, any>) => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.STUDENT, path?.studentId],
     queryFn: async () => {

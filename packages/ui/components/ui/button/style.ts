@@ -9,8 +9,12 @@ export const ButtonStyle = {
 
     ghost: "hover:bg-accent hover:text-accent-foreground",
     link: "text-primary underline-offset-4 hover:underline",
+
+    input: "text-[15px] font-normal border border-border placeholder-muted-foreground bg-card transition-colors focus-visible:outline-none focus-visible:border-foreground focus-visible:ring-foreground disabled:cursor-not-allowed disabled:opacity-50",
   },
   sizes: {
+    input: "h-12 px-8 rounded-lg px-3 py-1",
+
     lg: "h-11 px-8 rounded-md",
     md: "h-10 py-2 px-4",
     sm: "h-9 px-6 rounded-md",

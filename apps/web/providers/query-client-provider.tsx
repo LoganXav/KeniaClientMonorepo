@@ -12,6 +12,7 @@ export const QueryClientContextProvider = ({ children }: SiteProps) => {
       queries: {
         refetchOnWindowFocus: false, // Prevent refetch on window focus globally
         staleTime: 5 * 60 * 1000, // Keep data fresh for 5 minutes globally
+        retry: false,
       },
     },
   });

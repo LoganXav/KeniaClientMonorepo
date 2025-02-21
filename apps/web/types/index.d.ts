@@ -47,19 +47,19 @@ export interface StaffType {
   id: number;
   jobTitle: string;
   userId: number;
-  user: UserWithRelations;
+  user: UserWithRelationsType;
   roleId: number;
-  role: Role | null;
+  role: RoleType | null;
   nin: string | null;
   tin: string | null;
   cvUrl: string | null;
   employmentType: string | null;
   highestLevelEdu: string | null;
-  group: Group[];
-  classes: Class[];
-  subjects: Subject[];
+  group: GroupType[];
+  classes: ClassType[];
+  subjects: SubjectType[];
   tenantId: number;
-  tenant: Tenant;
+  tenant: TenantType;
   startDate: string;
 }
 
@@ -67,12 +67,14 @@ export interface StudentType {
   id: number;
   studentId: string;
   userId: number;
-  user: UserWithRelations;
+  user: UserWithRelationsType;
   enrollmentDate: string; // ISO Date string
-  classId: string;
-  class: Class;
+  class: ClassType;
+  guardians: GuardianType[];
   tenantId: number;
-  tenant: Tenant;
+  tenant: TenantType;
+  religion: string;
+  bloodGroup: string;
 }
 
 export interface RoleType {
