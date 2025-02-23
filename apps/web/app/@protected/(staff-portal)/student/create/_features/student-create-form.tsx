@@ -75,6 +75,7 @@ export function StudentCreateForm({ studentId }: Props) {
 
   const defaultValues = {
     tenantId: authUserIds?.tenantId,
+    id: "",
     firstName: "",
     lastName: "",
     gender: "",
@@ -124,6 +125,7 @@ export function StudentCreateForm({ studentId }: Props) {
     if (student) {
       dataRef.current.form.reset((values: StudentCreateFormSchemaType) => ({
         ...values,
+        id: student?.user?.id || null,
         firstName: student?.user?.firstName || values.firstName,
         lastName: student?.user?.lastName || values.lastName,
         gender: student?.user?.gender || values.gender,
