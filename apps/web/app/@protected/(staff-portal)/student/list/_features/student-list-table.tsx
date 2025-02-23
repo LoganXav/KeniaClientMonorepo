@@ -10,7 +10,7 @@ import { useGetStudentListQuery } from "@/apis/core-student-api/student";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
 import { LoadingContent } from "@/components/loading-content";
 import { CirclePlus, UserRound } from "lucide-react";
-
+import { calculateAge } from "@/lib/dates";
 export function StudentListTable() {
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
@@ -26,14 +26,19 @@ export function StudentListTable() {
         ),
       },
       {
-        header: "Email",
-        accessorKey: "email",
-        cell: ({ row }) => <p>{row?.original?.user?.email}</p>,
+        header: "Class",
+        accessorKey: "class",
+        cell: ({ row }) => <p>{row?.original?.class?.type}</p>,
       },
       {
-        header: "Phone",
-        accessorKey: "phone",
-        cell: ({ row }) => <p>{row?.original?.user?.phoneNumber}</p>,
+        header: "Gender",
+        accessorKey: "gender",
+        cell: ({ row }) => <p>{row?.original?.user?.gender}</p>,
+      },
+      {
+        header: "Age",
+        accessorKey: "dateOfBirth",
+        cell: ({ row }) => <p>{calculateAge(row?.original?.user?.dateOfBirth)} yrs</p>,
       },
       {
         id: "actions",
@@ -50,7 +55,7 @@ export function StudentListTable() {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <Link href={`${RouteEnums.STUDENT}/${student.id}`}>
+                <Link href={`${RouteEnums.STUDENT}/${student?.id}`}>
                   <DropdownMenuItem className="flex justify-between">
                     View <UserRound className="ml-2" size={15} strokeWidth={1} />
                   </DropdownMenuItem>

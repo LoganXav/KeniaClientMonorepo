@@ -1,24 +1,24 @@
 "use client";
 
 import React from "react";
-import { RouteEnums } from "@/constants/router/route-constants";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Card, CardDescription, CardTitle, Form, toast, Typography } from "@repo/ui";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import useStepper from "@/hooks/use-stepper";
+import useDataRef from "@/hooks/use-data-ref";
+import { useAuthUser } from "@/hooks/use-auth-user";
+import { zodResolver } from "@hookform/resolvers/zod";
+import StepperButton from "@/components/stepper-button";
+import { LoadingContent } from "@/components/loading-content";
+import { RouteEnums } from "@/constants/router/route-constants";
+import StaffCreateFormSuccessStep from "./staff-create-form-success-step";
+import { StaffCreateFormSchema } from "../_schema/staff-create-form-schema";
+import { StaffCreateFormPersonalStep } from "./staff-create-form-personal-step";
+import { Button, Card, CardDescription, CardTitle, Form, toast } from "@repo/ui";
+import { StaffCreateFormEmploymentStep } from "./staff-create-form-employment-step";
+import { StaffCreateFormResidentialStep } from "./staff-create-form-residential-step";
+import { useGetSingleStaffQuery, useStaffUpdateMutation } from "@/apis/core-staff-api/staff";
 import { useGetStaffTemplateQuery, useStaffCreateMutation } from "@/apis/core-staff-api/staff";
 import { StaffCreateFormFieldName, StaffCreateFormSchemaType, StaffTemplateOptions } from "../_types/staff-create-form-types";
-import { useAuthUser } from "@/hooks/use-auth-user";
-import { StaffCreateFormSchema } from "../_schema/staff-create-form-schema";
-import useStepper from "@/hooks/use-stepper";
-import { StaffCreateFormPersonalStep } from "./staff-create-form-personal-step";
-import StepperButton from "@/components/stepper-button";
-import StaffCreateFormSuccessStep from "./staff-create-form-success-step";
-import { StaffCreateFormResidentialStep } from "./staff-create-form-residential-step";
-import { StaffCreateFormEmploymentStep } from "./staff-create-form-employment-step";
-import useDataRef from "@/hooks/use-data-ref";
-import { useGetSingleStaffQuery, useStaffUpdateMutation } from "@/apis/core-staff-api/staff";
-import { LoadingContent } from "@/components/loading-content";
 
 type Props = {
   staffId?: number;
@@ -66,7 +66,7 @@ export function StaffCreateForm({ staffId }: Props) {
   };
 
   const defaultValues = {
-    tenantId: authUserIds?.tenantId,
+    id: "",
     roleId: 1,
     firstName: "",
     lastName: "",
@@ -102,6 +102,7 @@ export function StaffCreateForm({ staffId }: Props) {
     if (staff) {
       dataRef.current.form.reset((values: StaffCreateFormSchemaType) => ({
         ...values,
+        id: staff?.user?.id,
         firstName: staff?.user?.firstName || values.firstName,
         lastName: staff?.user?.lastName || values.lastName,
         phoneNumber: staff?.user?.phoneNumber || values.phoneNumber,

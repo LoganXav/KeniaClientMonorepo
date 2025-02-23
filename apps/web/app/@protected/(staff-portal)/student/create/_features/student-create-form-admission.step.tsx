@@ -36,6 +36,30 @@ export function StudentCreateFormAdmissionStep({ form, isEdit, studentTemplateQu
           </FormItem>
         )}
       />
+
+      <FormField
+        control={form.control}
+        name="classDivisionId"
+        render={({ field }) => (
+          <FormItem>
+            <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={studentTemplateQuery?.isLoading || !form.watch("classId")}>
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder="Admission Class Division" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                {studentTemplateQuery?.data?.data?.classDivisionOptions?.map((classDivisionOption, idx) => (
+                  <SelectItem key={idx} value={String(classDivisionOption?.id)}>
+                    {classDivisionOption?.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
     </div>
   );
 }

@@ -8,12 +8,7 @@ export default function DashboardPage() {
         Dashboard Page.
       </Typography>
       <div className="grid text-center space-y-2">
-        <Typography>
-          To check out the ui components, navigate to{" "}
-          <Link href={"/test"} className="underline hover:text-link">
-            Test page
-          </Link>
-        </Typography>
+        <Typography>Welcome to the dashboard</Typography>
       </div>
     </div>
   );

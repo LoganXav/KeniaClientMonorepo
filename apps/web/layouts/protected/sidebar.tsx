@@ -4,12 +4,12 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, cn, Typog
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { RouteEnums } from "@/constants/router/route-constants";
-import { Home, Users, User, Building2, Settings, Sliders, FileText, Shield } from "lucide-react";
+import { Home, Users, User, Building2, Settings, Sliders, FileText, Shield, Building } from "lucide-react";
 
 export default function ProtectedSidebar() {
   const pathname = usePathname();
 
-  const routeGroups = [
+  const routeGroups: routeGroups[] = [
     {
       header: "GENERAL",
       routes: [
@@ -22,7 +22,7 @@ export default function ProtectedSidebar() {
     },
 
     {
-      header: "ADMIN PORTAL",
+      header: "PEOPLE",
       routes: [
         {
           name: "Staff",
@@ -33,6 +33,16 @@ export default function ProtectedSidebar() {
           name: "Student",
           path: RouteEnums.STUDENT,
           icon: User,
+        },
+      ],
+    },
+    {
+      header: "MANAGEMENT",
+      routes: [
+        {
+          name: "Class",
+          path: RouteEnums.CLASS,
+          icon: Building,
         },
         {
           name: "School",
@@ -114,4 +124,18 @@ export default function ProtectedSidebar() {
       </div>
     </nav>
   );
+}
+
+interface routeGroups {
+  header: string;
+  routes: {
+    name: string;
+    path: string;
+    icon: React.ElementType;
+    subRoutes?: {
+      name: string;
+      path: string;
+      icon: React.ElementType;
+    }[];
+  }[];
 }

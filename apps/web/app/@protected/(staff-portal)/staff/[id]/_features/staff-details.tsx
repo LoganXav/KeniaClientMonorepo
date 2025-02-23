@@ -61,7 +61,7 @@ function StaffDetails({ staffId }: { staffId: number }) {
                 <div className="uppercase text-sm font-heading pb-2">Basic Information</div>
                 {[
                   { label: "Gender", value: staff?.data?.user?.gender },
-                  { label: "Date of Birth", value: formatDateToString(staff?.data?.user?.dateOfBirth) },
+                  { label: "Date of Birth", value: formatDateToString(staff?.data?.user?.dateOfBirth || "") },
                 ].map((info, idx) => (
                   <div key={idx} className="flex justify-between md:flex-col">
                     <Typography size="small" color="muted">

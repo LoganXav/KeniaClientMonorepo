@@ -68,7 +68,7 @@ export function StudentCreateFormPersonalStep({ form, isEdit, studentTemplateQue
         render={({ field }) => (
           <FormItem>
             <FormControl>
-              <Select onValueChange={field.onChange} value={String(field.value)}>
+              <Select onValueChange={field.onChange} value={String(field.value) || ""}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Gender" />
@@ -104,7 +104,7 @@ export function StudentCreateFormPersonalStep({ form, isEdit, studentTemplateQue
         name="religion"
         render={({ field }) => (
           <FormItem className="flex flex-col">
-            <Select onValueChange={field.onChange} value={String(field.value)}>
+            <Select onValueChange={field.onChange} value={String(field.value || "")}>
               <FormControl>
                 <SelectTrigger>
                   <SelectValue placeholder="Religion" />
@@ -128,7 +128,7 @@ export function StudentCreateFormPersonalStep({ form, isEdit, studentTemplateQue
         name="bloodGroup"
         render={({ field }) => (
           <FormItem className="flex flex-col">
-            <Select onValueChange={field.onChange} value={String(field.value)}>
+            <Select onValueChange={field.onChange} value={String(field.value || "")}>
               <FormControl>
                 <SelectTrigger>
                   <SelectValue placeholder="Blood Group" />

@@ -1,24 +1,24 @@
 "use client";
 
 import React from "react";
-import { RouteEnums } from "@/constants/router/route-constants";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Card, CardDescription, CardTitle, Form, toast } from "@repo/ui";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { useGetStudentTemplateQuery, useStudentCreateMutation, useStudentUpdateMutation, useGetSingleStudentQuery } from "@/apis/core-student-api/student";
-import { StudentCreateFormFieldName, StudentCreateFormSchemaType, StudentTemplateOptions } from "../_types/student-create-form-types";
-import { useAuthUser } from "@/hooks/use-auth-user";
-import { StudentCreateFormSchema } from "../_schema/student-create-form-schema";
+import { useRouter } from "next/navigation";
 import useStepper from "@/hooks/use-stepper";
 import useDataRef from "@/hooks/use-data-ref";
-import { LoadingContent } from "@/components/loading-content";
+import { useAuthUser } from "@/hooks/use-auth-user";
+import { zodResolver } from "@hookform/resolvers/zod";
 import StepperButton from "@/components/stepper-button";
-import { StudentCreateFormPersonalStep } from "./student-create-form-personal-step";
+import { LoadingContent } from "@/components/loading-content";
+import { RouteEnums } from "@/constants/router/route-constants";
 import StudentCreateFormSuccessStep from "./student-create-form-success-step";
-import { StudentCreateFormResidentialStep } from "./student-create-form-residential-step";
+import { StudentCreateFormSchema } from "../_schema/student-create-form-schema";
+import { Button, Card, CardDescription, CardTitle, Form, toast } from "@repo/ui";
+import { StudentCreateFormPersonalStep } from "./student-create-form-personal-step";
 import { StudentCreateFormGuardianStep } from "./student-create-form-guardian-step";
 import { StudentCreateFormAdmissionStep } from "./student-create-form-admission.step";
+import { StudentCreateFormResidentialStep } from "./student-create-form-residential-step";
+import { StudentCreateFormFieldName, StudentCreateFormSchemaType, StudentTemplateOptions } from "../_types/student-create-form-types";
+import { useGetStudentTemplateQuery, useStudentCreateMutation, useStudentUpdateMutation, useGetSingleStudentQuery } from "@/apis/core-student-api/student";
 
 type Props = {
   studentId?: number;
@@ -50,6 +50,7 @@ export function StudentCreateForm({ studentId }: Props) {
           residentialLgaId: Number(values.residentialLgaId),
           residentialZipCode: Number(values.residentialZipCode),
           classId: Number(values.classId),
+          classDivisionId: Number(values.classDivisionId),
           guardians: values.guardians.map((guardian) => ({
             ...guardian,
             residentialCountryId: Number(guardian.residentialCountryId),
@@ -63,7 +64,7 @@ export function StudentCreateForm({ studentId }: Props) {
         onSuccess: (result) => {
           toast.success(result.message);
           setCompletedSteps((prev) => prev + 1);
-          // stepper.next(undefined);
+          stepper.next(undefined);
         },
         onError: (error) => {
           toast.error(error.message);
@@ -107,6 +108,7 @@ export function StudentCreateForm({ studentId }: Props) {
     ],
 
     classId: 0,
+    classDivisionId: 0,
   };
 
   const form = useForm<StudentCreateFormSchemaType>({
@@ -134,38 +136,41 @@ export function StudentCreateForm({ studentId }: Props) {
         residentialAddress: student?.user?.residentialAddress || values.residentialAddress,
         residentialLgaId: Number(student?.user?.residentialLgaId) || values.residentialLgaId,
         residentialStateId: Number(student?.user?.residentialStateId) || values.residentialStateId,
-        residentialCountryId: Number(student?.user?.residentialCountryId) || values.residentialCountryId,
         residentialZipCode: Number(student?.user?.residentialZipCode) || values.residentialZipCode,
+        residentialCountryId: Number(student?.user?.residentialCountryId) || values.residentialCountryId,
 
         guardians:
           student?.guardians?.map((guardian) => ({
             id: guardian.id,
-            firstName: guardian.firstName,
-            lastName: guardian.lastName,
             email: guardian.email,
-            phoneNumber: guardian.phoneNumber,
             gender: guardian.gender,
+            lastName: guardian.lastName,
+            firstName: guardian.firstName,
+            phoneNumber: guardian.phoneNumber,
             dateOfBirth: guardian.dateOfBirth,
             residentialAddress: guardian.residentialAddress,
-            residentialCountryId: Number(guardian.residentialCountryId),
             residentialLgaId: Number(guardian.residentialLgaId),
-            residentialStateId: Number(guardian.residentialStateId),
             residentialZipCode: Number(guardian.residentialZipCode),
+            residentialStateId: Number(guardian.residentialStateId),
+            residentialCountryId: Number(guardian.residentialCountryId),
           })) || values.guardians,
 
         classId: student?.class?.id || values.classId,
+        classDivisionId: Number(student?.classDivisionId) || values.classDivisionId,
       }));
     }
-  }, [student, dataRef]);
+  }, [student, dataRef, isEdit]);
 
   const residentialStateId = form.watch("residentialStateId");
+  const classId = form.watch("classId");
 
   const studentTemplateQuery = useGetStudentTemplateQuery(
     React.useMemo(
       () => ({
         codeValue: Number(residentialStateId),
+        classId: Number(classId),
       }),
-      [residentialStateId]
+      [residentialStateId, classId]
     )
   );
 
@@ -228,7 +233,6 @@ export function StudentCreateForm({ studentId }: Props) {
 
     if (isSecondToLastStep) {
       handleCreateStudent(form.getValues());
-      // stepper.next(undefined);
     } else if (isLastStep) {
       router.push(RouteEnums.STUDENT_LIST);
     } else {

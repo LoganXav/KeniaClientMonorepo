@@ -75,7 +75,7 @@ export const StudentCreateFormSchema = z.object({
 
   guardians: z.array(
     z.object({
-      id: z.string(),
+      id: z.union([z.string(), z.number()]).optional(),
       firstName: z
         .string({
           required_error: "First name is required",
@@ -126,5 +126,6 @@ export const StudentCreateFormSchema = z.object({
     })
   ),
 
-  classId: z.number(),
+  classId: z.number({ required_error: "Class is required", invalid_type_error: "Class must be a number" }),
+  classDivisionId: z.number({ required_error: "Class division is required", invalid_type_error: "Class division must be a number" }),
 });

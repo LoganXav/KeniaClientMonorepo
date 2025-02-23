@@ -25,4 +25,8 @@ export const RouteEnums = {
   // SCHOOL
   SCHOOL: "/school",
   SCHOOL_PROFILE: "/school/profile",
+
+  // CLASS
+  CLASS: "/class",
+  CLASS_LIST: "/class/list",
 };

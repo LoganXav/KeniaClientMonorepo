@@ -47,8 +47,6 @@ export function StudentCreateFormGuardianStep({ form, isEdit, studentTemplateQue
   const searchByOptions = [
     { label: "First Name", value: "firstName" },
     { label: "Last Name", value: "lastName" },
-    { label: "Email Address", value: "email" },
-    { label: "Phone Number", value: "phoneNumber" },
   ];
 
   return (
@@ -119,7 +117,7 @@ export function StudentCreateFormGuardianStep({ form, isEdit, studentTemplateQue
                         </PopoverTrigger>
                         <PopoverContent className="min-w-36 p-0">
                           <Command shouldFilter={false}>
-                            <CommandInput placeholder={`Search by ${searchByOptions.find((option) => option.value === searchBy)?.label}...`} className="h-9" value={query} onValueChange={handleQueryChange} />
+                            <CommandInput placeholder={`Search by ${searchByOptions.find((option) => option.value === searchBy)?.label || "..."}...`} className="h-9" value={query} onValueChange={handleQueryChange} />
                             <CommandList>
                               <CommandEmpty>No Guardian found.</CommandEmpty>
                               <CommandGroup>
@@ -191,7 +189,7 @@ export function StudentCreateFormGuardianStep({ form, isEdit, studentTemplateQue
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input placeholder="Guardian Email Address" disabled={isEdit} {...field} />
+                    <Input placeholder="Guardian Email Address" disabled={!!form.watch(`guardians.${idx}.id`)} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

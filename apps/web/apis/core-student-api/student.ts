@@ -47,7 +47,7 @@ export const useStudentCreateMutation = () => {
 
 export const useGetStudentTemplateQuery = (params: { codeValue?: number }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.USER, params?.codeValue],
+    queryKey: [QueryTagEnums.USER, params],
     queryFn: async () => {
       return await getRequest<StudentTemplateOptions>({
         endpoint: `${BASE_URL}/template`,

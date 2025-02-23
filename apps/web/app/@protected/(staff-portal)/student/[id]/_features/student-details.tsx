@@ -34,7 +34,7 @@ function StudentDetails({ studentId }: { studentId: number }) {
               ))}
             </SelectContent>
           </Select>
-          <Link href={`${RouteEnums.STUDENT_CREATE}?id=${student?.data?.id}`}>
+          <Link href={`${RouteEnums.STUDENT_CREATE}?id=${studentId}`}>
             <Button className="w-full">
               Edit Student <UserRoundPen size={18} strokeWidth={1} />
             </Button>
@@ -62,7 +62,7 @@ function StudentDetails({ studentId }: { studentId: number }) {
                 <div className="uppercase text-sm font-heading pb-2">Basic Information</div>
                 {[
                   { label: "Gender", value: student?.data?.user?.gender },
-                  { label: "Date of Birth", value: formatDateToString(student?.data?.user?.dateOfBirth) },
+                  { label: "Date of Birth", value: formatDateToString(student?.data?.user?.dateOfBirth || "") },
                 ].map((info, idx) => (
                   <div key={idx} className="flex justify-between md:flex-col">
                     <Typography size="small" color="muted">

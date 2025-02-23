@@ -73,8 +73,7 @@ export interface StudentType {
   guardians: GuardianType[];
   tenantId: number;
   tenant: TenantType;
-  religion: string;
-  bloodGroup: string;
+  classDivisionId: number;
 }
 
 export interface RoleType {
