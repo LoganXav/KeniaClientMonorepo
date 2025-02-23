@@ -37,13 +37,18 @@ export default function ProtectedSidebar() {
       ],
     },
     {
-      header: "MANAGEMENT",
+      header: "ACADEMICS",
       routes: [
         {
           name: "Class",
           path: RouteEnums.CLASS,
           icon: Building,
         },
+      ],
+    },
+    {
+      header: "MANAGEMENT",
+      routes: [
         {
           name: "School",
           path: RouteEnums.SCHOOL,

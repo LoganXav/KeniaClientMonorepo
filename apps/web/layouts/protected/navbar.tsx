@@ -3,7 +3,7 @@
 import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, SearchInput, Sheet, SheetContent, SheetTrigger, Tabs, TabsContent, TabsList, TabsTrigger, DialogTitle } from "@repo/ui";
 import ProtectedSidebar from "./sidebar";
 import { ThemeToggler } from "@/components/theme-tooggler";
-import { Bell, CircleAlert, Menu, UserCircle, X } from "lucide-react";
+import { Bell, CircleAlert, LoaderCircle, Menu, UserCircle, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { clearAuthUserAction } from "@/helpers/server/auth-user-action";
 import { RouteEnums } from "@/constants/router/route-constants";
@@ -106,10 +106,18 @@ export default function ProtectedNavbar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>
-                  {authUser?.firstName} <span className="font-sans-semibold">{authUser?.lastName}</span>
+                  {authUserQueryResult?.isLoading ? (
+                    <LoaderCircle className="animate-spin duration-300 mx-auto" size={15} />
+                  ) : (
+                    <div>
+                      {authUser?.firstName} <span className="font-sans-semibold">{authUser?.lastName}</span>
+                    </div>
+                  )}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleSignOut}>Log out</DropdownMenuItem>
+                <DropdownMenuItem disabled={authUserQueryResult?.isLoading} onClick={handleSignOut}>
+                  Log out
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

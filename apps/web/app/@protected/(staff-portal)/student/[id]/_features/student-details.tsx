@@ -10,9 +10,16 @@ import { useGetSingleStudentQuery } from "@/apis/core-student-api/student";
 import { LoadingContent } from "@/components/loading-content";
 import { formatDateToString } from "@/lib/dates";
 import { StudentDetailsPersonalInfoTab } from "./student-details-personal-info-tab";
-import { StudentDetailsRoutineTab } from "./student-details-routine-tab";
-import { StudentDetailsAttendanceTab } from "./student-details-attendance-tab";
-import { StudentDetailsSalaryTab } from "./student-details-salary-tab";
+import { StudentDetailsAcademicInfoTab } from "./student-details-academic-info-tab";
+import { StudentDetailsGuardiansInfoTab } from "./student-details-guardians-info-tab";
+import { StudentDetailsFeePaymentsTab } from "./student-details-fee-payments-tab";
+import { StudentDetailsExtracurricularActivitiesTab } from "./student-details-extracurricular-activities-tab";
+import { StudentDetailsDisciplineBehaviorTab } from "./student-details-discipline-behavior-tab";
+import { StudentDetailsDocumentsCertificationsTab } from "./student-details-documents-certifications-tab";
+import { StudentDetailsTimetableScheduleTab } from "./student-details-timetable-schedule-tab";
+import { StudentDetailsNotesRemarksTab } from "./student-details-notes-remarks-tab";
+import { StudentDetailsAttendanceRecordsTab } from "./student-details-attendance-records-tab";
+import { StudentDetailsPerformanceReportsTab } from "./student-details-performance-reports-tab";
 
 function StudentDetails({ studentId }: { studentId: number }) {
   const { data: student, isLoading, error, refetch } = useGetSingleStudentQuery({ studentId });
@@ -59,7 +66,9 @@ function StudentDetails({ studentId }: { studentId: number }) {
                 </div>
               </div>
               <div className="p-4 space-y-2">
-                <div className="uppercase text-sm font-heading pb-2">Basic Information</div>
+                <Typography size="small" className="uppercase font-heading pb-2">
+                  Basic Information
+                </Typography>
                 {[
                   { label: "Gender", value: student?.data?.user?.gender },
                   { label: "Date of Birth", value: formatDateToString(student?.data?.user?.dateOfBirth || "") },
@@ -75,10 +84,13 @@ function StudentDetails({ studentId }: { studentId: number }) {
             </Card>
             <Card>
               <div className="p-4 space-y-2">
-                <div className="uppercase text-sm font-heading pb-2">Contact Information</div>
+                <Typography size="small" className="uppercase font-heading pb-2">
+                  Contact Information
+                </Typography>
                 {[
                   { label: "Email", value: student?.data?.user?.email },
                   { label: "Phone", value: student?.data?.user?.phoneNumber },
+                  { label: "Address", value: student?.data?.user?.residentialAddress },
                 ].map((info, idx) => (
                   <div key={idx} className="flex justify-between md:flex-col">
                     <Typography size="small" color="muted">
@@ -96,29 +108,64 @@ function StudentDetails({ studentId }: { studentId: number }) {
                 <div className="w-full relative h-14">
                   <TabsList className="flex absolute">
                     <TabsTrigger value="personal">Personal Info</TabsTrigger>
-                    <TabsTrigger value="routine">Routine</TabsTrigger>
-                    <TabsTrigger value="attendance">Attendance</TabsTrigger>
-                    <TabsTrigger value="salary">Salary</TabsTrigger>
+                    <TabsTrigger value="academic">Academic Info</TabsTrigger>
+                    <TabsTrigger value="guardians">Guardians Info</TabsTrigger>
+                    <TabsTrigger value="performance">Performance & Reports</TabsTrigger>
+                    <TabsTrigger value="attendance">Attendance Records</TabsTrigger>
+                    <TabsTrigger value="fees">Fee & Payments</TabsTrigger>
+                    <TabsTrigger value="activities">Extracurricular Activities</TabsTrigger>
+                    <TabsTrigger value="discipline">Discipline & Behavior</TabsTrigger>
+                    <TabsTrigger value="documents">Documents & Certifications</TabsTrigger>
+                    <TabsTrigger value="timetable">Timetable & Schedule</TabsTrigger>
+                    <TabsTrigger value="notes">Notes & Remarks</TabsTrigger>
                   </TabsList>
                 </div>
                 <ScrollBar orientation="horizontal" />
               </ScrollArea>
 
               <TabsContent value="personal">
-                <StudentDetailsPersonalInfoTab />
+                <StudentDetailsPersonalInfoTab student={student?.data} />
               </TabsContent>
 
-              <TabsContent value="routine">
-                <StudentDetailsRoutineTab />
+              <TabsContent value="academic">
+                <StudentDetailsAcademicInfoTab student={student?.data} />
+              </TabsContent>
+
+              <TabsContent value="guardians">
+                <StudentDetailsGuardiansInfoTab student={student?.data} />
+              </TabsContent>
+
+              {/* <TabsContent value="performance">
+                <StudentDetailsPerformanceReportsTab student={student} />
               </TabsContent>
 
               <TabsContent value="attendance">
-                <StudentDetailsAttendanceTab />
+                <StudentDetailsAttendanceRecordsTab student={student} />
               </TabsContent>
 
-              <TabsContent value="salary">
-                <StudentDetailsSalaryTab />
+              <TabsContent value="fees">
+                <StudentDetailsFeePaymentsTab student={student} />
               </TabsContent>
+
+              <TabsContent value="activities">
+                <StudentDetailsExtracurricularActivitiesTab student={student} />
+              </TabsContent>
+
+              <TabsContent value="discipline">
+                <StudentDetailsDisciplineBehaviorTab student={student} />
+              </TabsContent>
+
+              <TabsContent value="documents">
+                <StudentDetailsDocumentsCertificationsTab student={student} />
+              </TabsContent>
+
+              <TabsContent value="timetable">
+                <StudentDetailsTimetableScheduleTab student={student} />
+              </TabsContent>
+
+              <TabsContent value="notes">
+                <StudentDetailsNotesRemarksTab student={student} />
+              </TabsContent> */}
             </Tabs>
           </div>
         </div>

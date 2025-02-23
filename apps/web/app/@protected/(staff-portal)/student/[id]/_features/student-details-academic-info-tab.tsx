@@ -9,19 +9,20 @@ type TabProps = {
   student?: StudentType;
 };
 
-export function StudentDetailsPersonalInfoTab({ student }: TabProps) {
+export function StudentDetailsAcademicInfoTab({ student }: TabProps) {
   return (
     <Card>
       <Typography size="small" className="p-4 border-b font-heading uppercase">
-        Personal Information
+        Academic Information
       </Typography>
       <div className="p-4 grid sm:grid-cols-2 md:grid-cols-3 gap-4">
         {[
-          { label: "Full Name", value: student?.user?.lastName + " " + student?.user?.firstName },
-          { label: "Date of Birth", value: formatDateToString(student?.user?.dateOfBirth || "") },
-          { label: "Gender", value: student?.user?.gender },
-          { label: "Blood Group", value: student?.user?.bloodGroup },
-          { label: "Religion", value: student?.user?.religion },
+          { label: "Student ID", value: student?.id },
+          { label: "Admission Number", value: student?.admissionNo },
+          { label: "Enrollment Date", value: formatDateToString(student?.enrollmentDate || "") },
+          { label: "Class & Division", value: student?.class?.type + " - " + student?.class?.classDivision },
+          { label: "Assigned Subjects", value: "" },
+          { label: "Attendance Record", value: "" },
         ].map((item, index) => (
           <div key={index} className="space-y-1">
             <Typography size="small" color="muted">

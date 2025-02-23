@@ -65,6 +65,7 @@ export interface StaffType {
 
 export interface StudentType {
   id: number;
+  admissionNo: string;
   studentId: string;
   userId: number;
   user: UserWithRelationsType;
