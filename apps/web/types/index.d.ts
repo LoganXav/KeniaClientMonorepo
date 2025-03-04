@@ -75,6 +75,15 @@ export interface StudentType {
   tenantId: number;
   tenant: TenantType;
   classDivisionId: number;
+  subjects: SubjectType[];
+}
+
+export interface SubjectType {
+  id: number;
+  name: string;
+  description: string;
+  classId: number;
+  class: ClassType;
 }
 
 export interface RoleType {

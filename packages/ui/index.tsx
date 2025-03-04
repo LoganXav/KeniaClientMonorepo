@@ -22,8 +22,9 @@ export * from "./components/ui/scroll-area";
 export * from "./components/ui/breadcrumbs";
 
 export * from "./components/ui/multiselect";
+// export * from "./components/ui/multi-select";
 export * from "./components/ui/dialog";
 export * from "./components/ui/typography";
 export * from "./components/ui/command";
-
+export * from "./components/ui/badge";
 export { cn } from "./lib/utils";

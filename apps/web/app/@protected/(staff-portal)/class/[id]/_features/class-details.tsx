@@ -6,25 +6,19 @@ import Image from "next/image";
 import { RouteEnums } from "@/constants/router/route-constants";
 import Link from "next/link";
 import { UserRoundPen } from "lucide-react";
-import { useGetSingleStaffQuery } from "@/apis/core-staff-api/staff";
+import { useGetSingleClassQuery } from "@/apis/core-class-api/class";
 import { LoadingContent } from "@/components/loading-content";
 import { formatDateToString } from "@/lib/dates";
-import { StaffDetailsPersonalInfoTab } from "./staff-details-personal-info-tab";
-import { StaffDetailsSalaryTab } from "./staff-details-salary-tab";
-import { StaffDetailsQualificationsTab } from "./staff-details-qualifications-tab";
-import { StaffDetailsSubjectsResponsibilitiesTab } from "./staff-details-subjects-responsibilities-tab";
-import { StaffDetailsDisciplinaryRecordsTab } from "./staff-details-disciplinary-records-tab";
-import { StaffDetailsDocumentsCertificationsTab } from "./staff-details-documents-certifications-tab";
-import { StaffDetailsSystemPermissionsTab } from "./staff-details-system-permissions-tab";
-import { StaffDetailsWorkScheduleTab } from "./staff-details-work-schedule-tab";
-import { StaffDetailsPerformanceAppraisalsTab } from "./staff-details-performance-appraisals-tab";
 
-function StaffDetails({ staffId }: { staffId: number }) {
-  const { data: staff, isLoading, error, refetch } = useGetSingleStaffQuery({ staffId });
+function ClassDetails({ classId }: { classId: number }) {
+  const { data: classItem, isLoading, error, refetch } = useGetSingleClassQuery({ classId });
+
+  console.log(classItem);
 
   return (
     <>
-      <div className="flex w-full pb-4 mt-8">
+      <div>hi</div>
+      {/* <div className="flex w-full pb-4 mt-8">
         <div className="hidden sm:flex sm:flex-1" />
         <div className="grid sm:grid-cols-2 gap-4 w-full sm:w-auto">
           <Select onValueChange={() => null} value={String("")}>
@@ -151,9 +145,9 @@ function StaffDetails({ staffId }: { staffId: number }) {
             </Tabs>
           </div>
         </div>
-      </LoadingContent>
+      </LoadingContent> */}
     </>
   );
 }
 
-export default StaffDetails;
+export default ClassDetails;

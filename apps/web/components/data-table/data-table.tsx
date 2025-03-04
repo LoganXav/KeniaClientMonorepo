@@ -48,7 +48,7 @@ export function DataTable<TData, TValue>({ data, columns }: TableProps<TData, TV
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No members.
+                No data.
               </TableCell>
             </TableRow>
           )}

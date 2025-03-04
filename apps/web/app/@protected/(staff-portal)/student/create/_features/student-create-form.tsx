@@ -58,6 +58,7 @@ export function StudentCreateForm({ studentId }: Props) {
             residentialLgaId: Number(guardian.residentialLgaId),
             residentialZipCode: Number(guardian.residentialZipCode),
           })),
+          subjectIds: values.subjectIds.map((subjectId) => Number(subjectId)),
         },
       },
       {
@@ -105,6 +106,7 @@ export function StudentCreateForm({ studentId }: Props) {
         residentialZipCode: "",
         gender: "",
         dateOfBirth: "",
+        subjectIds: [],
       },
     ],
 
@@ -159,6 +161,7 @@ export function StudentCreateForm({ studentId }: Props) {
 
         classId: student?.class?.id || values.classId,
         classDivisionId: Number(student?.classDivisionId) || values.classDivisionId,
+        subjectIds: student?.subjects?.map((subject) => subject.id) || values.subjectIds,
       }));
     }
   }, [student, dataRef, isEdit]);

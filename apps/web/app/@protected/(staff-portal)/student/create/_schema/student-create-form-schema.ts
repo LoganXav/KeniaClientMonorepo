@@ -128,4 +128,5 @@ export const StudentCreateFormSchema = z.object({
 
   classId: z.number({ required_error: "Class is required", invalid_type_error: "Class must be a number" }),
   classDivisionId: z.number({ required_error: "Class division is required", invalid_type_error: "Class division must be a number" }),
+  subjectIds: z.array(z.number({ required_error: "Subject is required", invalid_type_error: "Subject must be a number" })),
 });

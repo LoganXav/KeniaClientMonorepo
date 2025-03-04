@@ -2,7 +2,7 @@
 
 import React from "react";
 import { StaffCreateFormReturn, StaffTemplateOptions } from "../_types/staff-create-form-types";
-import { DatePicker, FormControl, FormField, FormItem, FormMessage, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
+import { DatePicker, FormControl, FormField, FormItem, FormMessage, Input, MultiSelect, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { FileUpload } from "@/components/file-upload";
 
 type StepProps = {
@@ -98,19 +98,35 @@ export function StaffCreateFormEmploymentStep({ form, staffTemplateQuery }: Step
           </FormItem>
         )}
       />
-      <div className="hidden md:block" />
-      <FormField
-        control={form.control}
-        name="cvFile"
-        render={({ field }) => (
-          <FormItem className="flex flex-col">
-            <FormControl>
-              <FileUpload field={field} placeholder="Upload CV" />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      {/* <div className="hidden md:block" /> */}
+      <div className="grid gap-4 col-span-2">
+        <FormField
+          control={form.control}
+          name={"subjectIds"}
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                {/* <MultiSelect selected={Array.isArray(field.value) ? field.value : []} setSelected={field.onChange} options={studentTemplateQuery?.data?.data?.subjectOptions || []} placeholder="Select Subjects" /> */}
+                <MultiSelect selected={Array.isArray(field.value) ? field.value : []} onChange={field.onChange} options={staffTemplateQuery?.data?.data?.subjectOptions || []} placeholder="Select Subjects" searchPlaceholder="Search Subjects" emptyMessage="No subjects found" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="cvFile"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormControl>
+                <FileUpload field={field} placeholder="Upload CV" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
     </div>
   );
 }

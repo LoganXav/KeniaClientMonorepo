@@ -1,8 +1,13 @@
 "use client";
 
+import { StaffType } from "@/types";
 import { Card } from "@repo/ui";
 
-export function StaffDetailsSalaryTab() {
+type TabProps = {
+  staff?: StaffType;
+};
+
+export function StaffDetailsSalaryTab({ staff }: TabProps) {
   return (
     <div className="space-y-4">
       <Card>

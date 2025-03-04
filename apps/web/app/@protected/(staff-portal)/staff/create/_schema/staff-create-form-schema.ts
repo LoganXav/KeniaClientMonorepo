@@ -90,4 +90,6 @@ export const StaffCreateFormSchema = z.object({
 
   cvUrl: z.string().url("Invalid CV URL").optional(),
   cvFile: z.instanceof(File).optional(),
+
+  subjectIds: z.array(z.number().int("Subject ID must be an integer")).optional(),
 });

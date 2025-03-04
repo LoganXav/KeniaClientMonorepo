@@ -24,6 +24,7 @@ export type StaffTemplateOptions =
             employmentTypeOptions: string[];
             lgaIdOptions: { codeValue: string; id: number; name: string }[];
             stateIdOptions: { codeValue: string; id: number; name: string }[];
+            subjectOptions: { id: number; name: string }[];
           }>
         | undefined;
       isLoading: boolean;

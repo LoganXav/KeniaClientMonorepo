@@ -1,9 +1,12 @@
+import { StaffType } from "@/types";
 import { Card, Typography } from "@repo/ui";
 import React from "react";
 
-type Props = {};
+type TabProps = {
+  staff?: StaffType;
+};
 
-function StaffDetailsPersonalInfoTab({}: Props) {
+export function StaffDetailsPersonalInfoTab({ staff }: TabProps) {
   return (
     <div className="space-y-4">
       <Card>
@@ -33,5 +36,3 @@ function StaffDetailsPersonalInfoTab({}: Props) {
     </div>
   );
 }
-
-export { StaffDetailsPersonalInfoTab };

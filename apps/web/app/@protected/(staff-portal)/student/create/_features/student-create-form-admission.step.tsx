@@ -2,7 +2,7 @@
 
 import React from "react";
 import { StudentCreateFormReturn, StudentTemplateOptions } from "../_types/student-create-form-types";
-import { DatePicker, FormControl, FormField, FormItem, FormMessage, Input, SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@repo/ui";
+import { DatePicker, FormControl, FormField, FormItem, FormMessage, Input, SelectValue, SelectTrigger, SelectItem, SelectContent, Select, MultiSelect } from "@repo/ui";
 
 type StepProps = {
   form: StudentCreateFormReturn;
@@ -56,6 +56,20 @@ export function StudentCreateFormAdmissionStep({ form, isEdit, studentTemplateQu
                 ))}
               </SelectContent>
             </Select>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
+        name={"subjectIds"}
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              {/* <MultiSelect selected={Array.isArray(field.value) ? field.value : []} setSelected={field.onChange} options={studentTemplateQuery?.data?.data?.subjectOptions || []} placeholder="Select Subjects" /> */}
+              <MultiSelect selected={Array.isArray(field.value) ? field.value : []} onChange={field.onChange} options={studentTemplateQuery?.data?.data?.subjectOptions || []} placeholder="Select Subjects" searchPlaceholder="Search Subjects" emptyMessage="No subjects found" />
+            </FormControl>
             <FormMessage />
           </FormItem>
         )}

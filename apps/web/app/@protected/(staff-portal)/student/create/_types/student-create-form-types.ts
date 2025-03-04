@@ -29,6 +29,7 @@ export type StudentTemplateOptions =
             religionOptions: string[];
             genderOptions: string[];
             bloodGroupOptions: string[];
+            subjectOptions: { id: number; name: string }[];
           }>
         | undefined;
       isLoading: boolean;
