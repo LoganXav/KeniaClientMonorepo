@@ -84,6 +84,20 @@ export interface SubjectType {
   description: string;
   classId: number;
   class: ClassType;
+  staffs: StaffType[];
+  tenantId: number;
+  tenant: SchoolType;
+}
+
+export interface ClassType {
+  id: number;
+  name: string;
+  classTeacherId: number;
+  classTeacher: StaffType;
+  students: StudentType[];
+  subjects: SubjectType[];
+  tenantId: number;
+  tenant: SchoolType;
 }
 
 export interface RoleType {

@@ -27,7 +27,7 @@ export function StudentCreateFormAdmissionStep({ form, isEdit, studentTemplateQu
               <SelectContent>
                 {studentTemplateQuery?.data?.data?.classOptions?.map((classOption, idx) => (
                   <SelectItem key={idx} value={String(classOption?.id)}>
-                    {classOption?.type}
+                    {classOption?.name}
                   </SelectItem>
                 ))}
               </SelectContent>

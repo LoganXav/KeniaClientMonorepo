@@ -19,7 +19,7 @@ export function ClassListTable({}: Props) {
     () => [
       {
         header: "Name",
-        accessorKey: "type",
+        accessorKey: "name",
       },
       {
         header: "Class Teacher",

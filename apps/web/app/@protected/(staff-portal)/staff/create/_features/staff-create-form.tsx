@@ -88,6 +88,7 @@ export function StaffCreateForm({ staffId }: Props) {
     startDate: "",
     highestLevelEdu: "",
     subjectIds: [],
+    classIds: [],
   };
 
   const form = useForm<StaffCreateFormSchemaType>({
@@ -125,6 +126,7 @@ export function StaffCreateForm({ staffId }: Props) {
         startDate: staff?.startDate || values.startDate,
         highestLevelEdu: staff?.highestLevelEdu || values.highestLevelEdu,
         subjectIds: staff?.subjects?.map((subject) => subject.id) || values.subjectIds,
+        classIds: staff?.classes?.map((classItem) => classItem?.id) || values.classIds,
       }));
     }
   }, [isEdit, staff, dataRef]);
