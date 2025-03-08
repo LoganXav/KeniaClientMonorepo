@@ -1,27 +1,26 @@
 import React from "react";
-import SchoolProfileOnboardingForm from "./_features/school-profile-onboarding-form";
 import { PageBreadcrumbs } from "@/components/breadcrumbs";
 import { RouteEnums } from "@/constants/router/route-constants";
-
+import SchoolCalendarGrid from "./_features/school-calendar-grid";
 type Props = {};
 
-function SchoolProfile({}: Props) {
+function SchoolCalendar({}: Props) {
   const pageBreadcrumbs = [
     {
       title: "School",
       path: RouteEnums.SCHOOL,
     },
-    { title: "Onboarding", path: RouteEnums.SCHOOL_PROFILE },
+    { title: "Calendar", path: RouteEnums.SCHOOL_CALENDAR },
   ];
 
   return (
-    <div>
+    <>
       <PageBreadcrumbs pages={pageBreadcrumbs} />
       <div className="mt-8">
-        <SchoolProfileOnboardingForm />
+        <SchoolCalendarGrid />
       </div>
-    </div>
+    </>
   );
 }
 
-export default SchoolProfile;
+export default SchoolCalendar;

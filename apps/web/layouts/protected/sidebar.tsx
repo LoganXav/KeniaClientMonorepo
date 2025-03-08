@@ -53,7 +53,7 @@ export default function ProtectedSidebar() {
           name: "School",
           path: RouteEnums.SCHOOL,
           icon: Building2,
-          subRoutes: [{ name: "Profile", path: RouteEnums.SCHOOL_PROFILE, icon: User }],
+          // subRoutes: [{ name: "Profile", path: RouteEnums.SCHOOL_PROFILE, icon: User }],
         },
       ],
     },

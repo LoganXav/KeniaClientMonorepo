@@ -25,8 +25,15 @@ export const RouteEnums = {
   // SCHOOL
   SCHOOL: "/school",
   SCHOOL_PROFILE: "/school/profile",
+  SCHOOL_CALENDAR: "/school/calendar",
+  SCHOOL_CALENDAR_CREATE: "/school/calendar/create",
+  SCHOOL_TIMETABLE: "/school/timetable",
 
   // CLASS
   CLASS: "/class",
   CLASS_LIST: "/class/list",
+
+  // SUBJECT
+  SUBJECT: "/subject",
+  SUBJECT_LIST: "/subject/list",
 };

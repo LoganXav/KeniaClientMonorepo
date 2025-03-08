@@ -27,4 +27,6 @@ export * from "./components/ui/dialog";
 export * from "./components/ui/typography";
 export * from "./components/ui/command";
 export * from "./components/ui/badge";
+
+export * from "./components/ui/full-calendar";
 export { cn } from "./lib/utils";

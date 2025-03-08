@@ -1,0 +1,39 @@
+/* Base styles for the toolbar */
+.fc-toolbar {
+  display: grid;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+}
+
+.fc-toolbar-chunk {
+  font-size: 15px;
+}
+
+/* Styles for smaller screens */
+@media (max-width: 768px) {
+  .fc-toolbar {
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .fc-toolbar-chunk {
+    font-size: 15px;
+  }
+
+  .fc-button {
+    width: 100%;
+  }
+}
+
+/* Styles for very small screens */
+@media (max-width: 480px) {
+  .fc-toolbar {
+    padding: 5px;
+    align-items: center;
+  }
+
+  .fc-button {
+    padding: 8px;
+  }
+}
