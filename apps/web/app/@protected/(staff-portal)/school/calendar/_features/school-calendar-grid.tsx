@@ -6,8 +6,6 @@ import { Button, CalendarGrid, Card } from "@repo/ui";
 import Link from "next/link";
 import React from "react";
 
-import "./calendar.css";
-
 function SchoolCalendarGrid() {
   const events = [
     { title: "Multi-Day Event", start: "2025-03-04", end: "2025-03-10" },
@@ -22,7 +20,7 @@ function SchoolCalendarGrid() {
           <div />
           <Link className="" href={RouteEnums.SCHOOL_CALENDAR_CREATE}>
             <Button className="w-full">
-              Edit Calendar <CalendarCog size={18} strokeWidth={1} />
+              Manage Calendar <CalendarCog size={18} strokeWidth={1} />
             </Button>
           </Link>
         </div>

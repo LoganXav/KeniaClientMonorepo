@@ -6,6 +6,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import multiMonthPlugin from "@fullcalendar/multimonth";
 import FullCalendar from "@fullcalendar/react";
+import "./style.css";
 
 interface CalendarGridProps {
   events: { title: string; start?: string; end?: string; date?: string }[];
