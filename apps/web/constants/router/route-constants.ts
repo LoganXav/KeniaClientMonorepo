@@ -33,6 +33,11 @@ export const RouteEnums = {
   CLASS: "/class",
   CLASS_LIST: "/class/list",
 
+  // CLASS DIVISION
+  CLASS_DIVISION: "/class/division",
+  CLASS_DIVISION_LIST: "/class/division/list",
+  CLASS_DIVISION_CREATE: "/class/division/create",
+
   // SUBJECT
   SUBJECT: "/subject",
   SUBJECT_LIST: "/subject/list",

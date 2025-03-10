@@ -8,10 +8,11 @@ import { useAuthUser } from "@/hooks/use-auth-user";
 import useDataRef from "@/hooks/use-data-ref";
 import { useCalendarEditMutation, useGetCalendarQuery } from "@/apis/core-calendar-api/calendar";
 import React from "react";
-import { Form, FormField, FormItem, FormLabel, FormControl, Input, toast, Card, CardTitle, Button, Typography, DatePicker } from "@repo/ui";
+import { Form, FormField, FormItem, FormControl, Input, toast, Card, CardTitle, Button, Typography, DatePicker } from "@repo/ui";
 import { LoadingContent } from "@/components/loading-content";
 import { CircleMinus, CirclePlus } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { RouteEnums } from "@/constants/router/route-constants";
 
 export default function SchoolCalendarForm() {
   const router = useRouter();
@@ -72,6 +73,7 @@ export default function SchoolCalendarForm() {
       }));
     }
   }, [schoolCalendar]);
+
   return (
     <LoadingContent loading={schoolCalendarQueryResult?.isLoading} error={schoolCalendarQueryResult?.error} retry={schoolCalendarQueryResult?.refetch} data={schoolCalendarQueryResult?.data} shouldLoad={false}>
       <Form {...form}>
@@ -202,7 +204,7 @@ export default function SchoolCalendarForm() {
       </Form>
 
       <div className="grid md:grid-cols-2 md:max-w-lg gap-4 mx-auto my-12">
-        <Button variant={"outline"} type="button" onClick={() => router.back()}>
+        <Button variant={"outline"} type="button" onClick={() => router.push(RouteEnums.SCHOOL_CALENDAR)}>
           Cancel
         </Button>
         <Button type="button" onClick={handleEditSchoolCalendar} loading={calendarEditPending}>

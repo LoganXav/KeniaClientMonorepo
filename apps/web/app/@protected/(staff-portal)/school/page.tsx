@@ -36,11 +36,6 @@ function SchoolMenu({}: Props) {
             url: RouteEnums.SCHOOL_TIMETABLE,
           },
           {
-            label: "Class",
-            desc: "Manage school classes and their divisions.",
-            url: RouteEnums.CLASS,
-          },
-          {
             label: "Subjects",
             desc: "Manage school subjects and allocate them to classes and teachers.",
             url: RouteEnums.SUBJECT,

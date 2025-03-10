@@ -100,6 +100,16 @@ export interface ClassType {
   tenant: SchoolType;
 }
 
+export interface ClassDivisionType {
+  id: number;
+  name: string;
+  classId: number;
+  class: ClassType;
+  students: StudentType[];
+  tenantId: number;
+  tenant: SchoolType;
+}
+
 export interface RoleType {
   id: number;
   name: string;

@@ -25,6 +25,11 @@ function ClassMenu({}: Props) {
             desc: "Oversee all class activities and departmental assignments.",
             url: RouteEnums.CLASS_LIST,
           },
+          {
+            label: "Manage Divisions",
+            desc: "Manage class divisions and their subjects.",
+            url: RouteEnums.CLASS_DIVISION_LIST,
+          },
         ].map(({ label, desc, url }: Record<string, any>, idx: number) => (
           <Link key={idx} href={url} className="block">
             <Card className="rounded-lg border p-6 space-y-1 hover:border-foreground transition-border duration-100 h-36">
