@@ -1,6 +1,7 @@
 import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { CalendarType } from "@/types";
 
 const BASE_URL = "calendar";
 
@@ -8,8 +9,8 @@ export const useGetCalendarQuery = (params?: Record<string, any>) => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.CALENDAR],
     queryFn: async () => {
-      return await getRequest<Record<string, any>>({
-        endpoint: `${BASE_URL}/info`,
+      return await getRequest<CalendarType[]>({
+        endpoint: `${BASE_URL}/list`,
         config: { params },
       });
     },
@@ -18,17 +19,18 @@ export const useGetCalendarQuery = (params?: Record<string, any>) => {
   return { data, isLoading, error, refetch };
 };
 
-export const useCalendarEditMutation = () => {
+export const useCalendarMutation = () => {
   const queryClient = useQueryClient();
   const {
-    mutate: calendarEdit,
-    isPending: calendarEditPending,
-    error: calendarEditError,
+    mutate: calendarMutate,
+    isPending: calendarMutatePending,
+    error: calendarMutateError,
   } = useMutation({
-    mutationFn: async (payload: Record<string, any>) => {
-      return await postRequest<Record<string, any>>({
-        endpoint: `${BASE_URL}`,
+    mutationFn: async ({ payload, params }: { payload: Record<string, any>; params?: Record<string, any> }) => {
+      return await postRequest<CalendarType>({
+        endpoint: `${BASE_URL}/create`,
         payload,
+        config: { params },
       });
     },
     onSuccess: () => {
@@ -36,5 +38,5 @@ export const useCalendarEditMutation = () => {
     },
   });
 
-  return { calendarEdit, calendarEditPending, calendarEditError };
+  return { calendarMutate, calendarMutatePending, calendarMutateError };
 };

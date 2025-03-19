@@ -10,13 +10,16 @@ import "./style.css";
 
 interface CalendarGridProps {
   events: { title: string; start?: string; end?: string; date?: string }[];
+  views: ("multiMonthYear" | "dayGridMonth" | "timeGridWeek" | "timeGridDay")[];
   [key: string]: any;
 }
 
-const CalendarGrid = ({ events, ...props }: CalendarGridProps) => {
+const CalendarGrid = ({ events, views = [], ...props }: CalendarGridProps) => {
   const renderEventContent = (eventInfo: any) => {
     return <div className="w-full rounded-none h-auto text-wrap">{eventInfo.event.title}</div>;
   };
+
+  const viewsString = views.join(",");
 
   return (
     <FullCalendar
@@ -30,7 +33,7 @@ const CalendarGrid = ({ events, ...props }: CalendarGridProps) => {
       headerToolbar={{
         left: "prev,next",
         center: "title",
-        right: "multiMonthYear,dayGridMonth,timeGridWeek,timeGridDay",
+        right: viewsString,
       }}
       titleFormat={{ year: "numeric", month: "long" }}
       weekends={false}

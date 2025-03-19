@@ -154,3 +154,24 @@ export interface UserWithRelationsType {
   residentialCountryId?: number | null;
   residentialZipCode?: number | null;
 }
+
+export interface CalendarType {
+  id: number;
+  year: number;
+  terms: TermType[];
+}
+
+export interface TermType {
+  id: number;
+  name: string;
+  startDate: string;
+  endDate: string;
+  breakWeeks: BreakWeekType[];
+}
+
+export interface BreakWeekType {
+  id: number;
+  name: string;
+  startDate: string;
+  endDate: string;
+}

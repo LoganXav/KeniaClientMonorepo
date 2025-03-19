@@ -21,7 +21,7 @@ export function DatePicker({ field, placeholder = "Select date" }: { field: any;
       </PopoverTrigger>
 
       <PopoverContent className="w-auto p-0" align="start">
-        <Calendar mode="single" selected={field.value ? parseISO(field.value) : undefined} onSelect={(date) => field.onChange(date?.toISOString())} captionLayout="dropdown" />
+        <Calendar mode="single" toYear={new Date().getFullYear() + 10} selected={field.value ? parseISO(field.value) : undefined} onSelect={(date) => field.onChange(date?.toISOString())} captionLayout="dropdown" />
       </PopoverContent>
     </Popover>
   );

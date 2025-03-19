@@ -6,9 +6,9 @@ import { SchoolCalendarFormSchema } from "../_schema/school-calendar-form-schema
 import { SchoolCalendarFormSchemaType } from "../_types/school-calendar-form-types";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import useDataRef from "@/hooks/use-data-ref";
-import { useCalendarEditMutation, useGetCalendarQuery } from "@/apis/core-calendar-api/calendar";
+import { useCalendarMutation, useGetCalendarQuery } from "@/apis/core-calendar-api/calendar";
 import React from "react";
-import { Form, FormField, FormItem, FormControl, Input, toast, Card, CardTitle, Button, Typography, DatePicker } from "@repo/ui";
+import { Form, FormField, FormItem, FormControl, Input, toast, Card, CardTitle, Button, Typography, DatePicker, SelectItem, SelectContent, SelectValue, SelectTrigger, Select, FormMessage } from "@repo/ui";
 import { LoadingContent } from "@/components/loading-content";
 import { CircleMinus, CirclePlus } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -21,25 +21,28 @@ export default function SchoolCalendarForm() {
   const schoolCalendarQueryResult = useGetCalendarQuery();
   const schoolCalendar = schoolCalendarQueryResult?.data?.data;
 
-  const { calendarEdit, calendarEditPending, calendarEditError } = useCalendarEditMutation();
+  const { calendarMutate, calendarMutatePending, calendarMutateError } = useCalendarMutation();
 
-  const handleEditSchoolCalendar = () => {
-    console.log({ values: form.getValues() });
+  const handleMutateSchoolCalendar = () => {
+    const values = form.getValues();
 
-    // calendarEdit(
-    //   { payload: { ...values } },
-    //   {
-    //     onSuccess: (result) => {
-    //       toast.success(result.message);
-    //     },
-    //     onError: (error) => {
-    //       toast.error(error.message);
-    //     },
-    //   }
-    // );
+    calendarMutate(
+      { payload: { ...values, id: Number(values.id) } },
+      {
+        onSuccess: (result) => {
+          toast.success(result.message);
+          router.push(RouteEnums.SCHOOL_CALENDAR);
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      }
+    );
   };
+
   const defaultValues = {
     tenantId: authUserIds?.tenantId,
+    id: 0,
     year: new Date().getFullYear(),
     terms: [
       {
@@ -65,45 +68,88 @@ export default function SchoolCalendarForm() {
 
   const dataRef = useDataRef({ form });
 
+  const selectedCalendarId = form.watch("id");
+
+  // Memoize the values to ensure consistent dependencies
+  const selectedCalendar = React.useMemo(() => {
+    return schoolCalendar?.find((calendar: Record<string, any>) => calendar.id == selectedCalendarId);
+  }, [schoolCalendar, selectedCalendarId]);
+
+  const year = selectedCalendar?.year;
+  const terms = selectedCalendar?.terms;
+
   // Reset form values if editing an existing school calendar
   React.useEffect(() => {
-    if (schoolCalendar) {
+    if (selectedCalendar) {
       dataRef.current.form.reset((values: SchoolCalendarFormSchemaType) => ({
         ...values,
+        id: Number(selectedCalendarId) || 0,
+        year: Number(year) || new Date().getFullYear(),
+        terms: terms || [],
       }));
     }
-  }, [schoolCalendar]);
+  }, [selectedCalendar, year, terms, selectedCalendarId]);
 
   return (
     <LoadingContent loading={schoolCalendarQueryResult?.isLoading} error={schoolCalendarQueryResult?.error} retry={schoolCalendarQueryResult?.refetch} data={schoolCalendarQueryResult?.data} shouldLoad={false}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleEditSchoolCalendar)} className="space-y-4 mb-8">
+        <form onSubmit={form.handleSubmit(handleMutateSchoolCalendar)} className="space-y-4 mb-8">
           <>
             <div className="flex w-full">
               <div className="hidden md:flex md:flex-1" />
-              <Button
-                className="w-full md:w-auto"
-                type="button"
-                onClick={() =>
-                  form.setValue("terms", [
-                    ...form.watch("terms"),
-                    {
-                      name: "",
-                      startDate: "",
-                      endDate: "",
-                      breakWeeks: [
-                        {
-                          name: "",
-                          startDate: "",
-                          endDate: "",
-                        },
-                      ],
-                    },
-                  ])
-                }
-              >
-                Add Another Term <CirclePlus size={18} strokeWidth={1} />
-              </Button>
+              <div className="grid md:grid-cols-2 gap-4 w-full md:w-auto">
+                {schoolCalendar?.length > 0 ? (
+                  <FormField
+                    control={form.control}
+                    name="id"
+                    render={({ field }) => (
+                      <FormItem>
+                        <Select onValueChange={field.onChange} value={String(field.value)}>
+                          <FormControl>
+                            <SelectTrigger className="h-10">
+                              <SelectValue placeholder="Select year" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {schoolCalendar?.map((item: Record<string, any>, idx: number) => (
+                              <SelectItem key={idx} value={String(item.id)}>
+                                {item.year}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                ) : (
+                  <div />
+                )}
+
+                <Button
+                  className="w-full md:w-auto"
+                  type="button"
+                  onClick={() =>
+                    form.setValue("terms", [
+                      ...form.watch("terms"),
+                      {
+                        name: "",
+                        startDate: "",
+                        endDate: "",
+                        breakWeeks: [
+                          {
+                            name: "",
+                            startDate: "",
+                            endDate: "",
+                          },
+                        ],
+                      },
+                    ])
+                  }
+                >
+                  Add Another Term <CirclePlus size={18} strokeWidth={1} />
+                </Button>
+              </div>
             </div>
 
             {form.watch("terms")?.length > 0 &&
@@ -207,7 +253,7 @@ export default function SchoolCalendarForm() {
         <Button variant={"outline"} type="button" onClick={() => router.push(RouteEnums.SCHOOL_CALENDAR)}>
           Cancel
         </Button>
-        <Button type="button" onClick={handleEditSchoolCalendar} loading={calendarEditPending}>
+        <Button type="button" onClick={handleMutateSchoolCalendar} loading={calendarMutatePending}>
           Save
         </Button>
       </div>
