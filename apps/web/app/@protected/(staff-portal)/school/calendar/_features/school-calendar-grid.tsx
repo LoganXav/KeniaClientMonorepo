@@ -15,7 +15,7 @@ function SchoolCalendarGrid() {
   const events = parseCalendarDataToEvents(calendarQueryResult?.data?.data || []);
 
   return (
-    <LoadingContent loading={calendarQueryResult?.isLoading} error={calendarQueryResult?.error} retry={calendarQueryResult?.refetch} data={calendarQueryResult?.data} shouldLoad={false}>
+    <>
       <div className="flex w-full pb-4 mt-8">
         <div className="hidden md:flex md:flex-1" />
         <div className="grid md:grid-cols-2 gap-4 w-full md:w-auto">
@@ -27,10 +27,12 @@ function SchoolCalendarGrid() {
           </Link>
         </div>
       </div>
-      <Card className="p-4 mb-8">
-        <CalendarGrid events={events} views={["multiMonthYear", "dayGridMonth"]} />
-      </Card>
-    </LoadingContent>
+      <LoadingContent loading={calendarQueryResult?.isLoading} error={calendarQueryResult?.error} retry={calendarQueryResult?.refetch} data={calendarQueryResult?.data} shouldLoad={false}>
+        <Card className="p-4 mb-8">
+          <CalendarGrid events={events} views={["multiMonthYear", "dayGridMonth"]} />
+        </Card>
+      </LoadingContent>
+    </>
   );
 }
 

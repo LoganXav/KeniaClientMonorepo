@@ -175,3 +175,22 @@ export interface BreakWeekType {
   startDate: string;
   endDate: string;
 }
+
+export interface TimetableType {
+  id: number;
+  day: string;
+  classDivisionId: number;
+  periods: PeriodType[];
+}
+
+export interface PeriodType {
+  id: number;
+  startTime: string;
+  endTime: string;
+  subjectId: number;
+  subject: SubjectType;
+  isBreak: boolean;
+  breakType: "SHORTBREAK" | "LONGBREAK" | null;
+  timetableId: number;
+  timetable: TimetableType;
+}
