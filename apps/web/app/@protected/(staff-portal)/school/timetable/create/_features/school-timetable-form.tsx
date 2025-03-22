@@ -96,24 +96,24 @@ export default function SchoolTimetableForm() {
 
   // Reset form values if editing an existing timetable
   React.useEffect(() => {
-    // if (timetable) {
     dataRef.current.form.reset((values: SchoolTimetableFormSchemaType) => ({
       ...values,
       id: Number(timetable?.id) || values.id,
       day: timetable?.day || values.day,
       periods:
-        timetable?.periods?.map((period: Record<string, any>) => ({
-          ...period,
-          subjectId: Number(period?.subjectId),
-          startTime: period?.startTime,
-          endTime: period?.endTime,
-          isBreak: period?.isBreak,
-          breakType: period?.breakType,
-        })) || values.periods,
+        (timetable?.periods &&
+          timetable.periods.map((period: Record<string, any>) => ({
+            ...period,
+            subjectId: Number(period?.subjectId),
+            startTime: period?.startTime,
+            endTime: period?.endTime,
+            isBreak: period?.isBreak,
+            breakType: period?.breakType,
+          }))) ||
+        [],
       classDivisionId: Number(timetable?.classDivisionId) || values.classDivisionId,
     }));
-    // }
-  }, [timetable]);
+  }, [timetable, classDivisionId, day, classId]);
 
   return (
     <LoadingContent loading={timetableQueryResult?.isLoading} error={timetableQueryResult?.error} retry={timetableQueryResult?.refetch} data={timetableQueryResult?.data} shouldLoad={false}>
@@ -155,7 +155,7 @@ export default function SchoolTimetableForm() {
                       <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={timetableTemplateQueryResult?.isLoading}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Admission Class" />
+                            <SelectValue placeholder="Class" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -179,7 +179,7 @@ export default function SchoolTimetableForm() {
                       <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={timetableTemplateQueryResult?.isLoading || !form.watch("classId")}>
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Admission Class Division" />
+                            <SelectValue placeholder="Class Division" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>

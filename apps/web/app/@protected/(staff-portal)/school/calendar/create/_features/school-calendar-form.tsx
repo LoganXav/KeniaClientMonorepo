@@ -98,7 +98,7 @@ export default function SchoolCalendarForm() {
             <div className="flex w-full">
               <div className="hidden md:flex md:flex-1" />
               <div className="grid md:grid-cols-2 gap-4 w-full md:w-auto">
-                {schoolCalendar?.length > 0 ? (
+                {schoolCalendar?.length && schoolCalendar?.length > 0 ? (
                   <FormField
                     control={form.control}
                     name="id"

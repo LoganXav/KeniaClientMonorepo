@@ -24,11 +24,13 @@ const CalendarGrid = ({ events, views = [], ...props }: CalendarGridProps) => {
   return (
     <FullCalendar
       plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, multiMonthPlugin]}
-      initialView="multiMonthYear"
+      initialView={views[0]}
       // editable={true}
       selectable={true}
       eventContent={renderEventContent}
       events={events}
+      slotMinTime="07:00"
+      slotMaxTime="17:00"
       eventColor=""
       headerToolbar={{
         left: "prev,next",
