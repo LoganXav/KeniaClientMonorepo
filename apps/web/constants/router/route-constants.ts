@@ -29,6 +29,9 @@ export const RouteEnums = {
   SCHOOL_CALENDAR_CREATE: "/school/calendar/create",
   SCHOOL_TIMETABLE: "/school/timetable",
   SCHOOL_TIMETABLE_CREATE: "/school/timetable/create",
+  SCHOOL_SUBJECT_LIST: "/school/subject/list",
+  SCHOOL_SUBJECT_CREATE: "/school/subject/create",
+
   // CLASS
   CLASS: "/class",
   CLASS_LIST: "/class/list",
@@ -39,6 +42,6 @@ export const RouteEnums = {
   CLASS_DIVISION_CREATE: "/class/division/create",
 
   // SUBJECT
-  SUBJECT: "/subject",
   SUBJECT_LIST: "/subject/list",
+  SUBJECT_CREATE: "/subject/create",
 };

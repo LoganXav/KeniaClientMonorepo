@@ -7,9 +7,10 @@ import { DataTablePagination } from "./data-table-pagination";
 interface TableProps<TData, TValue> {
   data: any;
   columns: ColumnDef<TData, TValue>[];
+  props?: any;
 }
 
-export function DataTable<TData, TValue>({ data, columns }: TableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ data, columns, props }: TableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
@@ -22,6 +23,7 @@ export function DataTable<TData, TValue>({ data, columns }: TableProps<TData, TV
     state: {
       sorting,
     },
+    ...props,
   });
 
   return (

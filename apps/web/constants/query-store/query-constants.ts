@@ -8,4 +8,5 @@ export const QueryTagEnums = {
   CLASS_DIVISION: "class-division",
   CALENDAR: "calendar",
   TIMETABLE: "timetable",
+  SUBJECT: "subject",
 };

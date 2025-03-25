@@ -38,7 +38,7 @@ function SchoolMenu({}: Props) {
           {
             label: "Subjects",
             desc: "Manage school subjects and allocate them to classes.",
-            url: RouteEnums.SUBJECT,
+            url: RouteEnums.SCHOOL_SUBJECT_LIST,
           },
         ].map(({ label, desc, url }: Record<string, any>, idx: number) => (
           <Link key={idx} href={url} className="block">
