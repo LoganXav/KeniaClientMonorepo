@@ -46,7 +46,7 @@ export function SchoolSubjectCreateDialog({ open, onClose, subject }: DialogProp
         onSuccess: (result) => {
           toast.success(result.message);
 
-          onClose();
+          handleClose();
         },
         onError: (error) => {
           toast.error(error.message);

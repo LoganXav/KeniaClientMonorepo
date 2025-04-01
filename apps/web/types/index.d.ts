@@ -183,6 +183,12 @@ export interface TimetableType {
   periods: PeriodType[];
 }
 
+export interface TimetablePeriodType {
+  start: string;
+  end: string;
+  title: string;
+}
+
 export interface PeriodType {
   id: number;
   startTime: string;

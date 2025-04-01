@@ -1,20 +1,21 @@
 import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { TimetableType } from "@/types";
+import { TimetablePeriodType, TimetableType } from "@/types";
 import { SchoolTimetableTemplateOptions } from "@/app/@protected/(staff-portal)/school/timetable/create/_types/school-timetable-form-types";
 
 const BASE_URL = "timetable";
 
-export const useGetTimetableQuery = (params?: Record<string, any>) => {
+export const useGetTimetableQuery = (params?: { classDivisionId?: number; termId?: number }) => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.TIMETABLE],
     queryFn: async () => {
-      return await getRequest<TimetableType[]>({
+      return await getRequest<TimetablePeriodType[]>({
         endpoint: `${BASE_URL}/list`,
         config: { params },
       });
     },
+    enabled: !!params?.classDivisionId && !!params?.termId,
   });
 
   return { data, isLoading, error, refetch };
@@ -56,7 +57,7 @@ export const useGetTimetableTemplateQuery = (params: { classId?: number }) => {
   return { data, isLoading, error, refetch };
 };
 
-export const useGetSingleTimetableQuery = (params: { tenantId?: number; id?: number; classDivisionId?: number; day?: string }) => {
+export const useGetSingleTimetableQuery = (params: { tenantId?: number; id?: number; classDivisionId?: number; day?: string; termId?: number }) => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.USER, params],
     queryFn: async () => {
@@ -65,7 +66,7 @@ export const useGetSingleTimetableQuery = (params: { tenantId?: number; id?: num
         config: { params },
       });
     },
-    enabled: !!params?.id || (!!params?.classDivisionId && !!params?.day),
+    enabled: !!params?.id || (!!params?.classDivisionId && !!params?.day && !!params?.termId),
   });
 
   return { data, isLoading, error, refetch };

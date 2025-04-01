@@ -4,10 +4,11 @@ export const SchoolTimetableFormSchema = z.object({
   tenantId: z.number().nonnegative(),
   id: z.number().nonnegative(),
   day: z.string().min(1, "Day is required"),
+  termId: z.number().nonnegative(),
   periods: z.array(
     z.object({
-      startTime: z.string().min(1, "Start time is required"),
-      endTime: z.string().min(1, "End time is required"),
+      startTime: z.union([z.date().optional(), z.string().optional()]),
+      endTime: z.union([z.date().optional(), z.string().optional()]),
       subjectId: z.number().nonnegative(),
       isBreak: z.boolean(),
       breakType: z.string().optional(),

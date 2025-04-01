@@ -9,12 +9,12 @@ import FullCalendar from "@fullcalendar/react";
 import "./style.css";
 
 interface CalendarGridProps {
-  events: { title: string; start?: string; end?: string; date?: string }[];
+  events: { title: string; start?: string; end?: string; date?: string }[] | undefined;
   views: ("multiMonthYear" | "dayGridMonth" | "timeGridWeek" | "timeGridDay")[];
   [key: string]: any;
 }
 
-const CalendarGrid = ({ events, views = [], ...props }: CalendarGridProps) => {
+const CalendarGrid = ({ events = [], views = [], ...props }: CalendarGridProps) => {
   const renderEventContent = (eventInfo: any) => {
     return <div className="w-full rounded-none h-auto text-wrap">{eventInfo.event.title}</div>;
   };

@@ -8,7 +8,7 @@ import { useAuthUser } from "@/hooks/use-auth-user";
 import useDataRef from "@/hooks/use-data-ref";
 import { useTimetableMutation, useGetTimetableQuery, useGetTimetableTemplateQuery, useGetSingleTimetableQuery } from "@/apis/core-timetable-api/timetable";
 import React from "react";
-import { Form, FormField, FormItem, FormControl, Input, toast, Card, CardTitle, Button, Typography, DatePicker, SelectItem, SelectContent, SelectValue, SelectTrigger, Select, FormMessage, Checkbox, FormLabel } from "@repo/ui";
+import { Form, FormField, FormItem, FormControl, Input, toast, Card, CardTitle, Button, Typography, DatePicker, SelectItem, SelectContent, SelectValue, SelectTrigger, Select, FormMessage, Checkbox, FormLabel, TimePicker } from "@repo/ui";
 import { LoadingContent } from "@/components/loading-content";
 import { CircleMinus, CirclePlus } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -25,6 +25,9 @@ export default function SchoolTimetableForm() {
 
     // Filter periods to include only the necessary fields
     const filteredPeriods = values.periods.map((period) => {
+      period.startTime = period.startTime ? new Date(period.startTime).toISOString() : undefined;
+      period.endTime = period.endTime ? new Date(period.endTime).toISOString() : undefined;
+
       if (period.isBreak) {
         // If it's a break, remove subjectId
         const { subjectId, ...rest } = period;
@@ -37,20 +40,11 @@ export default function SchoolTimetableForm() {
       }
     });
 
-    // Update the payload with filtered periods
-    const payload = {
-      ...values,
-      id: Number(values.id),
-      classDivisionId: Number(values.classDivisionId),
-      periods: filteredPeriods,
-    };
-
     timetableMutate(
-      { payload: { ...values, id: Number(values.id), classDivisionId: Number(values.classDivisionId), periods: filteredPeriods } },
+      { payload: { ...values, id: Number(values.id), classDivisionId: Number(values.classDivisionId), periods: filteredPeriods, termId: Number(values.termId) } },
       {
         onSuccess: (result) => {
           toast.success(result.message);
-          // router.push(RouteEnums.SCHOOL_TIMETABLE);
         },
         onError: (error) => {
           toast.error(error.message);
@@ -65,8 +59,8 @@ export default function SchoolTimetableForm() {
     day: "",
     periods: [
       {
-        startTime: "",
-        endTime: "",
+        startTime: undefined,
+        endTime: undefined,
         subjectId: 0,
         isBreak: false,
         breakType: "",
@@ -74,6 +68,7 @@ export default function SchoolTimetableForm() {
     ],
     classId: 0,
     classDivisionId: 0,
+    termId: 0,
   };
 
   const form = useForm<SchoolTimetableFormSchemaType>({
@@ -84,8 +79,9 @@ export default function SchoolTimetableForm() {
 
   const classDivisionId = form.watch("classDivisionId");
   const day = form.watch("day");
+  const termId = form.watch("termId");
 
-  const timetableQueryResult = useGetSingleTimetableQuery(React.useMemo(() => ({ classDivisionId, day }), [classDivisionId, day]));
+  const timetableQueryResult = useGetSingleTimetableQuery(React.useMemo(() => ({ classDivisionId, day, termId }), [classDivisionId, day, termId]));
   const timetable = timetableQueryResult?.data?.data;
 
   const classId = form.watch("classId");
@@ -105,8 +101,8 @@ export default function SchoolTimetableForm() {
           timetable.periods.map((period: Record<string, any>) => ({
             ...period,
             subjectId: Number(period?.subjectId),
-            startTime: period?.startTime,
-            endTime: period?.endTime,
+            startTime: period?.startTime ? new Date(period.startTime) : undefined,
+            endTime: period?.endTime ? new Date(period.endTime) : undefined,
             isBreak: period?.isBreak,
             breakType: period?.breakType,
           }))) ||
@@ -121,7 +117,30 @@ export default function SchoolTimetableForm() {
         <form onSubmit={form.handleSubmit(handleMutateTimetable)} className="space-y-4 mb-8">
           <>
             <div className="flex w-full md:justify-between flex-col md:flex-row gap-4">
-              <div className="w-full md:w-40">
+              <div className="grid md:grid-cols-2 gap-4 w-full md:w-96">
+                <FormField
+                  control={form.control}
+                  name="termId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={timetableTemplateQueryResult?.isLoading}>
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Term" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {timetableTemplate?.termOptions?.map((termOption, idx) => (
+                            <SelectItem key={idx} value={String(termOption?.id)}>
+                              {termOption?.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="day"
@@ -146,7 +165,7 @@ export default function SchoolTimetableForm() {
                   )}
                 />
               </div>
-              <div className="grid md:grid-cols-3 gap-4 w-full md:w-auto">
+              <div className="grid md:grid-cols-2 gap-4 w-full md:w-auto">
                 <FormField
                   control={form.control}
                   name="classId"
@@ -195,6 +214,8 @@ export default function SchoolTimetableForm() {
                   )}
                 />
 
+                <div className="hidden md:block w-full md:w-auto" />
+
                 <Button
                   className="w-full md:w-auto"
                   type="button"
@@ -202,8 +223,8 @@ export default function SchoolTimetableForm() {
                     form.setValue("periods", [
                       ...form.watch("periods"),
                       {
-                        startTime: "",
-                        endTime: "",
+                        startTime: undefined,
+                        endTime: undefined,
                         subjectId: 0,
                         isBreak: false,
                         breakType: "",
@@ -310,7 +331,7 @@ export default function SchoolTimetableForm() {
                         render={({ field }) => (
                           <FormItem>
                             <FormControl>
-                              <Input placeholder="Start Time" {...field} />
+                              <TimePicker date={field.value} setDate={field.onChange} />
                             </FormControl>
                           </FormItem>
                         )}
@@ -321,7 +342,7 @@ export default function SchoolTimetableForm() {
                         render={({ field }) => (
                           <FormItem>
                             <FormControl>
-                              <Input placeholder="End Time" {...field} />
+                              <TimePicker date={field.value} setDate={field.onChange} />
                             </FormControl>
                           </FormItem>
                         )}
