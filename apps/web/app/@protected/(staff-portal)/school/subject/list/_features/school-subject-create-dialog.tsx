@@ -78,7 +78,7 @@ export function SchoolSubjectCreateDialog({ open, onClose, subject }: DialogProp
         name: subject?.name || values.name,
         description: subject?.description || values.description,
         classId: String(subject?.classId) || values.classId,
-        staffIds: subject?.staffs || values.staffIds,
+        staffIds: subject?.staffs?.map((staff) => staff.id) || values.staffIds,
       }));
     }
   }, [subject]);

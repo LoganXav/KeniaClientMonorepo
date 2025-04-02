@@ -10,7 +10,7 @@ import { useTimetableMutation, useGetTimetableQuery, useGetTimetableTemplateQuer
 import React from "react";
 import { Form, FormField, FormItem, FormControl, Input, toast, Card, CardTitle, Button, Typography, DatePicker, SelectItem, SelectContent, SelectValue, SelectTrigger, Select, FormMessage, Checkbox, FormLabel, TimePicker } from "@repo/ui";
 import { LoadingContent } from "@/components/loading-content";
-import { CircleMinus, CirclePlus } from "lucide-react";
+import { CircleMinus, CirclePlus, TimerIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { RouteEnums } from "@/constants/router/route-constants";
 
@@ -259,94 +259,104 @@ export default function SchoolTimetableForm() {
                     </div>
                   </div>
                   <div key={idx} className="grid gap-4 pt-8">
-                    <div key={idx} className="grid gap-4 md:grid-cols-2">
-                      <FormField
-                        control={form.control}
-                        name={`periods.${idx}.isBreak`}
-                        render={({ field }) => (
-                          <FormItem className="flex items-center gap-2">
-                            <FormControl>
-                              <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                            </FormControl>
-                            <FormLabel className="pb-1">Is Break Period</FormLabel>
-                          </FormItem>
-                        )}
-                      />
+                    <div key={idx} className="grid gap-4">
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <div className="grid gap-4">
+                          <FormField
+                            control={form.control}
+                            name={`periods.${idx}.isBreak`}
+                            render={({ field }) => (
+                              <FormItem className="flex items-center gap-2">
+                                <FormControl>
+                                  <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                                </FormControl>
+                                <FormLabel className="pb-1">Is Break Period</FormLabel>
+                              </FormItem>
+                            )}
+                          />
 
-                      {!form.watch(`periods.${idx}.isBreak`) && (
+                          {!form.watch(`periods.${idx}.isBreak`) && (
+                            <FormField
+                              control={form.control}
+                              name={`periods.${idx}.subjectId`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={timetableTemplateQueryResult?.isLoading || !form.watch("classId")}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select Subject" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      {timetableTemplate?.subjectOptions?.map((subjectOption, idx) => (
+                                        <SelectItem key={idx} value={String(subjectOption?.id)}>
+                                          {subjectOption?.name}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          )}
+
+                          {form.watch(`periods.${idx}.isBreak`) && (
+                            <FormField
+                              control={form.control}
+                              name={`periods.${idx}.breakType`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={timetableTemplateQueryResult?.isLoading}>
+                                    <FormControl>
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Break Type" />
+                                      </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                      {timetableTemplate?.breakTypeOptions?.map((breakTypeOption, idx) => (
+                                        <SelectItem key={idx} value={String(breakTypeOption)}>
+                                          {breakTypeOption}
+                                        </SelectItem>
+                                      ))}
+                                    </SelectContent>
+                                  </Select>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          )}
+                        </div>
+                        <div />
+                      </div>
+
+                      <div className="flex items-center flex-col md:flex-row gap-4">
                         <FormField
                           control={form.control}
-                          name={`periods.${idx}.subjectId`}
+                          name={`periods.${idx}.startTime`}
                           render={({ field }) => (
                             <FormItem>
-                              <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={timetableTemplateQueryResult?.isLoading || !form.watch("classId")}>
-                                <FormControl>
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Select Subject" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  {timetableTemplate?.subjectOptions?.map((subjectOption, idx) => (
-                                    <SelectItem key={idx} value={String(subjectOption?.id)}>
-                                      {subjectOption?.name}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
+                              <FormControl>
+                                <TimePicker date={field.value} setDate={field.onChange} />
+                              </FormControl>
                             </FormItem>
                           )}
                         />
-                      )}
-
-                      {form.watch(`periods.${idx}.isBreak`) && (
+                        <div className="translate-y-2">
+                          <TimerIcon strokeWidth={1} size={24} />
+                        </div>
                         <FormField
                           control={form.control}
-                          name={`periods.${idx}.breakType`}
+                          name={`periods.${idx}.endTime`}
                           render={({ field }) => (
                             <FormItem>
-                              <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={timetableTemplateQueryResult?.isLoading}>
-                                <FormControl>
-                                  <SelectTrigger>
-                                    <SelectValue placeholder="Break Type" />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                  {timetableTemplate?.breakTypeOptions?.map((breakTypeOption, idx) => (
-                                    <SelectItem key={idx} value={String(breakTypeOption)}>
-                                      {breakTypeOption}
-                                    </SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                              <FormMessage />
+                              <FormControl>
+                                <TimePicker date={field.value} setDate={field.onChange} />
+                              </FormControl>
                             </FormItem>
                           )}
                         />
-                      )}
-
-                      <FormField
-                        control={form.control}
-                        name={`periods.${idx}.startTime`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <TimePicker date={field.value} setDate={field.onChange} />
-                            </FormControl>
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name={`periods.${idx}.endTime`}
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <TimePicker date={field.value} setDate={field.onChange} />
-                            </FormControl>
-                          </FormItem>
-                        )}
-                      />
+                      </div>
                     </div>
                   </div>
                 </Card>
