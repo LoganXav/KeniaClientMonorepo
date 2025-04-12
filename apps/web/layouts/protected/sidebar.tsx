@@ -79,8 +79,8 @@ export default function ProtectedSidebar() {
   const isActiveSubRoute = (subRoutes: Record<string, any>[]) => subRoutes?.some((subRoute: Record<string, any>) => pathname === subRoute.path);
 
   return (
-    <nav className="w-[250px] px-2 pb-20 fixed overflow-scroll h-screen border-r border-gray-300 bg-card">
-      <div className="border border-gray-300 h-[70px] flex items-center justify-center">
+    <nav className="w-[250px] px-2 pb-20 fixed overflow-scroll h-screen border-r border-border bg-card">
+      <div className="border border-border h-[70px] flex items-center justify-center">
         <div className="font-heading">KENIA .</div>
       </div>
       <div className="mt-4 flex flex-col gap-8">

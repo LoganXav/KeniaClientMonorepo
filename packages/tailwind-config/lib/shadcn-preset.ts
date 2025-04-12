@@ -6,7 +6,7 @@ import animatePlugin from "tailwindcss-animate";
 import { shadcnPlugin } from "./shadcn-plugin";
 
 export const shadcnPreset = {
-  content: [],
+  content: ["./*.{ts,tsx}"],
   darkMode: ["class"],
   plugins: [animatePlugin, typographyPlugin, shadcnPlugin],
 } satisfies Config;
