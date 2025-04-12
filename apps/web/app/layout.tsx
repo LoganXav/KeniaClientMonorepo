@@ -11,20 +11,20 @@ import QueryClientContextProvider from "@/providers/query-client-provider";
 import { getAuthUserServer } from "../helpers/auth-user";
 
 // Define the font styles
-export const fontHeading = localFont({
+const fontHeading = localFont({
   src: "../assets/fonts/CalSans-SemiBold.woff2",
   variable: "--font-heading",
 });
 
-export const fontSans = localFont({
+const fontSans = localFont({
   src: "../assets/fonts/Nunito-Regular.ttf",
   variable: "--font-sans",
 });
-export const fontSansSemiBold = localFont({
+const fontSansSemiBold = localFont({
   src: "../assets/fonts/Nunito-SemiBold.ttf",
   variable: "--font-sans-semibold",
 });
-export const fontSansMedium = localFont({
+const fontSansMedium = localFont({
   src: "../assets/fonts/Nunito-Medium.ttf",
   variable: "--font-sans-medium",
 });

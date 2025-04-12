@@ -6,12 +6,12 @@ export const env = createEnv({
     NODE_ENV: z.string().min(1),
   },
   server: {
-    NEXT_PUBLIC_APP_URL: z.string().min(1),
+    NEXT_PUBLIC_APP_URL: z.string().min(1).optional(),
   },
   client: {
     NEXT_PUBLIC_AES_ENCRYPTION_KEY: z.string(),
     NEXT_PUBLIC_AES_ENCRYPTION_IV: z.string(),
-    NEXT_PUBLIC_APP_URL: z.string().min(1),
+    NEXT_PUBLIC_APP_URL: z.string().min(1).optional(),
     NEXT_PUBLIC_BASE_URL: z.string().min(1),
   },
   runtimeEnv: {

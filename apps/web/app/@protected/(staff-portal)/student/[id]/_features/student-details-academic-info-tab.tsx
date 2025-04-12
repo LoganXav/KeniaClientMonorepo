@@ -20,7 +20,7 @@ export function StudentDetailsAcademicInfoTab({ student }: TabProps) {
           { label: "Student ID", value: student?.id },
           { label: "Admission Number", value: student?.admissionNo },
           { label: "Enrollment Date", value: formatDateToString(student?.enrollmentDate || "") },
-          { label: "Class & Division", value: student?.class?.type + " - " + student?.class?.classDivision || "" },
+          // { label: "Class & Division", value: student?.class?.type + " - " + student?.class?.classDivision || "" },
           { label: "Assigned Subjects", value: "" },
           { label: "Attendance Record", value: "" },
         ].map((item, index) => (

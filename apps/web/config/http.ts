@@ -72,7 +72,7 @@ apiConfig.interceptors.response.use(
       const decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
 
       // Parse the decrypted text as JSON
-      response.data = JSON.parse(decryptedText);
+      response.data.result = JSON.parse(decryptedText);
     }
     if (env.NODE_ENV === DEV) {
       console.groupCollapsed(`@Response`, response.config.url, response.status);
