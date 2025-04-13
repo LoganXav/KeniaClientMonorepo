@@ -151,11 +151,11 @@ export function SchoolSubjectCreateDialog({ open, onClose, subject }: DialogProp
             </form>
           </Form>
 
-          <div className="grid md:grid-cols-2 md:max-w-lg gap-4 mx-auto">
-            <Button variant={"outline"} type="button" onClick={handleClose} disabled={subjectCreatePending || subjectUpdatePending}>
+          <div className="w-full grid md:grid-cols-2 md:max-w-lg gap-4 mx-auto">
+            <Button className="w-full md:w-auto" variant={"outline"} type="button" onClick={handleClose} disabled={subjectCreatePending || subjectUpdatePending}>
               Cancel
             </Button>
-            <Button type="button" onClick={() => handleSubmit(form.getValues())} loading={subjectCreatePending || subjectUpdatePending}>
+            <Button className="w-full md:w-auto" type="button" onClick={() => handleSubmit(form.getValues())} loading={subjectCreatePending || subjectUpdatePending}>
               {isEdit ? "Update Subject" : "Create Subject"}
             </Button>
           </div>

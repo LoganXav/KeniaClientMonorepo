@@ -99,7 +99,7 @@ export function StaffCreateFormEmploymentStep({ form, staffTemplateQuery }: Step
         )}
       />
       {/* <div className="hidden md:block" /> */}
-      <div className="grid gap-4 col-span-2">
+      <div className="grid gap-4 md:col-span-2">
         <FormField
           control={form.control}
           name="cvFile"
@@ -119,7 +119,6 @@ export function StaffCreateFormEmploymentStep({ form, staffTemplateQuery }: Step
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  {/* <MultiSelect selected={Array.isArray(field.value) ? field.value : []} setSelected={field.onChange} options={studentTemplateQuery?.data?.data?.subjectOptions || []} placeholder="Select Subjects" /> */}
                   <MultiSelect selected={Array.isArray(field.value) ? field.value : []} onChange={field.onChange} options={staffTemplateQuery?.data?.data?.subjectOptions || []} placeholder="Select Subjects" searchPlaceholder="Search Subjects" emptyMessage="No subjects found" />
                 </FormControl>
                 <FormMessage />
@@ -135,7 +134,6 @@ export function StaffCreateFormEmploymentStep({ form, staffTemplateQuery }: Step
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  {/* <MultiSelect selected={Array.isArray(field.value) ? field.value : []} setSelected={field.onChange} options={studentTemplateQuery?.data?.data?.subjectOptions || []} placeholder="Select Subjects" /> */}
                   <MultiSelect selected={Array.isArray(field.value) ? field.value : []} onChange={field.onChange} options={staffTemplateQuery?.data?.data?.classOptions || []} placeholder="Select Classes" searchPlaceholder="Search Classes" emptyMessage="No classes found" />
                 </FormControl>
                 <FormMessage />

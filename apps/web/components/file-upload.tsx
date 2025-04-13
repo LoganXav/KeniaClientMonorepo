@@ -51,7 +51,7 @@ export function FileUpload({ field, placeholder = "Upload file", className }: { 
           <input {...getInputProps()} />
           <Card className={cn("flex w-full space-x-2 bg-transparent border-none items-center", className)}>
             <Image strokeWidth={1} className="size-8 text-muted-foreground" aria-hidden="true" />
-            <div className="flex flex-col items-start text-center">
+            <div className="flex flex-col items-start text-start">
               <CardTitle className="text-muted-foreground font-normal text-base">{placeholder}</CardTitle>
               <CardDescription className="text-sm">Click or drag and drop to upload a file (max 10MB)</CardDescription>
             </div>

@@ -5,7 +5,7 @@ export const ButtonStyle = {
     secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
     brand: "bg-yellow-400 hover:bg-yellow-500 focus:ring-yellow-600 dark:text-slate-900",
     destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
-    outline: "border border-border bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground",
+    outline: "border border-foreground bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground",
 
     ghost: "hover:bg-accent hover:text-accent-foreground",
     link: "text-primary underline-offset-4 hover:underline",

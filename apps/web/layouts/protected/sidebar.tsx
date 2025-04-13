@@ -11,7 +11,7 @@ export default function ProtectedSidebar() {
 
   const routeGroups: routeGroups[] = [
     {
-      header: "GENERAL",
+      header: "General",
       routes: [
         {
           name: "Dashboard",
@@ -22,7 +22,7 @@ export default function ProtectedSidebar() {
     },
 
     {
-      header: "PEOPLE",
+      header: "People",
       routes: [
         {
           name: "Staff",
@@ -37,7 +37,7 @@ export default function ProtectedSidebar() {
       ],
     },
     {
-      header: "ACADEMICS",
+      header: "Academics",
       routes: [
         {
           name: "Class",
@@ -47,7 +47,7 @@ export default function ProtectedSidebar() {
       ],
     },
     {
-      header: "MANAGEMENT",
+      header: "Management",
       routes: [
         {
           name: "School",
@@ -58,7 +58,7 @@ export default function ProtectedSidebar() {
       ],
     },
     {
-      header: "SETTINGS",
+      header: "Settings",
       routes: [
         {
           name: "Settings",
@@ -74,7 +74,7 @@ export default function ProtectedSidebar() {
     },
   ];
 
-  const isActiveRoute = (path: string) => pathname === path;
+  const isActiveRoute = (path: string) => pathname.startsWith(path);
 
   const isActiveSubRoute = (subRoutes: Record<string, any>[]) => subRoutes?.some((subRoute: Record<string, any>) => pathname === subRoute.path);
 
@@ -83,10 +83,10 @@ export default function ProtectedSidebar() {
       <div className="border border-border h-[70px] flex items-center justify-center">
         <div className="font-heading">KENIA .</div>
       </div>
-      <div className="mt-4 flex flex-col gap-8">
+      <div className="mt-4 flex flex-col gap-4 overflow-y-auto">
         {routeGroups.map((group, groupIndex) => (
           <div key={groupIndex}>
-            <Typography size="small" className="pl-4 font-heading">
+            <Typography size="small" className="font-heading uppercase">
               {group.header}
             </Typography>
 
@@ -94,7 +94,7 @@ export default function ProtectedSidebar() {
               route.subRoutes ? (
                 <Accordion type="single" collapsible className="w-full" key={routeIndex}>
                   <AccordionItem className="border-0" value={`item-${groupIndex}-${routeIndex}`}>
-                    <AccordionTrigger className={`w-full p-4 rounded-lg border mt-2 ${isActiveRoute(route.path) || isActiveSubRoute(route.subRoutes) ? "bg-black/5" : "hover:bg-black/5"}`}>
+                    <AccordionTrigger className={`w-full px-4 py-2 rounded-sm mt-2 ${isActiveRoute(route.path) || isActiveSubRoute(route.subRoutes) ? "bg-black/5" : "hover:bg-accent"}`}>
                       <div className="flex items-center gap-2">
                         {route.icon && <route.icon strokeWidth={1} size={16} />}
                         <Typography>{route.name}</Typography>
@@ -103,7 +103,7 @@ export default function ProtectedSidebar() {
 
                     {route.subRoutes?.map((subRoute, subRouteIndex) => (
                       <Link className="w-full" key={subRouteIndex} href={subRoute.path}>
-                        <AccordionContent className={`w-full p-4 border rounded-lg mt-2 ${isActiveRoute(subRoute.path) ? "bg-black/10 border-foreground" : "hover:bg-black/5"}`}>
+                        <AccordionContent className={`w-auto ml-2 px-4 py-2 border rounded-sm mt-2 ${isActiveRoute(subRoute.path) ? "bg-black/10 border-foreground" : "hover:bg-accent border-transparent"}`}>
                           <div className="flex items-center gap-2">
                             {subRoute.icon && <subRoute.icon strokeWidth={1} size={16} />}
                             <Typography>{subRoute.name}</Typography>
@@ -115,7 +115,7 @@ export default function ProtectedSidebar() {
                 </Accordion>
               ) : (
                 <Link href={route.path} key={routeIndex}>
-                  <div className={`w-full p-4 rounded-lg border mt-2 ${isActiveRoute(route.path) ? "text-foreground bg-black/10 border border-foreground" : "hover:bg-black/5"}`}>
+                  <div className={`w-full px-4 py-2 border rounded-sm mt-2 ${isActiveRoute(route.path) ? "text-foreground bg-black/10 border-foreground" : "hover:bg-accent border-transparent"}`}>
                     <div className="flex items-center gap-2">
                       {route.icon && <route.icon strokeWidth={1} size={16} />}
                       <Typography>{route.name}</Typography>

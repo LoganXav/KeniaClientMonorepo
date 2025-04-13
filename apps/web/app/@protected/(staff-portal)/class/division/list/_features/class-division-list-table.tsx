@@ -71,12 +71,13 @@ export function ClassDivisionListTable() {
       <div className="flex w-full pb-4 mt-8">
         <div className="hidden md:flex md:flex-1" />
 
-        <Link className="" href={RouteEnums.CLASS_DIVISION_CREATE}>
+        <Link className="w-full md:w-auto" href={RouteEnums.CLASS_DIVISION_CREATE}>
           <Button className="w-full">
             Create Class Division <CirclePlus size={18} strokeWidth={1} />
           </Button>
         </Link>
       </div>
+
       <Card className="overflow-hidden">
         <LoadingContent loading={classDivisionListQueryResult?.isLoading} error={classDivisionListQueryResult?.error} data={classDivisionListQueryResult.data} retry={classDivisionListQueryResult?.refetch}>
           <DataTable data={classDivisionListQueryResult?.data?.data} columns={columns} />
