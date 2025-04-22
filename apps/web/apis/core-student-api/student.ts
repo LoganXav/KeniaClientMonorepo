@@ -20,7 +20,7 @@ export const useGetStudentListQuery = (params?: { tenantId?: number; jobTitle?: 
   return { data, isLoading, error, refetch };
 };
 
-export const useStudentCreateMutation = () => {
+export const useStudentCreateMutation = (tenantId?: number) => {
   const queryClient = useQueryClient();
   const {
     mutate: studentCreate,
@@ -37,17 +37,17 @@ export const useStudentCreateMutation = () => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STUDENT] });
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STUDENT, tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, tenantId] });
     },
   });
 
   return { studentCreate, studentCreatePending, studentCreateError };
 };
 
-export const useGetStudentTemplateQuery = (params: { codeValue?: number }) => {
+export const useGetStudentTemplateQuery = (params: { tenantId?: number; codeValue?: number; classId?: number }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.USER, params],
+    queryKey: [QueryTagEnums.USER, params?.tenantId, params?.codeValue, params?.classId],
     queryFn: async () => {
       return await getRequest<StudentTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
@@ -59,9 +59,9 @@ export const useGetStudentTemplateQuery = (params: { codeValue?: number }) => {
   return { data, isLoading, error, refetch };
 };
 
-export const useGetSingleStudentQuery = (path?: { studentId?: number }, params?: Record<string, any>) => {
+export const useGetSingleStudentQuery = (path?: { studentId?: number }, params?: { tenantId?: number }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.STUDENT, path?.studentId],
+    queryKey: [QueryTagEnums.STUDENT, params?.tenantId, path?.studentId],
     queryFn: async () => {
       return await getRequest<StudentType>({
         endpoint: `${BASE_URL}/info/${path?.studentId}`,
@@ -74,7 +74,7 @@ export const useGetSingleStudentQuery = (path?: { studentId?: number }, params?:
   return { data, isLoading, error, refetch };
 };
 
-export const useStudentUpdateMutation = (path?: { studentId?: number }) => {
+export const useStudentUpdateMutation = (path?: { studentId?: number }, params?: { tenantId?: number }) => {
   const queryClient = useQueryClient();
   const {
     mutate: studentUpdate,
@@ -91,8 +91,8 @@ export const useStudentUpdateMutation = (path?: { studentId?: number }) => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STUDENT] });
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STUDENT, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params?.tenantId] });
     },
   });
 

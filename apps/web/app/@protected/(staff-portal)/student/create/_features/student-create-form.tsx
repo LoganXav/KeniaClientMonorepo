@@ -30,13 +30,13 @@ export function StudentCreateForm({ studentId }: Props) {
   const { authUserIds } = useAuthUser();
   const [completedSteps, setCompletedSteps] = React.useState(0);
 
-  const { studentCreate, studentCreatePending, studentCreateError } = useStudentCreateMutation();
-  const studentQueryResult = useGetSingleStudentQuery({ studentId });
+  const { studentCreate, studentCreatePending, studentCreateError } = useStudentCreateMutation(authUserIds?.tenantId);
+  const studentQueryResult = useGetSingleStudentQuery({ studentId }, { tenantId: authUserIds?.tenantId });
   const student = studentQueryResult?.data?.data;
 
   const isEdit = !!studentId;
 
-  const { studentUpdate, studentUpdatePending, studentUpdateError } = useStudentUpdateMutation({ studentId });
+  const { studentUpdate, studentUpdatePending, studentUpdateError } = useStudentUpdateMutation({ studentId }, { tenantId: authUserIds?.tenantId });
 
   const handleCreateStudent = (values: StudentCreateFormSchemaType) => {
     const mutate = isEdit ? studentUpdate : studentCreate;
@@ -172,6 +172,7 @@ export function StudentCreateForm({ studentId }: Props) {
   const studentTemplateQuery = useGetStudentTemplateQuery(
     React.useMemo(
       () => ({
+        tenantId: authUserIds?.tenantId,
         codeValue: Number(residentialStateId),
         classId: Number(classId),
       }),
