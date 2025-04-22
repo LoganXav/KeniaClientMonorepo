@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const BASE_URL = "staff";
 
-export const useGetStaffListQuery = (params?: { tenantId?: number; jobTitle?: string }) => {
+export const useGetStaffListQuery = ({ params }: { params?: { tenantId?: number; jobTitle?: string } }) => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.STAFF, params?.tenantId, params?.jobTitle],
     queryFn: async () => {
@@ -20,7 +20,7 @@ export const useGetStaffListQuery = (params?: { tenantId?: number; jobTitle?: st
   return { data, isLoading, error, refetch };
 };
 
-export const useStaffCreateMutation = (tenantId?: number) => {
+export const useStaffCreateMutation = ({ tenantId }: { tenantId?: number }) => {
   const queryClient = useQueryClient();
   const {
     mutate: staffCreate,
@@ -45,7 +45,7 @@ export const useStaffCreateMutation = (tenantId?: number) => {
   return { staffCreate, staffCreatePending, staffCreateError };
 };
 
-export const useGetStaffTemplateQuery = (params: { tenantId?: number; codeValue?: number }) => {
+export const useGetStaffTemplateQuery = ({ params }: { params: { tenantId?: number; codeValue?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.USER, params?.tenantId, params?.codeValue],
     queryFn: async () => {
@@ -59,7 +59,7 @@ export const useGetStaffTemplateQuery = (params: { tenantId?: number; codeValue?
   return { data, isLoading, error, refetch };
 };
 
-export const useGetSingleStaffQuery = (path?: { staffId?: number }, params?: { tenantId?: number }) => {
+export const useGetSingleStaffQuery = ({ path, params }: { path: { staffId?: number }; params: { tenantId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.STAFF, params?.tenantId, path?.staffId],
     queryFn: async () => {
@@ -74,14 +74,14 @@ export const useGetSingleStaffQuery = (path?: { staffId?: number }, params?: { t
   return { data, isLoading, error, refetch };
 };
 
-export const useStaffUpdateMutation = (tenantId?: number) => {
+export const useStaffUpdateMutation = ({ path, tenantId }: { path?: { staffId?: number }; tenantId?: number }) => {
   const queryClient = useQueryClient();
   const {
     mutate: staffUpdate,
     isPending: staffUpdatePending,
     error: staffUpdateError,
   } = useMutation({
-    mutationFn: async ({ payload, path, params }: { payload: StaffCreateFormSchemaType; path?: { staffId?: number }; params?: { tenantId?: number } }) => {
+    mutationFn: async ({ payload, params }: { payload: StaffCreateFormSchemaType; params?: { tenantId?: number } }) => {
       const data = await postRequest<StaffType>({
         endpoint: `${BASE_URL}/update/${path?.staffId}`,
         payload,

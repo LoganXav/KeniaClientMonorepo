@@ -22,10 +22,7 @@ import { useAuthUser } from "@/hooks/use-auth-user";
 
 function StaffDetails({ staffId }: { staffId: number }) {
   const { authUserIds } = useAuthUser();
-
-  const path = { staffId };
-  const params = { tenantId: authUserIds?.tenantId };
-  const { data: staff, isLoading, error, refetch } = useGetSingleStaffQuery(path, params);
+  const { data: staff, isLoading, error, refetch } = useGetSingleStaffQuery({ path: { staffId }, params: { tenantId: authUserIds?.tenantId } });
 
   return (
     <>
