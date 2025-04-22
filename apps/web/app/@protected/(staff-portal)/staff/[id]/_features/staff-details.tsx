@@ -18,9 +18,11 @@ import { StaffDetailsDocumentsCertificationsTab } from "./staff-details-document
 import { StaffDetailsSystemPermissionsTab } from "./staff-details-system-permissions-tab";
 import { StaffDetailsWorkScheduleTab } from "./staff-details-work-schedule-tab";
 import { StaffDetailsPerformanceAppraisalsTab } from "./staff-details-performance-appraisals-tab";
+import { useAuthUser } from "@/hooks/use-auth-user";
 
 function StaffDetails({ staffId }: { staffId: number }) {
-  const { data: staff, isLoading, error, refetch } = useGetSingleStaffQuery({ staffId });
+  const { authUserIds } = useAuthUser();
+  const { data: staff, isLoading, error, refetch } = useGetSingleStaffQuery({ path: { staffId }, params: { tenantId: authUserIds?.tenantId } });
 
   return (
     <>

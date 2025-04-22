@@ -6,11 +6,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const BASE_URL = "staff";
 
-export const useGetStaffListQuery = (params?: { tenantId?: number; jobTitle?: string }) => {
+export const useGetStaffListQuery = ({ params }: { params?: { tenantId?: number; jobTitle?: string } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.STAFF],
+    queryKey: [QueryTagEnums.STAFF, params?.tenantId, params?.jobTitle],
     queryFn: async () => {
-      return await getRequest<Record<string, any>>({
+      return await getRequest<StaffType[]>({
         endpoint: `${BASE_URL}/list`,
         config: { params },
       });
@@ -20,7 +20,7 @@ export const useGetStaffListQuery = (params?: { tenantId?: number; jobTitle?: st
   return { data, isLoading, error, refetch };
 };
 
-export const useStaffCreateMutation = () => {
+export const useStaffCreateMutation = ({ tenantId }: { tenantId?: number }) => {
   const queryClient = useQueryClient();
   const {
     mutate: staffCreate,
@@ -37,17 +37,17 @@ export const useStaffCreateMutation = () => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF] });
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF, tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, tenantId] });
     },
   });
 
   return { staffCreate, staffCreatePending, staffCreateError };
 };
 
-export const useGetStaffTemplateQuery = (params: { codeValue?: number }) => {
+export const useGetStaffTemplateQuery = ({ params }: { params: { tenantId?: number; codeValue?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.USER, params?.codeValue],
+    queryKey: [QueryTagEnums.USER, params?.tenantId, params?.codeValue],
     queryFn: async () => {
       return await getRequest<StaffTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
@@ -59,9 +59,9 @@ export const useGetStaffTemplateQuery = (params: { codeValue?: number }) => {
   return { data, isLoading, error, refetch };
 };
 
-export const useGetSingleStaffQuery = (path?: { staffId: number }, params?: Record<string, any>) => {
+export const useGetSingleStaffQuery = ({ path, params }: { path: { staffId?: number }; params: { tenantId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.STAFF, path?.staffId],
+    queryKey: [QueryTagEnums.STAFF, params?.tenantId, path?.staffId],
     queryFn: async () => {
       return await getRequest<StaffType>({
         endpoint: `${BASE_URL}/info/${path?.staffId}`,
@@ -74,7 +74,7 @@ export const useGetSingleStaffQuery = (path?: { staffId: number }, params?: Reco
   return { data, isLoading, error, refetch };
 };
 
-export const useStaffUpdateMutation = (path?: { staffId?: number }) => {
+export const useStaffUpdateMutation = ({ path, tenantId }: { path?: { staffId?: number }; tenantId?: number }) => {
   const queryClient = useQueryClient();
   const {
     mutate: staffUpdate,
@@ -91,8 +91,8 @@ export const useStaffUpdateMutation = (path?: { staffId?: number }) => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF] });
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF, tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, tenantId] });
     },
   });
 

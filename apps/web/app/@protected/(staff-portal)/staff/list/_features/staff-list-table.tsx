@@ -11,10 +11,12 @@ import { CellContext, ColumnDef } from "@tanstack/react-table";
 import { formatDateToString } from "@/lib/dates";
 import { LoadingContent } from "@/components/loading-content";
 import { CirclePlus, UserRound } from "lucide-react";
-
+import { useAuthUser } from "@/hooks/use-auth-user";
 type Props = {};
 
 export function StaffListTable({}: Props) {
+  const { authUserIds } = useAuthUser();
+
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
       {
@@ -79,7 +81,7 @@ export function StaffListTable({}: Props) {
     []
   );
 
-  const staffListQueryResult = useGetStaffListQuery();
+  const staffListQueryResult = useGetStaffListQuery({ params: { tenantId: authUserIds?.tenantId } });
 
   return (
     <>
