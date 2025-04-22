@@ -30,13 +30,15 @@ export function StaffCreateForm({ staffId }: Props) {
   const { authUserIds } = useAuthUser();
   const [completedSteps, setCompletedSteps] = React.useState(0);
 
-  const { staffCreate, staffCreatePending, staffCreateError } = useStaffCreateMutation();
-  const staffQueryResult = staffId ? useGetSingleStaffQuery({ staffId }) : null;
+  const { staffCreate, staffCreatePending, staffCreateError } = useStaffCreateMutation(authUserIds?.tenantId);
+  const path = { staffId };
+  const params = { tenantId: authUserIds?.tenantId };
+  const staffQueryResult = useGetSingleStaffQuery(path, params);
   const staff = staffQueryResult?.data?.data;
 
   const isEdit = !!staffId;
 
-  const { staffUpdate, staffUpdatePending, staffUpdateError } = useStaffUpdateMutation({ staffId });
+  const { staffUpdate, staffUpdatePending, staffUpdateError } = useStaffUpdateMutation(authUserIds?.tenantId);
 
   const handleCreateStaff = (values: StaffCreateFormSchemaType) => {
     const mutate = isEdit ? staffUpdate : staffCreate;
@@ -50,6 +52,9 @@ export function StaffCreateForm({ staffId }: Props) {
           residentialLgaId: Number(values.residentialLgaId),
           residentialZipCode: Number(values.residentialZipCode),
           cvUrl: "",
+        },
+        path: {
+          staffId,
         },
       },
       {
