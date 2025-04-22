@@ -31,7 +31,7 @@ export default function ProtectedNavbar() {
   return (
     <Sheet>
       <div className="sticky top-0 h-[70px] right-0 left-0 border-b border-border z-50">
-        <nav className="h-full container flex items-center justify-between bg-card">
+        <nav className="h-full px-4 flex items-center justify-between bg-card">
           <div className="flex gap-4">
             <SheetTrigger className="lg:hidden">
               <Menu />
