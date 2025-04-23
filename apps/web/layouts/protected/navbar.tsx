@@ -16,7 +16,7 @@ export default function ProtectedNavbar() {
   const router = useRouter();
   const [notificationType, setNotificationType] = React.useState("all");
   const [isOpen, setIsOpen] = React.useState(false);
-  const { deleteAuthUserIds } = useAuthUser();
+  const { deleteAuthUserIds, authUserIds } = useAuthUser();
 
   async function handleSignOut() {
     deleteAuthUserIds();
@@ -25,7 +25,7 @@ export default function ProtectedNavbar() {
   }
 
   // Fetch auth user data
-  const authUserQueryResult = useGetAuthUserQuery();
+  const authUserQueryResult = useGetAuthUserQuery({ params: { tenantId: authUserIds?.tenantId, userId: authUserIds?.id } });
   const authUser = authUserQueryResult?.data?.data;
 
   return (

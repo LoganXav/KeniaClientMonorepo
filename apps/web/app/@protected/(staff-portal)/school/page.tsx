@@ -21,8 +21,8 @@ function SchoolMenu({}: Props) {
       <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 mt-8">
         {[
           {
-            label: "Onboarding",
-            desc: "Onboard school and its class divisions.",
+            label: "Profile",
+            desc: "Manage school profile and settings.",
             url: RouteEnums.SCHOOL_PROFILE,
           },
           {

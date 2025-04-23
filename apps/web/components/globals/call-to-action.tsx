@@ -4,6 +4,7 @@ import { useGetTenantQuery } from "@/apis/core-tenant-api/tenant";
 import { useGetAuthUserQuery } from "@/apis/core-user-api/user";
 import { onboardingStatusEnums } from "@/constants/enums/tenant-enums";
 import { RouteEnums } from "@/constants/router/route-constants";
+import { useAuthUser } from "@/hooks/use-auth-user";
 import { useIsMounted } from "@/hooks/use-mounted";
 import { Button, Card, CardContent } from "@repo/ui";
 import { CircleAlert } from "lucide-react";
@@ -14,13 +15,13 @@ type Props = {};
 
 export function CallToActionPrompt({}: Props) {
   const isMounted = useIsMounted();
-
+  const { authUserIds } = useAuthUser();
   // Fetch auth user data
-  const authUserQueryResult = useGetAuthUserQuery();
+  const authUserQueryResult = useGetAuthUserQuery({ params: { tenantId: authUserIds?.tenantId, userId: authUserIds?.id } });
   const authUser = authUserQueryResult?.data?.data;
 
   // Fetch tenant data
-  const tenantQueryResult = useGetTenantQuery();
+  const tenantQueryResult = useGetTenantQuery({ params: { tenantId: authUserIds?.tenantId } });
   const tenant = tenantQueryResult?.data?.data;
 
   const status = tenant?.onboardingStatus;

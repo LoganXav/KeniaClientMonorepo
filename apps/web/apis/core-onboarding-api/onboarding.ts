@@ -6,14 +6,14 @@ import { QueryTagEnums } from "@/constants/query-store/query-constants";
 
 const BASE_URL = "onboarding";
 
-export const useOnboardingPersonalStepMutation = () => {
+export const useOnboardingPersonalStepMutation = ({ params }: { params: { tenantId?: number } }) => {
   const queryClient = useQueryClient();
   const {
     mutate: onboardingPersonalStep,
     isPending: onboardingPersonalStepPending,
     error: onboardingPersonalStepError,
   } = useMutation({
-    mutationFn: async ({ payload, params }: { payload: SchoolProfileFormPersonalSchemaType; params?: { tenantId?: number } }) => {
+    mutationFn: async ({ payload }: { payload: SchoolProfileFormPersonalSchemaType }) => {
       const data = await postRequest<AuthUserType>({
         endpoint: `${BASE_URL}/personal`,
         payload,
@@ -23,23 +23,23 @@ export const useOnboardingPersonalStepMutation = () => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER] });
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF] });
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.TENANT] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.TENANT, params?.tenantId] });
     },
   });
 
   return { onboardingPersonalStep, onboardingPersonalStepPending, onboardingPersonalStepError };
 };
 
-export const useOnboardingResidentialStepMutation = () => {
+export const useOnboardingResidentialStepMutation = ({ params }: { params: { tenantId?: number } }) => {
   const queryClient = useQueryClient();
   const {
     mutate: onboardingResidentialStep,
     isPending: onboardingResidentialStepPending,
     error: onboardingResidentialStepError,
   } = useMutation({
-    mutationFn: async ({ payload, params }: { payload: SchoolProfileFormResidentialSchemaType; params?: { tenantId?: number } }) => {
+    mutationFn: async ({ payload }: { payload: SchoolProfileFormResidentialSchemaType }) => {
       const data = await postRequest<AuthUserType>({
         endpoint: `${BASE_URL}/residential`,
         payload,
@@ -49,23 +49,23 @@ export const useOnboardingResidentialStepMutation = () => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER] });
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF] });
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.TENANT] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.TENANT, params?.tenantId] });
     },
   });
 
   return { onboardingResidentialStep, onboardingResidentialStepPending, onboardingResidentialStepError };
 };
 
-export const useOnboardingSchoolStepMutation = () => {
+export const useOnboardingSchoolStepMutation = ({ params }: { params: { tenantId?: number } }) => {
   const queryClient = useQueryClient();
   const {
     mutate: onboardingSchoolStep,
     isPending: onboardingSchoolStepPending,
     error: onboardingSchoolStepError,
   } = useMutation({
-    mutationFn: async ({ payload, params }: { payload: SchoolProfileFormSchoolSchemaType; params?: { tenantId?: number } }) => {
+    mutationFn: async ({ payload }: { payload: SchoolProfileFormSchoolSchemaType }) => {
       const data = await postRequest<AuthUserType>({
         endpoint: `${BASE_URL}/school`,
         payload,
@@ -75,18 +75,18 @@ export const useOnboardingSchoolStepMutation = () => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER] });
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF] });
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.TENANT] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.TENANT, params?.tenantId] });
     },
   });
 
   return { onboardingSchoolStep, onboardingSchoolStepPending, onboardingSchoolStepError };
 };
 
-export const useGetOnboardingTemplateQuery = (params: { codeValue?: number }) => {
+export const useGetOnboardingTemplateQuery = ({ params }: { params: { tenantId?: number; codeValue?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.USER, params?.codeValue],
+    queryKey: [QueryTagEnums.USER, params?.tenantId, params?.codeValue],
     queryFn: async () => {
       return await getRequest<SchoolProfileFormTemplateType>({
         endpoint: `${BASE_URL}/template`,
