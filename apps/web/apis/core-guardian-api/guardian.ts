@@ -25,7 +25,7 @@ export const useGetGuardianListQuery = ({ params }: { params: Partial<Record<"fi
 //     isPending: guardianCreatePending,
 //     error: guardianCreateError,
 //   } = useMutation({
-//     mutationFn: async ({ payload, params }: { payload: StudentCreateFormSchemaType; params?: { tenantId?: number } }) => {
+//     mutationFn: async ({ payload }: { payload: StudentCreateFormSchemaType }) => {
 //       const data = await postRequest<StudentType>({
 //         endpoint: `${BASE_URL}/create`,
 //         payload,

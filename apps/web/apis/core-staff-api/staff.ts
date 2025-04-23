@@ -27,7 +27,7 @@ export const useStaffCreateMutation = ({ params }: { params?: { tenantId?: numbe
     isPending: staffCreatePending,
     error: staffCreateError,
   } = useMutation({
-    mutationFn: async ({ payload, params }: { payload: StaffCreateFormSchemaType; params?: { tenantId?: number } }) => {
+    mutationFn: async ({ payload }: { payload: StaffCreateFormSchemaType }) => {
       const data = await postRequest<StaffType>({
         endpoint: `${BASE_URL}/create`,
         payload,
@@ -47,7 +47,7 @@ export const useStaffCreateMutation = ({ params }: { params?: { tenantId?: numbe
 
 export const useGetStaffTemplateQuery = ({ params }: { params: { tenantId?: number; codeValue?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.USER, params?.tenantId, params?.codeValue],
+    queryKey: [QueryTagEnums.STAFF, params?.tenantId, params?.codeValue],
     queryFn: async () => {
       return await getRequest<StaffTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
@@ -81,7 +81,7 @@ export const useStaffUpdateMutation = ({ path, params }: { path?: { staffId?: nu
     isPending: staffUpdatePending,
     error: staffUpdateError,
   } = useMutation({
-    mutationFn: async ({ payload, params }: { payload: StaffCreateFormSchemaType; params?: { tenantId?: number } }) => {
+    mutationFn: async ({ payload }: { payload: StaffCreateFormSchemaType }) => {
       const data = await postRequest<StaffType>({
         endpoint: `${BASE_URL}/update/${path?.staffId}`,
         payload,

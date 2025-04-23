@@ -43,7 +43,7 @@ export const useCreateClassDivisionMutation = ({ params }: { params: { tenantId?
     isPending: createClassDivisionPending,
     error: createClassDivisionError,
   } = useMutation({
-    mutationFn: async ({ payload, params }: { payload: ClassDivisionCreateFormSchemaType; params?: { tenantId?: number } }) => {
+    mutationFn: async ({ payload }: { payload: ClassDivisionCreateFormSchemaType }) => {
       const data = await postRequest<ClassDivisionType>({
         endpoint: `${BASE_URL}/create`,
         payload,
@@ -67,7 +67,7 @@ export const useUpdateClassDivisionMutation = ({ path, params }: { path: { class
     isPending: updateClassDivisionPending,
     error: updateClassDivisionError,
   } = useMutation({
-    mutationFn: async ({ payload, params }: { payload: ClassDivisionCreateFormSchemaType; params?: { tenantId?: number } }) => {
+    mutationFn: async ({ payload }: { payload: ClassDivisionCreateFormSchemaType }) => {
       const data = await postRequest<ClassDivisionType>({
         endpoint: `${BASE_URL}/update/${path?.classDivisionId}`,
         payload,

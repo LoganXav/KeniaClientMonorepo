@@ -45,7 +45,7 @@ export const useTimetableMutation = ({ params }: { params?: { tenantId?: number 
 
 export const useGetTimetableTemplateQuery = ({ params }: { params: { classId?: number; tenantId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.USER, params?.tenantId, params?.classId],
+    queryKey: [QueryTagEnums.TIMETABLE, params?.tenantId, params?.classId],
     queryFn: async () => {
       return await getRequest<SchoolTimetableTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
@@ -57,16 +57,16 @@ export const useGetTimetableTemplateQuery = ({ params }: { params: { classId?: n
   return { data, isLoading, error, refetch };
 };
 
-export const useGetSingleTimetableQuery = ({ params }: { params: { tenantId?: number; id?: number; classDivisionId?: number; day?: string; termId?: number } }) => {
+export const useGetSingleTimetableQuery = ({ params }: { params: { tenantId?: number; classDivisionId?: number; day?: string; termId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.USER, params?.tenantId, params?.id, params?.classDivisionId, params?.day, params?.termId],
+    queryKey: [QueryTagEnums.TIMETABLE, params?.tenantId, params?.classDivisionId, params?.day, params?.termId],
     queryFn: async () => {
       return await getRequest<TimetableType>({
         endpoint: `${BASE_URL}/info`,
         config: { params },
       });
     },
-    enabled: !!params?.id || (!!params?.classDivisionId && !!params?.day && !!params?.termId),
+    enabled: !!params?.classDivisionId && !!params?.day && !!params?.termId,
   });
 
   return { data, isLoading, error, refetch };
