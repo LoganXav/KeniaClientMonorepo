@@ -6,15 +6,15 @@ import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, Drop
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { RouteEnums } from "@/constants/router/route-constants";
 import Link from "next/link";
-import { CellContext, ColumnDef } from "@tanstack/react-table";
-import { formatDateToString } from "@/lib/dates";
+import { ColumnDef } from "@tanstack/react-table";
 import { LoadingContent } from "@/components/loading-content";
 import { UserRound } from "lucide-react";
 import { useGetClassListQuery } from "@/apis/core-class-api/class";
-
+import { useAuthUser } from "@/hooks/use-auth-user";
 type Props = {};
 
 export function ClassListTable({}: Props) {
+  const { authUserIds } = useAuthUser();
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
       {
@@ -61,7 +61,7 @@ export function ClassListTable({}: Props) {
     []
   );
 
-  const classListQueryResult = useGetClassListQuery();
+  const classListQueryResult = useGetClassListQuery({ params: { tenantId: authUserIds?.tenantId } });
 
   return (
     <>

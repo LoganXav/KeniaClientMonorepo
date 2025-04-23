@@ -30,13 +30,13 @@ export function StaffCreateForm({ staffId }: Props) {
   const { authUserIds } = useAuthUser();
   const [completedSteps, setCompletedSteps] = React.useState(0);
 
-  const { staffCreate, staffCreatePending, staffCreateError } = useStaffCreateMutation({ tenantId: authUserIds?.tenantId });
+  const { staffCreate, staffCreatePending, staffCreateError } = useStaffCreateMutation({ params: { tenantId: authUserIds?.tenantId } });
   const staffQueryResult = useGetSingleStaffQuery({ path: { staffId }, params: { tenantId: authUserIds?.tenantId } });
   const staff = staffQueryResult?.data?.data;
 
   const isEdit = !!staffId;
 
-  const { staffUpdate, staffUpdatePending, staffUpdateError } = useStaffUpdateMutation({ path: { staffId }, tenantId: authUserIds?.tenantId });
+  const { staffUpdate, staffUpdatePending, staffUpdateError } = useStaffUpdateMutation({ path: { staffId }, params: { tenantId: authUserIds?.tenantId } });
 
   const handleCreateStaff = (values: StaffCreateFormSchemaType) => {
     const mutate = isEdit ? staffUpdate : staffCreate;

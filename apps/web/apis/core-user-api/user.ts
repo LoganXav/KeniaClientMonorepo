@@ -5,9 +5,9 @@ import { useQuery } from "@tanstack/react-query";
 
 const BASE_URL = "user";
 
-export const useGetAuthUserQuery = (params?: { userId?: number }) => {
+export const useGetAuthUserQuery = ({ params }: { params: { tenantId?: number; userId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.USER],
+    queryKey: [QueryTagEnums.USER, params?.tenantId, params?.userId],
     queryFn: async () => {
       return await getRequest<UserWithRelationsType>({
         endpoint: `${BASE_URL}/me`,

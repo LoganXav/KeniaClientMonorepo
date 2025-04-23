@@ -22,7 +22,7 @@ export function SchoolSubjectCreateDialog({ open, onClose, subject }: DialogProp
   const { authUserIds } = useAuthUser();
 
   const subjectTemplateQueryResult = useGetSubjectTemplateQuery({
-    tenantId: authUserIds?.tenantId,
+    params: { tenantId: authUserIds?.tenantId },
   });
 
   const subjectTemplate = subjectTemplateQueryResult?.data?.data;
@@ -32,8 +32,8 @@ export function SchoolSubjectCreateDialog({ open, onClose, subject }: DialogProp
     id: staff?.id,
   }));
 
-  const { subjectCreate, subjectCreatePending, subjectCreateError } = useSubjectCreateMutation();
-  const { subjectUpdate, subjectUpdatePending, subjectUpdateError } = useSubjectUpdateMutation({ subjectId: subject?.id });
+  const { subjectCreate, subjectCreatePending, subjectCreateError } = useSubjectCreateMutation({ params: { tenantId: authUserIds?.tenantId } });
+  const { subjectUpdate, subjectUpdatePending, subjectUpdateError } = useSubjectUpdateMutation({ path: { subjectId: subject?.id }, params: { tenantId: authUserIds?.tenantId } });
 
   const handleSubmit = (values: SubjectCreateFormSchemaType) => {
     const mutate = isEdit ? subjectUpdate : subjectCreate;

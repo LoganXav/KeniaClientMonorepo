@@ -7,9 +7,9 @@ import { log } from "console";
 
 const BASE_URL = "classdivision";
 
-export const useGetClassDivisionListQuery = (params?: Record<string, any>) => {
+export const useGetClassDivisionListQuery = ({ params }: { params: { tenantId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.CLASS_DIVISION],
+    queryKey: [QueryTagEnums.CLASS_DIVISION, params?.tenantId],
     queryFn: async () => {
       return await getRequest<Record<string, any>>({
         endpoint: `${BASE_URL}/list`,
@@ -21,9 +21,9 @@ export const useGetClassDivisionListQuery = (params?: Record<string, any>) => {
   return { data, isLoading, error, refetch };
 };
 
-export const useGetClassDivisionQuery = (path?: { classDivisionId?: number }, params?: Record<string, any>) => {
+export const useGetClassDivisionQuery = ({ path, params }: { path: { classDivisionId?: number }; params: { tenantId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.CLASS_DIVISION, path?.classDivisionId],
+    queryKey: [QueryTagEnums.CLASS_DIVISION, params?.tenantId, path?.classDivisionId],
     queryFn: async () => {
       return await getRequest<Record<string, any>>({
         endpoint: `${BASE_URL}/info/${path?.classDivisionId}`,
@@ -36,14 +36,14 @@ export const useGetClassDivisionQuery = (path?: { classDivisionId?: number }, pa
   return { data, isLoading, error, refetch };
 };
 
-export const useCreateClassDivisionMutation = () => {
+export const useCreateClassDivisionMutation = ({ params }: { params: { tenantId?: number } }) => {
   const queryClient = useQueryClient();
   const {
     mutate: createClassDivision,
     isPending: createClassDivisionPending,
     error: createClassDivisionError,
   } = useMutation({
-    mutationFn: async ({ payload, params }: { payload: ClassDivisionCreateFormSchemaType; params?: { tenantId?: number } }) => {
+    mutationFn: async ({ payload }: { payload: ClassDivisionCreateFormSchemaType }) => {
       const data = await postRequest<ClassDivisionType>({
         endpoint: `${BASE_URL}/create`,
         payload,
@@ -53,21 +53,21 @@ export const useCreateClassDivisionMutation = () => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.CLASS_DIVISION] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.CLASS_DIVISION, params?.tenantId] });
     },
   });
 
   return { createClassDivision, createClassDivisionPending, createClassDivisionError };
 };
 
-export const useUpdateClassDivisionMutation = (path?: { classDivisionId?: number }) => {
+export const useUpdateClassDivisionMutation = ({ path, params }: { path: { classDivisionId?: number }; params: { tenantId?: number } }) => {
   const queryClient = useQueryClient();
   const {
     mutate: updateClassDivision,
     isPending: updateClassDivisionPending,
     error: updateClassDivisionError,
   } = useMutation({
-    mutationFn: async ({ payload, params }: { payload: ClassDivisionCreateFormSchemaType; params?: { tenantId?: number } }) => {
+    mutationFn: async ({ payload }: { payload: ClassDivisionCreateFormSchemaType }) => {
       const data = await postRequest<ClassDivisionType>({
         endpoint: `${BASE_URL}/update/${path?.classDivisionId}`,
         payload,
@@ -77,7 +77,7 @@ export const useUpdateClassDivisionMutation = (path?: { classDivisionId?: number
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.CLASS_DIVISION] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.CLASS_DIVISION, params?.tenantId] });
     },
   });
 

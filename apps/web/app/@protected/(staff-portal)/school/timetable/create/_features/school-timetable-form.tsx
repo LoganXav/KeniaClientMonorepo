@@ -18,7 +18,7 @@ export default function SchoolTimetableForm() {
   const router = useRouter();
   const { authUserIds } = useAuthUser();
 
-  const { timetableMutate, timetableMutatePending, timetableMutateError } = useTimetableMutation();
+  const { timetableMutate, timetableMutatePending, timetableMutateError } = useTimetableMutation({ params: { tenantId: authUserIds?.tenantId } });
 
   const handleMutateTimetable = () => {
     const values = form.getValues();
@@ -81,11 +81,11 @@ export default function SchoolTimetableForm() {
   const day = form.watch("day");
   const termId = form.watch("termId");
 
-  const timetableQueryResult = useGetSingleTimetableQuery(React.useMemo(() => ({ classDivisionId, day, termId }), [classDivisionId, day, termId]));
+  const timetableQueryResult = useGetSingleTimetableQuery(React.useMemo(() => ({ params: { classDivisionId, day, termId, tenantId: authUserIds?.tenantId } }), [classDivisionId, day, termId, authUserIds?.tenantId]));
   const timetable = timetableQueryResult?.data?.data;
 
   const classId = form.watch("classId");
-  const timetableTemplateQueryResult = useGetTimetableTemplateQuery(React.useMemo(() => ({ classId }), [classId])) as SchoolTimetableTemplateOptions;
+  const timetableTemplateQueryResult = useGetTimetableTemplateQuery(React.useMemo(() => ({ params: { classId, tenantId: authUserIds?.tenantId } }), [classId, authUserIds?.tenantId])) as SchoolTimetableTemplateOptions;
   const timetableTemplate = timetableTemplateQueryResult?.data?.data;
 
   const dataRef = useDataRef({ form });

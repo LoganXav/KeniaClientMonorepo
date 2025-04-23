@@ -8,16 +8,18 @@ import { RouteEnums } from "@/constants/router/route-constants";
 import { SchoolTimetableTemplateOptions } from "../create/_types/school-timetable-form-types";
 import { Card, Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { useGetTimetableQuery, useGetTimetableTemplateQuery } from "@/apis/core-timetable-api/timetable";
+import { useAuthUser } from "@/hooks/use-auth-user";
 
 function SchoolTimetableGrid() {
+  const { authUserIds } = useAuthUser();
   const [termId, setTermId] = React.useState(0);
   const [classId, setClassId] = React.useState(0);
   const [classDivisionId, setClassDivisionId] = React.useState(0);
 
-  const timetableQueryResult = useGetTimetableQuery(React.useMemo(() => ({ classDivisionId, termId }), [classDivisionId, termId]));
+  const timetableQueryResult = useGetTimetableQuery(React.useMemo(() => ({ params: { classDivisionId, termId, tenantId: authUserIds?.tenantId } }), [classDivisionId, termId, authUserIds?.tenantId]));
   const timetable = timetableQueryResult?.data?.data;
 
-  const timetableTemplateQueryResult = useGetTimetableTemplateQuery(React.useMemo(() => ({ classId }), [classId])) as SchoolTimetableTemplateOptions;
+  const timetableTemplateQueryResult = useGetTimetableTemplateQuery(React.useMemo(() => ({ params: { classId, tenantId: authUserIds?.tenantId } }), [classId, authUserIds?.tenantId])) as SchoolTimetableTemplateOptions;
   const timetableTemplate = timetableTemplateQueryResult?.data?.data;
 
   return (

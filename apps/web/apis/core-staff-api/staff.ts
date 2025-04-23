@@ -20,14 +20,14 @@ export const useGetStaffListQuery = ({ params }: { params?: { tenantId?: number;
   return { data, isLoading, error, refetch };
 };
 
-export const useStaffCreateMutation = ({ tenantId }: { tenantId?: number }) => {
+export const useStaffCreateMutation = ({ params }: { params?: { tenantId?: number } }) => {
   const queryClient = useQueryClient();
   const {
     mutate: staffCreate,
     isPending: staffCreatePending,
     error: staffCreateError,
   } = useMutation({
-    mutationFn: async ({ payload, params }: { payload: StaffCreateFormSchemaType; params?: { tenantId?: number } }) => {
+    mutationFn: async ({ payload }: { payload: StaffCreateFormSchemaType }) => {
       const data = await postRequest<StaffType>({
         endpoint: `${BASE_URL}/create`,
         payload,
@@ -37,8 +37,8 @@ export const useStaffCreateMutation = ({ tenantId }: { tenantId?: number }) => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF, tenantId] });
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params?.tenantId] });
     },
   });
 
@@ -47,7 +47,7 @@ export const useStaffCreateMutation = ({ tenantId }: { tenantId?: number }) => {
 
 export const useGetStaffTemplateQuery = ({ params }: { params: { tenantId?: number; codeValue?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.USER, params?.tenantId, params?.codeValue],
+    queryKey: [QueryTagEnums.STAFF, params?.tenantId, params?.codeValue],
     queryFn: async () => {
       return await getRequest<StaffTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
@@ -74,14 +74,14 @@ export const useGetSingleStaffQuery = ({ path, params }: { path: { staffId?: num
   return { data, isLoading, error, refetch };
 };
 
-export const useStaffUpdateMutation = ({ path, tenantId }: { path?: { staffId?: number }; tenantId?: number }) => {
+export const useStaffUpdateMutation = ({ path, params }: { path?: { staffId?: number }; params?: { tenantId?: number } }) => {
   const queryClient = useQueryClient();
   const {
     mutate: staffUpdate,
     isPending: staffUpdatePending,
     error: staffUpdateError,
   } = useMutation({
-    mutationFn: async ({ payload, params }: { payload: StaffCreateFormSchemaType; params?: { tenantId?: number } }) => {
+    mutationFn: async ({ payload }: { payload: StaffCreateFormSchemaType }) => {
       const data = await postRequest<StaffType>({
         endpoint: `${BASE_URL}/update/${path?.staffId}`,
         payload,
@@ -91,8 +91,8 @@ export const useStaffUpdateMutation = ({ path, tenantId }: { path?: { staffId?: 
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF, tenantId] });
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params?.tenantId] });
     },
   });
 

@@ -8,9 +8,11 @@ import React from "react";
 import { useGetCalendarQuery } from "@/apis/core-calendar-api/calendar";
 import { parseCalendarDataToEvents } from "@/lib/dates";
 import { LoadingContent } from "@/components/loading-content";
+import { useAuthUser } from "@/hooks/use-auth-user";
 
 function SchoolCalendarGrid() {
-  const calendarQueryResult = useGetCalendarQuery();
+  const { authUserIds } = useAuthUser();
+  const calendarQueryResult = useGetCalendarQuery({ params: { tenantId: authUserIds?.tenantId } });
 
   const events = parseCalendarDataToEvents(calendarQueryResult?.data?.data || []);
 

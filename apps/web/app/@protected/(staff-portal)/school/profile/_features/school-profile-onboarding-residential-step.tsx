@@ -2,19 +2,23 @@ import React from "react";
 import { FormControl, FormField, FormItem, FormMessage, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { SchoolProfileFormReturn } from "../_types/school-profile-form-types";
 import { useGetOnboardingTemplateQuery } from "@/apis/core-onboarding-api/onboarding";
-
+import { useAuthUser } from "@/hooks/use-auth-user";
 type StepProps = {
   form: SchoolProfileFormReturn;
 };
 
 export function SchoolProfileOnboardingResidentialStep({ form }: StepProps) {
+  const { authUserIds } = useAuthUser();
   const residentialStateId = form.watch("residentialStateId");
   const onboardingTemplateQuery = useGetOnboardingTemplateQuery(
     React.useMemo(
       () => ({
-        codeValue: Number(residentialStateId),
+        params: {
+          codeValue: Number(residentialStateId),
+          tenantId: authUserIds?.tenantId,
+        },
       }),
-      [residentialStateId]
+      [residentialStateId, authUserIds?.tenantId]
     )
   );
 

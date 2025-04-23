@@ -1,19 +1,12 @@
 "use client";
 
-import { Card, ScrollBar, ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger, SelectValue, Select, SelectTrigger, SelectContent, SelectItem, Button, Typography } from "@repo/ui";
 import React from "react";
-import Image from "next/image";
-import { RouteEnums } from "@/constants/router/route-constants";
-import Link from "next/link";
-import { UserRoundPen } from "lucide-react";
 import { useGetSingleClassQuery } from "@/apis/core-class-api/class";
-import { LoadingContent } from "@/components/loading-content";
-import { formatDateToString } from "@/lib/dates";
+import { useAuthUser } from "@/hooks/use-auth-user";
 
 function ClassDetails({ classId }: { classId: number }) {
-  const { data: classItem, isLoading, error, refetch } = useGetSingleClassQuery({ classId });
-
-  console.log(classItem);
+  const { authUserIds } = useAuthUser();
+  const { data: classItem, isLoading, error, refetch } = useGetSingleClassQuery({ path: { classId }, params: { tenantId: authUserIds?.tenantId } });
 
   return (
     <>

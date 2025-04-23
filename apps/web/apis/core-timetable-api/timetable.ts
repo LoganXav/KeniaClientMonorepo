@@ -6,9 +6,9 @@ import { SchoolTimetableTemplateOptions } from "@/app/@protected/(staff-portal)/
 
 const BASE_URL = "timetable";
 
-export const useGetTimetableQuery = (params?: { classDivisionId?: number; termId?: number }) => {
+export const useGetTimetableQuery = ({ params }: { params?: { tenantId?: number; classDivisionId?: number; termId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.TIMETABLE],
+    queryKey: [QueryTagEnums.TIMETABLE, params?.tenantId],
     queryFn: async () => {
       return await getRequest<TimetablePeriodType[]>({
         endpoint: `${BASE_URL}/list`,
@@ -21,14 +21,14 @@ export const useGetTimetableQuery = (params?: { classDivisionId?: number; termId
   return { data, isLoading, error, refetch };
 };
 
-export const useTimetableMutation = () => {
+export const useTimetableMutation = ({ params }: { params?: { tenantId?: number } }) => {
   const queryClient = useQueryClient();
   const {
     mutate: timetableMutate,
     isPending: timetableMutatePending,
     error: timetableMutateError,
   } = useMutation({
-    mutationFn: async ({ payload, params }: { payload: Record<string, any>; params?: Record<string, any> }) => {
+    mutationFn: async ({ payload }: { payload: Record<string, any> }) => {
       return await postRequest<TimetableType>({
         endpoint: `${BASE_URL}/create`,
         payload,
@@ -36,16 +36,16 @@ export const useTimetableMutation = () => {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.TIMETABLE] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.TIMETABLE, params?.tenantId] });
     },
   });
 
   return { timetableMutate, timetableMutatePending, timetableMutateError };
 };
 
-export const useGetTimetableTemplateQuery = (params: { classId?: number }) => {
+export const useGetTimetableTemplateQuery = ({ params }: { params: { classId?: number; tenantId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.USER, params],
+    queryKey: [QueryTagEnums.TIMETABLE, params?.tenantId, params?.classId],
     queryFn: async () => {
       return await getRequest<SchoolTimetableTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
@@ -57,16 +57,16 @@ export const useGetTimetableTemplateQuery = (params: { classId?: number }) => {
   return { data, isLoading, error, refetch };
 };
 
-export const useGetSingleTimetableQuery = (params: { tenantId?: number; id?: number; classDivisionId?: number; day?: string; termId?: number }) => {
+export const useGetSingleTimetableQuery = ({ params }: { params: { tenantId?: number; classDivisionId?: number; day?: string; termId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.USER, params],
+    queryKey: [QueryTagEnums.TIMETABLE, params?.tenantId, params?.classDivisionId, params?.day, params?.termId],
     queryFn: async () => {
       return await getRequest<TimetableType>({
         endpoint: `${BASE_URL}/info`,
         config: { params },
       });
     },
-    enabled: !!params?.id || (!!params?.classDivisionId && !!params?.day && !!params?.termId),
+    enabled: !!params?.classDivisionId && !!params?.day && !!params?.termId,
   });
 
   return { data, isLoading, error, refetch };

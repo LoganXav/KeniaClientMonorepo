@@ -6,9 +6,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const BASE_URL = "subject";
 
-export const useGetSubjectListQuery = (params?: Record<string, any>) => {
+export const useGetSubjectListQuery = ({ params }: { params?: Record<string, any> }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.SUBJECT],
+    queryKey: [QueryTagEnums.SUBJECT, params?.tenantId],
     queryFn: async () => {
       return await getRequest<Record<string, any>>({
         endpoint: `${BASE_URL}/list`,
@@ -20,14 +20,14 @@ export const useGetSubjectListQuery = (params?: Record<string, any>) => {
   return { data, isLoading, error, refetch };
 };
 
-export const useSubjectCreateMutation = () => {
+export const useSubjectCreateMutation = ({ params }: { params?: { tenantId?: number } }) => {
   const queryClient = useQueryClient();
   const {
     mutate: subjectCreate,
     isPending: subjectCreatePending,
     error: subjectCreateError,
   } = useMutation({
-    mutationFn: async ({ payload, params }: { payload: SubjectCreateFormSchemaType; params?: { tenantId?: number } }) => {
+    mutationFn: async ({ payload }: { payload: SubjectCreateFormSchemaType }) => {
       const data = await postRequest<SubjectType>({
         endpoint: `${BASE_URL}/create`,
         payload,
@@ -37,21 +37,21 @@ export const useSubjectCreateMutation = () => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.SUBJECT] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.SUBJECT, params?.tenantId] });
     },
   });
 
   return { subjectCreate, subjectCreatePending, subjectCreateError };
 };
 
-export const useSubjectUpdateMutation = (path?: { subjectId?: number }) => {
+export const useSubjectUpdateMutation = ({ path, params }: { path?: { subjectId?: number }; params?: { tenantId?: number } }) => {
   const queryClient = useQueryClient();
   const {
     mutate: subjectUpdate,
     isPending: subjectUpdatePending,
     error: subjectUpdateError,
   } = useMutation({
-    mutationFn: async ({ payload, params }: { payload: SubjectCreateFormSchemaType; params?: { tenantId?: number } }) => {
+    mutationFn: async ({ payload }: { payload: SubjectCreateFormSchemaType }) => {
       const data = await postRequest<SubjectType>({
         endpoint: `${BASE_URL}/update/${path?.subjectId}`,
         payload,
@@ -61,16 +61,16 @@ export const useSubjectUpdateMutation = (path?: { subjectId?: number }) => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.SUBJECT] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.SUBJECT, params?.tenantId] });
     },
   });
 
   return { subjectUpdate, subjectUpdatePending, subjectUpdateError };
 };
 
-export const useGetSubjectTemplateQuery = (params: { tenantId?: number }) => {
+export const useGetSubjectTemplateQuery = ({ params }: { params: { tenantId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.SUBJECT, QueryTagEnums.USER, QueryTagEnums.CLASS, QueryTagEnums.STAFF],
+    queryKey: [QueryTagEnums.SUBJECT, params?.tenantId],
     queryFn: async () => {
       return await getRequest<SubjectTemplateOptions>({
         endpoint: `${BASE_URL}/template`,

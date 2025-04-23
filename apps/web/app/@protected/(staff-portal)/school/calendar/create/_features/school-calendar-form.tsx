@@ -18,10 +18,10 @@ export default function SchoolCalendarForm() {
   const router = useRouter();
   const { authUserIds } = useAuthUser();
 
-  const schoolCalendarQueryResult = useGetCalendarQuery();
+  const schoolCalendarQueryResult = useGetCalendarQuery({ params: { tenantId: authUserIds?.tenantId } });
   const schoolCalendar = schoolCalendarQueryResult?.data?.data;
 
-  const { calendarMutate, calendarMutatePending, calendarMutateError } = useCalendarMutation();
+  const { calendarMutate, calendarMutatePending, calendarMutateError } = useCalendarMutation({ params: { tenantId: authUserIds?.tenantId } });
 
   const handleMutateSchoolCalendar = () => {
     const values = form.getValues();

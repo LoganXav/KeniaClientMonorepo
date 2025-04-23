@@ -11,8 +11,10 @@ import { RouteEnums } from "@/constants/router/route-constants";
 import { CirclePlus, UserRound } from "lucide-react";
 import { LoadingContent } from "@/components/loading-content";
 import { DataTable } from "@/components/data-table";
+import { useAuthUser } from "@/hooks/use-auth-user";
 
 export function ClassDivisionListTable() {
+  const { authUserIds } = useAuthUser();
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
       {
@@ -64,7 +66,7 @@ export function ClassDivisionListTable() {
     []
   );
 
-  const classDivisionListQueryResult = useGetClassDivisionListQuery();
+  const classDivisionListQueryResult = useGetClassDivisionListQuery({ params: { tenantId: authUserIds?.tenantId } });
 
   return (
     <>

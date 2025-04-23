@@ -11,6 +11,8 @@ import { SchoolSubjectCreateDialog } from "./school-subject-create-dialog";
 import useToggle from "@/hooks/use-toggle";
 import { SubjectType } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
+import { useAuthUser } from "@/hooks/use-auth-user";
+
 type Props = {};
 
 export function SchoolSubjectListTable({}: Props) {
@@ -76,7 +78,8 @@ export function SchoolSubjectListTable({}: Props) {
     [handleOpenDialog]
   );
 
-  const subjectListQueryResult = useGetSubjectListQuery();
+  const { authUserIds } = useAuthUser();
+  const subjectListQueryResult = useGetSubjectListQuery({ params: { tenantId: authUserIds?.tenantId } });
 
   return (
     <>

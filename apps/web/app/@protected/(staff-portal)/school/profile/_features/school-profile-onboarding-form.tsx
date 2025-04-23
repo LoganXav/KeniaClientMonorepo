@@ -21,21 +21,22 @@ import { useGetAuthUserQuery } from "@/apis/core-user-api/user";
 import useDataRef from "@/hooks/use-data-ref";
 import SchoolProfileOnboardingSuccessStep from "./school-profile-onboarding-success-step";
 import { LoadingContent } from "@/components/loading-content";
-
+import { useAuthUser } from "@/hooks/use-auth-user";
 type Props = {};
 
 function SchoolProfileOnboardingForm({}: Props) {
   const router = useRouter();
   const stepper = useStepper();
+  const { authUserIds } = useAuthUser();
 
-  const { onboardingPersonalStep, onboardingPersonalStepPending } = useOnboardingPersonalStepMutation();
-  const { onboardingResidentialStep, onboardingResidentialStepPending } = useOnboardingResidentialStepMutation();
-  const { onboardingSchoolStep, onboardingSchoolStepPending } = useOnboardingSchoolStepMutation();
+  const { onboardingPersonalStep, onboardingPersonalStepPending } = useOnboardingPersonalStepMutation({ params: { tenantId: authUserIds?.tenantId } });
+  const { onboardingResidentialStep, onboardingResidentialStepPending } = useOnboardingResidentialStepMutation({ params: { tenantId: authUserIds?.tenantId } });
+  const { onboardingSchoolStep, onboardingSchoolStepPending } = useOnboardingSchoolStepMutation({ params: { tenantId: authUserIds?.tenantId } });
 
-  const authUserQueryResult = useGetAuthUserQuery();
+  const authUserQueryResult = useGetAuthUserQuery({ params: { tenantId: authUserIds?.tenantId, userId: authUserIds?.id } });
   const authUser = authUserQueryResult?.data?.data;
 
-  const tenantQueryResult = useGetTenantQuery();
+  const tenantQueryResult = useGetTenantQuery({ params: { tenantId: authUserIds?.tenantId } });
   const tenant = tenantQueryResult?.data?.data;
   const status = tenant?.onboardingStatus;
 
