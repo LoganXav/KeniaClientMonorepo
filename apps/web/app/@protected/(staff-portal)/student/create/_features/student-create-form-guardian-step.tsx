@@ -7,7 +7,7 @@ import { Check, CircleMinus, CirclePlus, UserRoundSearch } from "lucide-react";
 import { useGetGuardianListQuery } from "@/apis/core-guardian-api/guardian";
 import { debounce } from "@/lib/utils";
 import { useGetStudentTemplateQuery } from "@/apis/core-student-api/student";
-
+import { useAuthUser } from "@/hooks/use-auth-user";
 type StepProps = {
   form: StudentCreateFormReturn;
   isEdit: boolean;
@@ -15,6 +15,8 @@ type StepProps = {
 };
 
 export function StudentCreateFormGuardianStep({ form, isEdit, studentTemplateQuery }: StepProps) {
+  const { authUserIds } = useAuthUser();
+
   const [searchBy, setSearchBy] = React.useState<"" | "firstName" | "lastName" | "email" | "phoneNumber">("");
   const [query, setQuery] = React.useState<string>("");
   const [debouncedQuery, setDebouncedQuery] = React.useState<string>("...");
@@ -36,11 +38,14 @@ export function StudentCreateFormGuardianStep({ form, isEdit, studentTemplateQue
   };
 
   const guardianListQueryResult = useGetGuardianListQuery(
-    React.useMemo<Partial<Record<"firstName" | "lastName" | "email" | "phoneNumber", string>>>(
+    React.useMemo(
       () => ({
-        [searchBy]: debouncedQuery,
+        params: {
+          [searchBy]: debouncedQuery,
+          tenantId: authUserIds?.tenantId,
+        },
       }),
-      [searchBy, debouncedQuery]
+      [searchBy, debouncedQuery, authUserIds?.tenantId]
     )
   );
 

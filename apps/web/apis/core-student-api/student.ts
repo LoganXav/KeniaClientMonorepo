@@ -39,6 +39,7 @@ export const useStudentCreateMutation = ({ params }: { params: { tenantId?: numb
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STUDENT, params.tenantId] });
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.GUARDIAN, params.tenantId] });
     },
   });
 
@@ -93,6 +94,7 @@ export const useStudentUpdateMutation = ({ path, params }: { path: { studentId?:
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STUDENT, params.tenantId] });
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.GUARDIAN, params.tenantId] });
     },
   });
 

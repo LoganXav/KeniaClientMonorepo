@@ -1,14 +1,12 @@
-import { StudentCreateFormSchemaType, StudentTemplateOptions } from "@/app/@protected/(staff-portal)/student/create/_types/student-create-form-types";
-import { getRequest, postRequest } from "@/config/base-query";
+import { getRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
-import { StudentType } from "@/types";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const BASE_URL = "guardian";
 
-export const useGetGuardianListQuery = (params?: Partial<Record<"firstName" | "lastName" | "email" | "phoneNumber", string>>) => {
+export const useGetGuardianListQuery = ({ params }: { params: Partial<Record<"firstName" | "lastName" | "email" | "phoneNumber", string>> & { tenantId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.GUARDIAN, params],
+    queryKey: [QueryTagEnums.GUARDIAN, params?.tenantId],
     queryFn: async () => {
       return await getRequest<Record<string, any>>({
         endpoint: `${BASE_URL}/list`,
