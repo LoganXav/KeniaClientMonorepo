@@ -6,9 +6,9 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 const BASE_URL = "student";
 
-export const useGetStudentListQuery = (params?: { tenantId?: number; jobTitle?: string }) => {
+export const useGetStudentListQuery = ({ params }: { params: { tenantId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.STUDENT],
+    queryKey: [QueryTagEnums.STUDENT, params?.tenantId],
     queryFn: async () => {
       return await getRequest<Record<string, any>>({
         endpoint: `${BASE_URL}/list`,
@@ -20,14 +20,14 @@ export const useGetStudentListQuery = (params?: { tenantId?: number; jobTitle?: 
   return { data, isLoading, error, refetch };
 };
 
-export const useStudentCreateMutation = (tenantId?: number) => {
+export const useStudentCreateMutation = ({ params }: { params: { tenantId?: number } }) => {
   const queryClient = useQueryClient();
   const {
     mutate: studentCreate,
     isPending: studentCreatePending,
     error: studentCreateError,
   } = useMutation({
-    mutationFn: async ({ payload, params }: { payload: StudentCreateFormSchemaType; params?: { tenantId?: number } }) => {
+    mutationFn: async ({ payload }: { payload: StudentCreateFormSchemaType }) => {
       const data = await postRequest<StudentType>({
         endpoint: `${BASE_URL}/create`,
         payload,
@@ -37,15 +37,15 @@ export const useStudentCreateMutation = (tenantId?: number) => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STUDENT, tenantId] });
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STUDENT, params.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params.tenantId] });
     },
   });
 
   return { studentCreate, studentCreatePending, studentCreateError };
 };
 
-export const useGetStudentTemplateQuery = (params: { tenantId?: number; codeValue?: number; classId?: number }) => {
+export const useGetStudentTemplateQuery = ({ params }: { params: { tenantId?: number; codeValue?: number; classId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.USER, params?.tenantId, params?.codeValue, params?.classId],
     queryFn: async () => {
@@ -59,7 +59,7 @@ export const useGetStudentTemplateQuery = (params: { tenantId?: number; codeValu
   return { data, isLoading, error, refetch };
 };
 
-export const useGetSingleStudentQuery = (path?: { studentId?: number }, params?: { tenantId?: number }) => {
+export const useGetSingleStudentQuery = ({ path, params }: { path: { studentId?: number }; params: { tenantId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.STUDENT, params?.tenantId, path?.studentId],
     queryFn: async () => {
@@ -74,14 +74,14 @@ export const useGetSingleStudentQuery = (path?: { studentId?: number }, params?:
   return { data, isLoading, error, refetch };
 };
 
-export const useStudentUpdateMutation = (path?: { studentId?: number }, params?: { tenantId?: number }) => {
+export const useStudentUpdateMutation = ({ path, params }: { path: { studentId?: number }; params: { tenantId?: number } }) => {
   const queryClient = useQueryClient();
   const {
     mutate: studentUpdate,
     isPending: studentUpdatePending,
     error: studentUpdateError,
   } = useMutation({
-    mutationFn: async ({ payload, params }: { payload: StudentCreateFormSchemaType; params?: { tenantId?: number } }) => {
+    mutationFn: async ({ payload }: { payload: StudentCreateFormSchemaType }) => {
       const data = await postRequest<StudentType>({
         endpoint: `${BASE_URL}/update/${path?.studentId}`,
         payload,
@@ -91,8 +91,8 @@ export const useStudentUpdateMutation = (path?: { studentId?: number }, params?:
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STUDENT, params?.tenantId] });
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STUDENT, params.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params.tenantId] });
     },
   });
 

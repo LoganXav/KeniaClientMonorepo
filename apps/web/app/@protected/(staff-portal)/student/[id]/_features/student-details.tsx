@@ -20,9 +20,11 @@ import { StudentDetailsTimetableScheduleTab } from "./student-details-timetable-
 import { StudentDetailsNotesRemarksTab } from "./student-details-notes-remarks-tab";
 import { StudentDetailsAttendanceRecordsTab } from "./student-details-attendance-records-tab";
 import { StudentDetailsPerformanceReportsTab } from "./student-details-performance-reports-tab";
+import { useAuthUser } from "@/hooks/use-auth-user";
 
 function StudentDetails({ studentId }: { studentId: number }) {
-  const { data: student, isLoading, error, refetch } = useGetSingleStudentQuery({ studentId });
+  const { authUserIds } = useAuthUser();
+  const { data: student, isLoading, error, refetch } = useGetSingleStudentQuery({ path: { studentId }, params: { tenantId: authUserIds?.tenantId } });
 
   return (
     <>

@@ -11,7 +11,10 @@ import { CellContext, ColumnDef } from "@tanstack/react-table";
 import { LoadingContent } from "@/components/loading-content";
 import { CirclePlus, UserRound } from "lucide-react";
 import { calculateAge } from "@/lib/dates";
+import { useAuthUser } from "@/hooks/use-auth-user";
+
 export function StudentListTable() {
+  const { authUserIds } = useAuthUser();
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
       {
@@ -69,7 +72,7 @@ export function StudentListTable() {
     []
   );
 
-  const studentListQueryResult = useGetStudentListQuery();
+  const studentListQueryResult = useGetStudentListQuery({ params: { tenantId: authUserIds?.tenantId } });
 
   return (
     <>
