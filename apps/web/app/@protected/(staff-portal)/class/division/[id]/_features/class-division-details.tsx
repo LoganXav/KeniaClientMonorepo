@@ -4,8 +4,15 @@ import { UserRoundPen } from "lucide-react";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Button } from "@repo/ui";
 import Link from "next/link";
+import { useAuthUser } from "@/hooks/use-auth-user";
+import { useGetClassDivisionQuery } from "@/apis/core-class-api/class-division";
 
 export function ClassDivisionDetails({ classDivisionId }: { classDivisionId: number }) {
+  const { authUserIds } = useAuthUser();
+
+  const classDivisionQueryResult = useGetClassDivisionQuery({ path: { classDivisionId }, params: { tenantId: authUserIds?.tenantId } });
+  const classDivision = classDivisionQueryResult?.data?.data;
+
   return (
     <>
       <div className="flex w-full pb-4 mt-8">

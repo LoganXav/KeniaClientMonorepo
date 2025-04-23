@@ -24,13 +24,13 @@ export function ClassDivisionCreateForm({ classDivisionId }: Props) {
 
   const isEdit = !!classDivisionId;
 
-  const { createClassDivision, createClassDivisionPending, createClassDivisionError } = useCreateClassDivisionMutation();
-  const { updateClassDivision, updateClassDivisionPending, updateClassDivisionError } = useUpdateClassDivisionMutation({ classDivisionId });
+  const { createClassDivision, createClassDivisionPending, createClassDivisionError } = useCreateClassDivisionMutation({ params: { tenantId: authUserIds?.tenantId } });
+  const { updateClassDivision, updateClassDivisionPending, updateClassDivisionError } = useUpdateClassDivisionMutation({ path: { classDivisionId }, params: { tenantId: authUserIds?.tenantId } });
 
-  const classListQueryResult = useGetClassListQuery();
+  const classListQueryResult = useGetClassListQuery({ params: { tenantId: authUserIds?.tenantId } });
   const classList = classListQueryResult?.data?.data;
 
-  const classDivisionQueryResult = useGetClassDivisionQuery({ classDivisionId });
+  const classDivisionQueryResult = useGetClassDivisionQuery({ path: { classDivisionId }, params: { tenantId: authUserIds?.tenantId } });
   const classDivision = classDivisionQueryResult?.data?.data;
 
   const handleSubmit = (values: ClassDivisionCreateFormSchemaType) => {

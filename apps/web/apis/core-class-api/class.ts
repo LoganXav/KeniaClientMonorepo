@@ -4,9 +4,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const BASE_URL = "class";
 
-export const useGetClassListQuery = (params?: Record<string, any>) => {
+export const useGetClassListQuery = ({ params }: { params: { tenantId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.CLASS],
+    queryKey: [QueryTagEnums.CLASS, params?.tenantId],
     queryFn: async () => {
       return await getRequest<Record<string, any>>({
         endpoint: `${BASE_URL}/list`,
@@ -18,9 +18,9 @@ export const useGetClassListQuery = (params?: Record<string, any>) => {
   return { data, isLoading, error, refetch };
 };
 
-export const useGetSingleClassQuery = (path?: { classId: number }, params?: Record<string, any>) => {
+export const useGetSingleClassQuery = ({ path, params }: { path: { classId: number }; params: { tenantId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.CLASS, path?.classId],
+    queryKey: [QueryTagEnums.CLASS, params?.tenantId, path?.classId],
     queryFn: async () => {
       return await getRequest<Record<string, any>>({
         endpoint: `${BASE_URL}/info/${path?.classId}`,
