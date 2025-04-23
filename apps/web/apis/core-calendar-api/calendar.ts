@@ -5,9 +5,9 @@ import { CalendarType } from "@/types";
 
 const BASE_URL = "calendar";
 
-export const useGetCalendarQuery = (params?: Record<string, any>) => {
+export const useGetCalendarQuery = ({ params }: { params?: { tenantId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.CALENDAR],
+    queryKey: [QueryTagEnums.CALENDAR, params?.tenantId],
     queryFn: async () => {
       return await getRequest<CalendarType[]>({
         endpoint: `${BASE_URL}/list`,
@@ -19,14 +19,14 @@ export const useGetCalendarQuery = (params?: Record<string, any>) => {
   return { data, isLoading, error, refetch };
 };
 
-export const useCalendarMutation = () => {
+export const useCalendarMutation = ({ params }: { params?: { tenantId?: number } }) => {
   const queryClient = useQueryClient();
   const {
     mutate: calendarMutate,
     isPending: calendarMutatePending,
     error: calendarMutateError,
   } = useMutation({
-    mutationFn: async ({ payload, params }: { payload: Record<string, any>; params?: Record<string, any> }) => {
+    mutationFn: async ({ payload }: { payload: Record<string, any> }) => {
       return await postRequest<CalendarType>({
         endpoint: `${BASE_URL}/create`,
         payload,
@@ -34,7 +34,7 @@ export const useCalendarMutation = () => {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.CALENDAR] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.CALENDAR, params?.tenantId] });
     },
   });
 

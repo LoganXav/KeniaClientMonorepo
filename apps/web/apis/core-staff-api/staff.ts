@@ -20,7 +20,7 @@ export const useGetStaffListQuery = ({ params }: { params?: { tenantId?: number;
   return { data, isLoading, error, refetch };
 };
 
-export const useStaffCreateMutation = ({ tenantId }: { tenantId?: number }) => {
+export const useStaffCreateMutation = ({ params }: { params?: { tenantId?: number } }) => {
   const queryClient = useQueryClient();
   const {
     mutate: staffCreate,
@@ -37,8 +37,8 @@ export const useStaffCreateMutation = ({ tenantId }: { tenantId?: number }) => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF, tenantId] });
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params?.tenantId] });
     },
   });
 
@@ -74,7 +74,7 @@ export const useGetSingleStaffQuery = ({ path, params }: { path: { staffId?: num
   return { data, isLoading, error, refetch };
 };
 
-export const useStaffUpdateMutation = ({ path, tenantId }: { path?: { staffId?: number }; tenantId?: number }) => {
+export const useStaffUpdateMutation = ({ path, params }: { path?: { staffId?: number }; params?: { tenantId?: number } }) => {
   const queryClient = useQueryClient();
   const {
     mutate: staffUpdate,
@@ -91,8 +91,8 @@ export const useStaffUpdateMutation = ({ path, tenantId }: { path?: { staffId?: 
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF, tenantId] });
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params?.tenantId] });
     },
   });
 
