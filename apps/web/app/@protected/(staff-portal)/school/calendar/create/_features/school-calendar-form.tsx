@@ -13,6 +13,7 @@ import { LoadingContent } from "@/components/loading-content";
 import { CircleMinus, CirclePlus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { RouteEnums } from "@/constants/router/route-constants";
+import { TermType, BreakWeekType } from "@/types";
 
 export default function SchoolCalendarForm() {
   const router = useRouter();
@@ -26,8 +27,23 @@ export default function SchoolCalendarForm() {
   const handleMutateSchoolCalendar = () => {
     const values = form.getValues();
 
+    const filteredTerms = values.terms.map((term: TermType) => {
+      return {
+        ...term,
+        startDate: new Date(term.startDate),
+        endDate: new Date(term.endDate),
+        breakWeeks: term.breakWeeks.map((breakWeek: BreakWeekType) => {
+          return {
+            ...breakWeek,
+            startDate: new Date(breakWeek.startDate),
+            endDate: new Date(breakWeek.endDate),
+          };
+        }),
+      };
+    });
+
     calendarMutate(
-      { payload: { ...values, id: Number(values.id) } },
+      { payload: { ...values, id: Number(values.id), terms: filteredTerms } },
       {
         onSuccess: (result) => {
           toast.success(result.message);

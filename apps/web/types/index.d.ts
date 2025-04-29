@@ -162,7 +162,7 @@ export interface CalendarType {
 }
 
 export interface TermType {
-  id: number;
+  // id: number;
   name: string;
   startDate: string;
   endDate: string;
@@ -170,7 +170,7 @@ export interface TermType {
 }
 
 export interface BreakWeekType {
-  id: number;
+  // id: number;
   name: string;
   startDate: string;
   endDate: string;

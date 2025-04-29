@@ -68,7 +68,7 @@ export function StudentCreateFormGuardianStep({ form, isEdit, studentTemplateQue
                 firstName: "",
                 lastName: "",
                 phoneNumber: "",
-                dateOfBirth: "",
+                dateOfBirth: new Date(),
                 email: "",
                 residentialCountryId: "",
                 residentialStateId: "",

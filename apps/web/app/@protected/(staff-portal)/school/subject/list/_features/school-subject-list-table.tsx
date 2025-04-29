@@ -79,7 +79,7 @@ export function SchoolSubjectListTable({}: Props) {
   );
 
   const { authUserIds } = useAuthUser();
-  const subjectListQueryResult = useGetSubjectListQuery({ params: { tenantId: authUserIds?.tenantId } });
+  const subjectListQueryResult = useGetSubjectListQuery(React.useMemo(() => ({ params: { tenantId: authUserIds?.tenantId } }), [authUserIds?.tenantId]));
 
   return (
     <>
