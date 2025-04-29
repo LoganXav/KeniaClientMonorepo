@@ -105,7 +105,6 @@ export const StudentCreateFormSchema = z.object({
         required_error: "Date of birth is required",
         invalid_type_error: "Invalid date format",
       }),
-
       email: z
         .string({
           required_error: "Email is required",
