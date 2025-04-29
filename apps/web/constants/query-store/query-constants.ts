@@ -1,5 +1,6 @@
 export const QueryTagEnums = {
   STAFF: "staff",
+
   USER: "user",
   TENANT: "tenant",
   STUDENT: "student",
@@ -8,5 +9,6 @@ export const QueryTagEnums = {
   CLASS_DIVISION: "class-division",
   CALENDAR: "calendar",
   TIMETABLE: "timetable",
+
   SUBJECT: "subject",
 };

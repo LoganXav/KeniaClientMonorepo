@@ -6,7 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const BASE_URL = "subject";
 
-export const useGetSubjectListQuery = ({ params }: { params?: Record<string, any> }) => {
+export const useGetSubjectListQuery = ({ params }: { params?: { tenantId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.SUBJECT, params?.tenantId],
     queryFn: async () => {
@@ -70,7 +70,7 @@ export const useSubjectUpdateMutation = ({ path, params }: { path?: { subjectId?
 
 export const useGetSubjectTemplateQuery = ({ params }: { params: { tenantId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.SUBJECT, params?.tenantId],
+    queryKey: [],
     queryFn: async () => {
       return await getRequest<SubjectTemplateOptions>({
         endpoint: `${BASE_URL}/template`,

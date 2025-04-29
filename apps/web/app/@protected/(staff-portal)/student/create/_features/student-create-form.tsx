@@ -45,6 +45,7 @@ export function StudentCreateForm({ studentId }: Props) {
         payload: {
           ...values,
           tenantId: authUserIds?.tenantId,
+          dateOfBirth: new Date(values.dateOfBirth),
           residentialCountryId: Number(values.residentialCountryId),
           residentialStateId: Number(values.residentialStateId),
           residentialLgaId: Number(values.residentialLgaId),
@@ -53,6 +54,7 @@ export function StudentCreateForm({ studentId }: Props) {
           classDivisionId: Number(values.classDivisionId),
           guardians: values.guardians.map((guardian) => ({
             ...guardian,
+            dateOfBirth: new Date(guardian.dateOfBirth),
             residentialCountryId: Number(guardian.residentialCountryId),
             residentialStateId: Number(guardian.residentialStateId),
             residentialLgaId: Number(guardian.residentialLgaId),
@@ -81,7 +83,7 @@ export function StudentCreateForm({ studentId }: Props) {
     lastName: "",
     gender: "",
     email: "",
-    dateOfBirth: "",
+    dateOfBirth: undefined,
     phoneNumber: "",
     bloodGroup: "",
     religion: "",
@@ -105,7 +107,7 @@ export function StudentCreateForm({ studentId }: Props) {
         residentialCountryId: "",
         residentialZipCode: "",
         gender: "",
-        dateOfBirth: "",
+        dateOfBirth: undefined,
         subjectIds: [],
       },
     ],

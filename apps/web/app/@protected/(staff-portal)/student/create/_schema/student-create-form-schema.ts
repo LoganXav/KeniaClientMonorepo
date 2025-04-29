@@ -39,13 +39,10 @@ export const StudentCreateFormSchema = z.object({
     invalid_type_error: "Religion must be a string",
   }),
 
-  dateOfBirth: z
-    .date({
-      required_error: "Date of birth is required",
-      invalid_type_error: "Invalid date format",
-    })
-    .transform((date) => date.toISOString()),
-
+  dateOfBirth: z.date({
+    required_error: "Date of birth is required",
+    invalid_type_error: "Invalid date format",
+  }),
   email: z
     .string({
       required_error: "Email is required",
@@ -104,12 +101,10 @@ export const StudentCreateFormSchema = z.object({
         invalid_type_error: "Gender must be a string",
       }),
 
-      dateOfBirth: z
-        .date({
-          required_error: "Date of birth is required",
-          invalid_type_error: "Invalid date format",
-        })
-        .transform((date) => date.toISOString()),
+      dateOfBirth: z.date({
+        required_error: "Date of birth is required",
+        invalid_type_error: "Invalid date format",
+      }),
 
       email: z
         .string({

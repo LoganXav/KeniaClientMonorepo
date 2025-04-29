@@ -8,7 +8,7 @@ const BASE_URL = "staff";
 
 export const useGetStaffListQuery = ({ params }: { params?: { tenantId?: number; jobTitle?: string } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.STAFF, params?.tenantId, params?.jobTitle],
+    queryKey: [QueryTagEnums.STAFF, params?.tenantId],
     queryFn: async () => {
       return await getRequest<StaffType[]>({
         endpoint: `${BASE_URL}/list`,
@@ -47,7 +47,7 @@ export const useStaffCreateMutation = ({ params }: { params?: { tenantId?: numbe
 
 export const useGetStaffTemplateQuery = ({ params }: { params: { tenantId?: number; codeValue?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.STAFF, params?.tenantId, params?.codeValue],
+    queryKey: [],
     queryFn: async () => {
       return await getRequest<StaffTemplateOptions>({
         endpoint: `${BASE_URL}/template`,

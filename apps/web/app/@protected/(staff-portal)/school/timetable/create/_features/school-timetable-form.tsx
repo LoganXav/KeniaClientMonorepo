@@ -6,9 +6,9 @@ import { SchoolTimetableFormSchema } from "../_schema/school-timetable-form-sche
 import { SchoolTimetableFormSchemaType, SchoolTimetableTemplateOptions } from "../_types/school-timetable-form-types";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import useDataRef from "@/hooks/use-data-ref";
-import { useTimetableMutation, useGetTimetableQuery, useGetTimetableTemplateQuery, useGetSingleTimetableQuery } from "@/apis/core-timetable-api/timetable";
+import { useTimetableMutation, useGetTimetableTemplateQuery, useGetSingleTimetableQuery } from "@/apis/core-timetable-api/timetable";
 import React from "react";
-import { Form, FormField, FormItem, FormControl, Input, toast, Card, CardTitle, Button, Typography, DatePicker, SelectItem, SelectContent, SelectValue, SelectTrigger, Select, FormMessage, Checkbox, FormLabel, TimePicker } from "@repo/ui";
+import { Form, FormField, FormItem, FormControl, toast, Card, CardTitle, Button, SelectItem, SelectContent, SelectValue, SelectTrigger, Select, FormMessage, Checkbox, FormLabel, TimePicker } from "@repo/ui";
 import { LoadingContent } from "@/components/loading-content";
 import { CircleMinus, CirclePlus, TimerIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -25,8 +25,8 @@ export default function SchoolTimetableForm() {
 
     // Filter periods to include only the necessary fields
     const filteredPeriods = values.periods.map((period) => {
-      period.startTime = period.startTime ? new Date(period.startTime).toISOString() : undefined;
-      period.endTime = period.endTime ? new Date(period.endTime).toISOString() : undefined;
+      period.startTime = period.startTime ? new Date(period.startTime) : undefined;
+      period.endTime = period.endTime ? new Date(period.endTime) : undefined;
 
       if (period.isBreak) {
         // If it's a break, remove subjectId
