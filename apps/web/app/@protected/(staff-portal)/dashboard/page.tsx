@@ -1,3 +1,4 @@
+import React from "react";
 import { DashboardEarnings } from "./_features/dashboard-earnings";
 import { DashboardAttendance } from "./_features/dashboard-attendance";
 import { DashboardQuickActions } from "./_features/dasboard-quick-actions";
@@ -15,7 +16,6 @@ export default function DashboardPage() {
 
       <div className="space-y-4">
         <DashboardAgendaAndNoticeBoard />
-
         <DashboardRecentActivity />
       </div>
     </div>
