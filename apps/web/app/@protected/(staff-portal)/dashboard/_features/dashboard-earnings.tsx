@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, SelectItem, SelectContent, SelectValue, SelectTrigger, Select, Typography } from "@repo/ui";
 
 export function DashboardEarnings() {
