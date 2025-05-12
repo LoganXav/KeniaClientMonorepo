@@ -1,16 +1,16 @@
 "use client";
 
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, SearchInput, Sheet, SheetContent, SheetTrigger, Tabs, TabsContent, TabsList, TabsTrigger, DialogTitle } from "@repo/ui";
-import ProtectedSidebar from "./sidebar";
-import { ThemeToggler } from "@/components/theme-tooggler";
-import { Bell, CircleAlert, LoaderCircle, Menu, UserCircle, X } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { clearAuthUserAction } from "@/helpers/server/auth-user-action";
-import { RouteEnums } from "@/constants/router/route-constants";
-import Link from "next/link";
 import React from "react";
+import Link from "next/link";
+import ProtectedSidebar from "./sidebar";
+import { useRouter } from "next/navigation";
 import { useAuthUser } from "@/hooks/use-auth-user";
+import { ThemeToggler } from "@/components/theme-tooggler";
 import { useGetAuthUserQuery } from "@/apis/core-user-api/user";
+import { RouteEnums } from "@/constants/router/route-constants";
+import { clearAuthUserAction } from "@/helpers/server/auth-user-action";
+import { Bell, CircleAlert, LoaderCircle, Menu, UserCircle, X } from "lucide-react";
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, SearchInput, Sheet, SheetContent, SheetTrigger, Tabs, TabsContent, TabsList, TabsTrigger, DialogTitle } from "@repo/ui";
 
 export default function ProtectedNavbar() {
   const router = useRouter();
