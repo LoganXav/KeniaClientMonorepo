@@ -30,12 +30,10 @@ export const SchoolProfileFormPersonalSchema = z.object({
     .min(10, "Phone number must be at least 10 digits")
     .max(15, "Phone number cannot exceed 15 digits"),
 
-  dateOfBirth: z
-    .date({
-      required_error: "Date of birth is required",
-      invalid_type_error: "Invalid date format",
-    })
-    .transform((date) => date.toISOString()),
+  dateOfBirth: z.date({
+    required_error: "Date of birth is required",
+    invalid_type_error: "Invalid date format",
+  }),
 });
 
 export const SchoolProfileFormResidentialSchema = z.object({
@@ -86,13 +84,10 @@ export const SchoolProfileFormSchoolSchema = z.object({
     .min(10, "Contact phone must be at least 10 digits")
     .max(15, "Contact phone cannot exceed 15 digits"),
 
-  establishedDate: z
-    .date({
-      required_error: "Established date is required",
-      invalid_type_error: "Invalid date format",
-    })
-    .transform((date) => date.toISOString()),
-
+  establishedDate: z.date({
+    required_error: "Established date is required",
+    invalid_type_error: "Invalid date format",
+  }),
   logoUrl: z
     .string({
       invalid_type_error: "School's logo URL must be a string",

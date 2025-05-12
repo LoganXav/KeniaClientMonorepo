@@ -49,7 +49,7 @@ function SchoolProfileOnboardingForm({}: Props) {
     phoneNumber: "",
     gender: "",
     email: "",
-    dateOfBirth: "",
+    dateOfBirth: undefined,
 
     residentialAddress: "",
     residentialLgaId: "",
@@ -61,7 +61,7 @@ function SchoolProfileOnboardingForm({}: Props) {
     registrationNo: "",
     contactEmail: "",
     contactPhone: "",
-    establishedDate: "",
+    establishedDate: undefined,
     logoUrl: "",
     logoFile: undefined,
     address: "",
@@ -161,7 +161,7 @@ function SchoolProfileOnboardingForm({}: Props) {
       case 0:
         onboardingPersonalStep(
           {
-            payload: { ...values, userId: authUser?.id },
+            payload: { ...values, userId: authUser?.id, dateOfBirth: new Date(values.dateOfBirth) },
           },
           {
             onSuccess: (result) => {
@@ -193,7 +193,7 @@ function SchoolProfileOnboardingForm({}: Props) {
       case 2:
         onboardingSchoolStep(
           {
-            payload: { ...values, userId: authUser?.id, postalCode: String(values.postalCode), zipCode: Number(values.zipCode), stateId: Number(values.stateId), lgaId: Number(values.lgaId), countryId: Number(values.countryId), logoUrl: "" },
+            payload: { ...values, userId: authUser?.id, postalCode: String(values.postalCode), zipCode: Number(values.zipCode), stateId: Number(values.stateId), lgaId: Number(values.lgaId), countryId: Number(values.countryId), logoUrl: "", establishedDate: new Date(values.establishedDate) },
           },
           {
             onSuccess: (result) => {

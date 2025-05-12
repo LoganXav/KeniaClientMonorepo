@@ -139,8 +139,6 @@ apiConfig.interceptors.response.use(
       }
     }
 
-    console.log();
-
     return Promise.reject(
       error.response
         ? {
