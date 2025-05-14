@@ -2,65 +2,54 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { RouteEnums } from "./constants/router/route-constants";
 import { getAuthUserAction } from "./helpers/server/auth-user-action";
+import { routePermissionsMap } from "./constants/permissions/permission-constants";
 
 // Public routes
 const publicRoutes = [RouteEnums.SIGNIN, RouteEnums.SIGNUP, RouteEnums.VERIFY, RouteEnums.RESET_PASSWORD, RouteEnums.CHANGE_PASSWORD, RouteEnums.LOBBY, RouteEnums.HOME];
 
-// Protected routes
-const protectedRoutes = [
-  RouteEnums.DASHBOARD,
-  RouteEnums.STAFF,
-  RouteEnums.STAFF_CREATE,
-  RouteEnums.STAFF_LIST,
-  RouteEnums.STUDENT,
-  RouteEnums.STUDENT_CREATE,
-  RouteEnums.STUDENT_LIST,
-  RouteEnums.SCHOOL,
-  RouteEnums.SCHOOL_PROFILE,
-  RouteEnums.SCHOOL_CALENDAR,
-  RouteEnums.SCHOOL_CALENDAR_CREATE,
-  RouteEnums.SCHOOL_TIMETABLE,
-  RouteEnums.SCHOOL_TIMETABLE_CREATE,
-  RouteEnums.SCHOOL_SUBJECT_LIST,
-  RouteEnums.SCHOOL_SUBJECT_CREATE,
-  RouteEnums.CLASS,
-  RouteEnums.CLASS_LIST,
-  RouteEnums.CLASS_DIVISION,
-  RouteEnums.CLASS_DIVISION_LIST,
-  RouteEnums.CLASS_DIVISION_CREATE,
-  RouteEnums.SUBJECT_LIST,
-  RouteEnums.SUBJECT_CREATE,
-];
+// Protected routes (prefix-based matching)
+const protectedRoutes = [RouteEnums.DASHBOARD, RouteEnums.STAFF, RouteEnums.STUDENT, RouteEnums.SCHOOL, RouteEnums.CLASS, RouteEnums.SUBJECT_LIST];
+
+// Helper to check if path starts with any protected route
+function isProtectedRoute(pathname: string) {
+  return protectedRoutes.some((route) => pathname.startsWith(route));
+}
+
+function isPublicRoute(pathname: string) {
+  return publicRoutes.includes(pathname as any);
+}
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const authUser = await getAuthUserAction();
-
   const isAuthenticated = !!authUser;
 
-  // If user is authenticated and tries to access public routes
-  if (isAuthenticated && publicRoutes.includes(pathname as any)) {
+  // Redirect authenticated users away from public routes
+  if (isAuthenticated && isPublicRoute(pathname)) {
     return NextResponse.redirect(new URL(RouteEnums.DASHBOARD, request.url));
   }
 
-  // If user is not authenticated and tries to access protected routes
-  if (!isAuthenticated && protectedRoutes.includes(pathname as any)) {
+  // Redirect unauthenticated users away from protected routes
+  if (!isAuthenticated && isProtectedRoute(pathname)) {
     return NextResponse.redirect(new URL(RouteEnums.LOBBY, request.url));
+  }
+
+  // Permission-based route protection
+  const routeEntry = Object.entries(routePermissionsMap).find(([route]) => pathname.startsWith(route));
+  if (routeEntry) {
+    const requiredPermissions = routeEntry[1];
+    const userPermissions = authUser?.data?.staff?.role?.permissions || [];
+
+    const hasPermission = requiredPermissions.every((perm) => userPermissions.some((p: { name: string }) => p.name === perm));
+
+    if (!hasPermission) {
+      return NextResponse.redirect(new URL(RouteEnums.DASHBOARD, request.url));
+    }
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all routes except:
-     * 1. /api (API routes)
-     * 2. /_next (Next.js internals)
-     * 3. /_static (inside /public)
-     * 4. /_vercel (Vercel internals)
-     * 5. /favicon.ico, /sitemap.xml (static files)
-     */
-    "/((?!api|_next|_static|_vercel|favicon.ico|sitemap.xml).*)",
-  ],
+  matcher: ["/((?!api|_next|_static|_vercel|favicon.ico|sitemap.xml).*)"],
 };

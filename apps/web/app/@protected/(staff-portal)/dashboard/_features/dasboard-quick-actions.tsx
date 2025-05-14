@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { Button, Card, Typography } from "@repo/ui";
+import Image from "next/image";
 
 export function DashboardQuickActions() {
   return (
