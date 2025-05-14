@@ -24,6 +24,7 @@ export type AuthUserType = {
   phoneNumber: string;
   tenantId: number;
   userType: "STAFF" | "STUDENT";
+  staff: StaffType;
 };
 
 export interface SchoolType {
@@ -114,7 +115,7 @@ export interface RoleType {
   id: number;
   name: string;
   rank: number;
-  permissions: PermissionType;
+  permissions: PermissionType[];
   staff: StaffType[];
   tenantId: number;
   tenant: SchoolType;
@@ -199,4 +200,10 @@ export interface PeriodType {
   breakType: "SHORTBREAK" | "LONGBREAK" | null;
   timetableId: number;
   timetable: TimetableType;
+}
+
+export interface PermissionType {
+  id: number;
+  name: string;
+  tenantId: number;
 }

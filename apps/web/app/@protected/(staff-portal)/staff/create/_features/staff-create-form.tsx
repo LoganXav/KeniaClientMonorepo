@@ -69,7 +69,6 @@ export function StaffCreateForm({ staffId }: Props) {
 
   const defaultValues = {
     id: "",
-    roleId: 1,
     firstName: "",
     lastName: "",
     phoneNumber: "",

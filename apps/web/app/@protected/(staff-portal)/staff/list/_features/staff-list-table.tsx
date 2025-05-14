@@ -12,6 +12,8 @@ import { formatDateToString } from "@/lib/dates";
 import { LoadingContent } from "@/components/loading-content";
 import { CirclePlus, UserRound } from "lucide-react";
 import { useAuthUser } from "@/hooks/use-auth-user";
+import { PermissionRestrictor } from "@/components/permission-restrictor";
+import { PERMISSIONS } from "@/constants/permissions/permission-constants";
 
 type Props = {};
 
@@ -101,11 +103,13 @@ export function StaffListTable({}: Props) {
               ))}
             </SelectContent>
           </Select>
-          <Link className="" href={RouteEnums.STAFF_CREATE}>
-            <Button className="w-full">
-              Employ Staff <CirclePlus size={18} strokeWidth={1} />
-            </Button>
-          </Link>
+          <PermissionRestrictor requiredPermissions={[PERMISSIONS.STAFF.CREATE]}>
+            <Link className="" href={RouteEnums.STAFF_CREATE}>
+              <Button className="w-full">
+                Employ Staff <CirclePlus size={18} strokeWidth={1} />
+              </Button>
+            </Link>
+          </PermissionRestrictor>
         </div>
       </div>
       <Card className="overflow-hidden">
