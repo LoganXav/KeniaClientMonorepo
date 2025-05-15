@@ -132,18 +132,25 @@ export function StaffCreateForm({ staffId }: Props) {
     }
   }, [isEdit, staff, dataRef]);
 
-  const residentialStateId = form.watch("residentialStateId");
+  const residentialStateId = Number(form.watch("residentialStateId"));
+
   const staffTemplateQuery = useGetStaffTemplateQuery(
     React.useMemo(
       () => ({
         params: {
-          codeValue: Number(residentialStateId),
+          codeValue: residentialStateId,
           tenantId: authUserIds?.tenantId,
         },
       }),
       [residentialStateId, authUserIds?.tenantId]
     )
   );
+
+  React.useEffect(() => {
+    if (residentialStateId) {
+      staffTemplateQuery.refetch();
+    }
+  }, [residentialStateId]);
 
   const stepProps = {
     form,
