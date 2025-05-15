@@ -1,5 +1,6 @@
 export const QueryTagEnums = {
   STAFF: "staff",
+  STAFF_TEMPLATE: "staff-template",
 
   USER: "user",
   TENANT: "tenant",
