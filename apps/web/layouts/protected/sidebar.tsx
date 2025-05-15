@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { usePermissions } from "@/providers/permission-provider";
+// import { PERMISSIONS } from "@/constants/permissions/permission-constants";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Typography } from "@repo/ui";
 import { Home, Users, User, Building2, Settings, Sliders, FileText, Shield, Building } from "lucide-react";
 
@@ -67,7 +68,12 @@ export default function ProtectedSidebar() {
           path: "/admin/settings",
           icon: Settings,
           subRoutes: [
-            { name: "General Settings", path: "/admin/settings/general", icon: Sliders },
+            {
+              name: "General Settings",
+              path: "/admin/settings/general",
+              icon: Sliders,
+              permissions: ["PERMISSIONS.SETTINGS_GENERAL"], // Test
+            },
             { name: "System Logs", path: "/admin/settings/logs", icon: FileText },
             { name: "Permissions", path: "/admin/settings/permissions", icon: Shield },
           ],

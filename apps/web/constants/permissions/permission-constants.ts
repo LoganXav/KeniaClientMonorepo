@@ -40,8 +40,6 @@ export const PERMISSIONS = {
 } as const;
 
 export const routePermissionsMap = {
-  [RouteEnums.DASHBOARD]: [PERMISSIONS.STAFF.READ],
-
   [RouteEnums.STAFF]: [PERMISSIONS.STAFF.READ],
   [RouteEnums.STAFF_LIST]: [PERMISSIONS.STAFF.READ],
   [RouteEnums.STAFF_CREATE]: [PERMISSIONS.STAFF.CREATE],
@@ -61,4 +59,7 @@ export const routePermissionsMap = {
 
   [RouteEnums.SCHOOL_TIMETABLE]: [PERMISSIONS.TIMETABLE.READ],
   [RouteEnums.SCHOOL_TIMETABLE_CREATE]: [PERMISSIONS.TIMETABLE.CREATE],
+
+  // Test
+  [RouteEnums.SETTINGS_GENERAL]: ["PERMISSIONS.SETTINGS_GENERAL"],
 };

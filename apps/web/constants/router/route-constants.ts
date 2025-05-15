@@ -44,4 +44,7 @@ export const RouteEnums = {
   // SUBJECT
   SUBJECT_LIST: "/subject/list",
   SUBJECT_CREATE: "/subject/create",
+
+  // SETTINGS
+  SETTINGS_GENERAL: "/admin/settings/general",
 };

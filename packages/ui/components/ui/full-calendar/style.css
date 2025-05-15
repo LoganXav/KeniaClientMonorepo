@@ -1,4 +1,3 @@
-/* Base styles for the toolbar */
 .fc-toolbar {
   display: grid;
   justify-content: space-between;
@@ -8,6 +7,74 @@
 
 .fc-toolbar-chunk {
   font-size: 15px;
+}
+
+.fc {
+  background-color: hsl(var(--card));
+  color: hsl(var(--foreground));
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border: 1px solid hsl(var(--border));
+}
+
+.fc-button-primary {
+  background-color: hsl(var(--primary)) !important;
+  border-color: hsl(var(--primary)) !important;
+  color: hsl(var(--primary-foreground)) !important;
+  outline: none !important;
+}
+
+.fc-button-primary:hover {
+  background-color: hsl(var(--primary) / 0.9) !important;
+  border-color: hsl(var(--primary) / 0.9) !important;
+}
+
+.fc-event {
+  background-color: hsl(var(--background));
+  border-color: hsl(var(--primary));
+  color: hsl(var(--foreground)) !important;
+}
+
+.fc-daygrid-event {
+  padding: 5px;
+  border: none;
+}
+
+.fc-toolbar-title {
+  color: hsl(var(--foreground));
+  font-weight: 600;
+  font-size: 20px !important;
+}
+
+.fc-col-header-cell {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+.fc-day-today {
+  background-color: hsl(var(--accent)) !important;
+}
+
+.fc-daygrid-day {
+  background-color: hsl(var(--background));
+}
+
+.fc-daygrid-day-frame {
+  background-color: hsl(var(--card));
+}
+
+/* Event hover effects */
+.fc-event:hover {
+  background-color: hsl(var(--primary) / 0.9);
+}
+
+/* Button disabled state */
+.fc-button-primary:disabled {
+  background-color: hsl(var(--muted)) !important;
+  border-color: hsl(var(--muted)) !important;
+  color: hsl(var(--muted-foreground)) !important;
 }
 
 /* Styles for smaller screens */
@@ -36,4 +103,35 @@
   .fc-button {
     padding: 8px;
   }
+}
+
+/* Multimonth view styles */
+.fc-multimonth-title {
+  background-color: hsl(var(--card)) !important;
+  color: hsl(var(--foreground)) !important;
+}
+
+.fc-multimonth-header {
+  background-color: hsl(var(--card)) !important;
+  border-color: hsl(var(--border)) !important;
+}
+
+/* Stronger selector for the main scrollable grid area */
+.fc .fc-scrollgrid,
+.fc .fc-scrollgrid-sync-table {
+  border: none !important;
+}
+
+/* For the entire multimonth grid area */
+.fc-multimonth {
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: var(--radius);
+  background: hsl(var(--card));
+}
+
+/* If that doesn't work, try the view container */
+.fc-multimonth-view {
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: var(--radius);
+  background: hsl(var(--card));
 }
