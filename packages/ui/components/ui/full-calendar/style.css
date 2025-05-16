@@ -32,13 +32,21 @@
 }
 
 .fc-event {
-  background-color: hsl(var(--background));
-  border-color: hsl(var(--primary));
+  background-color: hsl(var(--background)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+}
+
+/* Target the event text specifically */
+.fc-event .fc-event-title,
+.fc-event .fc-event-main,
+.fc-event .fc-event-main-frame,
+.fc-event-main-frame .fc-event-title-container,
+.fc-event-main-frame .fc-event-title {
   color: hsl(var(--foreground)) !important;
 }
 
 .fc-daygrid-event {
-  padding: 5px;
+  padding: 2px 5px;
   border: none;
 }
 
@@ -53,7 +61,12 @@
   color: hsl(var(--foreground));
 }
 
-.fc-day-today {
+/* Current day highlighting */
+.fc .fc-day-today {
+  background-color: hsl(var(--accent)) !important;
+}
+
+.fc .fc-day-today .fc-daygrid-day-frame {
   background-color: hsl(var(--accent)) !important;
 }
 
@@ -67,7 +80,7 @@
 
 /* Event hover effects */
 .fc-event:hover {
-  background-color: hsl(var(--primary) / 0.9);
+  background-color: none !important;
 }
 
 /* Button disabled state */
@@ -82,6 +95,7 @@
   .fc-toolbar {
     flex-wrap: wrap;
     align-items: center;
+    gap: 10px;
   }
 
   .fc-toolbar-chunk {
@@ -134,4 +148,100 @@
   border: 1px solid hsl(var(--border)) !important;
   border-radius: var(--radius);
   background: hsl(var(--card));
+}
+
+/* Style the "more events" trigger link */
+.fc-daygrid-more-link {
+  width: 100% !important;
+  background-color: hsl(var(--background)) !important;
+  color: hsl(var(--foreground)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  padding: 2px 5px !important;
+  /* font-size: 15px; */
+}
+
+/* Style the popup container */
+.fc-more-popover {
+  background-color: hsl(var(--card)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: var(--radius);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Style the popup header */
+.fc-more-popover .fc-popover-header {
+  background-color: hsl(var(--background)) !important;
+  padding: 8px;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+/* Style the popup content */
+.fc-more-popover .fc-popover-body {
+  padding: 8px;
+}
+
+/* Style events inside the popup */
+.fc-more-popover .fc-event {
+  margin: 2px 0;
+  padding: 4px;
+}
+
+/* Toolbar button styles */
+.fc .fc-toolbar .fc-button {
+  background-color: hsl(var(--card)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  color: hsl(var(--foreground)) !important;
+  padding: 6px 12px !important;
+  font-size: 14px !important;
+  border-radius: var(--radius) !important;
+  transition: all 0.2s ease !important;
+  margin: 0 4px !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Add gap between button groups */
+.fc .fc-toolbar-chunk {
+  display: flex !important;
+  gap: 8px !important;
+}
+
+.fc .fc-toolbar .fc-button:hover {
+  background-color: hsl(var(--accent)) !important;
+  border-color: hsl(var(--accent)) !important;
+  color: hsl(var(--accent-foreground)) !important;
+  outline: none !important;
+  box-shadow: none !important;
+  transition: all 0.2s ease !important;
+}
+
+.fc .fc-toolbar .fc-button:active,
+.fc .fc-toolbar .fc-button.fc-button-active {
+  background-color: rgb(0 0 0 / 0.05) !important;
+  color: hsl(var(--accent-foreground)) !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border: 1px solid hsl(var(--foreground)) !important;
+}
+
+/* Month navigation buttons (prev/next) */
+.fc .fc-toolbar .fc-prev-button,
+.fc .fc-toolbar .fc-next-button {
+  padding: 6px 10px !important;
+}
+
+/* View toggle buttons (month/year) */
+.fc .fc-toolbar .fc-dayGridMonth-button,
+.fc .fc-toolbar .fc-multiMonthYear-button {
+  padding: 6px 12px !important;
+}
+
+/* Disabled state */
+.fc .fc-toolbar .fc-button:disabled {
+  background-color: hsl(var(--muted)) !important;
+  border-color: hsl(var(--muted)) !important;
+  color: hsl(var(--muted-foreground)) !important;
+  cursor: not-allowed !important;
+  outline: none !important;
+  box-shadow: none !important;
 }

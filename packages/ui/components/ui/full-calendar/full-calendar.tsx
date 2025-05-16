@@ -32,6 +32,8 @@ const CalendarGrid = ({ events = [], views = [], ...props }: CalendarGridProps) 
       slotMinTime="07:00"
       slotMaxTime="17:00"
       eventColor=""
+      nowIndicator={true}
+      dayMaxEvents={true}
       headerToolbar={{
         left: "prev,next",
         center: "title",
