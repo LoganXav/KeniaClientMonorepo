@@ -63,11 +63,11 @@
 
 /* Current day highlighting */
 .fc .fc-day-today {
-  background-color: hsl(var(--accent)) !important;
+  background-color: hsl(var(--background)) !important;
 }
 
 .fc .fc-day-today .fc-daygrid-day-frame {
-  background-color: hsl(var(--accent)) !important;
+  background-color: hsl(var(--background)) !important;
 }
 
 .fc-daygrid-day {
