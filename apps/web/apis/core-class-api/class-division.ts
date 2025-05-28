@@ -3,7 +3,6 @@ import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { ClassDivisionType } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { log } from "console";
 
 const BASE_URL = "classdivision";
 

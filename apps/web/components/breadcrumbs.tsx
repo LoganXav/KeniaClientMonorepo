@@ -2,7 +2,6 @@
 
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Typography } from "@repo/ui";
 import { ChevronLeft } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -12,7 +11,7 @@ export function PageBreadcrumbs({ pages }: Props) {
   const router = useRouter();
   return (
     <div className="flex items-center gap-4">
-      <Button variant={"outline"} className="border-border bg-card" onClick={() => router.back()}>
+      <Button variant={"outline"} className="border-border bg-card" onClick={() => (pages[0]?.path ? router.push(pages[0]?.path) : null)}>
         <ChevronLeft strokeWidth={1} />
       </Button>
       <div>

@@ -1,8 +1,8 @@
+import React from "react";
+import Link from "next/link";
+import { Card, Typography } from "@repo/ui";
 import { PageBreadcrumbs } from "@/components/breadcrumbs";
 import { RouteEnums } from "@/constants/router/route-constants";
-import { Card, Typography } from "@repo/ui";
-import Link from "next/link";
-import React from "react";
 
 type Props = {};
 
@@ -22,7 +22,7 @@ function SchoolMenu({}: Props) {
         {[
           {
             label: "Profile",
-            desc: "Manage school profile and settings.",
+            desc: "Manage school profile and general inform.",
             url: RouteEnums.SCHOOL_PROFILE,
           },
           {
@@ -31,9 +31,14 @@ function SchoolMenu({}: Props) {
             url: RouteEnums.SCHOOL_CALENDAR,
           },
           {
-            label: "Timetable",
+            label: "Timetables",
             desc: "Manage school timetable and class schedules.",
             url: RouteEnums.SCHOOL_TIMETABLE,
+          },
+          {
+            label: "Grading Structure",
+            desc: "Manage school grading system and grade scales.",
+            url: RouteEnums.SCHOOL_GRADING_LIST,
           },
           {
             label: "Subjects",

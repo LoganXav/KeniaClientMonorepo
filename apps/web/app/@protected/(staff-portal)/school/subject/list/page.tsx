@@ -5,7 +5,7 @@ import { PageBreadcrumbs } from "@/components/breadcrumbs";
 
 type Props = {};
 
-function SubjectListPage({}: Props) {
+function SchoolSubjectListPage({}: Props) {
   const pageBreadcrumbs = [
     { title: "School", path: RouteEnums.SCHOOL },
     { title: "Subject List", path: RouteEnums.SUBJECT_LIST },
@@ -19,4 +19,4 @@ function SubjectListPage({}: Props) {
   );
 }
 
-export default SubjectListPage;
+export default SchoolSubjectListPage;

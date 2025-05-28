@@ -31,6 +31,8 @@ export const RouteEnums = {
   SCHOOL_TIMETABLE_CREATE: "/school/timetable/create",
   SCHOOL_SUBJECT_LIST: "/school/subject/list",
   SCHOOL_SUBJECT_CREATE: "/school/subject/create",
+  SCHOOL_GRADING_LIST: "/school/grading/list",
+  SCHOOL_GRADING_CREATE: "/school/grading/create",
 
   // CLASS
   CLASS: "/class",

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { DataTable } from "@/components/data-table";
-import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
+import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@repo/ui";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { RouteEnums } from "@/constants/router/route-constants";
 import Link from "next/link";

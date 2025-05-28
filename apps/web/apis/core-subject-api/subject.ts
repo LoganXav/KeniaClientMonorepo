@@ -1,8 +1,8 @@
-import { SubjectCreateFormSchemaType, SubjectTemplateOptions } from "@/app/@protected/(staff-portal)/school/subject/list/_types/school-subject-create-types";
+import { SubjectType } from "@/types";
 import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
-import { SubjectType } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { SubjectCreateFormSchemaType, SubjectTemplateOptions } from "@/app/@protected/(staff-portal)/school/subject/list/_types/school-subject-create-types";
 
 const BASE_URL = "subject";
 
