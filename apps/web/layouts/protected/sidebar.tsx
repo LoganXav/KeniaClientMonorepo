@@ -6,7 +6,7 @@ import { RouteEnums } from "@/constants/router/route-constants";
 import { usePermissions } from "@/providers/permission-provider";
 // import { PERMISSIONS } from "@/constants/permissions/permission-constants";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Typography } from "@repo/ui";
-import { Home, Users, User, Building2, Settings, Sliders, FileText, Shield, Building } from "lucide-react";
+import { Home, Users, User, Building2, Settings, Sliders, FileText, Shield, Building, BookType, Workflow } from "lucide-react";
 
 export default function ProtectedSidebar() {
   const pathname = usePathname();
@@ -21,34 +21,48 @@ export default function ProtectedSidebar() {
           path: RouteEnums.DASHBOARD,
           icon: Home,
         },
+        {
+          name: "My Workspace",
+          path: RouteEnums.WORKSPACE,
+          icon: Workflow,
+        },
+        {
+          name: "People",
+          path: "#",
+          icon: Users,
+          subRoutes: [
+            {
+              name: "Staff",
+              path: RouteEnums.STAFF,
+              icon: Users,
+            },
+            {
+              name: "Student",
+              path: RouteEnums.STUDENT,
+              icon: User,
+            },
+          ],
+        },
+        {
+          name: "Academics",
+          path: "#",
+          icon: BookType,
+          subRoutes: [
+            {
+              name: "Class",
+              path: RouteEnums.CLASS,
+              icon: Building,
+            },
+            {
+              name: "Subject",
+              path: RouteEnums.SUBJECT_LIST,
+              icon: BookType,
+            },
+          ],
+        },
       ],
     },
 
-    {
-      header: "People",
-      routes: [
-        {
-          name: "Staff",
-          path: RouteEnums.STAFF,
-          icon: Users,
-        },
-        {
-          name: "Student",
-          path: RouteEnums.STUDENT,
-          icon: User,
-        },
-      ],
-    },
-    {
-      header: "Academics",
-      routes: [
-        {
-          name: "Class",
-          path: RouteEnums.CLASS,
-          icon: Building,
-        },
-      ],
-    },
     {
       header: "Management",
       routes: [
@@ -60,6 +74,7 @@ export default function ProtectedSidebar() {
         },
       ],
     },
+
     {
       header: "Settings",
       routes: [
@@ -72,10 +87,18 @@ export default function ProtectedSidebar() {
               name: "General Settings",
               path: "/admin/settings/general",
               icon: Sliders,
-              permissions: ["PERMISSIONS.SETTINGS_GENERAL"], // Test
+              permissions: ["PERMISSIONS.SETTINGS_GENERAL"],
             },
-            { name: "System Logs", path: "/admin/settings/logs", icon: FileText },
-            { name: "Permissions", path: "/admin/settings/permissions", icon: Shield },
+            {
+              name: "System Logs",
+              path: "/admin/settings/logs",
+              icon: FileText,
+            },
+            {
+              name: "Permissions",
+              path: "/admin/settings/permissions",
+              icon: Shield,
+            },
           ],
         },
       ],
@@ -84,7 +107,7 @@ export default function ProtectedSidebar() {
 
   const isActiveRoute = (path: string) => pathname.startsWith(path);
 
-  const isActiveSubRoute = (subRoutes: Record<string, any>[]) => subRoutes?.some((subRoute: Record<string, any>) => pathname === subRoute.path);
+  const isActiveSubRoute = (subRoutes: Record<string, any>[]) => subRoutes?.some((subRoute) => pathname.startsWith(subRoute.path));
 
   return (
     <nav className="w-[250px] px-2 pb-20 fixed overflow-scroll h-screen border-r border-border bg-card">

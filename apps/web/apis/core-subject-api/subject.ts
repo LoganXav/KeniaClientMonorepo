@@ -6,11 +6,25 @@ import { SubjectCreateFormSchemaType, SubjectTemplateOptions } from "@/app/@prot
 
 const BASE_URL = "subject";
 
-export const useGetSubjectListQuery = ({ params }: { params?: { tenantId?: number } }) => {
+export const useGetSingleSubjectQuery = ({ params }: { params?: { tenantId?: number; subjectId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.SUBJECT, params?.tenantId],
+    queryKey: [QueryTagEnums.SUBJECT, params?.tenantId, params?.subjectId],
     queryFn: async () => {
-      return await getRequest<Record<string, any>>({
+      return await getRequest<SubjectType>({
+        endpoint: `${BASE_URL}/info/${params?.subjectId}`,
+        config: { params },
+      });
+    },
+  });
+
+  return { data, isLoading, error, refetch };
+};
+
+export const useGetSubjectListQuery = ({ params }: { params?: { tenantId?: number; staffIds?: string } }) => {
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: [QueryTagEnums.SUBJECT, params?.tenantId, params?.staffIds],
+    queryFn: async () => {
+      return await getRequest<SubjectType[]>({
         endpoint: `${BASE_URL}/list`,
         config: { params },
       });

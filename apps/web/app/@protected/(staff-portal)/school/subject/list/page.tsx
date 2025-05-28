@@ -1,14 +1,14 @@
 import React from "react";
+import { PageBreadcrumbs } from "@/components/breadcrumbs";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { SchoolSubjectListTable } from "./_features/school-subject-list-table";
-import { PageBreadcrumbs } from "@/components/breadcrumbs";
 
 type Props = {};
 
 function SchoolSubjectListPage({}: Props) {
   const pageBreadcrumbs = [
     { title: "School", path: RouteEnums.SCHOOL },
-    { title: "Subject List", path: RouteEnums.SUBJECT_LIST },
+    { title: "Subject List", path: RouteEnums.SCHOOL_SUBJECT_LIST },
   ];
 
   return (

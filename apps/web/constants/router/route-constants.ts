@@ -12,6 +12,8 @@ export const RouteEnums = {
   // DASHBOARD
   DASHBOARD: "/dashboard",
 
+  WORKSPACE: "/workspace",
+
   // STAFF
   STAFF: "/staff",
   STAFF_CREATE: "/staff/create",
@@ -44,6 +46,7 @@ export const RouteEnums = {
   CLASS_DIVISION_CREATE: "/class/division/create",
 
   // SUBJECT
+  SUBJECT: "/subject",
   SUBJECT_LIST: "/subject/list",
   SUBJECT_CREATE: "/subject/create",
 

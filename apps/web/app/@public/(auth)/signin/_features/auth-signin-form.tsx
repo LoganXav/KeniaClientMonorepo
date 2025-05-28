@@ -1,13 +1,13 @@
 "use client";
 
-import { useSignInMutation } from "@/apis/core-authentication-api/authentication";
-import { RouteEnums } from "@/constants/router/route-constants";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input, PasswordInput, FormField, FormItem, Form, FormMessage, FormControl, toast } from "@repo/ui";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter, useSearchParams } from "next/navigation";
+import { RouteEnums } from "@/constants/router/route-constants";
+import { useSignInMutation } from "@/apis/core-authentication-api/authentication";
 import { AuthSignInSchema, AuthSignInSchemaType } from "../_validators/auth-signin-schema";
+import { Button, Input, PasswordInput, FormField, FormItem, Form, FormMessage, FormControl, toast } from "@repo/ui";
 
 export default function AuthSignInForm() {
   const { signIn, isPending, error } = useSignInMutation();
@@ -15,6 +15,10 @@ export default function AuthSignInForm() {
   const searchParams = useSearchParams();
 
   const userType = searchParams.get("userType")!;
+
+  if (!userType) {
+    router.push(RouteEnums.LOBBY);
+  }
 
   const handleSignIn = (values: AuthSignInSchemaType) => {
     signIn(
