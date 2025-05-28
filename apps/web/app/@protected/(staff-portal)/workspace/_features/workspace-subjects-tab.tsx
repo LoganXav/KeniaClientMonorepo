@@ -1,20 +1,18 @@
 "use client";
 
 import React from "react";
-import { DataTable } from "@/components/data-table";
-import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@repo/ui";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { RouteEnums } from "@/constants/router/route-constants";
 import Link from "next/link";
-import { ColumnDef } from "@tanstack/react-table";
-import { LoadingContent } from "@/components/loading-content";
 import { UserRound } from "lucide-react";
-import { useGetClassListQuery } from "@/apis/core-class-api/class";
+import { ColumnDef } from "@tanstack/react-table";
 import { useAuthUser } from "@/hooks/use-auth-user";
-type Props = {};
+import { DataTable } from "@/components/data-table";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { LoadingContent } from "@/components/loading-content";
+import { RouteEnums } from "@/constants/router/route-constants";
+import { useGetSubjectListQuery } from "@/apis/core-subject-api/subject";
+import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@repo/ui";
 
-export function ClassListTable({}: Props) {
-  const { authUserIds } = useAuthUser();
+export function WorkspaceSubjectsTab() {
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
       {
@@ -22,19 +20,15 @@ export function ClassListTable({}: Props) {
         accessorKey: "name",
       },
       {
-        header: "Class Teacher",
-        accessorKey: "classTeacher",
-        cell: ({ row }) => (
-          <p>
-            {row?.original?.classTeacher?.user?.lastName} {row?.original?.classTeacher?.user?.firstName}
-          </p>
-        ),
+        header: "Class",
+        accessorKey: "class",
+        cell: ({ row }) => <p>{row?.original?.class?.name}</p>,
       },
 
       {
         id: "actions",
         cell: ({ row }) => {
-          const classItem = row.original;
+          const subject = row?.original;
 
           return (
             <DropdownMenu>
@@ -47,7 +41,8 @@ export function ClassListTable({}: Props) {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <Link href={`${RouteEnums.CLASS}/${classItem.id}`}>
+
+                <Link href={`${RouteEnums.SUBJECT}/${subject?.id}`}>
                   <DropdownMenuItem className="flex justify-between">
                     View <UserRound className="ml-2" size={15} strokeWidth={1} />
                   </DropdownMenuItem>
@@ -61,13 +56,14 @@ export function ClassListTable({}: Props) {
     []
   );
 
-  const classListQueryResult = useGetClassListQuery({ params: { tenantId: authUserIds?.tenantId } });
+  const { authUserIds } = useAuthUser();
+  const subjectListQueryResult = useGetSubjectListQuery(React.useMemo(() => ({ params: { tenantId: authUserIds?.tenantId, staffIds: String(authUserIds?.id) } }), [authUserIds?.tenantId, authUserIds?.id]));
 
   return (
     <>
       <Card className="overflow-hidden mt-8">
-        <LoadingContent loading={classListQueryResult?.isLoading} error={classListQueryResult?.error} data={classListQueryResult.data} retry={classListQueryResult?.refetch}>
-          <DataTable data={classListQueryResult?.data?.data} columns={columns} />
+        <LoadingContent loading={subjectListQueryResult?.isLoading} error={subjectListQueryResult?.error} data={subjectListQueryResult.data} retry={subjectListQueryResult?.refetch}>
+          <DataTable data={subjectListQueryResult?.data?.data} columns={columns} />
         </LoadingContent>
       </Card>
     </>

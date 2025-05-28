@@ -207,3 +207,23 @@ export interface PermissionType {
   name: string;
   tenantId: number;
 }
+
+export interface SchoolGradingStructureType {
+  id: number;
+  name: string;
+  examWeight: number;
+  continuousAssessmentWeight: number;
+  updatedAt: string;
+  classes: ClassType[];
+  gradeBoundaries: [
+    {
+      grade: string;
+      id: number;
+      maximumScore: number;
+      minimumScore: number;
+      remark: string;
+      tenantGradingStructureId: number;
+      updatedAt: string;
+    },
+  ];
+}

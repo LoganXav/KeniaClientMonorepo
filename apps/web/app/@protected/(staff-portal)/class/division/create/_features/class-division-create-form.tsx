@@ -14,6 +14,7 @@ import useDataRef from "@/hooks/use-data-ref";
 import React from "react";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { useCreateClassDivisionMutation, useUpdateClassDivisionMutation } from "@/apis/core-class-api/class-division";
+
 type Props = {
   classDivisionId?: number;
 };

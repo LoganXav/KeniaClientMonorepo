@@ -12,6 +12,8 @@ export const RouteEnums = {
   // DASHBOARD
   DASHBOARD: "/dashboard",
 
+  WORKSPACE: "/workspace",
+
   // STAFF
   STAFF: "/staff",
   STAFF_CREATE: "/staff/create",
@@ -31,6 +33,8 @@ export const RouteEnums = {
   SCHOOL_TIMETABLE_CREATE: "/school/timetable/create",
   SCHOOL_SUBJECT_LIST: "/school/subject/list",
   SCHOOL_SUBJECT_CREATE: "/school/subject/create",
+  SCHOOL_GRADING_LIST: "/school/grading/list",
+  SCHOOL_GRADING_CREATE: "/school/grading/create",
 
   // CLASS
   CLASS: "/class",
@@ -42,6 +46,7 @@ export const RouteEnums = {
   CLASS_DIVISION_CREATE: "/class/division/create",
 
   // SUBJECT
+  SUBJECT: "/subject",
   SUBJECT_LIST: "/subject/list",
   SUBJECT_CREATE: "/subject/create",
 

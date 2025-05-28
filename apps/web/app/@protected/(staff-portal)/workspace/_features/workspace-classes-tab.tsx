@@ -1,19 +1,18 @@
 "use client";
 
-import React from "react";
 import { DataTable } from "@/components/data-table";
+import { LoadingContent } from "@/components/loading-content";
+import { useAuthUser } from "@/hooks/use-auth-user";
 import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@repo/ui";
+import { ColumnDef } from "@tanstack/react-table";
+import React from "react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { RouteEnums } from "@/constants/router/route-constants";
-import Link from "next/link";
-import { ColumnDef } from "@tanstack/react-table";
-import { LoadingContent } from "@/components/loading-content";
 import { UserRound } from "lucide-react";
+import Link from "next/link";
 import { useGetClassListQuery } from "@/apis/core-class-api/class";
-import { useAuthUser } from "@/hooks/use-auth-user";
-type Props = {};
 
-export function ClassListTable({}: Props) {
+export function WorkspaceClassessTab() {
   const { authUserIds } = useAuthUser();
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
@@ -61,7 +60,7 @@ export function ClassListTable({}: Props) {
     []
   );
 
-  const classListQueryResult = useGetClassListQuery({ params: { tenantId: authUserIds?.tenantId } });
+  const classListQueryResult = useGetClassListQuery({ params: { tenantId: authUserIds?.tenantId, classTeacherId: authUserIds?.id } });
 
   return (
     <>

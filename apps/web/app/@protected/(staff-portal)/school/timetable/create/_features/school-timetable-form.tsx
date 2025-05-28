@@ -1,18 +1,18 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import useDataRef from "@/hooks/use-data-ref";
+import { useAuthUser } from "@/hooks/use-auth-user";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoadingContent } from "@/components/loading-content";
+import { RouteEnums } from "@/constants/router/route-constants";
+import { CircleMinus, CirclePlus, TimerIcon } from "lucide-react";
 import { SchoolTimetableFormSchema } from "../_schema/school-timetable-form-schema";
 import { SchoolTimetableFormSchemaType, SchoolTimetableTemplateOptions } from "../_types/school-timetable-form-types";
-import { useAuthUser } from "@/hooks/use-auth-user";
-import useDataRef from "@/hooks/use-data-ref";
 import { useTimetableMutation, useGetTimetableTemplateQuery, useGetSingleTimetableQuery } from "@/apis/core-timetable-api/timetable";
-import React from "react";
 import { Form, FormField, FormItem, FormControl, toast, Card, CardTitle, Button, SelectItem, SelectContent, SelectValue, SelectTrigger, Select, FormMessage, Checkbox, FormLabel, TimePicker } from "@repo/ui";
-import { LoadingContent } from "@/components/loading-content";
-import { CircleMinus, CirclePlus, TimerIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { RouteEnums } from "@/constants/router/route-constants";
 
 export default function SchoolTimetableForm() {
   const router = useRouter();
