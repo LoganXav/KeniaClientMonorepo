@@ -11,7 +11,7 @@ import { LoadingContent } from "@/components/loading-content";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { SchoolGradingStructureCreateFormSchema } from "../_schema/school-grading-structure-schema";
 import { SchoolGradingStructureCreateFormSchemaType } from "../_types/school-grading-structure-form-types";
-import { useCreateSchoolGradingStructureMutation, useGetSchoolGradingStructureQuery, useGetSchoolGradingStructureTemplateQuery } from "@/apis/core-tenant-api/grading-structure";
+import { useCreateSchoolGradingStructureMutation, useGetSchoolGradingStructureQuery, useGetSchoolGradingStructureTemplateQuery } from "@/apis/core-tenant-api/tenant-grading-structure";
 import { Button, Form, FormControl, FormField, FormItem, FormMessage, Input, Label, MultiSelect, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, toast } from "@repo/ui";
 
 type Props = {
@@ -254,7 +254,7 @@ export function SchoolGradingStructureForm({ gradeStructureId }: Props) {
                         </FormItem>
                       )}
                     />
-                    <div className=" flex items-center space-x-4">
+                    <div className="flex items-center space-x-4">
                       <Button
                         variant="outline"
                         type="button"
