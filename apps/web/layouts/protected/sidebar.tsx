@@ -122,7 +122,7 @@ export default function ProtectedSidebar() {
 
           return (
             <div key={groupIndex}>
-              <Typography size="small" className="font-heading uppercase">
+              <Typography size="small" className="font-heading uppercase pb-2 pl-2">
                 {group.header}
               </Typography>
 
@@ -134,7 +134,7 @@ export default function ProtectedSidebar() {
                 return route.subRoutes ? (
                   <Accordion type="single" collapsible className="w-full" key={routeIndex}>
                     <AccordionItem className="border-0" value={`item-${groupIndex}-${routeIndex}`}>
-                      <AccordionTrigger className={`w-full px-4 py-2 rounded-sm mt-2 ${isActiveRoute(route.path) || isActiveSubRoute(route.subRoutes) ? "bg-black/5" : "hover:bg-accent"}`}>
+                      <AccordionTrigger className={`w-full px-4 py-3 rounded-sm ${isActiveRoute(route.path) || isActiveSubRoute(route.subRoutes) ? "bg-black/5" : "hover:bg-accent"}`}>
                         <div className="flex items-center gap-2">
                           {route.icon && <route.icon strokeWidth={1} size={16} />}
                           <Typography>{route.name}</Typography>
@@ -145,7 +145,7 @@ export default function ProtectedSidebar() {
                         .filter((subRoute) => (subRoute.permissions ? hasAllPermissions(subRoute.permissions) : true))
                         .map((subRoute, subRouteIndex) => (
                           <Link className="w-full" key={subRouteIndex} href={subRoute.path}>
-                            <AccordionContent className={`w-auto ml-2 px-4 py-2 border rounded-sm mt-2 ${isActiveRoute(subRoute.path) ? "bg-black/10 border-foreground" : "hover:bg-accent border-transparent"}`}>
+                            <AccordionContent className={`w-auto px-4 py-3 rounded-sm ${isActiveRoute(subRoute.path) ? "bg-black/10 border-foreground" : "hover:bg-accent"}`}>
                               <div className="flex items-center gap-2">
                                 {subRoute.icon && <subRoute.icon strokeWidth={1} size={16} />}
                                 <Typography>{subRoute.name}</Typography>
@@ -157,7 +157,7 @@ export default function ProtectedSidebar() {
                   </Accordion>
                 ) : (
                   <Link href={route.path} key={routeIndex}>
-                    <div className={`w-full px-4 py-2 border rounded-sm mt-2 ${isActiveRoute(route.path) ? "text-foreground bg-black/10 border-foreground" : "hover:bg-accent border-transparent"}`}>
+                    <div className={`w-full px-4 py-3 rounded-sm ${isActiveRoute(route.path) ? "text-foreground bg-black/10 border-foreground" : "hover:bg-accent"}`}>
                       <div className="flex items-center gap-2">
                         {route.icon && <route.icon strokeWidth={1} size={16} />}
                         <Typography>{route.name}</Typography>

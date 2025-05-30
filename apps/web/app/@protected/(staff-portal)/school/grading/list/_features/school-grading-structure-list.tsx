@@ -11,7 +11,7 @@ import { CirclePlus, UserRound } from "lucide-react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { LoadingContent } from "@/components/loading-content";
 import { RouteEnums } from "@/constants/router/route-constants";
-import { useGetSchoolGradingStructureListQuery } from "@/apis/core-tenant-api/grading-structure";
+import { useGetSchoolGradingStructureListQuery } from "@/apis/core-tenant-api/tenant-grading-structure";
 import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@repo/ui";
 
 export function SchoolGradingStructureList() {

@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import { UserRound } from "lucide-react";
-import useToggle from "@/hooks/use-toggle";
 import { ColumnDef } from "@tanstack/react-table";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { DataTable } from "@/components/data-table";
@@ -16,8 +15,6 @@ import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, Drop
 type Props = {};
 
 export function SubjectListTable({}: Props) {
-  const [open, toggle] = useToggle(false);
-
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
       {

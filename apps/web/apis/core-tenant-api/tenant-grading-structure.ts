@@ -6,16 +6,16 @@ import { SchoolGradingStructureCreateFormSchemaType, SchoolGradingStructureTempl
 
 const BASE_URL = "tenant/gradingstructure";
 
-export const useGetSchoolGradingStructureQuery = ({ path, params }: { path: { gradeStructureId?: number }; params: { tenantId?: number } }) => {
+export const useGetSchoolGradingStructureQuery = ({ path, params }: { path: { gradeStructureId?: number }; params: { tenantId?: number; classId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.GRADING_STRUCTURE, params?.tenantId, path?.gradeStructureId],
+    queryKey: [QueryTagEnums.TENANT_GRADING_STRUCTURE, params?.tenantId, params?.classId, path?.gradeStructureId],
     queryFn: async () => {
       return await getRequest<SchoolGradingStructureType>({
         endpoint: `${BASE_URL}/info/${path?.gradeStructureId}`,
         config: { params },
       });
     },
-    enabled: !!path?.gradeStructureId,
+    enabled: !!path?.gradeStructureId || !!params?.classId,
   });
 
   return { data, isLoading, error, refetch };
@@ -23,7 +23,7 @@ export const useGetSchoolGradingStructureQuery = ({ path, params }: { path: { gr
 
 export const useGetSchoolGradingStructureListQuery = ({ path, params }: { path: {}; params: { tenantId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.GRADING_STRUCTURE, params?.tenantId],
+    queryKey: [QueryTagEnums.TENANT_GRADING_STRUCTURE, params?.tenantId],
     queryFn: async () => {
       return await getRequest<SchoolGradingStructureType[]>({
         endpoint: `${BASE_URL}/list`,
@@ -37,7 +37,7 @@ export const useGetSchoolGradingStructureListQuery = ({ path, params }: { path: 
 
 export const useGetSchoolGradingStructureTemplateQuery = ({ path, params }: { path?: {}; params: { tenantId?: number; classIds?: string } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.GRADING_STRUCTURE_TEMPLATE, params.tenantId, params.classIds],
+    queryKey: [QueryTagEnums.TENANT_GRADING_STRUCTURE_TEMPLATE, params.tenantId, params.classIds],
     queryFn: async () => {
       return await getRequest<SchoolGradingStructureTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
@@ -71,7 +71,7 @@ export const useCreateSchoolGradingStructureMutation = ({ params }: { params: { 
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.GRADING_STRUCTURE, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.TENANT_GRADING_STRUCTURE, params?.tenantId] });
     },
   });
 

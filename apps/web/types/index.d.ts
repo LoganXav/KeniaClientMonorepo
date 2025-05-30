@@ -86,6 +86,7 @@ export interface SubjectType {
   classId: number;
   class: ClassType;
   staffs: StaffType[];
+  gradingStructure: SubjectGradingStructureType;
   tenantId: number;
   tenant: SchoolType;
 }
@@ -215,15 +216,31 @@ export interface SchoolGradingStructureType {
   continuousAssessmentWeight: number;
   updatedAt: string;
   classes: ClassType[];
-  gradeBoundaries: [
-    {
-      grade: string;
-      id: number;
-      maximumScore: number;
-      minimumScore: number;
-      remark: string;
-      tenantGradingStructureId: number;
-      updatedAt: string;
-    },
-  ];
+  gradeBoundaries: GradeBoundaryType[];
+}
+
+export interface GradeBoundaryType {
+  grade: string;
+  id: number;
+  maximumScore: number;
+  minimumScore: number;
+  remark: string;
+  tenantGradingStructureId: number;
+  updatedAt: string;
+}
+
+export interface SubjectGradingStructureType {
+  id: number;
+  tenantId: number;
+  subjectId: number;
+  staffId: number;
+  continuousAssessmentBreakdownItems: ContinuousAssessmentBreakdownItemType[];
+}
+
+export interface ContinuousAssessmentBreakdownItemType {
+  id: number;
+  name: string;
+  weight: number;
+  createdAt: string;
+  updatedAt: string;
 }
