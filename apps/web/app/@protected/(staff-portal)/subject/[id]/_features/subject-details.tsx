@@ -5,7 +5,7 @@ import useToggle from "@/hooks/use-toggle";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { SubjectDetailsTabs } from "./subject-details-tabs";
 import { LoadingContent } from "@/components/loading-content";
-import { ArrowRightIcon, CirclePlus, EqualIcon } from "lucide-react";
+import { ArrowRightIcon, CirclePlus, EqualIcon, EyeIcon } from "lucide-react";
 import { useGetSingleSubjectQuery } from "@/apis/core-subject-api/subject";
 import { Button, Card, CardDescription, CardTitle, Typography } from "@repo/ui";
 import { SubjectGradingStructureCreateDialog } from "./subject-grading-structure-create-dialog";
@@ -14,6 +14,7 @@ import { useGetSchoolGradingStructureQuery } from "@/apis/core-tenant-api/tenant
 export function SubjectDetails({ subjectId }: { subjectId: number }) {
   const { authUserIds } = useAuthUser();
   const [open, toggle] = useToggle(false);
+  const [isView, setIsView] = React.useState(false);
 
   const subjectQueryResult = useGetSingleSubjectQuery({
     params: { tenantId: authUserIds?.tenantId, subjectId },
@@ -32,8 +33,14 @@ export function SubjectDetails({ subjectId }: { subjectId: number }) {
   };
 
   const handleCloseDialog = React.useCallback(() => {
+    setIsView(false);
     toggle();
   }, [toggle]);
+
+  const handleViewDialogOpen = () => {
+    setIsView(true);
+    handleOpenDialog();
+  };
 
   return (
     <>
@@ -41,7 +48,14 @@ export function SubjectDetails({ subjectId }: { subjectId: number }) {
         <div className="flex w-full pb-4 mt-8">
           <div className="hidden md:flex md:flex-1" />
 
-          <div className="grid md:grid-cols-1 gap-4 w-full md:w-auto">
+          <div className="grid md:grid-cols-2 gap-4 w-full md:w-auto">
+            {subject?.gradingStructure ? (
+              <Button size={"icon"} variant={"outline"} className="justify-self-end" onClick={handleViewDialogOpen}>
+                <EyeIcon size={18} strokeWidth={1} />
+              </Button>
+            ) : (
+              <div />
+            )}
             <Button className="w-full" onClick={() => handleOpenDialog()}>
               {!subject?.gradingStructure ? (
                 <>
@@ -85,7 +99,7 @@ export function SubjectDetails({ subjectId }: { subjectId: number }) {
         </div>
       </LoadingContent>
 
-      <SubjectGradingStructureCreateDialog open={open} onClose={handleCloseDialog} subject={subject} schoolGradingStructure={schoolGradingStructure} />
+      <SubjectGradingStructureCreateDialog open={open} onClose={handleCloseDialog} isView={isView} subject={subject} schoolGradingStructure={schoolGradingStructure} />
     </>
   );
 }
