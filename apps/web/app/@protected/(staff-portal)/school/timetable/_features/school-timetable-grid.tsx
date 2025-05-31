@@ -3,12 +3,12 @@ import React from "react";
 import Link from "next/link";
 import { CalendarGrid } from "@repo/ui";
 import { CalendarCog } from "lucide-react";
+import { useAuthUser } from "@/hooks/use-auth-user";
 import { LoadingContent } from "@/components/loading-content";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { SchoolTimetableTemplateOptions } from "../create/_types/school-timetable-form-types";
 import { Card, Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { useGetTimetableQuery, useGetTimetableTemplateQuery } from "@/apis/core-timetable-api/timetable";
-import { useAuthUser } from "@/hooks/use-auth-user";
 
 function SchoolTimetableGrid() {
   const { authUserIds } = useAuthUser();
@@ -25,7 +25,6 @@ function SchoolTimetableGrid() {
   return (
     <>
       <div className="flex w-full pb-4 mt-8">
-        <div className="hidden md:flex md:flex-1" />
         <div className="grid md:grid-cols-4 gap-4 w-full md:w-auto">
           <Select value={String(termId || "")} onValueChange={(value) => setTermId(Number(value))} disabled={timetableTemplateQueryResult?.isLoading}>
             <SelectTrigger>

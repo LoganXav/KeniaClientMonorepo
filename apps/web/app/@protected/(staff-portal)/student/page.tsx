@@ -1,8 +1,8 @@
+import React from "react";
+import Link from "next/link";
+import { Card, Typography } from "@repo/ui";
 import { PageBreadcrumbs } from "@/components/breadcrumbs";
 import { RouteEnums } from "@/constants/router/route-constants";
-import { Card, Typography } from "@repo/ui";
-import Link from "next/link";
-import React from "react";
 
 type Props = {};
 
@@ -24,6 +24,11 @@ function StudentMenu({}: Props) {
             label: "Manage Students",
             desc: "Oversee all student activities and academic records.",
             url: RouteEnums.STUDENT_LIST,
+          },
+          {
+            label: "Manage Grading",
+            desc: "Oversee all student results and grading.",
+            url: RouteEnums.STUDENT_GRADING,
           },
         ].map(({ label, desc, url }: Record<string, any>, idx: number) => (
           <Link key={idx} href={url} className="block">

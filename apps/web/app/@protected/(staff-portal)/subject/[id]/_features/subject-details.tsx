@@ -5,8 +5,8 @@ import useToggle from "@/hooks/use-toggle";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { SubjectDetailsTabs } from "./subject-details-tabs";
 import { LoadingContent } from "@/components/loading-content";
-import { ArrowRightIcon, CirclePlus, EqualIcon, EyeIcon } from "lucide-react";
 import { useGetSingleSubjectQuery } from "@/apis/core-subject-api/subject";
+import { ArrowRightIcon, CirclePlus, EqualIcon, EyeIcon } from "lucide-react";
 import { Button, Card, CardDescription, CardTitle, Typography } from "@repo/ui";
 import { SubjectGradingStructureCreateDialog } from "./subject-grading-structure-create-dialog";
 import { useGetSchoolGradingStructureQuery } from "@/apis/core-tenant-api/tenant-grading-structure";
@@ -33,8 +33,11 @@ export function SubjectDetails({ subjectId }: { subjectId: number }) {
   };
 
   const handleCloseDialog = React.useCallback(() => {
-    setIsView(false);
     toggle();
+
+    setTimeout(() => {
+      setIsView(false);
+    }, 200);
   }, [toggle]);
 
   const handleViewDialogOpen = () => {

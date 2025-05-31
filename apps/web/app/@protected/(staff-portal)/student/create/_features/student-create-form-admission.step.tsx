@@ -2,7 +2,7 @@
 
 import React from "react";
 import { StudentCreateFormReturn, StudentTemplateOptions } from "../_types/student-create-form-types";
-import { DatePicker, FormControl, FormField, FormItem, FormMessage, Input, SelectValue, SelectTrigger, SelectItem, SelectContent, Select, MultiSelect } from "@repo/ui";
+import { DatePicker, FormControl, FormField, FormItem, FormMessage, SelectValue, SelectTrigger, SelectItem, SelectContent, Select, MultiSelect } from "@repo/ui";
 
 type StepProps = {
   form: StudentCreateFormReturn;

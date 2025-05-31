@@ -37,7 +37,7 @@ export default function ProtectedSidebar() {
               icon: Users,
             },
             {
-              name: "Student",
+              name: "Students",
               path: RouteEnums.STUDENT,
               icon: User,
             },
@@ -49,12 +49,12 @@ export default function ProtectedSidebar() {
           icon: BookType,
           subRoutes: [
             {
-              name: "Class",
+              name: "Classes",
               path: RouteEnums.CLASS,
               icon: Building,
             },
             {
-              name: "Subject",
+              name: "Subjects",
               path: RouteEnums.SUBJECT_LIST,
               icon: BookType,
             },
@@ -105,9 +105,11 @@ export default function ProtectedSidebar() {
     },
   ];
 
-  const isActiveRoute = (path: string) => pathname.startsWith(path);
+  const getBaseSegment = (path: string) => path.split("/")[1]; // returns "subject" from "/subject/list"
 
-  const isActiveSubRoute = (subRoutes: Record<string, any>[]) => subRoutes?.some((subRoute) => pathname.startsWith(subRoute.path));
+  const isActiveRoute = (path: string) => getBaseSegment(pathname) === getBaseSegment(path);
+
+  const isActiveSubRoute = (subRoutes: Record<string, any>[]) => subRoutes?.some((subRoute) => getBaseSegment(pathname) === getBaseSegment(subRoute.path));
 
   return (
     <nav className="w-[250px] px-2 pb-20 fixed overflow-scroll h-screen border-r border-border bg-card">
