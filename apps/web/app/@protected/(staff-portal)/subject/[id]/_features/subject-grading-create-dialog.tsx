@@ -31,10 +31,10 @@ export function SubjectGradingCreateDialog({ open, onClose, subjectId, subjectGr
   const defaultValues = {
     subjectId,
     studentId: 0,
-    classId: 0,
-    calendarId: 0,
-    classDivisionId: 0,
-    termId: 0,
+    classId: "",
+    calendarId: "",
+    classDivisionId: "",
+    termId: "",
     examScore: 0,
     continuousAssessmentScores: [],
   };
