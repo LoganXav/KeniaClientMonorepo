@@ -3,17 +3,21 @@
 import React from "react";
 import Link from "next/link";
 import { FileCheck2 } from "lucide-react";
+import useToggle from "@/hooks/use-toggle";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { ContinuousAssessmentScore } from "@/types";
 import { LoadingContent } from "@/components/loading-content";
+import { SubjectGradingCreateDialog } from "./subject-grading-create-dialog";
 import { Button, Card, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
+import { useGetSubjectGradingStructureQuery } from "@/apis/core-subject-api/subject-grading-structure";
 import { useGetSubjectGradingListQuery, useGetSubjectGradingTemplateQuery } from "@/apis/core-subject-api/subject-grading";
 import { SubjectGradingTemplateOptions } from "@/app/@protected/(staff-portal)/student/grading/_types/subject-grading-types";
 
 export function SubjectDetailsGradingTab({ subjectId }: { subjectId: number }) {
   const { authUserIds } = useAuthUser();
+  const [open, toggle] = useToggle(false);
   const [termId, setTermId] = React.useState(0);
   const [classId, setClassId] = React.useState(0);
   const [calendarId, setCalendarId] = React.useState(0);
@@ -24,6 +28,8 @@ export function SubjectDetailsGradingTab({ subjectId }: { subjectId: number }) {
 
   const gradingQueryResult = useGetSubjectGradingListQuery(React.useMemo(() => ({ path: {}, params: { calendarId, termId, subjectId, classId, tenantId: authUserIds?.tenantId } }), [calendarId, termId, subjectId, classId, classDivisionId, authUserIds?.tenantId]));
   const grading = gradingQueryResult?.data?.data;
+
+  const subjectGradingStructureQueryResult = useGetSubjectGradingStructureQuery({ path: {}, params: { tenantId: authUserIds?.tenantId, subjectId } });
 
   const dynamicColumns = React.useMemo(() => {
     if (!grading || grading.length === 0) return [];
@@ -83,6 +89,18 @@ export function SubjectDetailsGradingTab({ subjectId }: { subjectId: number }) {
     [dynamicColumns]
   );
 
+  const handleOpenDialog = () => {
+    // Ensure we're running this after the dropdown's click event has completed
+    setTimeout(() => {
+      toggle();
+    }, 0);
+    subjectGradingStructureQueryResult?.refetch();
+  };
+
+  const handleCloseDialog = React.useCallback(() => {
+    toggle();
+  }, [toggle]);
+
   return (
     <>
       <div className="flex w-full flex-col md:flex-row gap-4 pb-4 mt-8">
@@ -141,7 +159,7 @@ export function SubjectDetailsGradingTab({ subjectId }: { subjectId: number }) {
         <div className="hidden md:flex md:flex-1" />
 
         <Link className="" href={"#"}>
-          <Button className="w-full">
+          <Button className="w-full" onClick={handleOpenDialog}>
             Submit Grades <FileCheck2 size={18} strokeWidth={1} />
           </Button>
         </Link>
@@ -151,6 +169,8 @@ export function SubjectDetailsGradingTab({ subjectId }: { subjectId: number }) {
           <DataTable data={grading || []} columns={columns} />
         </LoadingContent>
       </Card>
+
+      <SubjectGradingCreateDialog open={open} onClose={handleCloseDialog} subjectId={subjectId} subjectGradingStructureQueryResult={subjectGradingStructureQueryResult} tenantId={authUserIds?.tenantId} gradingTemplateQueryResult={gradingTemplateQueryResult} />
     </>
   );
 }

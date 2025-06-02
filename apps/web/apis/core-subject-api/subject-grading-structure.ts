@@ -17,6 +17,9 @@ export const useGetSubjectGradingStructureQuery = ({ path, params }: { path: { g
       });
     },
     enabled: !!params?.subjectId,
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
   });
 
   return { data, isLoading, error, refetch };

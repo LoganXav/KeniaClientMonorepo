@@ -61,7 +61,7 @@ export function StudentCreateForm({ studentId }: Props) {
             residentialLgaId: Number(guardian.residentialLgaId),
             residentialZipCode: Number(guardian.residentialZipCode),
           })),
-          subjectIds: values.subjectIds.map((subjectId) => Number(subjectId)),
+          subjectIds: values?.subjectIds?.map((subjectId) => Number(subjectId)) || [],
         },
       },
       {
@@ -109,10 +109,10 @@ export function StudentCreateForm({ studentId }: Props) {
         residentialZipCode: "",
         gender: "",
         dateOfBirth: undefined,
-        subjectIds: [],
       },
     ],
 
+    subjectIds: [],
     classId: 0,
     classDivisionId: 0,
   };
