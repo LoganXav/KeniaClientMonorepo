@@ -246,4 +246,17 @@ export interface ContinuousAssessmentBreakdownItemType {
   updatedAt: string;
 }
 
-export interface SubjectGradingType {}
+export interface SubjectGradingType {
+  continuousAssessmentScores: ContinuousAssessmentScore[];
+  classId: number;
+  classDivisionId: number;
+  student: {
+    classDivision: ClassDivisionType;
+  };
+}
+
+export interface ContinuousAssessmentScore {
+  id: number;
+  name: string;
+  score: number;
+}

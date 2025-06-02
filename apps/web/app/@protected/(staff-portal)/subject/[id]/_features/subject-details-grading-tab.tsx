@@ -2,62 +2,91 @@
 
 import React from "react";
 import Link from "next/link";
+import { FileCheck2 } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
 import { useAuthUser } from "@/hooks/use-auth-user";
-import { EyeIcon, TableOfContents } from "lucide-react";
+import { ContinuousAssessmentScore } from "@/types";
 import { LoadingContent } from "@/components/loading-content";
-import { SubjectGradingTemplateOptions } from "../_types/subject-grading-types";
-import { useGetSubjectGradingTemplateQuery } from "@/apis/core-subject-api/subject-grading";
 import { Button, Card, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
+import { useGetSubjectGradingListQuery, useGetSubjectGradingTemplateQuery } from "@/apis/core-subject-api/subject-grading";
+import { SubjectGradingTemplateOptions } from "@/app/@protected/(staff-portal)/student/grading/_types/subject-grading-types";
 
-export function StudentGradingTable() {
+export function SubjectDetailsGradingTab({ subjectId }: { subjectId: number }) {
   const { authUserIds } = useAuthUser();
-  const [calendarId, setCalendarId] = React.useState(0);
   const [termId, setTermId] = React.useState(0);
   const [classId, setClassId] = React.useState(0);
+  const [calendarId, setCalendarId] = React.useState(0);
   const [classDivisionId, setClassDivisionId] = React.useState(0);
+
+  const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(React.useMemo(() => ({ params: { calendarId, classId, tenantId: authUserIds?.tenantId } }), [calendarId, classId, authUserIds?.tenantId])) as SubjectGradingTemplateOptions;
+  const gradingTemplate = gradingTemplateQueryResult?.data?.data;
+
+  const gradingQueryResult = useGetSubjectGradingListQuery(React.useMemo(() => ({ path: {}, params: { calendarId, termId, subjectId, classId, tenantId: authUserIds?.tenantId } }), [calendarId, termId, subjectId, classId, classDivisionId, authUserIds?.tenantId]));
+  const grading = gradingQueryResult?.data?.data;
+
+  const dynamicColumns = React.useMemo(() => {
+    if (!grading || grading.length === 0) return [];
+
+    const assessmentNames = Array.from(new Set(grading.flatMap((item) => item.continuousAssessmentScores?.map((score) => score.name) ?? [])));
+
+    const caColumns: ColumnDef<any, unknown>[] = assessmentNames.map((name) => ({
+      header: name,
+      accessorKey: `ca-${name}`,
+      cell: ({ row }) => {
+        const scoreObj = row.original.continuousAssessmentScores?.find((s: ContinuousAssessmentScore) => s.name === name);
+        return <p>{scoreObj?.score ?? "-"}</p>;
+      },
+    }));
+
+    return caColumns;
+  }, [grading]);
 
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
       {
         header: "Student Name",
-        accessorKey: "name",
+        accessorKey: "studentName",
+        cell: ({ row }) => {
+          return (
+            <p>
+              {row?.original?.student?.user?.lastName} {row?.original?.student?.user?.firstName}
+            </p>
+          );
+        },
       },
       {
-        header: "Continuous Assessment",
-        accessorKey: "continuousAssessmentScore",
+        header: "Class Division",
+        accessorKey: "classDivisionName",
+        cell: ({ row }) => {
+          return <p>{row?.original?.student?.classDivision?.name}</p>;
+        },
       },
+      ...dynamicColumns,
       {
         header: "Exam",
         accessorKey: "examScore",
       },
       {
-        id: "actions",
-        cell: ({ row }) => {
-          const staff = row.original;
-
-          return (
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">View grades</span>
-              <EyeIcon className="h-4 w-4" />
-            </Button>
-          );
-        },
+        header: "Total Score",
+        accessorKey: "totalScore",
+      },
+      {
+        header: "Grade",
+        accessorKey: "grade",
+      },
+      {
+        header: "Remark",
+        accessorKey: "remark",
       },
     ],
-    []
+    [dynamicColumns]
   );
-
-  const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(React.useMemo(() => ({ params: { calendarId, classId, tenantId: authUserIds?.tenantId } }), [calendarId, classId, authUserIds?.tenantId])) as SubjectGradingTemplateOptions;
-  const gradingTemplate = gradingTemplateQueryResult?.data?.data;
-
-  // TODO - fetch list of students in a class and include their grades
 
   return (
     <>
       <div className="flex w-full flex-col md:flex-row gap-4 pb-4 mt-8">
-        <div className="grid md:grid-cols-4 xl:grid-cols-4 gap-4 w-full md:w-auto">
+        <div className="grid md:grid-cols-3 xl:grid-cols-4 gap-4 w-full md:w-auto">
           <Select value={String(calendarId || "")} onValueChange={(value) => setCalendarId(Number(value))} disabled={gradingTemplateQueryResult?.isLoading}>
             <SelectTrigger>
               <SelectValue placeholder="Session" />
@@ -110,10 +139,16 @@ export function StudentGradingTable() {
           </Select>
         </div>
         <div className="hidden md:flex md:flex-1" />
+
+        <Link className="" href={"#"}>
+          <Button className="w-full">
+            Submit Grades <FileCheck2 size={18} strokeWidth={1} />
+          </Button>
+        </Link>
       </div>
       <Card className="overflow-hidden mt-8">
-        <LoadingContent loading={false} data={{}}>
-          <DataTable data={{}} columns={columns} />
+        <LoadingContent loading={gradingQueryResult?.isLoading} data={gradingQueryResult?.data} error={gradingQueryResult?.error} retry={gradingQueryResult?.refetch} shouldLoad={gradingQueryResult?.isFetched || gradingQueryResult?.isError}>
+          <DataTable data={grading || []} columns={columns} />
         </LoadingContent>
       </Card>
     </>

@@ -20,9 +20,9 @@ export const useGetSubjectGradingTemplateQuery = ({ params }: { params: { calend
   return { data, isLoading, error, refetch };
 };
 
-export const useGetSubjectGradingListQuery = ({ path, params }: { path: {}; params: { tenantId?: number; calendarId?: number; termId?: number; classId?: number; classDivisionId?: number } }) => {
-  const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.SUBJECT_GRADING, params?.tenantId],
+export const useGetSubjectGradingListQuery = ({ path, params }: { path: {}; params: { tenantId?: number; subjectId?: number; calendarId?: number; termId?: number; classId?: number; classDivisionId?: number } }) => {
+  const { data, isLoading, error, refetch, isFetched, isError } = useQuery({
+    queryKey: [QueryTagEnums.SUBJECT_GRADING, params?.tenantId, params?.subjectId, params?.calendarId, params?.termId, params?.classId, params?.classDivisionId],
     queryFn: async () => {
       return await getRequest<SubjectGradingType[]>({
         endpoint: `${BASE_URL}/list`,
@@ -32,5 +32,5 @@ export const useGetSubjectGradingListQuery = ({ path, params }: { path: {}; para
     enabled: !!params?.classDivisionId || !!params?.classId,
   });
 
-  return { data, isLoading, error, refetch };
+  return { data, isLoading, error, refetch, isFetched, isError };
 };
