@@ -100,7 +100,6 @@ export function SubjectGradingStructureCreateDialog({ open, onClose, subject, is
   };
 
   const handleClose = () => {
-    // form.reset(defaultValues);
     onClose();
   };
 
@@ -121,7 +120,7 @@ export function SubjectGradingStructureCreateDialog({ open, onClose, subject, is
       >
         <DialogTitle>
           <Typography size="h4" className="font-heading">
-            {isView ? "Subject Grading Structure" : isEdit ? "Update Subject Grading Structure" : "Create Subject Grading Structure"}
+            {isView ? "Subject Grading Structure" : isEdit ? "Update Subject Grading Structure" : "Create Subject Grading Structure"} (Continuous Assessment)
           </Typography>
         </DialogTitle>
 

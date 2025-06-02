@@ -1,8 +1,9 @@
 import { SubjectGradingType } from "@/types";
-import { getRequest } from "@/config/base-query";
-import { useQuery } from "@tanstack/react-query";
+import { getRequest, postRequest } from "@/config/base-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { SubjectGradingTemplateOptions } from "@/app/@protected/(staff-portal)/student/grading/_types/subject-grading-types";
+import { SubjectGradingCreateFormSchemaType } from "@/app/@protected/(staff-portal)/subject/[id]/_types/subject-grading-form-types";
 
 const BASE_URL = "subject/grading";
 
@@ -33,4 +34,28 @@ export const useGetSubjectGradingListQuery = ({ path, params }: { path: {}; para
   });
 
   return { data, isLoading, error, refetch, isFetched, isError };
+};
+
+export const useSubjectGradingCreateMutation = ({ params }: { params?: { tenantId?: number } }) => {
+  const queryClient = useQueryClient();
+  const {
+    mutate: subjectGradingCreate,
+    isPending: subjectGradingCreatePending,
+    error: subjectGradingCreateError,
+  } = useMutation({
+    mutationFn: async ({ payload }: { payload: SubjectGradingCreateFormSchemaType }) => {
+      const data = await postRequest<SubjectGradingType>({
+        endpoint: `${BASE_URL}/create`,
+        payload,
+        config: { params },
+      });
+
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.SUBJECT_GRADING, params?.tenantId] });
+    },
+  });
+
+  return { subjectGradingCreate, subjectGradingCreatePending, subjectGradingCreateError };
 };
