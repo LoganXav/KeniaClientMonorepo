@@ -9,7 +9,7 @@ import { SchoolGradingStructureType, SubjectType } from "@/types";
 import { SubjectGradingStructureCreateFormSchema } from "../_schema/subject-grading-structure-schema";
 import { SubjectGradingStructureCreateFormSchemaType } from "../_types/subject-grading-structure-form-types";
 import { useCreateSubjectGradingStructureMutation, useGetSubjectGradingStructureQuery } from "@/apis/core-subject-api/subject-grading-structure";
-import { Button, Dialog, DialogContent, DialogTitle, Form, FormControl, FormField, FormItem, FormMessage, Input, toast, Typography } from "@repo/ui";
+import { Button, cn, Dialog, DialogContent, DialogTitle, Form, FormControl, FormField, FormItem, FormMessage, Input, toast, Typography } from "@repo/ui";
 
 interface DialogProps {
   open: boolean;
@@ -121,7 +121,7 @@ export function SubjectGradingStructureCreateDialog({ open, onClose, subject, is
       >
         <DialogTitle>
           <Typography size="h4" className="font-heading">
-            {isEdit ? "Update Subject Grading Structure" : "Create Subject Grading Structure"}
+            {isView ? "Subject Grading Structure" : isEdit ? "Update Subject Grading Structure" : "Create Subject Grading Structure"}
           </Typography>
         </DialogTitle>
 
@@ -139,7 +139,7 @@ export function SubjectGradingStructureCreateDialog({ open, onClose, subject, is
                           render={({ field }) => (
                             <FormItem>
                               <FormControl>
-                                <Input {...field} placeholder="Name" />
+                                <Input {...field} placeholder="Name" disabled={isView} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -153,7 +153,7 @@ export function SubjectGradingStructureCreateDialog({ open, onClose, subject, is
                           render={({ field }) => (
                             <FormItem>
                               <FormControl>
-                                <Input {...field} placeholder="Weight" />
+                                <Input {...field} placeholder="Weight" disabled={isView} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -165,7 +165,7 @@ export function SubjectGradingStructureCreateDialog({ open, onClose, subject, is
                         <Button
                           variant="outline"
                           type="button"
-                          className=""
+                          disabled={isView}
                           onClick={() =>
                             form.watch("continuousAssessmentBreakdownItems").length > 1 &&
                             form.setValue(
@@ -180,7 +180,7 @@ export function SubjectGradingStructureCreateDialog({ open, onClose, subject, is
                           <Button
                             variant="outline"
                             type="button"
-                            className=""
+                            disabled={isView}
                             onClick={() =>
                               form.setValue("continuousAssessmentBreakdownItems", [
                                 ...form.watch("continuousAssessmentBreakdownItems"),
@@ -201,13 +201,15 @@ export function SubjectGradingStructureCreateDialog({ open, onClose, subject, is
                   ))}
               </div>
 
-              <div className="w-full grid md:grid-cols-2 md:max-w-lg gap-4 mx-auto">
+              <div className={cn("w-full grid md:max-w-lg gap-4 mx-auto", !isView && "md:grid-cols-2")}>
                 <Button className="w-full md:w-auto" variant={"outline"} type="button" onClick={handleClose} disabled={createGradingStructurePending}>
                   Cancel
                 </Button>
-                <Button className="w-full md:w-auto" loading={createGradingStructurePending}>
-                  {isEdit ? "Update Grading Structure" : "Create Grading Structure"}
-                </Button>
+                {!isView && (
+                  <Button className="w-full md:w-auto" loading={createGradingStructurePending}>
+                    {isEdit ? "Update Grading Structure" : "Create Grading Structure"}
+                  </Button>
+                )}
               </div>
             </form>
           </Form>

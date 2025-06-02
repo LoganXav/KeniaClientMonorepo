@@ -1,19 +1,22 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import useToggle from "@/hooks/use-toggle";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { SubjectDetailsTabs } from "./subject-details-tabs";
 import { LoadingContent } from "@/components/loading-content";
-import { ArrowRightIcon, CirclePlus, EqualIcon } from "lucide-react";
+import { RouteEnums } from "@/constants/router/route-constants";
 import { useGetSingleSubjectQuery } from "@/apis/core-subject-api/subject";
-import { Button, Card, CardDescription, CardTitle, Typography } from "@repo/ui";
+import { Button, Card, CardDescription, CardTitle, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Typography } from "@repo/ui";
+import { ArrowRightIcon, CirclePlus, EqualIcon, EyeIcon, FileCheck2 } from "lucide-react";
 import { SubjectGradingStructureCreateDialog } from "./subject-grading-structure-create-dialog";
 import { useGetSchoolGradingStructureQuery } from "@/apis/core-tenant-api/tenant-grading-structure";
 
 export function SubjectDetails({ subjectId }: { subjectId: number }) {
   const { authUserIds } = useAuthUser();
   const [open, toggle] = useToggle(false);
+  const [isView, setIsView] = React.useState(false);
 
   const subjectQueryResult = useGetSingleSubjectQuery({
     params: { tenantId: authUserIds?.tenantId, subjectId },
@@ -33,7 +36,16 @@ export function SubjectDetails({ subjectId }: { subjectId: number }) {
 
   const handleCloseDialog = React.useCallback(() => {
     toggle();
+
+    setTimeout(() => {
+      setIsView(false);
+    }, 200);
   }, [toggle]);
+
+  const handleViewDialogOpen = () => {
+    setIsView(true);
+    handleOpenDialog();
+  };
 
   return (
     <>
@@ -41,7 +53,14 @@ export function SubjectDetails({ subjectId }: { subjectId: number }) {
         <div className="flex w-full pb-4 mt-8">
           <div className="hidden md:flex md:flex-1" />
 
-          <div className="grid md:grid-cols-1 gap-4 w-full md:w-auto">
+          <div className="grid md:grid-cols-3 gap-4 w-full md:w-auto">
+            {subject?.gradingStructure ? (
+              <Button size={"icon"} variant={"outline"} className="justify-self-end" onClick={handleViewDialogOpen}>
+                <EyeIcon size={18} strokeWidth={1} />
+              </Button>
+            ) : (
+              <div />
+            )}
             <Button className="w-full" onClick={() => handleOpenDialog()}>
               {!subject?.gradingStructure ? (
                 <>
@@ -53,6 +72,18 @@ export function SubjectDetails({ subjectId }: { subjectId: number }) {
                 </>
               )}
             </Button>
+            <Select value={String("")}>
+              <SelectTrigger className="w-auto h-10">
+                <SelectValue placeholder="Quick Actions" />
+              </SelectTrigger>
+              <SelectContent>
+                {["Submit Scheme of Work", "Submit Grades"].map((item, idx) => (
+                  <SelectItem key={idx} value={String(item)}>
+                    {item}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
@@ -81,11 +112,11 @@ export function SubjectDetails({ subjectId }: { subjectId: number }) {
               </div>
             </Card>
           </div>
-          <SubjectDetailsTabs />
+          <SubjectDetailsTabs subjectId={subjectId} />
         </div>
       </LoadingContent>
 
-      <SubjectGradingStructureCreateDialog open={open} onClose={handleCloseDialog} subject={subject} schoolGradingStructure={schoolGradingStructure} />
+      <SubjectGradingStructureCreateDialog open={open} onClose={handleCloseDialog} isView={isView} subject={subject} schoolGradingStructure={schoolGradingStructure} />
     </>
   );
 }

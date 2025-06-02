@@ -1,4 +1,5 @@
 import { WorkspaceClassessTab } from "./workspace-classes-tab";
+import { WorkspaceStudentsTab } from "./workspace-students-tab";
 import { WorkspaceSubjectsTab } from "./workspace-subjects-tab";
 import { ScrollArea, ScrollBar, Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
 
@@ -11,7 +12,6 @@ export function WorkspaceTabs() {
             <TabsTrigger value="subjects">My Subjects</TabsTrigger>
             <TabsTrigger value="classes">My Classes</TabsTrigger>
             <TabsTrigger value="students">My Students</TabsTrigger>
-            <TabsTrigger value="groups">My Groups</TabsTrigger>
           </TabsList>
         </div>
         <ScrollBar orientation="horizontal" />
@@ -22,6 +22,9 @@ export function WorkspaceTabs() {
       </TabsContent>
       <TabsContent value="classes">
         <WorkspaceClassessTab />
+      </TabsContent>
+      <TabsContent value="students">
+        <WorkspaceStudentsTab />
       </TabsContent>
     </Tabs>
   );

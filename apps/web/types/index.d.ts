@@ -86,6 +86,7 @@ export interface SubjectType {
   classId: number;
   class: ClassType;
   staffs: StaffType[];
+  students: StudentType[];
   gradingStructure: SubjectGradingStructureType;
   tenantId: number;
   tenant: SchoolType;
@@ -243,4 +244,19 @@ export interface ContinuousAssessmentBreakdownItemType {
   weight: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface SubjectGradingType {
+  continuousAssessmentScores: ContinuousAssessmentScore[];
+  classId: number;
+  classDivisionId: number;
+  student: {
+    classDivision: ClassDivisionType;
+  };
+}
+
+export interface ContinuousAssessmentScore {
+  id: number;
+  name: string;
+  score: number;
 }

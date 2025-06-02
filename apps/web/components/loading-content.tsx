@@ -14,7 +14,13 @@ interface LoadingContentProps {
   shouldLoad?: boolean;
 }
 
-export const LoadingContent: React.FC<LoadingContentProps> = ({ children, data = null, loading = false, error = null, retry = () => Promise.resolve(), shouldLoad = true }) => {
+export const LoadingContent: React.FC<LoadingContentProps> = ({ children, data = [], loading = false, error = null, retry = () => Promise.resolve(), shouldLoad = true }) => {
+  React.useEffect(() => {
+    if (shouldLoad && error) {
+      toast.error(error?.message || "Something went wrong.");
+    }
+  }, [error, shouldLoad]);
+
   if (loading)
     return (
       <div className="w-full h-full flex justify-center items-center p-8">
@@ -23,7 +29,6 @@ export const LoadingContent: React.FC<LoadingContentProps> = ({ children, data =
     );
 
   if (shouldLoad && (error || (!loading && !data))) {
-    toast.error(error?.message || "Something went wrong.");
     return (
       <div className="flex flex-col items-center justify-center p-8 gap-4">
         <div className="flex flex-col items-center space-y-2">

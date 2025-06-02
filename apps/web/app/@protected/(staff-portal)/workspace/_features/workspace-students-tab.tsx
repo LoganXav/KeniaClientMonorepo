@@ -1,18 +1,15 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { UserRound } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
-import { useAuthUser } from "@/hooks/use-auth-user";
 import { DataTable } from "@/components/data-table";
+import { useAuthUser } from "@/hooks/use-auth-user";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { LoadingContent } from "@/components/loading-content";
-import { RouteEnums } from "@/constants/router/route-constants";
-import { useGetClassListQuery } from "@/apis/core-class-api/class";
 import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@repo/ui";
 
-export function WorkspaceClassessTab() {
+export function WorkspaceStudentsTab() {
   const { authUserIds } = useAuthUser();
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
@@ -21,15 +18,9 @@ export function WorkspaceClassessTab() {
         accessorKey: "name",
       },
       {
-        header: "Class Teacher",
-        accessorKey: "classTeacher",
-        cell: ({ row }) => (
-          <p>
-            {row?.original?.classTeacher?.user?.lastName} {row?.original?.classTeacher?.user?.firstName}
-          </p>
-        ),
+        header: "Class",
+        accessorKey: "class",
       },
-
       {
         id: "actions",
         cell: ({ row }) => {
@@ -46,11 +37,9 @@ export function WorkspaceClassessTab() {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <Link href={`${RouteEnums.CLASS}/${classItem.id}`}>
-                  <DropdownMenuItem className="flex justify-between">
-                    View <UserRound className="ml-2" size={15} strokeWidth={1} />
-                  </DropdownMenuItem>
-                </Link>
+                <DropdownMenuItem className="flex justify-between">
+                  View <UserRound className="ml-2" size={15} strokeWidth={1} />
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           );
@@ -60,13 +49,11 @@ export function WorkspaceClassessTab() {
     []
   );
 
-  const classListQueryResult = useGetClassListQuery({ params: { tenantId: authUserIds?.tenantId, classTeacherId: authUserIds?.id } });
-
   return (
     <>
       <Card className="overflow-hidden mt-8">
-        <LoadingContent loading={classListQueryResult?.isLoading} error={classListQueryResult?.error} data={classListQueryResult.data} retry={classListQueryResult?.refetch}>
-          <DataTable data={classListQueryResult?.data?.data} columns={columns} />
+        <LoadingContent loading={false} data={{}}>
+          <DataTable data={{}} columns={columns} />
         </LoadingContent>
       </Card>
     </>

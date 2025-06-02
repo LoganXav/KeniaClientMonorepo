@@ -54,6 +54,7 @@ export function StudentCreateForm({ studentId }: Props) {
           classDivisionId: Number(values.classDivisionId),
           guardians: values.guardians.map((guardian) => ({
             ...guardian,
+            id: Number(guardian.id),
             dateOfBirth: new Date(guardian.dateOfBirth),
             residentialCountryId: Number(guardian.residentialCountryId),
             residentialStateId: Number(guardian.residentialStateId),
@@ -147,7 +148,7 @@ export function StudentCreateForm({ studentId }: Props) {
 
         guardians:
           student?.guardians?.map((guardian) => ({
-            id: guardian.id,
+            id: Number(guardian.id),
             email: guardian.email,
             gender: guardian.gender,
             lastName: guardian.lastName,

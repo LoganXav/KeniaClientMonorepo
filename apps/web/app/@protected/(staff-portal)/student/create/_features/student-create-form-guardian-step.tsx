@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
+import { debounce } from "@/lib/utils";
+import { useAuthUser } from "@/hooks/use-auth-user";
+import { useGetGuardianListQuery } from "@/apis/core-guardian-api/guardian";
+import { Check, CircleMinus, CirclePlus, UserRoundSearch } from "lucide-react";
 import { StudentCreateFormReturn, StudentTemplateOptions } from "../_types/student-create-form-types";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, DatePicker, FormControl, FormField, FormItem, FormMessage, Input, SelectValue, Select, SelectTrigger, SelectContent, SelectItem, cn, Button, FormLabel, Popover, PopoverTrigger, PopoverContent } from "@repo/ui";
-import { Check, CircleMinus, CirclePlus, UserRoundSearch } from "lucide-react";
-import { useGetGuardianListQuery } from "@/apis/core-guardian-api/guardian";
-import { debounce } from "@/lib/utils";
-import { useGetStudentTemplateQuery } from "@/apis/core-student-api/student";
-import { useAuthUser } from "@/hooks/use-auth-user";
+
 type StepProps = {
   form: StudentCreateFormReturn;
   isEdit: boolean;
@@ -19,7 +19,7 @@ export function StudentCreateFormGuardianStep({ form, isEdit, studentTemplateQue
 
   const [searchBy, setSearchBy] = React.useState<"" | "firstName" | "lastName" | "email" | "phoneNumber">("");
   const [query, setQuery] = React.useState<string>("");
-  const [debouncedQuery, setDebouncedQuery] = React.useState<string>("...");
+  const [debouncedQuery, setDebouncedQuery] = React.useState<string>("");
 
   const handleSearchByChange = (value: "firstName" | "lastName" | "email" | "phoneNumber") => {
     setSearchBy(value);

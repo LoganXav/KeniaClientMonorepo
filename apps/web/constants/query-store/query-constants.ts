@@ -14,7 +14,9 @@ export const QueryTagEnums = {
   TIMETABLE: "timetable",
 
   SUBJECT: "subject",
+  SUBJECT_GRADING: "subject-grading",
   SUBJECT_GRADING_STRUCTURE: "subject-grading-structure",
+  SUBJECT_GRADING_TEMPLATE: "subject-grading-template",
 
   TENANT: "tenant",
   TENANT_GRADING_STRUCTURE: "tenant-grading-structure",
