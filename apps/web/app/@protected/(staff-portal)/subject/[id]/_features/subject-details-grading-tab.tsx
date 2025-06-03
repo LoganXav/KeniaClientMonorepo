@@ -26,7 +26,7 @@ export function SubjectDetailsGradingTab({ subjectId }: { subjectId: number }) {
   const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(React.useMemo(() => ({ params: { calendarId, classId, tenantId: authUserIds?.tenantId, subjectId } }), [calendarId, classId, authUserIds?.tenantId, subjectId])) as SubjectGradingTemplateOptions;
   const gradingTemplate = gradingTemplateQueryResult?.data?.data;
 
-  const gradingQueryResult = useGetSubjectGradingListQuery(React.useMemo(() => ({ path: {}, params: { calendarId, termId, subjectId, classId, tenantId: authUserIds?.tenantId } }), [calendarId, termId, subjectId, classId, classDivisionId, authUserIds?.tenantId]));
+  const gradingQueryResult = useGetSubjectGradingListQuery(React.useMemo(() => ({ path: {}, params: { calendarId, termId, subjectId, classId, classDivisionId, tenantId: authUserIds?.tenantId } }), [calendarId, termId, subjectId, classId, classDivisionId, authUserIds?.tenantId]));
   const grading = gradingQueryResult?.data?.data;
 
   const subjectGradingStructureQueryResult = useGetSubjectGradingStructureQuery({ path: {}, params: { tenantId: authUserIds?.tenantId, subjectId } });

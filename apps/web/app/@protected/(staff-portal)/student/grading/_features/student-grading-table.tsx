@@ -1,58 +1,70 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
 import { useAuthUser } from "@/hooks/use-auth-user";
-import { EyeIcon, TableOfContents } from "lucide-react";
 import { LoadingContent } from "@/components/loading-content";
 import { SubjectGradingTemplateOptions } from "../_types/subject-grading-types";
+import { useGetStudentGradingListQuery } from "@/apis/core-student-api/student-grading";
 import { useGetSubjectGradingTemplateQuery } from "@/apis/core-subject-api/subject-grading";
-import { Button, Card, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
+import { Card, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 
 export function StudentGradingTable() {
   const { authUserIds } = useAuthUser();
-  const [calendarId, setCalendarId] = React.useState(0);
   const [termId, setTermId] = React.useState(0);
   const [classId, setClassId] = React.useState(0);
+  const [calendarId, setCalendarId] = React.useState(0);
   const [classDivisionId, setClassDivisionId] = React.useState(0);
+
+  const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(React.useMemo(() => ({ params: { calendarId, classId, tenantId: authUserIds?.tenantId } }), [calendarId, classId, authUserIds?.tenantId])) as SubjectGradingTemplateOptions;
+  const gradingTemplate = gradingTemplateQueryResult?.data?.data;
+
+  const gradingQueryResult = useGetStudentGradingListQuery(React.useMemo(() => ({ path: {}, params: { calendarId, termId, classId, classDivisionId, tenantId: authUserIds?.tenantId } }), [calendarId, termId, classId, classDivisionId, authUserIds?.tenantId]));
+  const grading = gradingQueryResult?.data?.data;
+
+  const dynamicColumns = React.useMemo(() => {
+    if (!grading || grading.length === 0) return [];
+
+    // Collect all unique subject names
+    const subjectNames = Array.from(new Set(grading.flatMap((student) => (student.subjects ?? []).map((subject) => subject.name))));
+
+    // Create one column per subject
+    const subjectColumns: ColumnDef<any, unknown>[] = subjectNames.map((subjectName) => ({
+      header: subjectName,
+      accessorKey: `subject-${subjectName}`,
+      cell: ({ row }) => {
+        const subject = row.original.subjects?.find((s: any) => s.name === subjectName);
+
+        return (
+          <div className="flex space-x-2">
+            <p>{subject?.grading?.grade ?? "-"}</p>
+            <p>({subject?.grading?.totalScore ?? "-"})</p>
+          </div>
+        );
+      },
+    }));
+
+    return subjectColumns;
+  }, [grading]);
 
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
       {
         header: "Student Name",
-        accessorKey: "name",
-      },
-      {
-        header: "Continuous Assessment",
-        accessorKey: "continuousAssessmentScore",
-      },
-      {
-        header: "Exam",
-        accessorKey: "examScore",
-      },
-      {
-        id: "actions",
+        accessorKey: "studentName",
         cell: ({ row }) => {
-          const staff = row.original;
-
           return (
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">View grades</span>
-              <EyeIcon className="h-4 w-4" />
-            </Button>
+            <p>
+              {row?.original?.user?.lastName} {row?.original?.user?.firstName}
+            </p>
           );
         },
       },
+      ...dynamicColumns,
     ],
-    []
+    [dynamicColumns]
   );
-
-  const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(React.useMemo(() => ({ params: { calendarId, classId, tenantId: authUserIds?.tenantId } }), [calendarId, classId, authUserIds?.tenantId])) as SubjectGradingTemplateOptions;
-  const gradingTemplate = gradingTemplateQueryResult?.data?.data;
-
-  // TODO - fetch list of students in a class and include their grades
 
   return (
     <>
@@ -112,8 +124,8 @@ export function StudentGradingTable() {
         <div className="hidden md:flex md:flex-1" />
       </div>
       <Card className="overflow-hidden mt-8">
-        <LoadingContent loading={false} data={{}}>
-          <DataTable data={{}} columns={columns} />
+        <LoadingContent loading={gradingQueryResult?.isLoading} data={gradingQueryResult?.data} error={gradingQueryResult?.error} retry={gradingQueryResult?.refetch} shouldLoad={gradingQueryResult?.isFetched || gradingQueryResult?.isError}>
+          <DataTable data={grading || []} columns={columns} />
         </LoadingContent>
       </Card>
     </>

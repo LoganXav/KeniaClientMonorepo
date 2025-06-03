@@ -260,3 +260,14 @@ export interface ContinuousAssessmentScore {
   name: string;
   score: number;
 }
+
+export interface StudentGradingType {
+  classId: number;
+  classDivisionId: number;
+  subjects: SubjectType[];
+  user: {
+    id: number;
+    firstName: string;
+    lastName: string;
+  };
+}
