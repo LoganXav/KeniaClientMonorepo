@@ -5,6 +5,7 @@ export const QueryTagEnums = {
   STAFF_TEMPLATE: "staff-template",
 
   STUDENT: "student",
+  STUDENT_GRADING: "student-grading",
   GUARDIAN: "guardian",
 
   CLASS: "class",
