@@ -31,7 +31,11 @@ export function StudentListTable() {
       {
         header: "Class",
         accessorKey: "class",
-        cell: ({ row }) => <p>{row?.original?.class?.type}</p>,
+        cell: ({ row }) => (
+          <p>
+            {row?.original?.class?.name} {row?.original?.classDivision?.name}
+          </p>
+        ),
       },
       {
         header: "Gender",

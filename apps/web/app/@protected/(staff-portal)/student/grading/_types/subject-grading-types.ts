@@ -9,6 +9,7 @@ export type SubjectGradingTemplateOptions =
             classDivisionOptions: { id: number; name: string }[];
             calendarOptions: { id: number; year: string }[];
             termOptions: { id: number; name: string; startDate: string; endDate: string; tenantId: number }[];
+            studentOptions: {}[];
           }>
         | undefined;
       isLoading: boolean;
