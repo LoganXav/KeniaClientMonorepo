@@ -7,9 +7,9 @@ import { SubjectGradingCreateFormSchemaType } from "@/app/@protected/(staff-port
 
 const BASE_URL = "subject/grading";
 
-export const useGetSubjectGradingTemplateQuery = ({ params }: { params: { calendarId?: number; classId?: number; tenantId?: number } }) => {
+export const useGetSubjectGradingTemplateQuery = ({ params }: { params: { calendarId?: number; classId?: number; tenantId?: number; subjectId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.SUBJECT_GRADING_TEMPLATE, params?.tenantId, params?.calendarId, params?.classId],
+    queryKey: [QueryTagEnums.SUBJECT_GRADING_TEMPLATE, params?.tenantId, params?.calendarId, params?.classId, params?.subjectId],
     queryFn: async () => {
       return await getRequest<SubjectGradingTemplateOptions>({
         endpoint: `${BASE_URL}/template`,

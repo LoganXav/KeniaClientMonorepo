@@ -7,7 +7,7 @@ export const SubjectGradingCreateFormSchema = z.object({
   classId: z.union([z.string(), z.number()]),
   classDivisionId: z.union([z.string(), z.number()]),
   termId: z.union([z.string().min(1, { message: "Term is required" }), z.number({ required_error: "Term is required" })]),
-  examScore: z.number(),
+  examScore: z.union([z.string(), z.number()]),
   continuousAssessmentScores: z.array(
     z.object({
       name: z.string({ required_error: "Name is required" }).min(1, { message: "Name cannot be empty" }),

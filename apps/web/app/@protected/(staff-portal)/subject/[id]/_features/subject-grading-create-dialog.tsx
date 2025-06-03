@@ -8,29 +8,30 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoadingContent } from "@/components/loading-content";
 import { SubjectGradingCreateFormSchema } from "../_schema/subject-grading-schema";
 import { SubjectGradingCreateFormSchemaType } from "../_types/subject-grading-form-types";
-import { useSubjectGradingCreateMutation } from "@/apis/core-subject-api/subject-grading";
+import { useGetSubjectGradingTemplateQuery, useSubjectGradingCreateMutation } from "@/apis/core-subject-api/subject-grading";
 import { SubjectGradingTemplateOptions } from "../../../student/grading/_types/subject-grading-types";
 import { SubjectGradingStructureQueryResultType } from "../_types/subject-grading-structure-form-types";
 import { Button, Dialog, DialogContent, DialogTitle, Form, FormControl, FormField, FormItem, FormMessage, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, toast, Typography } from "@repo/ui";
+import { useAuthUser } from "@/hooks/use-auth-user";
 
 interface DialogProps {
   open: boolean;
   onClose: () => void;
   subjectId: number;
   tenantId?: number;
-  gradingTemplateQueryResult: SubjectGradingTemplateOptions;
   subjectGradingStructureQueryResult: SubjectGradingStructureQueryResultType;
 }
 
-export function SubjectGradingCreateDialog({ open, onClose, subjectId, subjectGradingStructureQueryResult, tenantId, gradingTemplateQueryResult }: DialogProps) {
+export function SubjectGradingCreateDialog({ open, onClose, subjectId, subjectGradingStructureQueryResult, tenantId }: DialogProps) {
+  const { authUserIds } = useAuthUser();
+
   const subjectGradingStructure = subjectGradingStructureQueryResult?.data?.data;
-  const gradingTemplate = gradingTemplateQueryResult?.data?.data;
 
   const { subjectGradingCreate, subjectGradingCreatePending, subjectGradingCreateError } = useSubjectGradingCreateMutation({ params: { tenantId } });
 
   const defaultValues = {
     subjectId,
-    studentId: 0,
+    studentId: "",
     classId: "",
     calendarId: "",
     classDivisionId: "",
@@ -95,6 +96,13 @@ export function SubjectGradingCreateDialog({ open, onClose, subjectId, subjectGr
     onClose();
   };
 
+  const calendarId = Number(form.watch("calendarId"));
+  const termId = Number(form.watch("termId"));
+  const classId = Number(form.watch("classId"));
+
+  const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(React.useMemo(() => ({ params: { calendarId, classId, tenantId: authUserIds?.tenantId, subjectId } }), [calendarId, classId, authUserIds?.tenantId, subjectId])) as SubjectGradingTemplateOptions;
+  const gradingTemplate = gradingTemplateQueryResult?.data?.data;
+
   return (
     <>
       <Dialog
@@ -130,11 +138,11 @@ export function SubjectGradingCreateDialog({ open, onClose, subjectId, subjectGr
                           <Select onValueChange={field.onChange} value={String(field.value)}>
                             <FormControl>
                               <SelectTrigger className="h-10">
-                                <SelectValue placeholder="Select year" />
+                                <SelectValue placeholder="Select Year" />
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              {gradingTemplate?.calendarOptions?.map((item: Record<string, any>, idx: number) => (
+                              {gradingTemplate?.calendarOptions?.map((item, idx: number) => (
                                 <SelectItem key={idx} value={String(item.id)}>
                                   {item.year}
                                 </SelectItem>
@@ -150,7 +158,7 @@ export function SubjectGradingCreateDialog({ open, onClose, subjectId, subjectGr
                       name="termId"
                       render={({ field }) => (
                         <FormItem>
-                          <Select onValueChange={field.onChange} value={String(field.value)}>
+                          <Select onValueChange={field.onChange} value={String(field.value)} disabled={!calendarId}>
                             <FormControl>
                               <SelectTrigger className="h-10">
                                 <SelectValue placeholder="Term" />
@@ -173,7 +181,7 @@ export function SubjectGradingCreateDialog({ open, onClose, subjectId, subjectGr
                       name="classId"
                       render={({ field }) => (
                         <FormItem>
-                          <Select onValueChange={field.onChange} value={String(field.value)}>
+                          <Select onValueChange={field.onChange} value={String(field.value)} disabled={!termId}>
                             <FormControl>
                               <SelectTrigger className="h-10">
                                 <SelectValue placeholder="Class" />
@@ -196,7 +204,7 @@ export function SubjectGradingCreateDialog({ open, onClose, subjectId, subjectGr
                       name="classDivisionId"
                       render={({ field }) => (
                         <FormItem>
-                          <Select onValueChange={field.onChange} value={String(field.value)}>
+                          <Select onValueChange={field.onChange} value={String(field.value)} disabled={!classId}>
                             <FormControl>
                               <SelectTrigger className="h-10">
                                 <SelectValue placeholder="Class Division" />
@@ -215,18 +223,31 @@ export function SubjectGradingCreateDialog({ open, onClose, subjectId, subjectGr
                       )}
                     />
                   </div>
+
                   <FormField
                     control={form.control}
-                    name={"studentId"}
+                    name="studentId"
                     render={({ field }) => (
                       <FormItem>
-                        <FormControl>
-                          <Input {...field} placeholder="Student" />
-                        </FormControl>
+                        <Select onValueChange={field.onChange} value={String(field.value)} disabled={!classId}>
+                          <FormControl>
+                            <SelectTrigger className="h-10">
+                              <SelectValue placeholder="Select Student" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {gradingTemplate?.studentOptions?.map((student: Record<string, any>, idx: number) => (
+                              <SelectItem key={idx} value={String(student.id)}>
+                                {student?.user?.lastName} {student?.user?.firstName}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
+
                   {form.watch("continuousAssessmentScores")?.map((item: any, idx: number) => (
                     <div key={idx} className="w-full grid md:grid-cols-3 gap-4">
                       <div className="md:col-span-2">
