@@ -21,15 +21,6 @@ export function ClassListTable({}: Props) {
         header: "Name",
         accessorKey: "name",
       },
-      {
-        header: "Class Teacher",
-        accessorKey: "classTeacher",
-        cell: ({ row }) => (
-          <p>
-            {row?.original?.classTeacher?.user?.lastName} {row?.original?.classTeacher?.user?.firstName}
-          </p>
-        ),
-      },
 
       {
         id: "actions",
