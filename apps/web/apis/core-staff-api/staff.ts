@@ -47,7 +47,7 @@ export const useStaffCreateMutation = ({ params }: { params?: { tenantId?: numbe
 
 export const useGetStaffTemplateQuery = ({ params }: { params: { tenantId?: number; codeValue?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [],
+    queryKey: [QueryTagEnums.STAFF_TEMPLATE, params?.tenantId, params?.codeValue],
     queryFn: async () => {
       return await getRequest<StaffTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
