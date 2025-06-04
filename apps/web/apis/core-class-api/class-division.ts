@@ -1,8 +1,8 @@
-import { ClassDivisionCreateFormSchemaType } from "@/app/@protected/(staff-portal)/class/division/create/_types/class-division-create-types";
+import { ClassDivisionType } from "@/types";
 import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
-import { ClassDivisionType } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { ClassDivisionCreateFormSchemaType } from "@/app/@protected/(staff-portal)/class/division/create/_types/class-division-create-types";
 
 const BASE_URL = "classdivision";
 
@@ -10,7 +10,7 @@ export const useGetClassDivisionListQuery = ({ params }: { params: { tenantId?: 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.CLASS_DIVISION, params?.tenantId],
     queryFn: async () => {
-      return await getRequest<Record<string, any>>({
+      return await getRequest<ClassDivisionType[]>({
         endpoint: `${BASE_URL}/list`,
         config: { params },
       });
@@ -24,7 +24,7 @@ export const useGetClassDivisionQuery = ({ path, params }: { path: { classDivisi
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.CLASS_DIVISION, params?.tenantId, path?.classDivisionId],
     queryFn: async () => {
-      return await getRequest<Record<string, any>>({
+      return await getRequest<ClassDivisionType>({
         endpoint: `${BASE_URL}/info/${path?.classDivisionId}`,
         config: { params },
       });

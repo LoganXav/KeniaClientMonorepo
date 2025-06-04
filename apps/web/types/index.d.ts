@@ -57,7 +57,7 @@ export interface StaffType {
   employmentType: string | null;
   highestLevelEdu: string | null;
   group: GroupType[];
-  classes: ClassType[];
+  classDivisions: ClassDivisionType[];
   subjects: SubjectType[];
   tenantId: number;
   tenant: TenantType;
@@ -107,10 +107,12 @@ export interface ClassDivisionType {
   id: number;
   name: string;
   classId: number;
+  classDivisionTeacherId: number;
   class: ClassType;
-  students: StudentType[];
   tenantId: number;
   tenant: SchoolType;
+  students: StudentType[];
+  classDivionTeacher: StaffType;
 }
 
 export interface RoleType {

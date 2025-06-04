@@ -1,17 +1,16 @@
 "use client";
 
-import { useGetClassDivisionListQuery } from "@/apis/core-class-api/class-division";
-import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@repo/ui";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-
-import { ColumnDef } from "@tanstack/react-table";
 import React from "react";
 import Link from "next/link";
-import { RouteEnums } from "@/constants/router/route-constants";
-import { CirclePlus, UserRound } from "lucide-react";
-import { LoadingContent } from "@/components/loading-content";
+import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
 import { useAuthUser } from "@/hooks/use-auth-user";
+import { CirclePlus, UserRound } from "lucide-react";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { LoadingContent } from "@/components/loading-content";
+import { RouteEnums } from "@/constants/router/route-constants";
+import { useGetClassDivisionListQuery } from "@/apis/core-class-api/class-division";
+import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@repo/ui";
 
 export function ClassDivisionListTable() {
   const { authUserIds } = useAuthUser();
@@ -26,15 +25,15 @@ export function ClassDivisionListTable() {
         accessorKey: "class",
         cell: ({ row }) => <p>{row?.original?.class?.name}</p>,
       },
-      // {
-      //   header: "Class Teacher",
-      //   accessorKey: "class",
-      //   cell: ({ row }) => (
-      //     <p>
-      //       {row?.original?.class?.classTeacher?.user?.firstName} {row?.original?.class?.classTeacher?.user?.lastName}
-      //     </p>
-      //   ),
-      // },
+      {
+        header: "Class Teacher",
+        accessorKey: "class",
+        cell: ({ row }) => (
+          <p>
+            {row?.original?.classDivisionTeacher?.user?.lastName} {row?.original?.classDivisionTeacher?.user?.firstName}
+          </p>
+        ),
+      },
 
       {
         id: "actions",
