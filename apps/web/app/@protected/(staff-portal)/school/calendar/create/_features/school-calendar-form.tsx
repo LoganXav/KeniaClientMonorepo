@@ -1,26 +1,23 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import React from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import useDataRef from "@/hooks/use-data-ref";
+import { TermType, BreakWeekType } from "@/types";
+import { useAuthUser } from "@/hooks/use-auth-user";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CircleMinus, CirclePlus } from "lucide-react";
+import { LoadingContent } from "@/components/loading-content";
+import { RouteEnums } from "@/constants/router/route-constants";
 import { SchoolCalendarFormSchema } from "../_schema/school-calendar-form-schema";
 import { SchoolCalendarFormSchemaType } from "../_types/school-calendar-form-types";
-import { useAuthUser } from "@/hooks/use-auth-user";
-import useDataRef from "@/hooks/use-data-ref";
-import { useCalendarMutation, useGetCalendarQuery } from "@/apis/core-calendar-api/calendar";
-import React from "react";
+import { useCalendarMutation, useGetSingleCalendarQuery, useGetCalendarTemplateQuery } from "@/apis/core-calendar-api/calendar";
 import { Form, FormField, FormItem, FormControl, Input, toast, Card, CardTitle, Button, Typography, DatePicker, SelectItem, SelectContent, SelectValue, SelectTrigger, Select, FormMessage } from "@repo/ui";
-import { LoadingContent } from "@/components/loading-content";
-import { CircleMinus, CirclePlus } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { RouteEnums } from "@/constants/router/route-constants";
-import { TermType, BreakWeekType } from "@/types";
 
 export default function SchoolCalendarForm() {
   const router = useRouter();
   const { authUserIds } = useAuthUser();
-
-  const schoolCalendarQueryResult = useGetCalendarQuery({ params: { tenantId: authUserIds?.tenantId } });
-  const schoolCalendar = schoolCalendarQueryResult?.data?.data;
 
   const { calendarMutate, calendarMutatePending, calendarMutateError } = useCalendarMutation({ params: { tenantId: authUserIds?.tenantId } });
 
@@ -43,7 +40,7 @@ export default function SchoolCalendarForm() {
     });
 
     calendarMutate(
-      { payload: { ...values, id: Number(values.id), terms: filteredTerms } },
+      { payload: { ...values, year: Number(values.year), terms: filteredTerms } },
       {
         onSuccess: (result) => {
           toast.success(result.message);
@@ -58,8 +55,7 @@ export default function SchoolCalendarForm() {
 
   const defaultValues = {
     tenantId: authUserIds?.tenantId,
-    id: 0,
-    year: new Date().getFullYear(),
+    year: "",
     terms: [
       {
         name: "",
@@ -84,27 +80,52 @@ export default function SchoolCalendarForm() {
 
   const dataRef = useDataRef({ form });
 
-  const selectedCalendarId = form.watch("id");
+  const selectedCalendarYear = form.watch("year");
 
-  // Memoize the values to ensure consistent dependencies
-  const selectedCalendar = React.useMemo(() => {
-    return schoolCalendar?.find((calendar: Record<string, any>) => calendar.id == selectedCalendarId);
-  }, [schoolCalendar, selectedCalendarId]);
+  const schoolCalendarQueryResult = useGetSingleCalendarQuery(
+    React.useMemo(
+      () => ({
+        params: {
+          tenantId: authUserIds?.tenantId,
+          year: Number(selectedCalendarYear),
+        },
+      }),
+      [authUserIds?.tenantId, selectedCalendarYear]
+    )
+  );
+  const schoolCalendar = schoolCalendarQueryResult?.data?.data;
 
-  const year = selectedCalendar?.year;
-  const terms = selectedCalendar?.terms;
+  const schoolCalendarTemplateQueryResult = useGetCalendarTemplateQuery({ params: { tenantId: authUserIds?.tenantId } });
+  const schoolCalendarTemplate = schoolCalendarTemplateQueryResult?.data?.data;
 
   // Reset form values if editing an existing school calendar
   React.useEffect(() => {
-    if (selectedCalendar) {
+    if (schoolCalendar) {
       dataRef.current.form.reset((values: SchoolCalendarFormSchemaType) => ({
         ...values,
-        id: Number(selectedCalendarId) || 0,
-        year: Number(year) || new Date().getFullYear(),
-        terms: terms || [],
+        year: Number(schoolCalendar?.year) || values.year,
+        terms: schoolCalendar?.terms || [],
       }));
+    } else {
+      form.reset({
+        year: "",
+        terms: [
+          {
+            name: "",
+            startDate: "",
+            endDate: "",
+            breakWeeks: [
+              {
+                name: "",
+                startDate: "",
+                endDate: "",
+              },
+            ],
+          },
+        ],
+      });
     }
-  }, [selectedCalendar, year, terms, selectedCalendarId]);
+  }, [schoolCalendar, schoolCalendar?.year, schoolCalendar?.terms, selectedCalendarYear]);
 
   return (
     <LoadingContent loading={schoolCalendarQueryResult?.isLoading} error={schoolCalendarQueryResult?.error} retry={schoolCalendarQueryResult?.refetch} data={schoolCalendarQueryResult?.data} shouldLoad={false}>
@@ -114,33 +135,29 @@ export default function SchoolCalendarForm() {
             <div className="flex w-full">
               <div className="hidden md:flex md:flex-1" />
               <div className="grid md:grid-cols-2 gap-4 w-full md:w-auto">
-                {schoolCalendar?.length && schoolCalendar?.length > 0 ? (
-                  <FormField
-                    control={form.control}
-                    name="id"
-                    render={({ field }) => (
-                      <FormItem>
-                        <Select onValueChange={field.onChange} value={String(field.value)}>
-                          <FormControl>
-                            <SelectTrigger className="h-10">
-                              <SelectValue placeholder="Select year" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {schoolCalendar?.map((item: Record<string, any>, idx: number) => (
-                              <SelectItem key={idx} value={String(item.id)}>
-                                {item.year}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                ) : (
-                  <div />
-                )}
+                <FormField
+                  control={form.control}
+                  name="year"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select onValueChange={field.onChange} value={String(field.value)}>
+                        <FormControl>
+                          <SelectTrigger className="h-10">
+                            <SelectValue placeholder="Select Session" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {schoolCalendarTemplate?.schoolSessionOptions?.map((item, idx: number) => (
+                            <SelectItem key={idx} value={String(item.year)}>
+                              {item.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <Button
                   className="w-full md:w-auto"
@@ -270,7 +287,7 @@ export default function SchoolCalendarForm() {
           Cancel
         </Button>
         <Button type="button" onClick={handleMutateSchoolCalendar} loading={calendarMutatePending}>
-          Save
+          {schoolCalendar ? "Update" : "Save"}
         </Button>
       </div>
     </LoadingContent>
