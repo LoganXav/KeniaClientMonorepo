@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { StaffCreateFormSchema } from "../_schema/staff-create-form-schema";
 import { UseFormReturn } from "react-hook-form";
-import { GetRequestReturnType } from "@/config/base-query";
 import { RefetchOptions } from "@tanstack/react-query";
+import { GetRequestReturnType } from "@/config/base-query";
+import { StaffCreateFormSchema } from "../_schema/staff-create-form-schema";
 
 export type StaffCreateFormSchemaType = z.infer<typeof StaffCreateFormSchema>;
 
@@ -25,7 +25,7 @@ export type StaffTemplateOptions =
             lgaIdOptions: { codeValue: string; id: number; name: string }[];
             stateIdOptions: { codeValue: string; id: number; name: string }[];
             subjectOptions: { id: number; name: string }[];
-            classOptions: { id: number; name: string }[];
+            classDivisionOptions: { id: number; name: string }[];
           }>
         | undefined;
       isLoading: boolean;

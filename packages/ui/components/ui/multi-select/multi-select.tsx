@@ -19,8 +19,6 @@ export function MultiSelect({ selected, setSelected, placeholder = "Select Optio
   const [open, setOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
 
-  console.log(selected, "====", options);
-
   const handleSelect = React.useCallback(
     (optionId: number) => {
       const newSelected = selected.includes(optionId) ? selected.filter((id) => id !== optionId) : [...selected, optionId];

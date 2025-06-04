@@ -87,5 +87,5 @@ export const StaffCreateFormSchema = z.object({
   cvFile: z.instanceof(File).optional(),
 
   subjectIds: z.array(z.number().int("Subject ID must be an integer")).optional(),
-  classIds: z.array(z.number().int("Class ID must be an integer")).optional(),
+  classDivisionIds: z.array(z.number().int("Class ID must be an integer")).optional(),
 });

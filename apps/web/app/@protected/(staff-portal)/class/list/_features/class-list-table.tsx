@@ -1,16 +1,16 @@
 "use client";
 
 import React from "react";
-import { DataTable } from "@/components/data-table";
-import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@repo/ui";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { RouteEnums } from "@/constants/router/route-constants";
 import Link from "next/link";
-import { ColumnDef } from "@tanstack/react-table";
-import { LoadingContent } from "@/components/loading-content";
 import { UserRound } from "lucide-react";
-import { useGetClassListQuery } from "@/apis/core-class-api/class";
+import { ColumnDef } from "@tanstack/react-table";
+import { DataTable } from "@/components/data-table";
 import { useAuthUser } from "@/hooks/use-auth-user";
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { LoadingContent } from "@/components/loading-content";
+import { RouteEnums } from "@/constants/router/route-constants";
+import { useGetClassListQuery } from "@/apis/core-class-api/class";
+import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@repo/ui";
 type Props = {};
 
 export function ClassListTable({}: Props) {

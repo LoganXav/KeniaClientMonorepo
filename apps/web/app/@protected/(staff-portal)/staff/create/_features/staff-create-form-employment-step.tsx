@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
+import { FileUpload } from "@/components/file-upload";
 import { StaffCreateFormReturn, StaffTemplateOptions } from "../_types/staff-create-form-types";
 import { DatePicker, FormControl, FormField, FormItem, FormMessage, Input, Label, MultiSelect, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
-import { FileUpload } from "@/components/file-upload";
 
 type StepProps = {
   form: StaffCreateFormReturn;
@@ -130,11 +130,11 @@ export function StaffCreateFormEmploymentStep({ form, staffTemplateQuery }: Step
         <div className="space-y-2">
           <FormField
             control={form.control}
-            name={"classIds"}
+            name={"classDivisionIds"}
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <MultiSelect selected={Array.isArray(field.value) ? field.value : []} onChange={field.onChange} options={staffTemplateQuery?.data?.data?.classOptions || []} placeholder="Select Classes" searchPlaceholder="Search Classes" emptyMessage="No classes found" />
+                  <MultiSelect selected={Array.isArray(field.value) ? field.value : []} onChange={field.onChange} options={staffTemplateQuery?.data?.data?.classDivisionOptions || []} placeholder="Select Class Divisions" searchPlaceholder="Search Class Division" emptyMessage="No classes found" />
                 </FormControl>
                 <FormMessage />
               </FormItem>

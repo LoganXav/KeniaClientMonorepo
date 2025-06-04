@@ -1,8 +1,8 @@
-import { StaffCreateFormSchemaType, StaffTemplateOptions } from "@/app/@protected/(staff-portal)/staff/create/_types/staff-create-form-types";
+import { StaffType } from "@/types";
 import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
-import { StaffType } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { StaffCreateFormSchemaType, StaffTemplateOptions } from "@/app/@protected/(staff-portal)/staff/create/_types/staff-create-form-types";
 
 const BASE_URL = "staff";
 
