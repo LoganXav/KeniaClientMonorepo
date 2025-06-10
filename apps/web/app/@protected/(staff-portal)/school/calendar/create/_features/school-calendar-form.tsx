@@ -107,8 +107,9 @@ export default function SchoolCalendarForm() {
         terms: schoolCalendar?.terms || [],
       }));
     } else {
-      form.reset({
-        year: "",
+      form.reset((values: SchoolCalendarFormSchemaType) => ({
+        ...values,
+        year: values.year,
         terms: [
           {
             name: "",
@@ -123,7 +124,7 @@ export default function SchoolCalendarForm() {
             ],
           },
         ],
-      });
+      }));
     }
   }, [schoolCalendar, schoolCalendar?.year, schoolCalendar?.terms, selectedCalendarYear]);
 

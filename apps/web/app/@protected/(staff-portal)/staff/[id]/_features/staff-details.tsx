@@ -1,24 +1,24 @@
 "use client";
 
-import { Card, ScrollBar, ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger, SelectValue, Select, SelectTrigger, SelectContent, SelectItem, Button, Typography } from "@repo/ui";
 import React from "react";
-import Image from "next/image";
-import { RouteEnums } from "@/constants/router/route-constants";
 import Link from "next/link";
+import Image from "next/image";
 import { UserRoundPen } from "lucide-react";
-import { useGetSingleStaffQuery } from "@/apis/core-staff-api/staff";
-import { LoadingContent } from "@/components/loading-content";
 import { formatDateToString } from "@/lib/dates";
-import { StaffDetailsPersonalInfoTab } from "./staff-details-personal-info-tab";
-import { StaffDetailsSalaryTab } from "./staff-details-salary-tab";
-import { StaffDetailsQualificationsTab } from "./staff-details-qualifications-tab";
-import { StaffDetailsSubjectsResponsibilitiesTab } from "./staff-details-subjects-responsibilities-tab";
-import { StaffDetailsDisciplinaryRecordsTab } from "./staff-details-disciplinary-records-tab";
-import { StaffDetailsDocumentsCertificationsTab } from "./staff-details-documents-certifications-tab";
-import { StaffDetailsSystemPermissionsTab } from "./staff-details-system-permissions-tab";
-import { StaffDetailsWorkScheduleTab } from "./staff-details-work-schedule-tab";
-import { StaffDetailsPerformanceAppraisalsTab } from "./staff-details-performance-appraisals-tab";
 import { useAuthUser } from "@/hooks/use-auth-user";
+import { LoadingContent } from "@/components/loading-content";
+import { RouteEnums } from "@/constants/router/route-constants";
+import { StaffDetailsSalaryTab } from "./staff-details-salary-tab";
+import { useGetSingleStaffQuery } from "@/apis/core-staff-api/staff";
+import { StaffDetailsPersonalInfoTab } from "./staff-details-personal-info-tab";
+import { StaffDetailsWorkScheduleTab } from "./staff-details-work-schedule-tab";
+import { StaffDetailsQualificationsTab } from "./staff-details-qualifications-tab";
+import { StaffDetailsSystemPermissionsTab } from "./staff-details-system-permissions-tab";
+import { StaffDetailsDisciplinaryRecordsTab } from "./staff-details-disciplinary-records-tab";
+import { StaffDetailsPerformanceAppraisalsTab } from "./staff-details-performance-appraisals-tab";
+import { StaffDetailsDocumentsCertificationsTab } from "./staff-details-documents-certifications-tab";
+import { StaffDetailsSubjectsResponsibilitiesTab } from "./staff-details-subjects-responsibilities-tab";
+import { Card, ScrollBar, ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger, SelectValue, Select, SelectTrigger, SelectContent, SelectItem, Button, Typography } from "@repo/ui";
 
 function StaffDetails({ staffId }: { staffId: number }) {
   const { authUserIds } = useAuthUser();

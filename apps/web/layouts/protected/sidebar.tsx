@@ -80,7 +80,7 @@ export default function ProtectedSidebar() {
       routes: [
         {
           name: "Settings",
-          path: "/admin/settings",
+          path: "#",
           icon: Settings,
           subRoutes: [
             {
@@ -91,12 +91,12 @@ export default function ProtectedSidebar() {
             },
             {
               name: "System Logs",
-              path: "/admin/settings/logs",
+              path: RouteEnums.LOGS,
               icon: FileText,
             },
             {
               name: "Permissions",
-              path: "/admin/settings/permissions",
+              path: RouteEnums.ROLES_AND_PERMISSIONS,
               icon: Shield,
             },
           ],

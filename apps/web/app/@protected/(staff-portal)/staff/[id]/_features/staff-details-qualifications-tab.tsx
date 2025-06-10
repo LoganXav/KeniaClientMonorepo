@@ -1,8 +1,8 @@
 "use client";
 
+import React from "react";
 import { StaffType } from "@/types";
 import { Card, Typography } from "@repo/ui";
-import React from "react";
 
 type TabProps = {
   staff?: StaffType;

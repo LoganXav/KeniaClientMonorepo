@@ -86,21 +86,21 @@ export function SubjectDetails({ subjectId }: { subjectId: number }) {
         </div>
 
         <div className="space-y-12">
-          <LoadingContent loading={schoolGradingStructureQueryResult?.isLoading} data={schoolGradingStructureQueryResult?.data} error={schoolGradingStructureQueryResult?.error} retry={schoolGradingStructureQueryResult?.refetch}>
-            <div className="grid md:grid-cols-3 gap-4">
-              <Card className="md:col-span-2 border shadow-none grid gap-2 p-4 md:p-8">
-                <CardTitle className="font-heading">{subject?.name}</CardTitle>
-                <CardDescription className="max-w-xl">{subject?.description}</CardDescription>
-                <CardDescription className="max-w-xl">{subject?.class?.name}</CardDescription>
-              </Card>
+          <div className="grid md:grid-cols-3 gap-4">
+            <Card className="md:col-span-2 border shadow-none p-4 md:p-8 space-y-4">
+              <CardTitle className="font-heading">{subject?.name}</CardTitle>
+              <CardDescription className="max-w-xl">{subject?.description}</CardDescription>
+              <CardDescription className="max-w-xl">{subject?.class?.name}</CardDescription>
+            </Card>
 
-              <Card className="p-4 space-y-4">
-                <Typography className="font-heading uppercase" size={"small"}>
-                  Class Grading Structure
-                </Typography>
-                <div className="space-y-2">
+            <Card className="p-4 space-y-4">
+              <Typography className="font-heading uppercase" size={"small"}>
+                School Grading Structure
+              </Typography>
+              <div className="space-y-2">
+                <LoadingContent loading={schoolGradingStructureQueryResult?.isLoading} data={schoolGradingStructureQueryResult?.data} error={schoolGradingStructureQueryResult?.error} retry={schoolGradingStructureQueryResult?.refetch}>
                   {schoolGradingStructure?.gradeBoundaries.map((boundary, idx) => (
-                    <div className="flex gap-6 items-center" key={idx}>
+                    <div className="grid grid-cols-5 gap-2 place-items-center items-center" key={idx}>
                       <Typography>{boundary?.minimumScore}</Typography>
                       <ArrowRightIcon strokeWidth={1} size={16} />
                       <Typography>{boundary?.maximumScore}</Typography>
@@ -108,10 +108,10 @@ export function SubjectDetails({ subjectId }: { subjectId: number }) {
                       <Typography>{boundary?.grade}</Typography>
                     </div>
                   ))}
-                </div>
-              </Card>
-            </div>
-          </LoadingContent>
+                </LoadingContent>
+              </div>
+            </Card>
+          </div>
           <SubjectDetailsTabs subjectId={subjectId} />
         </div>
       </LoadingContent>
