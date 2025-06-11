@@ -41,5 +41,5 @@ export const PERMISSIONS = {
 
 export const routePermissionsMap = {
   // Test
-  [RouteEnums.SETTINGS_GENERAL]: ["PERMISSIONS.SETTINGS_GENERAL"],
+  [RouteEnums.LOGS]: ["PERMISSIONS.LOGS"],
 };

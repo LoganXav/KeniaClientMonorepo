@@ -1,9 +1,9 @@
 "use client";
 
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Typography } from "@repo/ui";
+import React from "react";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React from "react";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Typography } from "@repo/ui";
 
 type Props = { pages: { title: string; path?: string }[] };
 
@@ -11,7 +11,7 @@ export function PageBreadcrumbs({ pages }: Props) {
   const router = useRouter();
   return (
     <div className="flex items-center gap-4">
-      <Button variant={"outline"} className="border-border bg-card" onClick={() => (pages[0]?.path ? router.push(pages[0]?.path) : null)}>
+      <Button variant={"outline"} className="border-border bg-card" onClick={() => router.back()}>
         <ChevronLeft strokeWidth={1} />
       </Button>
       <div>

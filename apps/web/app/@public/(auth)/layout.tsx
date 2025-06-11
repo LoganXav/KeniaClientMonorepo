@@ -18,7 +18,7 @@ export default function AuthLayout({ children }: React.PropsWithChildren) {
           </div>
         </div>
         <div className="relative h-full 2xl:h-2/3 bg-card w-full">
-          <Image src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/backgrounds/login-security.svg" fill alt="placeholder-img" className="w-full object-center dark:brightness-[0.2] dark:grayscale" />
+          <Image src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/backgrounds/login-security.svg" fill alt="placeholder-img" className="w-full object-center" />
         </div>
       </div>
       <main className="w-full md:col-span-4">{children}</main>

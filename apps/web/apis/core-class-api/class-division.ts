@@ -6,9 +6,9 @@ import { ClassDivisionCreateFormSchemaType } from "@/app/@protected/(staff-porta
 
 const BASE_URL = "classdivision";
 
-export const useGetClassDivisionListQuery = ({ params }: { params: { tenantId?: number } }) => {
+export const useGetClassDivisionListQuery = ({ params }: { params: { tenantId?: number; classTeacherId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.CLASS_DIVISION, params?.tenantId],
+    queryKey: [QueryTagEnums.CLASS_DIVISION, params?.tenantId, params?.classTeacherId],
     queryFn: async () => {
       return await getRequest<ClassDivisionType[]>({
         endpoint: `${BASE_URL}/list`,

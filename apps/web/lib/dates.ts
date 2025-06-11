@@ -1,5 +1,5 @@
-import { CalendarType, TermType } from "@/types";
 import { BreakWeekType } from "@/types";
+import { CalendarType, TermType } from "@/types";
 import { format, parseISO, differenceInYears } from "date-fns";
 
 export const formatDateToString = (dateString: string | undefined): string => {
@@ -47,4 +47,10 @@ export function parseCalendarDataToEvents(data: CalendarType[] = []): { title: s
   });
 
   return events;
+}
+
+export function formatTimeRange(start: string, end: string): string {
+  const startTime = format(new Date(start), "HH:mm");
+  const endTime = format(new Date(end), "HH:mm");
+  return `${startTime} - ${endTime}`;
 }

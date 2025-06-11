@@ -273,3 +273,10 @@ export interface StudentGradingType {
     lastName: string;
   };
 }
+
+export interface StaffPeriodType {
+  class: string;
+  subject: string;
+  endTime: string;
+  startTime: string;
+}

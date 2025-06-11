@@ -52,5 +52,6 @@ export const RouteEnums = {
   SUBJECT_CREATE: "/subject/create",
 
   // SETTINGS
-  SETTINGS_GENERAL: "/admin/settings/general",
+  LOGS: "/logs",
+  ROLES_AND_PERMISSIONS: "/roles-and-permissions",
 };

@@ -33,7 +33,7 @@ function AuthLobbyTabs() {
                 </div>
               </div>
               <div className="hidden md:flex items-center justify-center flex-1 relative">
-                <Image src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/backgrounds/login-security.svg" fill alt="placeholder-img" className="h-full w-full object-center dark:brightness-[0.2] dark:grayscale" />
+                <Image src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/backgrounds/login-security.svg" fill alt="placeholder-img" className="h-full w-full object-center" />
               </div>
             </CardContent>
           </Card>
@@ -53,7 +53,7 @@ function AuthLobbyTabs() {
                 </div>
               </div>
               <div className="hidden md:flex items-center justify-center flex-1 relative">
-                <Image src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/backgrounds/login-security.svg" fill alt="placeholder-img" className="h-full w-full object-center dark:brightness-[0.2] dark:grayscale" />
+                <Image src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/backgrounds/login-security.svg" fill alt="placeholder-img" className="h-full w-full object-center" />
               </div>
             </CardContent>
           </Card>

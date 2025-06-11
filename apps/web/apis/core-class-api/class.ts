@@ -1,12 +1,12 @@
-import { getRequest, postRequest } from "@/config/base-query";
+import { getRequest } from "@/config/base-query";
+import { useQuery } from "@tanstack/react-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const BASE_URL = "class";
 
-export const useGetClassListQuery = ({ params }: { params: { tenantId?: number; classTeacherId?: number } }) => {
+export const useGetClassListQuery = ({ params }: { params: { tenantId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.CLASS, params?.tenantId, params?.classTeacherId],
+    queryKey: [QueryTagEnums.CLASS, params?.tenantId],
     queryFn: async () => {
       return await getRequest<Record<string, any>>({
         endpoint: `${BASE_URL}/list`,

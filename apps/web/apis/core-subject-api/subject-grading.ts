@@ -1,7 +1,7 @@
 import { SubjectGradingType } from "@/types";
 import { getRequest, postRequest } from "@/config/base-query";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SubjectGradingTemplateOptions } from "@/app/@protected/(staff-portal)/student/grading/_types/subject-grading-types";
 import { SubjectGradingCreateFormSchemaType } from "@/app/@protected/(staff-portal)/subject/[id]/_types/subject-grading-form-types";
 
@@ -16,6 +16,10 @@ export const useGetSubjectGradingTemplateQuery = ({ params }: { params: { calend
         config: { params },
       });
     },
+
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
   });
 
   return { data, isLoading, error, refetch };
