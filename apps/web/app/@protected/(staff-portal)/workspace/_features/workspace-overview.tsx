@@ -1,15 +1,20 @@
 "use client";
 
 import Image from "next/image";
-import { formatDateToString } from "@/lib/dates";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { LoadingContent } from "@/components/loading-content";
+import { formatDateToString, formatTimeRange } from "@/lib/dates";
+import { useGetPeriodQuery } from "@/apis/core-period-api/period";
 import { useGetSingleStaffQuery } from "@/apis/core-staff-api/staff";
 import { Card, cn, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Typography } from "@repo/ui";
 
 export function WorkspaceOverview() {
   const { authUserIds } = useAuthUser();
   const { data: staff, isLoading, error, refetch } = useGetSingleStaffQuery({ path: { staffId: authUserIds?.id }, params: { tenantId: authUserIds?.tenantId } });
+
+  const periodQueryResult = useGetPeriodQuery({ params: { tenantId: authUserIds?.tenantId, today: new Date() } });
+
+  const period = periodQueryResult?.data?.data || [];
 
   return (
     <div>
@@ -61,23 +66,31 @@ export function WorkspaceOverview() {
             </div>
           </LoadingContent>
         </Card>
-        <Card className="p-4 min-h-48">
-          <Typography className="font-heading uppercase" size={"small"}>
-            Upcoming Class Periods
-          </Typography>
-          <div className="space-y-2 mt-4">
-            {[1, 2, 3, 4].map((period, idx) => (
-              <div key={idx} className={cn("flex sm:flex-row flex-col gap-2 justify-between sm:items-center p-2", idx <= 2 && "border-b")}>
-                <div>
-                  <Typography className="">English Language</Typography>
-                  <Typography size="small" color="muted">
-                    SS1 Science A
-                  </Typography>
+        <Card className="min-h-48">
+          <LoadingContent data={periodQueryResult?.data} error={periodQueryResult?.error} loading={periodQueryResult?.isLoading} retry={periodQueryResult?.refetch}>
+            <Typography className="font-heading uppercase border-b p-4" size={"small"}>
+              Today's Class Periods
+            </Typography>
+            <div className="space-y-2 p-4">
+              {period?.length > 0 ? (
+                period?.map((period, idx) => (
+                  <div key={idx} className={cn("flex sm:flex-row flex-col gap-2 justify-between sm:items-center px-2 pb-2", idx <= 2 && "border-b")}>
+                    <div>
+                      <Typography>{period?.subject}</Typography>
+                      <Typography size="small" color="muted">
+                        {period?.class}
+                      </Typography>
+                    </div>
+                    <Typography>{formatTimeRange(period?.startTime, period?.endTime)}</Typography>
+                  </div>
+                ))
+              ) : (
+                <div className="w-full flex justify-center">
+                  <Typography color="muted">You have no periods today.</Typography>
                 </div>
-                <Typography className="">08:30 - 09:00</Typography>
-              </div>
-            ))}
-          </div>
+              )}
+            </div>
+          </LoadingContent>
         </Card>
       </div>
     </div>
