@@ -25,4 +25,7 @@ export const QueryTagEnums = {
   TENANT: "tenant",
   TENANT_GRADING_STRUCTURE: "tenant-grading-structure",
   TENANT_GRADING_STRUCTURE_TEMPLATE: "grading-structure-template",
+
+  ROLE: "role",
+  ROLE_TEMPLATE: "role-template",
 };

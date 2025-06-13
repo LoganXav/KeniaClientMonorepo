@@ -15,11 +15,10 @@ import { useGetSubjectGradingStructureQuery } from "@/apis/core-subject-api/subj
 import { useGetSubjectGradingListQuery, useGetSubjectGradingTemplateQuery } from "@/apis/core-subject-api/subject-grading";
 import { SubjectGradingTemplateOptions } from "@/app/@protected/(staff-portal)/student/grading/_types/subject-grading-types";
 
-export function SubjectDetailsGradingTab({ subjectId }: { subjectId: number }) {
+export function SubjectDetailsGradingTab({ subjectId, classId }: { subjectId: number; classId?: number }) {
   const { authUserIds } = useAuthUser();
   const [open, toggle] = useToggle(false);
   const [termId, setTermId] = React.useState(0);
-  const [classId, setClassId] = React.useState(0);
   const [calendarId, setCalendarId] = React.useState(0);
   const [classDivisionId, setClassDivisionId] = React.useState(0);
 
@@ -131,7 +130,7 @@ export function SubjectDetailsGradingTab({ subjectId }: { subjectId: number }) {
             </SelectContent>
           </Select>
 
-          <Select value={String(classId || "")} onValueChange={(value) => setClassId(Number(value))} disabled={!termId}>
+          <Select value={String(classId || "")} disabled={!!classId}>
             <SelectTrigger>
               <SelectValue placeholder="Class" />
             </SelectTrigger>

@@ -120,7 +120,7 @@ export function SubjectGradingStructureCreateDialog({ open, onClose, subject, is
       >
         <DialogTitle>
           <Typography size="h4" className="font-heading">
-            {isView ? "Subject Grading Structure" : isEdit ? "Update Subject Grading Structure" : "Create Subject Grading Structure"} (Continuous Assessment)
+            {isView ? "Grade Breakdown" : isEdit ? "Update Grade Breakdown" : "Create Grade Breakdown"} (Continuous Assessment)
           </Typography>
         </DialogTitle>
 

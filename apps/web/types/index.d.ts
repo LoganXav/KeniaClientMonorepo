@@ -118,7 +118,9 @@ export interface ClassDivisionType {
 export interface RoleType {
   id: number;
   name: string;
-  rank: number;
+  isAdmin: boolean;
+  description: string | null;
+  scope: string | null;
   permissions: PermissionType[];
   staff: StaffType[];
   tenantId: number;

@@ -29,6 +29,8 @@ export * from "./components/ui/typography";
 export * from "./components/ui/command";
 export * from "./components/ui/badge";
 
+export * from "./components/ui/textarea";
+
 export * from "./components/ui/full-calendar";
 export * from "./components/ui/time-picker";
 export { cn } from "./lib/utils";

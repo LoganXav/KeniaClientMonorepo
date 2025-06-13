@@ -36,7 +36,7 @@ function SchoolMenu({}: Props) {
             url: RouteEnums.SCHOOL_TIMETABLE,
           },
           {
-            label: "Grading Structure",
+            label: "Grading Policy",
             desc: "Manage school grading system and grade scales.",
             url: RouteEnums.SCHOOL_GRADING_LIST,
           },
