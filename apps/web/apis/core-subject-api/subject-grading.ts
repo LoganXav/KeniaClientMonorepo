@@ -34,7 +34,7 @@ export const useGetSubjectGradingListQuery = ({ path, params }: { path: {}; para
         config: { params },
       });
     },
-    enabled: !!params?.classDivisionId || !!params?.classId,
+    enabled: !!params?.classDivisionId || (!!params?.classId && !!params?.termId),
   });
 
   return { data, isLoading, error, refetch, isFetched, isError };

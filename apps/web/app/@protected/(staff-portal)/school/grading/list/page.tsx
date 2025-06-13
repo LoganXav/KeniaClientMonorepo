@@ -8,7 +8,7 @@ type Props = {};
 function SchoolGradingStructureListPage({}: Props) {
   const pageBreadcrumbs = [
     { title: "School", path: RouteEnums.SCHOOL },
-    { title: "Grading Structure List", path: RouteEnums.SCHOOL_GRADING_LIST },
+    { title: "Grading Policy List", path: RouteEnums.SCHOOL_GRADING_LIST },
   ];
 
   return (

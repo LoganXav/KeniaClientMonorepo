@@ -14,8 +14,8 @@ function SchoolGradingStructureCreatePage({ searchParams }: Props) {
   const gradeStructureId = searchParams.id ? parseInt(searchParams.id, 10) : undefined;
 
   const pageBreadcrumbs = [
-    { title: "Grading Structure List", path: RouteEnums.SCHOOL_GRADING_LIST },
-    { title: "Manage Grading Structure", path: RouteEnums.SCHOOL_GRADING_CREATE },
+    { title: "Grading Policy List", path: RouteEnums.SCHOOL_GRADING_LIST },
+    { title: "Manage Grading Policy", path: RouteEnums.SCHOOL_GRADING_CREATE },
   ];
 
   return (
@@ -23,7 +23,7 @@ function SchoolGradingStructureCreatePage({ searchParams }: Props) {
       <PageBreadcrumbs pages={pageBreadcrumbs} />
       <div className="mt-8">
         <Card className="border shadow-none grid gap-2 p-4 my-8 md:p-8">
-          <CardTitle className="font-heading">School Grading Structure</CardTitle>
+          <CardTitle className="font-heading">School Grading Policy</CardTitle>
           <CardDescription className="max-w-xl">
             Define how student scores are translated into letter grades. For example: a score between <strong>90 – 100</strong> could be graded as <strong>A+ (Excellent)</strong>.
           </CardDescription>

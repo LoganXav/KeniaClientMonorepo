@@ -4,13 +4,13 @@ import { SubjectDetailsGradingTab } from "./subject-details-grading-tab";
 import { SubjectDetailsStudentsTab } from "./subject-details-students-tab";
 import { ScrollArea, ScrollBar, Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
 
-export function SubjectDetailsTabs({ subjectId }: { subjectId: number }) {
+export function SubjectDetailsTabs({ subjectId, classId }: { subjectId: number; classId?: number }) {
   return (
     <Tabs defaultValue="students">
       <ScrollArea>
         <div className="w-full relative h-14">
           <TabsList className="flex absolute">
-            <TabsTrigger value="students">Students</TabsTrigger>
+            <TabsTrigger value="students">Current Students</TabsTrigger>
             <TabsTrigger value="grading">Grading</TabsTrigger>
           </TabsList>
         </div>
@@ -18,10 +18,10 @@ export function SubjectDetailsTabs({ subjectId }: { subjectId: number }) {
       </ScrollArea>
 
       <TabsContent value="students">
-        <SubjectDetailsStudentsTab subjectId={subjectId} />
+        <SubjectDetailsStudentsTab subjectId={subjectId} classId={classId} />
       </TabsContent>
       <TabsContent value="grading">
-        <SubjectDetailsGradingTab subjectId={subjectId} />
+        <SubjectDetailsGradingTab subjectId={subjectId} classId={classId} />
       </TabsContent>
     </Tabs>
   );

@@ -14,9 +14,10 @@ interface MultiSelectProps {
   placeholder?: string;
   searchPlaceholder?: string;
   emptyMessage?: string;
+  disabled?: boolean;
 }
 
-export function MultiSelect({ options, selected, onChange, placeholder = "Select options...", searchPlaceholder = "Search items...", emptyMessage = "No items found." }: MultiSelectProps) {
+export function MultiSelect({ options, selected, onChange, placeholder = "Select options...", searchPlaceholder = "Search items...", emptyMessage = "No items found.", disabled = false }: MultiSelectProps) {
   const [isOpen, setIsOpen] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -54,6 +55,7 @@ export function MultiSelect({ options, selected, onChange, placeholder = "Select
             <Badge variant="secondary" className="rounded text-foreground bg-card border border-border hover:bg-secondary" key={selected}>
               {options.find((option) => option?.id === selected)?.name}
               <Button
+                disabled={disabled}
                 aria-label="Remove option"
                 size="sm"
                 type="button"
@@ -78,7 +80,7 @@ export function MultiSelect({ options, selected, onChange, placeholder = "Select
         </div>
       )}
 
-      <Button type="button" variant="outline" role="combobox" aria-expanded={isOpen} className="w-full justify-between h-12 bg-card border border-border shadow-none font-normal text-[15px]" onClick={() => setIsOpen(!isOpen)}>
+      <Button disabled={disabled} type="button" variant="outline" role="combobox" aria-expanded={isOpen} className="w-full justify-between h-12 bg-card border border-border shadow-none font-normal text-[15px]" onClick={() => setIsOpen(!isOpen)}>
         {selected?.length === 0 ? placeholder : `${selected?.length} selected`}
         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </Button>

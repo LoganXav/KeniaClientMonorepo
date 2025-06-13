@@ -5,8 +5,8 @@ import useToggle from "@/hooks/use-toggle";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { SubjectDetailsTabs } from "./subject-details-tabs";
 import { LoadingContent } from "@/components/loading-content";
+import { MinusIcon, CirclePlus, EqualIcon } from "lucide-react";
 import { useGetSingleSubjectQuery } from "@/apis/core-subject-api/subject";
-import { ArrowRightIcon, CirclePlus, EqualIcon, EyeIcon } from "lucide-react";
 import { SubjectGradingStructureCreateDialog } from "./subject-grading-structure-create-dialog";
 import { useGetSchoolGradingStructureQuery } from "@/apis/core-tenant-api/tenant-grading-structure";
 import { Button, Card, CardDescription, CardTitle, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Typography } from "@repo/ui";
@@ -53,8 +53,9 @@ export function SubjectDetails({ subjectId }: { subjectId: number }) {
 
           <div className="grid md:grid-cols-3 gap-4 w-full md:w-auto">
             {subject?.gradingStructure ? (
-              <Button size={"icon"} variant={"outline"} className="justify-self-end" onClick={handleViewDialogOpen}>
-                <EyeIcon size={18} strokeWidth={1} />
+              <Button variant={"outline"} className="w-full justify-self-end" onClick={handleViewDialogOpen}>
+                {/* <EyeIcon size={18} strokeWidth={1} /> */}
+                View Grade Breakdown
               </Button>
             ) : (
               <div />
@@ -62,11 +63,11 @@ export function SubjectDetails({ subjectId }: { subjectId: number }) {
             <Button className="w-full" onClick={() => handleOpenDialog()}>
               {!subject?.gradingStructure ? (
                 <>
-                  Create Grading Structure <CirclePlus size={18} strokeWidth={1} />
+                  Create Grade Breakdown <CirclePlus size={18} strokeWidth={1} />
                 </>
               ) : (
                 <>
-                  Update Grading Structure <CirclePlus size={18} strokeWidth={1} />
+                  Update Grade Breakdown <CirclePlus size={18} strokeWidth={1} />
                 </>
               )}
             </Button>
@@ -95,24 +96,36 @@ export function SubjectDetails({ subjectId }: { subjectId: number }) {
 
             <Card className="p-4 space-y-4">
               <Typography className="font-heading uppercase" size={"small"}>
-                School Grading Structure
+                School Grading Policy
               </Typography>
               <div className="space-y-2">
                 <LoadingContent loading={schoolGradingStructureQueryResult?.isLoading} data={schoolGradingStructureQueryResult?.data} error={schoolGradingStructureQueryResult?.error} retry={schoolGradingStructureQueryResult?.refetch}>
-                  {schoolGradingStructure?.gradeBoundaries.map((boundary, idx) => (
-                    <div className="grid grid-cols-5 gap-2 place-items-center items-center" key={idx}>
-                      <Typography>{boundary?.minimumScore}</Typography>
-                      <ArrowRightIcon strokeWidth={1} size={16} />
-                      <Typography>{boundary?.maximumScore}</Typography>
-                      <EqualIcon strokeWidth={1} size={16} />
-                      <Typography>{boundary?.grade}</Typography>
-                    </div>
-                  ))}
+                  <div className="grid grid-cols-5 border border-border">
+                    {schoolGradingStructure?.gradeBoundaries.map((boundary, idx) => (
+                      <React.Fragment key={idx}>
+                        <div className="p-2 border border-border text-center">
+                          <Typography>{boundary?.minimumScore}</Typography>
+                        </div>
+                        <div className="p-2 border border-border flex justify-center items-center">
+                          <MinusIcon strokeWidth={1} size={16} />
+                        </div>
+                        <div className="p-2 border border-border text-center">
+                          <Typography>{boundary?.maximumScore}</Typography>
+                        </div>
+                        <div className="p-2 border border-border flex justify-center items-center">
+                          <EqualIcon strokeWidth={1} size={16} />
+                        </div>
+                        <div className="p-2 border border-border text-center">
+                          <Typography>{boundary?.grade}</Typography>
+                        </div>
+                      </React.Fragment>
+                    ))}
+                  </div>
                 </LoadingContent>
               </div>
             </Card>
           </div>
-          <SubjectDetailsTabs subjectId={subjectId} />
+          <SubjectDetailsTabs subjectId={subjectId} classId={subject?.classId} />
         </div>
       </LoadingContent>
 

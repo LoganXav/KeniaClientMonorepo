@@ -13,7 +13,6 @@ import { SchoolGradingStructureCreateFormSchema } from "../_schema/school-gradin
 import { SchoolGradingStructureCreateFormSchemaType } from "../_types/school-grading-structure-form-types";
 import { useCreateSchoolGradingStructureMutation, useGetSchoolGradingStructureQuery, useGetSchoolGradingStructureTemplateQuery } from "@/apis/core-tenant-api/tenant-grading-structure";
 import { Button, Form, FormControl, FormField, FormItem, FormMessage, Input, Label, MultiSelect, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, toast } from "@repo/ui";
-import { z } from "zod";
 
 type Props = {
   gradeStructureId?: number;
@@ -85,7 +84,7 @@ export function SchoolGradingStructureForm({ gradeStructureId }: Props) {
   };
 
   const form = useForm<SchoolGradingStructureCreateFormSchemaType>({
-    resolver: zodResolver(z.any()),
+    resolver: zodResolver(SchoolGradingStructureCreateFormSchema),
     defaultValues,
     mode: "onSubmit",
   });
@@ -299,7 +298,7 @@ export function SchoolGradingStructureForm({ gradeStructureId }: Props) {
               <Button variant={"outline"} type="button" onClick={() => router.push(RouteEnums.SCHOOL_GRADING_LIST)} disabled={createGradingStructurePending}>
                 Cancel
               </Button>
-              <Button loading={schoolGradingStructureQueryResult?.isLoading || createGradingStructurePending || schoolGradingStructureQueryResult?.isLoading}>Create Grading Structure</Button>
+              <Button loading={schoolGradingStructureQueryResult?.isLoading || createGradingStructurePending || schoolGradingStructureQueryResult?.isLoading}>{`${isEdit ? "Update" : "Create"}`} Grading Policy</Button>
             </div>
           </form>
         </Form>

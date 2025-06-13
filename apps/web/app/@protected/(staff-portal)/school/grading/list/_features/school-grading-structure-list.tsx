@@ -84,7 +84,7 @@ export function SchoolGradingStructureList() {
         <div className="hidden md:flex md:flex-1" />
         <div className="grid gap-4 w-full md:w-auto">
           <Button className="w-full" onClick={() => router.push(RouteEnums.SCHOOL_GRADING_CREATE)}>
-            Add Grading Structure <CirclePlus size={18} strokeWidth={1} />
+            Add Grading Policy <CirclePlus size={18} strokeWidth={1} />
           </Button>
         </div>
       </div>
