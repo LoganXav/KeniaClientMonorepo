@@ -4,6 +4,7 @@ export const SchoolTimetableFormSchema = z.object({
   tenantId: z.number().nonnegative(),
   id: z.number().nonnegative(),
   day: z.string().min(1, "Day is required"),
+  calendarId: z.union([z.string().min(1), z.number()]),
   termId: z.number().nonnegative(),
   periods: z.array(
     z.object({

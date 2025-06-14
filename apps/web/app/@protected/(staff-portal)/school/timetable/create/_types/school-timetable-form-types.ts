@@ -15,6 +15,11 @@ export type SchoolTimetableTemplateOptions =
             dayOptions: string[];
             breakTypeOptions: string[];
             termOptions: { id: number; name: string; startDate: string; endDate: string; tenantId: number }[];
+            calendarOptions: {
+              id: number;
+              name: string;
+              year: number;
+            }[];
           }>
         | undefined;
       isLoading: boolean;

@@ -15,6 +15,7 @@ export const QueryTagEnums = {
   CALENDAR_TEMPLATE: "calendar-template",
 
   TIMETABLE: "timetable",
+  TIMETABLE_TEMPLATE: "timetable-template",
   PERIOD: "period",
 
   SUBJECT: "subject",

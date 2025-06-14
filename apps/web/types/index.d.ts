@@ -203,7 +203,7 @@ export interface PeriodType {
   subjectId: number;
   subject: SubjectType;
   isBreak: boolean;
-  breakType: "SHORTBREAK" | "LONGBREAK" | null;
+  breakType: "Shortbreak" | "Longbreak" | null;
   timetableId: number;
   timetable: TimetableType;
 }
