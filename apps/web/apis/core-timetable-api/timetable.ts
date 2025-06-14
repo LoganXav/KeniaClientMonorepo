@@ -8,7 +8,7 @@ const BASE_URL = "timetable";
 
 export const useGetTimetableQuery = ({ params }: { params?: { tenantId?: number; classDivisionId?: number; termId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.TIMETABLE, params?.tenantId],
+    queryKey: [QueryTagEnums.TIMETABLE, params?.tenantId, params?.classDivisionId, params?.termId],
     queryFn: async () => {
       return await getRequest<TimetablePeriodType[]>({
         endpoint: `${BASE_URL}/list`,
@@ -43,15 +43,18 @@ export const useTimetableMutation = ({ params }: { params?: { tenantId?: number 
   return { timetableMutate, timetableMutatePending, timetableMutateError };
 };
 
-export const useGetTimetableTemplateQuery = ({ params }: { params: { classId?: number; tenantId?: number } }) => {
+export const useGetTimetableTemplateQuery = ({ params }: { params: { classId?: number; tenantId?: number; calendarId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.TIMETABLE, params?.tenantId, params?.classId],
+    queryKey: [QueryTagEnums.TIMETABLE_TEMPLATE, params?.tenantId, params?.calendarId, params?.classId],
     queryFn: async () => {
       return await getRequest<SchoolTimetableTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
         config: { params },
       });
     },
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
   });
 
   return { data, isLoading, error, refetch };

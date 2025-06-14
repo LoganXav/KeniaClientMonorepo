@@ -14,18 +14,32 @@ function SchoolTimetableGrid() {
   const { authUserIds } = useAuthUser();
   const [termId, setTermId] = React.useState(0);
   const [classId, setClassId] = React.useState(0);
+  const [calendarId, setCalendarId] = React.useState(0);
   const [classDivisionId, setClassDivisionId] = React.useState(0);
 
   const timetableQueryResult = useGetTimetableQuery(React.useMemo(() => ({ params: { classDivisionId, termId, tenantId: authUserIds?.tenantId } }), [classDivisionId, termId, authUserIds?.tenantId]));
   const timetable = timetableQueryResult?.data?.data;
 
-  const timetableTemplateQueryResult = useGetTimetableTemplateQuery(React.useMemo(() => ({ params: { classId, tenantId: authUserIds?.tenantId } }), [classId, authUserIds?.tenantId])) as SchoolTimetableTemplateOptions;
+  const timetableTemplateQueryResult = useGetTimetableTemplateQuery(React.useMemo(() => ({ params: { classId, tenantId: authUserIds?.tenantId, calendarId } }), [classId, authUserIds?.tenantId, calendarId])) as SchoolTimetableTemplateOptions;
   const timetableTemplate = timetableTemplateQueryResult?.data?.data;
 
   return (
     <>
-      <div className="flex w-full pb-4 mt-8">
+      <div className="flex flex-col md:flex-row w-full gap-4 pb-4 mt-8 justify-between">
         <div className="grid md:grid-cols-4 gap-4 w-full md:w-auto">
+          <Select value={String(calendarId || "")} onValueChange={(value) => setCalendarId(Number(value))} disabled={timetableTemplateQueryResult?.isLoading}>
+            <SelectTrigger className="">
+              <SelectValue placeholder="Select Session" />
+            </SelectTrigger>
+            <SelectContent>
+              {timetableTemplate?.calendarOptions?.map((item, idx: number) => (
+                <SelectItem key={idx} value={String(item.id)}>
+                  {item.year}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
           <Select value={String(termId || "")} onValueChange={(value) => setTermId(Number(value))} disabled={timetableTemplateQueryResult?.isLoading}>
             <SelectTrigger>
               <SelectValue placeholder="Term" />
@@ -64,22 +78,15 @@ function SchoolTimetableGrid() {
               ))}
             </SelectContent>
           </Select>
-
-          <Link className="" href={RouteEnums.SCHOOL_TIMETABLE_CREATE}>
-            <Button className="w-full">
-              Manage Timetable <CalendarCog size={18} strokeWidth={1} />
-            </Button>
-          </Link>
         </div>
+        <Link className="w-fit" href={RouteEnums.SCHOOL_TIMETABLE_CREATE}>
+          <Button className="w-full">
+            Manage Timetable <CalendarCog size={18} strokeWidth={1} />
+          </Button>
+        </Link>
       </div>
 
-      <LoadingContent
-        loading={timetableQueryResult?.isLoading || timetableTemplateQueryResult?.isLoading}
-        error={timetableQueryResult?.error || timetableTemplateQueryResult?.error}
-        retry={timetableQueryResult?.refetch || timetableTemplateQueryResult?.refetch}
-        data={timetableQueryResult?.data || timetableTemplateQueryResult?.data}
-        shouldLoad={false}
-      >
+      <LoadingContent loading={timetableQueryResult?.isLoading} error={timetableQueryResult?.error} retry={timetableQueryResult?.refetch} data={timetableQueryResult?.data} shouldLoad={false}>
         {classDivisionId ? (
           <Card className="p-4 mb-8">
             <CalendarGrid events={timetable} views={["timeGridWeek", "timeGridDay"]} />

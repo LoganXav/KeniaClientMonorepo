@@ -56,6 +56,7 @@ export default function SchoolTimetableForm() {
   const defaultValues = {
     tenantId: authUserIds?.tenantId,
     id: 0,
+    calendarId: "",
     day: "",
     periods: [
       {
@@ -80,12 +81,13 @@ export default function SchoolTimetableForm() {
   const classDivisionId = form.watch("classDivisionId");
   const day = form.watch("day");
   const termId = form.watch("termId");
+  const calendarId = form.watch("calendarId");
 
   const timetableQueryResult = useGetSingleTimetableQuery(React.useMemo(() => ({ params: { classDivisionId, day, termId, tenantId: authUserIds?.tenantId } }), [classDivisionId, day, termId, authUserIds?.tenantId]));
   const timetable = timetableQueryResult?.data?.data;
 
   const classId = form.watch("classId");
-  const timetableTemplateQueryResult = useGetTimetableTemplateQuery(React.useMemo(() => ({ params: { classId, tenantId: authUserIds?.tenantId } }), [classId, authUserIds?.tenantId])) as SchoolTimetableTemplateOptions;
+  const timetableTemplateQueryResult = useGetTimetableTemplateQuery(React.useMemo(() => ({ params: { calendarId: Number(calendarId), classId, tenantId: authUserIds?.tenantId } }), [classId, authUserIds?.tenantId, calendarId])) as SchoolTimetableTemplateOptions;
   const timetableTemplate = timetableTemplateQueryResult?.data?.data;
 
   const dataRef = useDataRef({ form });
@@ -116,127 +118,145 @@ export default function SchoolTimetableForm() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleMutateTimetable)} className="space-y-4 mb-8">
           <>
-            <div className="flex w-full md:justify-between flex-col md:flex-row gap-4">
-              <div className="grid md:grid-cols-2 gap-4 w-full md:w-96">
-                <FormField
-                  control={form.control}
-                  name="termId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={timetableTemplateQueryResult?.isLoading}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Term" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {timetableTemplate?.termOptions?.map((termOption, idx) => (
-                            <SelectItem key={idx} value={String(termOption?.id)}>
-                              {termOption?.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="day"
-                  render={({ field }) => (
-                    <FormItem>
-                      <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={timetableTemplateQueryResult?.isLoading}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select Day" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {timetableTemplate?.dayOptions?.map((dayOption, idx) => (
-                            <SelectItem key={idx} value={String(dayOption)}>
-                              {dayOption}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="grid md:grid-cols-2 gap-4 w-full md:w-auto">
-                <FormField
-                  control={form.control}
-                  name="classId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={timetableTemplateQueryResult?.isLoading}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Class" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {timetableTemplate?.classOptions?.map((classOption, idx) => (
-                            <SelectItem key={idx} value={String(classOption?.id)}>
-                              {classOption?.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+            <div className="grid md:grid-cols-5 gap-4">
+              <FormField
+                control={form.control}
+                name="calendarId"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select onValueChange={field.onChange} value={String(field.value)} disabled={timetableTemplateQueryResult?.isLoading}>
+                      <FormControl>
+                        <SelectTrigger className="">
+                          <SelectValue placeholder="Select Session" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {timetableTemplate?.calendarOptions?.map((item, idx: number) => (
+                          <SelectItem key={idx} value={String(item.id)}>
+                            {item.year}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="termId"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={timetableTemplateQueryResult?.isLoading}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Term" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {timetableTemplate?.termOptions?.map((termOption, idx) => (
+                          <SelectItem key={idx} value={String(termOption?.id)}>
+                            {termOption?.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="day"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={timetableTemplateQueryResult?.isLoading}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select Day" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {timetableTemplate?.dayOptions?.map((dayOption, idx) => (
+                          <SelectItem key={idx} value={String(dayOption)}>
+                            {dayOption}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="classId"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={timetableTemplateQueryResult?.isLoading}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Class" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {timetableTemplate?.classOptions?.map((classOption, idx) => (
+                          <SelectItem key={idx} value={String(classOption?.id)}>
+                            {classOption?.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <FormField
-                  control={form.control}
-                  name="classDivisionId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={timetableTemplateQueryResult?.isLoading || !form.watch("classId")}>
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Class Division" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {timetableTemplate?.classDivisionOptions?.map((classDivisionOption, idx) => (
-                            <SelectItem key={idx} value={String(classDivisionOption?.id)}>
-                              {classDivisionOption?.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <div className="hidden md:block w-full md:w-auto" />
-
-                <Button
-                  className="w-full md:w-auto"
-                  type="button"
-                  onClick={() =>
-                    form.setValue("periods", [
-                      ...form.watch("periods"),
-                      {
-                        startTime: undefined,
-                        endTime: undefined,
-                        subjectId: 0,
-                        isBreak: false,
-                        breakType: "",
-                      },
-                    ])
-                  }
-                >
-                  Add Another Period <CirclePlus size={18} strokeWidth={1} />
-                </Button>
-              </div>
+              <FormField
+                control={form.control}
+                name="classDivisionId"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={timetableTemplateQueryResult?.isLoading || !form.watch("classId")}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Class Division" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {timetableTemplate?.classDivisionOptions?.map((classDivisionOption, idx) => (
+                          <SelectItem key={idx} value={String(classDivisionOption?.id)}>
+                            {classDivisionOption?.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-
+            <div className="flex w-full">
+              <div className="flex-1" />
+              <Button
+                className="w-full md:w-auto"
+                type="button"
+                onClick={() =>
+                  form.setValue("periods", [
+                    ...form.watch("periods"),
+                    {
+                      startTime: undefined,
+                      endTime: undefined,
+                      subjectId: 0,
+                      isBreak: false,
+                      breakType: "",
+                    },
+                  ])
+                }
+              >
+                Add Another Period <CirclePlus size={18} strokeWidth={1} />
+              </Button>
+            </div>
             {form.watch("periods")?.length > 0 &&
               form.watch("periods").map((period: Record<string, any>, idx: number) => (
                 <Card key={idx} className="p-4 relative">
