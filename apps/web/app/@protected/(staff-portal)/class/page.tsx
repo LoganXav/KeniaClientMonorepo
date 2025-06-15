@@ -1,8 +1,8 @@
+import React from "react";
+import Link from "next/link";
+import { Card, Typography } from "@repo/ui";
 import { PageBreadcrumbs } from "@/components/breadcrumbs";
 import { RouteEnums } from "@/constants/router/route-constants";
-import { Card, Typography } from "@repo/ui";
-import Link from "next/link";
-import React from "react";
 
 type Props = {};
 
