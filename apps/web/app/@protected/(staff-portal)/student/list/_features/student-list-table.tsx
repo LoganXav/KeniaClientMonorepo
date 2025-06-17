@@ -5,7 +5,7 @@ import Link from "next/link";
 import { calculateAge } from "@/lib/dates";
 import { DataTable } from "@/components/data-table";
 import { useAuthUser } from "@/hooks/use-auth-user";
-import { CirclePlus, UserRound } from "lucide-react";
+import { CirclePlus, UserPenIcon, UserRound } from "lucide-react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { LoadingContent } from "@/components/loading-content";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
@@ -65,6 +65,11 @@ export function StudentListTable() {
                 <Link href={`${RouteEnums.STUDENT}/${student?.id}`}>
                   <DropdownMenuItem className="flex justify-between">
                     View <UserRound className="ml-2" size={15} strokeWidth={1} />
+                  </DropdownMenuItem>
+                </Link>
+                <Link href={`${RouteEnums.STUDENT}/create?id=${student?.id}`}>
+                  <DropdownMenuItem className="flex justify-between">
+                    Edit <UserPenIcon className="ml-2" size={15} strokeWidth={1} />
                   </DropdownMenuItem>
                 </Link>
               </DropdownMenuContent>

@@ -44,6 +44,7 @@ export function StudentCreateFormGuardianStep({ form, isEdit, studentTemplateQue
           [searchBy]: debouncedQuery,
           tenantId: authUserIds?.tenantId,
         },
+        enabled: !!searchBy && !!debouncedQuery,
       }),
       [searchBy, debouncedQuery, authUserIds?.tenantId]
     )

@@ -18,6 +18,7 @@ export const RouteEnums = {
   STAFF: "/staff",
   STAFF_CREATE: "/staff/create",
   STAFF_LIST: "/staff/list",
+  STAFF_ASSIGN: "/staff/assign",
 
   // STUDENT
   STUDENT: "/student",
