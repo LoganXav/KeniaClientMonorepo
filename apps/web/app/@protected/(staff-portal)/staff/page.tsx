@@ -1,8 +1,8 @@
+import React from "react";
+import Link from "next/link";
+import { Card, Typography } from "@repo/ui";
 import { PageBreadcrumbs } from "@/components/breadcrumbs";
 import { RouteEnums } from "@/constants/router/route-constants";
-import { Card, Typography } from "@repo/ui";
-import Link from "next/link";
-import React from "react";
 
 type Props = {};
 
@@ -29,6 +29,11 @@ function StaffMenu({}: Props) {
             label: "Manage Payroll",
             desc: "Oversee all staff payment and payment history.",
             url: RouteEnums.STAFF_LIST,
+          },
+          {
+            label: "Staff Assignment",
+            desc: "Assign and review staff class and subject duties.",
+            url: RouteEnums.STAFF_ASSIGN,
           },
         ].map(({ label, desc, url }: Record<string, any>, idx: number) => (
           <Link key={idx} href={url} className="block">

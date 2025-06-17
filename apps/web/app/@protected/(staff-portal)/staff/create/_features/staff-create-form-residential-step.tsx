@@ -1,12 +1,12 @@
 "use client";
 
 import React from "react";
-import { StaffCreateFormReturn, StaffTemplateOptions } from "../_types/staff-create-form-types";
+import { StaffCreateFormReturn, StaffTemplateQueryResultType } from "../_types/staff-create-form-types";
 import { FormControl, FormField, FormItem, FormMessage, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 
 type StepProps = {
   form: StaffCreateFormReturn;
-  staffTemplateQuery: StaffTemplateOptions;
+  staffTemplateQuery: StaffTemplateQueryResultType;
 };
 
 export function StaffCreateFormResidentialStep({ form, staffTemplateQuery }: StepProps) {

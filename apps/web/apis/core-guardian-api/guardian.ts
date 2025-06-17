@@ -1,10 +1,10 @@
 import { getRequest } from "@/config/base-query";
-import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { useQuery } from "@tanstack/react-query";
+import { QueryTagEnums } from "@/constants/query-store/query-constants";
 
 const BASE_URL = "guardian";
 
-export const useGetGuardianListQuery = ({ params }: { params: Partial<Record<"firstName" | "lastName" | "email" | "phoneNumber", string>> & { tenantId?: number } }) => {
+export const useGetGuardianListQuery = ({ params, enabled }: { params: Partial<Record<"firstName" | "lastName" | "email" | "phoneNumber", string>> & { tenantId?: number }; enabled?: boolean }) => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.GUARDIAN, params?.tenantId],
     queryFn: async () => {
@@ -13,6 +13,7 @@ export const useGetGuardianListQuery = ({ params }: { params: Partial<Record<"fi
         config: { params },
       });
     },
+    enabled,
   });
 
   return { data, isLoading, error, refetch };

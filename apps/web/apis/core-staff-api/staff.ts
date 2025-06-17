@@ -6,7 +6,7 @@ import { StaffCreateFormSchemaType, StaffTemplateOptions } from "@/app/@protecte
 
 const BASE_URL = "staff";
 
-export const useGetStaffListQuery = ({ params }: { params?: { tenantId?: number; jobTitle?: string } }) => {
+export const useGetStaffListQuery = ({ params, enabled }: { params?: Partial<Record<"firstName" | "lastName" | "email" | "phoneNumber", string>> & { tenantId?: number; jobTitle?: string }; enabled?: boolean }) => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.STAFF, params?.tenantId],
     queryFn: async () => {
@@ -15,6 +15,7 @@ export const useGetStaffListQuery = ({ params }: { params?: { tenantId?: number;
         config: { params },
       });
     },
+    enabled,
   });
 
   return { data, isLoading, error, refetch };
@@ -81,7 +82,7 @@ export const useStaffUpdateMutation = ({ path, params }: { path?: { staffId?: nu
     isPending: staffUpdatePending,
     error: staffUpdateError,
   } = useMutation({
-    mutationFn: async ({ payload }: { payload: StaffCreateFormSchemaType }) => {
+    mutationFn: async ({ payload }: { payload: Partial<StaffCreateFormSchemaType> }) => {
       const data = await postRequest<StaffType>({
         endpoint: `${BASE_URL}/update/${path?.staffId}`,
         payload,

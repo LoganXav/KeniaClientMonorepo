@@ -18,7 +18,7 @@ import { StaffCreateFormEmploymentStep } from "./staff-create-form-employment-st
 import { StaffCreateFormResidentialStep } from "./staff-create-form-residential-step";
 import { useGetSingleStaffQuery, useStaffUpdateMutation } from "@/apis/core-staff-api/staff";
 import { useGetStaffTemplateQuery, useStaffCreateMutation } from "@/apis/core-staff-api/staff";
-import { StaffCreateFormFieldName, StaffCreateFormSchemaType, StaffTemplateOptions } from "../_types/staff-create-form-types";
+import { StaffCreateFormFieldName, StaffCreateFormSchemaType, StaffTemplateQueryResultType } from "../_types/staff-create-form-types";
 
 type Props = {
   staffId?: number;
@@ -39,32 +39,59 @@ export function StaffCreateForm({ staffId }: Props) {
   const { staffUpdate, staffUpdatePending, staffUpdateError } = useStaffUpdateMutation({ path: { staffId }, params: { tenantId: authUserIds?.tenantId } });
 
   const handleCreateStaff = (values: StaffCreateFormSchemaType) => {
-    const mutate = isEdit ? staffUpdate : staffCreate;
-    mutate(
-      {
-        payload: {
-          ...values,
-          tenantId: authUserIds?.tenantId,
-          dateOfBirth: new Date(values.dateOfBirth),
-          residentialCountryId: Number(values.residentialCountryId),
-          residentialStateId: Number(values.residentialStateId),
-          residentialLgaId: Number(values.residentialLgaId),
-          residentialZipCode: Number(values.residentialZipCode),
-          cvUrl: "",
-          startDate: new Date(values.startDate),
+    if (isEdit) {
+      staffUpdate(
+        {
+          payload: {
+            ...values,
+            tenantId: authUserIds?.tenantId,
+            dateOfBirth: new Date(values.dateOfBirth),
+            residentialCountryId: Number(values.residentialCountryId),
+            residentialStateId: Number(values.residentialStateId),
+            residentialLgaId: Number(values.residentialLgaId),
+            residentialZipCode: Number(values.residentialZipCode),
+            cvUrl: "",
+            startDate: new Date(values.startDate),
+          },
         },
-      },
-      {
-        onSuccess: (result) => {
-          toast.success(result.message);
-          setCompletedSteps((prev) => prev + 1);
-          stepper.next(undefined);
+        {
+          onSuccess: (result) => {
+            toast.success(result.message);
+            setCompletedSteps((prev) => prev + 1);
+            stepper.next(undefined);
+          },
+          onError: (error) => {
+            toast.error(error.message);
+          },
+        }
+      );
+    } else {
+      staffCreate(
+        {
+          payload: {
+            ...values,
+            tenantId: authUserIds?.tenantId,
+            dateOfBirth: new Date(values.dateOfBirth),
+            residentialCountryId: Number(values.residentialCountryId),
+            residentialStateId: Number(values.residentialStateId),
+            residentialLgaId: Number(values.residentialLgaId),
+            residentialZipCode: Number(values.residentialZipCode),
+            cvUrl: "",
+            startDate: new Date(values.startDate),
+          },
         },
-        onError: (error) => {
-          toast.error(error.message);
-        },
-      }
-    );
+        {
+          onSuccess: (result) => {
+            toast.success(result.message);
+            setCompletedSteps((prev) => prev + 1);
+            stepper.next(undefined);
+          },
+          onError: (error) => {
+            toast.error(error.message);
+          },
+        }
+      );
+    }
   };
 
   const defaultValues = {
@@ -88,8 +115,8 @@ export function StaffCreateForm({ staffId }: Props) {
     employmentType: "",
     startDate: undefined,
     highestLevelEdu: "",
-    subjectIds: [],
-    classDivisionIds: [],
+    // subjectIds: [],
+    // classDivisionIds: [],
   };
 
   const form = useForm<StaffCreateFormSchemaType>({
@@ -126,8 +153,8 @@ export function StaffCreateForm({ staffId }: Props) {
         employmentType: staff?.employmentType || values.employmentType,
         startDate: staff?.startDate || values.startDate,
         highestLevelEdu: staff?.highestLevelEdu || values.highestLevelEdu,
-        subjectIds: staff?.subjects?.map((subject) => subject.id) || values.subjectIds,
-        classDivisionIds: staff?.classDivisions?.map((classDivision) => classDivision?.id) || values.classDivisionIds,
+        // subjectIds: staff?.subjects?.map((subject) => subject.id) || values.subjectIds,
+        // classDivisionIds: staff?.classDivisions?.map((classDivision) => classDivision?.id) || values.classDivisionIds,
       }));
     }
   }, [isEdit, staff, dataRef]);
@@ -155,7 +182,7 @@ export function StaffCreateForm({ staffId }: Props) {
   const stepProps = {
     form,
     isEdit,
-    staffTemplateQuery: staffTemplateQuery as StaffTemplateOptions,
+    staffTemplateQuery: staffTemplateQuery as StaffTemplateQueryResultType,
   };
 
   const steps = [

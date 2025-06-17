@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const StaffCreateFormSchema = z.object({
+  id: z.union([z.number(), z.string()]).optional(),
   firstName: z
     .string({
       required_error: "First name is required",

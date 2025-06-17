@@ -2,12 +2,12 @@
 
 import React from "react";
 import { FileUpload } from "@/components/file-upload";
-import { StaffCreateFormReturn, StaffTemplateOptions } from "../_types/staff-create-form-types";
+import { StaffCreateFormReturn, StaffTemplateQueryResultType } from "../_types/staff-create-form-types";
 import { DatePicker, FormControl, FormField, FormItem, FormMessage, Input, Label, MultiSelect, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 
 type StepProps = {
   form: StaffCreateFormReturn;
-  staffTemplateQuery?: StaffTemplateOptions;
+  staffTemplateQuery?: StaffTemplateQueryResultType;
 };
 
 export function StaffCreateFormEmploymentStep({ form, staffTemplateQuery }: StepProps) {
@@ -112,7 +112,7 @@ export function StaffCreateFormEmploymentStep({ form, staffTemplateQuery }: Step
             </FormItem>
           )}
         />
-        <div className="space-y-2">
+        {/* <div className="space-y-2">
           <FormField
             control={form.control}
             name={"subjectIds"}
@@ -141,7 +141,7 @@ export function StaffCreateFormEmploymentStep({ form, staffTemplateQuery }: Step
             )}
           />
           <Label className="text-sm text-muted-foreground">Choose classes for this staff. A staff can be the class teacher of one or more classes</Label>
-        </div>
+        </div> */}
       </div>
     </div>
   );
