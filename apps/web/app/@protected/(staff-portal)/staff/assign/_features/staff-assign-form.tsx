@@ -1,16 +1,17 @@
 "use client";
 
-import { z } from "zod";
 import React from "react";
 import Image from "next/image";
 import { debounce } from "@/lib/utils";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import useDataRef from "@/hooks/use-data-ref";
 import { formatDateToString } from "@/lib/dates";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { Check, UserRoundSearch } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoadingContent } from "@/components/loading-content";
+import { RouteEnums } from "@/constants/router/route-constants";
 import {
   Command,
   CommandEmpty,
@@ -38,12 +39,12 @@ import {
   MultiSelect,
   Label,
   toast,
+  CardTitle,
+  CardDescription,
 } from "@repo/ui";
-import { useGetStaffListQuery, useGetStaffTemplateQuery, useStaffUpdateMutation } from "@/apis/core-staff-api/staff";
-import { useRouter } from "next/navigation";
-import { RouteEnums } from "@/constants/router/route-constants";
 import { StaffAssignFormSchema } from "../_schema/staff-assign-form-schema";
 import { StaffAssignFormSchemaType } from "../_types/staff-assign-form-types";
+import { useGetStaffListQuery, useGetStaffTemplateQuery, useStaffUpdateMutation } from "@/apis/core-staff-api/staff";
 
 type PageProps = {};
 
@@ -108,7 +109,7 @@ export function StaffAssignForm({}: PageProps) {
   );
 
   const staffId = Number(form.watch("id"));
-  const foundStaff = staffListQueryResult?.data?.data?.find((staff) => staff?.id === staffId);
+  const foundStaff = staffListQueryResult?.data?.data?.find((staff) => staff?.user?.id === staffId);
 
   const staffTemplateQuery = useGetStaffTemplateQuery(
     React.useMemo(
@@ -121,7 +122,7 @@ export function StaffAssignForm({}: PageProps) {
     )
   );
 
-  const { staffUpdate, staffUpdatePending, staffUpdateError } = useStaffUpdateMutation({ path: { staffId }, params: { tenantId: authUserIds?.tenantId } });
+  const { staffUpdate, staffUpdatePending, staffUpdateError } = useStaffUpdateMutation({ path: { staffId: foundStaff?.id }, params: { tenantId: authUserIds?.tenantId } });
 
   //   Staff Search
   const handleSearchByChange = (value: "firstName" | "lastName" | "email" | "phoneNumber") => {
@@ -157,6 +158,11 @@ export function StaffAssignForm({}: PageProps) {
 
   return (
     <>
+      <Card className="border shadow-none grid gap-2 p-4 my-8 md:p-8">
+        <CardTitle className="font-heading">Academic & Administrative Assignment</CardTitle>
+        <CardDescription className="max-w-xl">Search for a staff member and configure their academic subjects, assigned classes, and system role.</CardDescription>
+      </Card>
+
       <div className="grid md:grid-cols-3 gap-4 pb-8">
         <div className="md:sticky top-0 space-y-4">
           <Card>
@@ -334,7 +340,7 @@ export function StaffAssignForm({}: PageProps) {
 
               <div className="grid md:grid-cols-2 md:max-w-lg gap-4 mx-auto my-12">
                 <Button variant={"outline"} type="button" onClick={() => router.push(RouteEnums.STAFF)} disabled={staffUpdatePending}>
-                  Previous
+                  Cancel
                 </Button>
                 <Button loading={staffUpdatePending} disabled={!foundStaff}>
                   Save

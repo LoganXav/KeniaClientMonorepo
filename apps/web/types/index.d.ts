@@ -76,7 +76,7 @@ export interface StudentType {
   tenantId: number;
   tenant: TenantType;
   classDivisionId: number;
-  subjects: SubjectType[];
+  subjectsRegistered: SubjectsRegisteredType[];
 }
 
 export interface SubjectType {
@@ -86,7 +86,7 @@ export interface SubjectType {
   classId: number;
   class: ClassType;
   staffs: StaffType[];
-  students: StudentType[];
+  subjectRegistration: SubjectsRegisteredType[];
   gradingStructure: SubjectGradingStructureType;
   tenantId: number;
   tenant: SchoolType;
@@ -281,4 +281,13 @@ export interface StaffPeriodType {
   subject: string;
   endTime: string;
   startTime: string;
+}
+
+export interface SubjectsRegisteredType {
+  id: number;
+  name: string;
+  description: string;
+  subjectId: number;
+  subject: SubjectType;
+  student: StudentType;
 }

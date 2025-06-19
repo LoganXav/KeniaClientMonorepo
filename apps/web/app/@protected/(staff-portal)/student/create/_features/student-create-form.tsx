@@ -61,7 +61,6 @@ export function StudentCreateForm({ studentId }: Props) {
             residentialLgaId: Number(guardian.residentialLgaId),
             residentialZipCode: Number(guardian.residentialZipCode),
           })),
-          subjectIds: values?.subjectIds?.map((subjectId) => Number(subjectId)) || [],
         },
       },
       {
@@ -112,7 +111,6 @@ export function StudentCreateForm({ studentId }: Props) {
       },
     ],
 
-    subjectIds: [],
     classId: 0,
     classDivisionId: 0,
   };
@@ -164,7 +162,6 @@ export function StudentCreateForm({ studentId }: Props) {
 
         classId: student?.class?.id || values.classId,
         classDivisionId: Number(student?.classDivisionId) || values.classDivisionId,
-        subjectIds: student?.subjects?.map((subject) => subject.id) || values.subjectIds,
       }));
     }
   }, [student, dataRef, isEdit]);
@@ -188,7 +185,7 @@ export function StudentCreateForm({ studentId }: Props) {
   const stepProps = {
     form,
     isEdit,
-    studentTemplateQuery: studentTemplateQuery as StudentTemplateOptions,
+    studentTemplateQuery,
   };
 
   const steps = [

@@ -27,7 +27,7 @@ export function ClassDivisionListTable() {
       },
       {
         header: "Class Teacher",
-        accessorKey: "class",
+        accessorKey: "classTeacher",
         cell: ({ row }) => (
           <p>
             {row?.original?.classDivisionTeacher?.user?.lastName} {row?.original?.classDivisionTeacher?.user?.firstName}

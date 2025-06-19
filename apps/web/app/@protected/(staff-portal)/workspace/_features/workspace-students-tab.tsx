@@ -76,7 +76,10 @@ export function WorkspaceStudentsTab() {
   const studentSubjectMap = new Map();
 
   subjectList?.forEach((subject) => {
-    subject.students.forEach((student) => {
+    subject.subjectRegistration?.forEach((registration) => {
+      const student = registration.student;
+      if (!student) return;
+
       const existing = studentSubjectMap.get(student.id);
 
       if (existing) {

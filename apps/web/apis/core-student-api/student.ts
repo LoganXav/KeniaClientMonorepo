@@ -1,8 +1,9 @@
-import { StudentCreateFormSchemaType, StudentTemplateOptions } from "@/app/@protected/(staff-portal)/student/create/_types/student-create-form-types";
+import { StudentType } from "@/types";
 import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
-import { StudentType } from "@/types";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { StudentCreateFormSchemaType, StudentTemplateOptions } from "@/app/@protected/(staff-portal)/student/create/_types/student-create-form-types";
+import { StudentSubjectRegistrationCreateFormSchemaType } from "@/app/@protected/(staff-portal)/student/subject-registration/_types/student-subject-registration-form-types";
 
 const BASE_URL = "student";
 
@@ -46,15 +47,19 @@ export const useStudentCreateMutation = ({ params }: { params: { tenantId?: numb
   return { studentCreate, studentCreatePending, studentCreateError };
 };
 
-export const useGetStudentTemplateQuery = ({ params }: { params: { tenantId?: number; codeValue?: number; classId?: number } }) => {
+export const useGetStudentTemplateQuery = ({ params }: { params: { tenantId?: number; codeValue?: number; classId?: number; classDivisionId?: number; calendarId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.USER, params?.tenantId, params?.codeValue, params?.classId],
+    queryKey: [QueryTagEnums.USER, params?.tenantId, params?.codeValue, params?.classId, params?.classDivisionId, params?.calendarId],
     queryFn: async () => {
       return await getRequest<StudentTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
         config: { params },
       });
     },
+
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnReconnect: true,
   });
 
   return { data, isLoading, error, refetch };
@@ -99,4 +104,29 @@ export const useStudentUpdateMutation = ({ path, params }: { path: { studentId?:
   });
 
   return { studentUpdate, studentUpdatePending, studentUpdateError };
+};
+
+export const useStudentSubjectRegistrationCreateMutation = ({ params }: { params: { tenantId?: number } }) => {
+  const queryClient = useQueryClient();
+  const {
+    mutate: studentSubjectRegistrationCreate,
+    isPending: studentSubjectRegistrationCreatePending,
+    error: studentSubjectRegistrationCreateError,
+  } = useMutation({
+    mutationFn: async ({ payload }: { payload: StudentSubjectRegistrationCreateFormSchemaType }) => {
+      const data = await postRequest<StudentType>({
+        endpoint: `${BASE_URL}/subjectregistration/create`,
+        payload,
+        config: { params },
+      });
+
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STUDENT, params.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params.tenantId] });
+    },
+  });
+
+  return { studentSubjectRegistrationCreate, studentSubjectRegistrationCreatePending, studentSubjectRegistrationCreateError };
 };

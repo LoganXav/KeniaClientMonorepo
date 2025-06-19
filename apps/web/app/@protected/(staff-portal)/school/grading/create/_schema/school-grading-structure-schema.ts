@@ -18,12 +18,14 @@ export const SchoolGradingStructureCreateFormSchema = z
       .array(
         z
           .object({
-            minimumScore: z.union([z.string(), z.number()]),
-            maximumScore: z.union([z.string(), z.number()]),
+            minimumScore: z.union([z.string(), z.number()]).transform(Number),
+            maximumScore: z.union([z.string(), z.number()]).transform(Number),
             grade: z.string(),
             remark: z.string(),
           })
-          .refine((b) => b.maximumScore >= b.minimumScore, { message: "Maximum score must be greater than or equal to minimum score" })
+          .refine((b) => b.maximumScore >= b.minimumScore, {
+            message: "Maximum score must be greater than or equal to minimum score",
+          })
       )
       .min(1, { message: "At least one grade boundary is required" }),
   })
