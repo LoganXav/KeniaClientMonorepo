@@ -5,13 +5,13 @@ import { debounce } from "@/lib/utils";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { useGetGuardianListQuery } from "@/apis/core-guardian-api/guardian";
 import { Check, CircleMinus, CirclePlus, UserRoundSearch } from "lucide-react";
-import { StudentCreateFormReturn, StudentTemplateOptions } from "../_types/student-create-form-types";
+import { StudentCreateFormReturn, StudentTemplateQueryResultType } from "../_types/student-create-form-types";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, DatePicker, FormControl, FormField, FormItem, FormMessage, Input, SelectValue, Select, SelectTrigger, SelectContent, SelectItem, cn, Button, FormLabel, Popover, PopoverTrigger, PopoverContent } from "@repo/ui";
 
 type StepProps = {
   form: StudentCreateFormReturn;
   isEdit: boolean;
-  studentTemplateQuery: StudentTemplateOptions;
+  studentTemplateQuery: StudentTemplateQueryResultType;
 };
 
 export function StudentCreateFormGuardianStep({ form, isEdit, studentTemplateQuery }: StepProps) {

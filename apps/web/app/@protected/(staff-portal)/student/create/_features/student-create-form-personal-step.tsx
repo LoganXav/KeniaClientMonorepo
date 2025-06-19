@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import { StudentCreateFormReturn, StudentTemplateOptions } from "../_types/student-create-form-types";
+import { StudentCreateFormReturn, StudentTemplateQueryResultType } from "../_types/student-create-form-types";
 import { DatePicker, FormControl, FormField, FormItem, FormMessage, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 
 type StepProps = {
   form: StudentCreateFormReturn;
   isEdit: boolean;
-  studentTemplateQuery: StudentTemplateOptions;
+  studentTemplateQuery: StudentTemplateQueryResultType;
 };
 
 export function StudentCreateFormPersonalStep({ form, isEdit, studentTemplateQuery }: StepProps) {

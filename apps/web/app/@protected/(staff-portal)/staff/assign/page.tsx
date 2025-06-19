@@ -4,10 +4,7 @@ import { RouteEnums } from "@/constants/router/route-constants";
 import { StaffAssignForm } from "./_features/staff-assign-form";
 
 function StaffAssignmentPage() {
-  const pageBreadcrumbs = [
-    { title: "Staff", path: RouteEnums.STAFF },
-    { title: "Staff Assignment", path: RouteEnums.STAFF_ASSIGN },
-  ];
+  const pageBreadcrumbs = [{ title: "Staff", path: RouteEnums.STAFF }, { title: "Staff List", path: RouteEnums.STAFF_LIST }, { title: "Staff Assignment" }];
   return (
     <>
       <PageBreadcrumbs pages={pageBreadcrumbs} />

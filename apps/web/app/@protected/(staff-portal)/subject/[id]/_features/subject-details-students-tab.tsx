@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Card } from "@repo/ui";
+import { calculateAge } from "@/lib/dates";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
 import { useAuthUser } from "@/hooks/use-auth-user";
@@ -26,17 +27,16 @@ export function SubjectDetailsStudentsTab({ subjectId, classId }: { subjectId: n
       {
         header: "Admission Number",
         accessorKey: "admissionNo",
-        cell: ({ row }) => <p>{row?.original?.user?.admissionNo}</p>,
+        cell: ({ row }) => <p>{row?.original?.admissionNo}</p>,
       },
       {
         header: "Age",
-        accessorKey: "age",
-        cell: ({ row }) => <p>{row?.original?.user?.age}</p>,
+        accessorKey: "dateOfBirth",
+        cell: ({ row }) => <p>{calculateAge(row?.original?.user?.dateOfBirth)} yrs</p>,
       },
-
       {
         header: "Gender",
-        accessorKey: "age",
+        accessorKey: "gender",
         cell: ({ row }) => <p>{row?.original?.user?.gender}</p>,
       },
     ],
@@ -49,11 +49,17 @@ export function SubjectDetailsStudentsTab({ subjectId, classId }: { subjectId: n
 
   const subject = subjectQueryResult?.data?.data;
 
+  // Extract students offering the subject
+  const students =
+    subject?.subjectRegistration?.map((reg) => ({
+      ...reg.student,
+    })) || [];
+
   return (
     <>
       <Card className="overflow-hidden mt-8">
         <LoadingContent data={subjectQueryResult?.data} loading={subjectQueryResult?.isLoading} error={subjectQueryResult?.error} retry={subjectQueryResult?.refetch}>
-          <DataTable data={subject?.students} columns={columns} />
+          <DataTable data={students} columns={columns} />
         </LoadingContent>
       </Card>
     </>
