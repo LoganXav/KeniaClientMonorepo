@@ -23,7 +23,7 @@ export type AuthUserType = {
   lastName: string;
   phoneNumber: string;
   tenantId: number;
-  userType: "STAFF" | "STUDENT";
+  userType: "Staff" | "Student";
   staff: StaffType;
 };
 
@@ -290,4 +290,12 @@ export interface SubjectsRegisteredType {
   subjectId: number;
   subject: SubjectType;
   student: StudentType;
+}
+
+export interface ClassPromotionType {
+  promotionStatus: "Promoted" | "Awaiting" | "Repeated" | "Withheld";
+  comments: string;
+  student: StudentType;
+  fromClass: ClassType;
+  toClass: ClassType;
 }

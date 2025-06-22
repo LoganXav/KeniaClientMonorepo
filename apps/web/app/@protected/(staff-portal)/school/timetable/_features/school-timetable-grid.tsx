@@ -79,7 +79,7 @@ function SchoolTimetableGrid() {
             </SelectContent>
           </Select>
         </div>
-        <Link className="w-fit" href={RouteEnums.SCHOOL_TIMETABLE_CREATE}>
+        <Link className="md:w-fit" href={RouteEnums.SCHOOL_TIMETABLE_CREATE}>
           <Button className="w-full">
             Manage Timetable <CalendarCog size={18} strokeWidth={1} />
           </Button>

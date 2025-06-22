@@ -27,8 +27,13 @@ function ClassMenu({}: Props) {
           },
           {
             label: "Manage Divisions",
-            desc: "Manage class divisions and their subjects.",
+            desc: "Manage class divisions, inventory and their assigned teachers.",
             url: RouteEnums.CLASS_DIVISION_LIST,
+          },
+          {
+            label: "Promotion Decision",
+            desc: "Promote or repeat students based on their academic performance.",
+            url: RouteEnums.CLASS_PROMOTION,
           },
         ].map(({ label, desc, url }: Record<string, any>, idx: number) => (
           <Link key={idx} href={url} className="block">
