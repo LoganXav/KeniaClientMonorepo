@@ -10,6 +10,8 @@ export const QueryTagEnums = {
 
   CLASS: "class",
   CLASS_DIVISION: "class-division",
+  CLASS_PROMOTION: "class-promotion",
+  CLASS_PROMOTION_TEMPLATE: "class-promotion-template",
 
   CALENDAR: "calendar",
   CALENDAR_TEMPLATE: "calendar-template",

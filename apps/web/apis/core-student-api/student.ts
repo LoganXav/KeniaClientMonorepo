@@ -7,18 +7,19 @@ import { StudentSubjectRegistrationCreateFormSchemaType } from "@/app/@protected
 
 const BASE_URL = "student";
 
-export const useGetStudentListQuery = ({ params }: { params: { tenantId?: number } }) => {
-  const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.STUDENT, params?.tenantId],
+export const useGetStudentListQuery = ({ params, enabled = true }: { params: { tenantId?: number; classId?: number; classDivisionId?: number; excludePromotedInCalendarId?: number }; enabled?: boolean }) => {
+  const { data, isLoading, error, refetch, isFetching } = useQuery({
+    queryKey: [QueryTagEnums.STUDENT, params?.tenantId, params?.excludePromotedInCalendarId, params?.classId, params?.classDivisionId],
     queryFn: async () => {
-      return await getRequest<Record<string, any>>({
+      return await getRequest<StudentType[]>({
         endpoint: `${BASE_URL}/list`,
         config: { params },
       });
     },
+    enabled,
   });
 
-  return { data, isLoading, error, refetch };
+  return { data, isLoading, error, refetch, isFetching };
 };
 
 export const useStudentCreateMutation = ({ params }: { params: { tenantId?: number } }) => {

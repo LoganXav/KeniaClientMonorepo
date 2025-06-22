@@ -42,6 +42,8 @@ export const RouteEnums = {
   // CLASS
   CLASS: "/class",
   CLASS_LIST: "/class/list",
+  CLASS_PROMOTION: "/class/promotion",
+  CLASS_PROMOTION_CREATE: "/class/promotion/create",
 
   // CLASS DIVISION
   CLASS_DIVISION: "/class/division",

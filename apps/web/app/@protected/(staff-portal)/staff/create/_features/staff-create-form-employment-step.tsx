@@ -3,7 +3,7 @@
 import React from "react";
 import { FileUpload } from "@/components/file-upload";
 import { StaffCreateFormReturn, StaffTemplateQueryResultType } from "../_types/staff-create-form-types";
-import { DatePicker, FormControl, FormField, FormItem, FormMessage, Input, Label, MultiSelect, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
+import { DatePicker, FormControl, FormField, FormItem, FormMessage, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 
 type StepProps = {
   form: StaffCreateFormReturn;
@@ -112,36 +112,6 @@ export function StaffCreateFormEmploymentStep({ form, staffTemplateQuery }: Step
             </FormItem>
           )}
         />
-        {/* <div className="space-y-2">
-          <FormField
-            control={form.control}
-            name={"subjectIds"}
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <MultiSelect selected={Array.isArray(field.value) ? field.value : []} onChange={field.onChange} options={staffTemplateQuery?.data?.data?.subjectOptions || []} placeholder="Select Subjects" searchPlaceholder="Search Subjects" emptyMessage="No subjects found" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Label className="text-sm text-muted-foreground">Choose subjects for this staff. A staff can teach one or more subjects</Label>
-        </div>
-        <div className="space-y-2">
-          <FormField
-            control={form.control}
-            name={"classDivisionIds"}
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <MultiSelect selected={Array.isArray(field.value) ? field.value : []} onChange={field.onChange} options={staffTemplateQuery?.data?.data?.classDivisionOptions || []} placeholder="Select Class Divisions" searchPlaceholder="Search Class Division" emptyMessage="No classes found" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Label className="text-sm text-muted-foreground">Choose classes for this staff. A staff can be the class teacher of one or more classes</Label>
-        </div> */}
       </div>
     </div>
   );
