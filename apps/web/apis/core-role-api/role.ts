@@ -52,6 +52,8 @@ export const useRoleCreateMutation = ({ params }: { params?: { tenantId?: number
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.ROLE, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF, params?.tenantId] });
     },
   });
 
@@ -76,6 +78,8 @@ export const useRoleUpdateMutation = ({ path, params }: { path: { id?: number };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.ROLE, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF, params?.tenantId] });
     },
   });
 

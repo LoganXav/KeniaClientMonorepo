@@ -1,11 +1,11 @@
 "use client";
-import { UserRoundPen } from "lucide-react";
 
-import { RouteEnums } from "@/constants/router/route-constants";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Button } from "@repo/ui";
 import Link from "next/link";
+import { UserRoundPen } from "lucide-react";
 import { useAuthUser } from "@/hooks/use-auth-user";
+import { RouteEnums } from "@/constants/router/route-constants";
 import { useGetClassDivisionQuery } from "@/apis/core-class-api/class-division";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Button } from "@repo/ui";
 
 export function ClassDivisionDetails({ classDivisionId }: { classDivisionId: number }) {
   const { authUserIds } = useAuthUser();

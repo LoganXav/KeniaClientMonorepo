@@ -10,7 +10,7 @@ import { useGetAuthUserQuery } from "@/apis/core-user-api/user";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { clearAuthUserAction } from "@/helpers/server/auth-user-action";
 import { Bell, CircleAlert, LoaderCircle, Menu, UserCircle, X } from "lucide-react";
-import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, SearchInput, Sheet, SheetContent, SheetTrigger, Tabs, TabsContent, TabsList, TabsTrigger, DialogTitle, VisuallyHidden, SheetTitle } from "@repo/ui";
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, SearchInput, Sheet, SheetContent, SheetTrigger, Tabs, TabsContent, TabsList, TabsTrigger, DialogTitle, VisuallyHidden, SheetTitle, Typography } from "@repo/ui";
 
 export default function ProtectedNavbar() {
   const router = useRouter();
@@ -109,8 +109,13 @@ export default function ProtectedNavbar() {
                   {authUserQueryResult?.isLoading ? (
                     <LoaderCircle className="animate-spin duration-300 mx-auto" size={15} />
                   ) : (
-                    <div>
-                      {authUser?.firstName} <span className="font-sans-semibold">{authUser?.lastName}</span>
+                    <div className="grid">
+                      <Typography>
+                        {authUser?.firstName} <span className="font-sans-semibold">{authUser?.lastName}</span>
+                      </Typography>
+                      <Typography color={"muted"} size={"small"}>
+                        {authUser?.email}
+                      </Typography>
                     </div>
                   )}
                 </DropdownMenuLabel>

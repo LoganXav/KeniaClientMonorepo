@@ -131,8 +131,8 @@ export default function SchoolCalendarForm() {
   return (
     <LoadingContent loading={schoolCalendarQueryResult?.isLoading} error={schoolCalendarQueryResult?.error} retry={schoolCalendarQueryResult?.refetch} data={schoolCalendarQueryResult?.data} shouldLoad={false}>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleMutateSchoolCalendar)} className="space-y-4 mb-8">
-          <>
+        <form onSubmit={form.handleSubmit(handleMutateSchoolCalendar)}>
+          <div className="space-y-4 mb-8">
             <div className="flex w-full">
               <div className="hidden md:flex md:flex-1" />
               <div className="grid md:grid-cols-2 gap-4 w-full md:w-auto">
@@ -235,10 +235,22 @@ export default function SchoolCalendarForm() {
                             <FormControl>
                               <Input placeholder="Term Name" {...field} />
                             </FormControl>
+                            <FormMessage />
                           </FormItem>
                         )}
                       />
-                      <FormField control={form.control} name={`terms.${idx}.startDate`} render={({ field }) => <DatePicker field={field} placeholder="Start Date" />} />
+                      <FormField
+                        control={form.control}
+                        name={`terms.${idx}.startDate`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <DatePicker field={field} placeholder="Start Date" />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
                       <FormField control={form.control} name={`terms.${idx}.endDate`} render={({ field }) => <DatePicker field={field} placeholder="End Date" />} />
                     </div>
                     <div className="space-y-4">
@@ -269,9 +281,42 @@ export default function SchoolCalendarForm() {
                               </Button>
                             </div>
                             <div className="grid gap-4 md:grid-cols-2">
-                              <FormField control={form.control} name={`terms.${idx}.breakWeeks.${breakWeekIdx}.name`} render={({ field }) => <Input placeholder="Break Period Name" {...field} />} />
-                              <FormField control={form.control} name={`terms.${idx}.breakWeeks.${breakWeekIdx}.startDate`} render={({ field }) => <DatePicker field={field} placeholder="Start Date" />} />
-                              <FormField control={form.control} name={`terms.${idx}.breakWeeks.${breakWeekIdx}.endDate`} render={({ field }) => <DatePicker field={field} placeholder="End Date" />} />
+                              <FormField
+                                control={form.control}
+                                name={`terms.${idx}.breakWeeks.${breakWeekIdx}.name`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormControl>
+                                      <Input placeholder="Break Period Name" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              <FormField
+                                control={form.control}
+                                name={`terms.${idx}.breakWeeks.${breakWeekIdx}.startDate`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormControl>
+                                      <DatePicker field={field} placeholder="Start Date" />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
+                              <FormField
+                                control={form.control}
+                                name={`terms.${idx}.breakWeeks.${breakWeekIdx}.endDate`}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormControl>
+                                      <DatePicker field={field} placeholder="End Date" />
+                                    </FormControl>
+                                    <FormMessage />
+                                  </FormItem>
+                                )}
+                              />
                             </div>
                           </div>
                         ))}
@@ -279,18 +324,15 @@ export default function SchoolCalendarForm() {
                   </div>
                 </Card>
               ))}
-          </>
+          </div>
+          <div className="grid md:grid-cols-2 md:max-w-lg gap-4 mx-auto my-12">
+            <Button variant={"outline"} type="button" onClick={() => router.push(RouteEnums.SCHOOL_CALENDAR)}>
+              Cancel
+            </Button>
+            <Button loading={calendarMutatePending}>{schoolCalendar ? "Update" : "Save"}</Button>
+          </div>
         </form>
       </Form>
-
-      <div className="grid md:grid-cols-2 md:max-w-lg gap-4 mx-auto my-12">
-        <Button variant={"outline"} type="button" onClick={() => router.push(RouteEnums.SCHOOL_CALENDAR)}>
-          Cancel
-        </Button>
-        <Button type="button" onClick={handleMutateSchoolCalendar} loading={calendarMutatePending}>
-          {schoolCalendar ? "Update" : "Save"}
-        </Button>
-      </div>
     </LoadingContent>
   );
 }

@@ -19,7 +19,7 @@ apiConfig.interceptors.request.use(async (config) => {
   let data: Record<string, any> = {
     userId: authUser?.data?.id,
     tenantId: authUser?.data?.tenantId,
-    roleId: authUser?.data?.staff?.roleId,
+    userRoleId: authUser?.data?.staff?.roleId,
   };
 
   if (authUser?.accessToken) {

@@ -5,12 +5,12 @@ import Link from "next/link";
 import { formatDateToString } from "@/lib/dates";
 import { DataTable } from "@/components/data-table";
 import { useAuthUser } from "@/hooks/use-auth-user";
-import { CirclePlus, UserRoundPen, UserRound } from "lucide-react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { LoadingContent } from "@/components/loading-content";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { useGetStaffListQuery } from "@/apis/core-staff-api/staff";
+import { CirclePlus, UserRoundPen, UserRound } from "lucide-react";
 import { PermissionRestrictor } from "@/components/permission-restrictor";
 import { PERMISSIONS } from "@/constants/permissions/permission-constants";
 import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
@@ -70,16 +70,20 @@ export function StaffListTable({}: Props) {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <Link href={`${RouteEnums.STAFF}/${staff.id}`}>
-                  <DropdownMenuItem className="flex justify-between">
-                    View <UserRound className="ml-2" size={15} strokeWidth={1} />
-                  </DropdownMenuItem>
-                </Link>
-                <Link href={`${RouteEnums.STAFF_CREATE}?id=${staff?.id}`}>
-                  <DropdownMenuItem className="flex justify-between">
-                    Edit <UserRoundPen className="ml-2" size={15} strokeWidth={1} />
-                  </DropdownMenuItem>
-                </Link>
+                <PermissionRestrictor requiredPermissions={[PERMISSIONS.STAFF.READ]}>
+                  <Link href={`${RouteEnums.STAFF}/${staff.id}`}>
+                    <DropdownMenuItem className="flex justify-between">
+                      View <UserRound className="ml-2" size={15} strokeWidth={1} />
+                    </DropdownMenuItem>
+                  </Link>
+                </PermissionRestrictor>
+                <PermissionRestrictor requiredPermissions={[PERMISSIONS.STAFF.UPDATE]}>
+                  <Link href={`${RouteEnums.STAFF_CREATE}?id=${staff?.id}`}>
+                    <DropdownMenuItem className="flex justify-between">
+                      Edit <UserRoundPen className="ml-2" size={15} strokeWidth={1} />
+                    </DropdownMenuItem>
+                  </Link>
+                </PermissionRestrictor>
               </DropdownMenuContent>
             </DropdownMenu>
           );
@@ -96,18 +100,6 @@ export function StaffListTable({}: Props) {
       <div className="flex w-full pb-4 mt-8">
         <div className="hidden md:flex md:flex-1" />
         <div className="grid md:grid-cols-2 gap-4 w-full md:w-auto">
-          <Select onValueChange={() => null} value={String("")}>
-            <SelectTrigger className="w-auto h-10">
-              <SelectValue placeholder="Filter by" />
-            </SelectTrigger>
-            <SelectContent>
-              {["Job title", "Gender"].map((item, idx) => (
-                <SelectItem key={idx} value={String(item)}>
-                  {item}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
           <PermissionRestrictor requiredPermissions={[PERMISSIONS.STAFF.CREATE]}>
             <Link className="" href={RouteEnums.STAFF_CREATE}>
               <Button className="w-full">

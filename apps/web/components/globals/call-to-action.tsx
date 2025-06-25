@@ -34,7 +34,7 @@ export function CallToActionPrompt({}: Props) {
   }
 
   // Ensure all conditions are met before rendering
-  if (authUser?.staff?.role?.isAdmin && completedSteps !== 3 && isMounted) {
+  if (!authUser?.staff?.role?.isAdmin && completedSteps !== 3 && isMounted) {
     return null; // Don't render anything if conditions aren't met
   }
 

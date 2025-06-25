@@ -1,8 +1,9 @@
 "use client";
 
-import { getAuthUserAction } from "@/helpers/server/auth-user-action";
 import { PermissionType } from "@/types";
+import { getAuthUserAction } from "@/helpers/server/auth-user-action";
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { hasPermission as _hasPermission, hasAnyPermission as _hasAnyPermission, hasAllPermissions as _hasAllPermissions } from "@/lib/permissions";
 
 interface PermissionContextType {
   permissions: PermissionType[];
@@ -29,26 +30,14 @@ export const PermissionProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     fetchPermissions();
   }, []);
 
-  const hasPermission = (permissionName: string): boolean => {
-    return permissions.some((permission) => permission.name === permissionName);
-  };
-
-  const hasAnyPermission = (permissionNames: string[]): boolean => {
-    return permissionNames.some((permissionName) => hasPermission(permissionName));
-  };
-
-  const hasAllPermissions = (permissionNames: string[]): boolean => {
-    return permissionNames.every((permissionName) => hasPermission(permissionName));
-  };
-
   return (
     <PermissionContext.Provider
       value={{
         permissions,
-        hasPermission,
-        hasAnyPermission,
-        hasAllPermissions,
         setPermissions,
+        hasPermission: (permissionName) => _hasPermission(permissions, permissionName),
+        hasAnyPermission: (permissionNames) => _hasAnyPermission(permissions, permissionNames),
+        hasAllPermissions: (permissionNames) => _hasAllPermissions(permissions, permissionNames),
       }}
     >
       {children}

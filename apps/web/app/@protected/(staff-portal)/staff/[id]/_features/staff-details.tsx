@@ -10,6 +10,8 @@ import { LoadingContent } from "@/components/loading-content";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { StaffDetailsSalaryTab } from "./staff-details-salary-tab";
 import { useGetSingleStaffQuery } from "@/apis/core-staff-api/staff";
+import { PermissionRestrictor } from "@/components/permission-restrictor";
+import { PERMISSIONS } from "@/constants/permissions/permission-constants";
 import { StaffDetailsPersonalInfoTab } from "./staff-details-personal-info-tab";
 import { StaffDetailsWorkScheduleTab } from "./staff-details-work-schedule-tab";
 import { StaffDetailsQualificationsTab } from "./staff-details-qualifications-tab";
@@ -29,7 +31,7 @@ function StaffDetails({ staffId }: { staffId: number }) {
       <div className="flex w-full pb-4 mt-8">
         <div className="hidden sm:flex sm:flex-1" />
         <div className="grid sm:grid-cols-2 gap-4 w-full sm:w-auto">
-          <Select onValueChange={() => null} value={String("")}>
+          {/* <Select onValueChange={() => null} value={String("")}>
             <SelectTrigger className="w-auto h-10">
               <SelectValue placeholder="Actions" />
             </SelectTrigger>
@@ -40,12 +42,14 @@ function StaffDetails({ staffId }: { staffId: number }) {
                 </SelectItem>
               ))}
             </SelectContent>
-          </Select>
-          <Link href={`${RouteEnums.STAFF_CREATE}?id=${staff?.data?.id}`}>
-            <Button className="w-full">
-              Edit Staff <UserRoundPen size={18} strokeWidth={1} />
-            </Button>
-          </Link>
+          </Select> */}
+          <PermissionRestrictor requiredPermissions={[PERMISSIONS.STAFF.UPDATE]}>
+            <Link href={`${RouteEnums.STAFF_CREATE}?id=${staff?.data?.id}`}>
+              <Button className="w-full">
+                Edit Staff <UserRoundPen size={18} strokeWidth={1} />
+              </Button>
+            </Link>
+          </PermissionRestrictor>
         </div>
       </div>
       <LoadingContent loading={isLoading} error={error} data={staff} retry={refetch}>

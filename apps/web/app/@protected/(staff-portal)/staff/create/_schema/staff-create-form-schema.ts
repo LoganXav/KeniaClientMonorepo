@@ -57,12 +57,12 @@ export const StaffCreateFormSchema = z.object({
     .positive("Tenant ID must be a positive number")
     .optional(),
 
-  roleId: z
-    .number({
+  roleId: z.union([
+    z.number({
       required_error: "Role ID is required",
-      invalid_type_error: "Role ID must be a number",
-    })
-    .positive("Role ID must be a positive number"),
+    }),
+    z.string().min(1, "Role is required"),
+  ]),
 
   residentialAddress: z.string().optional(),
   residentialStateId: z.union([z.string(), z.number()]).optional(),

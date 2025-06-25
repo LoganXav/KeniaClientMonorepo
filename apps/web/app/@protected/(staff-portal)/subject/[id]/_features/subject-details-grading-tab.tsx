@@ -9,6 +9,8 @@ import { DataTable } from "@/components/data-table";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { ContinuousAssessmentScore } from "@/types";
 import { LoadingContent } from "@/components/loading-content";
+import { PermissionRestrictor } from "@/components/permission-restrictor";
+import { PERMISSIONS } from "@/constants/permissions/permission-constants";
 import { SubjectGradingCreateDialog } from "./subject-grading-create-dialog";
 import { Button, Card, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { useGetSubjectGradingStructureQuery } from "@/apis/core-subject-api/subject-grading-structure";
@@ -157,11 +159,13 @@ export function SubjectDetailsGradingTab({ subjectId, classId }: { subjectId: nu
         </div>
         <div className="hidden md:flex md:flex-1" />
 
-        <Link className="" href={"#"}>
-          <Button className="w-full" onClick={handleOpenDialog}>
-            Submit Grades <FileCheck2 size={18} strokeWidth={1} />
-          </Button>
-        </Link>
+        <PermissionRestrictor requiredPermissions={[PERMISSIONS.SUBJECT_GRADE.CREATE]}>
+          <Link className="" href={"#"}>
+            <Button className="w-full" onClick={handleOpenDialog}>
+              Submit Grades <FileCheck2 size={18} strokeWidth={1} />
+            </Button>
+          </Link>
+        </PermissionRestrictor>
       </div>
       <Card className="overflow-hidden mt-8">
         <LoadingContent loading={gradingQueryResult?.isLoading} data={gradingQueryResult?.data} error={gradingQueryResult?.error} retry={gradingQueryResult?.refetch} shouldLoad={gradingQueryResult?.isFetched || gradingQueryResult?.isError}>

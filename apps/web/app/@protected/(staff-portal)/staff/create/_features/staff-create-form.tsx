@@ -45,11 +45,12 @@ export function StaffCreateForm({ staffId }: Props) {
           payload: {
             ...values,
             tenantId: authUserIds?.tenantId,
-            dateOfBirth: new Date(values.dateOfBirth),
+            dateOfBirth: values.dateOfBirth && new Date(values.dateOfBirth),
             residentialCountryId: Number(values.residentialCountryId),
             residentialStateId: Number(values.residentialStateId),
             residentialLgaId: Number(values.residentialLgaId),
             residentialZipCode: Number(values.residentialZipCode),
+            roleId: Number(values.roleId),
             cvUrl: "",
             startDate: new Date(values.startDate),
           },
@@ -71,11 +72,12 @@ export function StaffCreateForm({ staffId }: Props) {
           payload: {
             ...values,
             tenantId: authUserIds?.tenantId,
-            dateOfBirth: new Date(values.dateOfBirth),
+            dateOfBirth: values.dateOfBirth && new Date(values.dateOfBirth),
             residentialCountryId: Number(values.residentialCountryId),
             residentialStateId: Number(values.residentialStateId),
             residentialLgaId: Number(values.residentialLgaId),
             residentialZipCode: Number(values.residentialZipCode),
+            roleId: Number(values.roleId),
             cvUrl: "",
             startDate: new Date(values.startDate),
           },
@@ -115,6 +117,7 @@ export function StaffCreateForm({ staffId }: Props) {
     employmentType: "",
     startDate: undefined,
     highestLevelEdu: "",
+    roleId: "",
     // subjectIds: [],
     // classDivisionIds: [],
   };
@@ -148,6 +151,7 @@ export function StaffCreateForm({ staffId }: Props) {
         residentialZipCode: Number(staff?.user?.residentialZipCode) || values.residentialZipCode,
 
         tin: staff?.tin || values.tin,
+        roleId: staff?.roleId || values.roleId,
         cvUrl: staff?.cvUrl || values.cvUrl,
         jobTitle: staff?.jobTitle || values.jobTitle,
         employmentType: staff?.employmentType || values.employmentType,

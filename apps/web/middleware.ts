@@ -8,7 +8,7 @@ import { routePermissionsMap } from "./constants/permissions/permission-constant
 const publicRoutes = [RouteEnums.SIGNIN, RouteEnums.SIGNUP, RouteEnums.VERIFY, RouteEnums.RESET_PASSWORD, RouteEnums.CHANGE_PASSWORD, RouteEnums.LOBBY, RouteEnums.HOME];
 
 // Protected routes (prefix-based matching)
-const protectedRoutes = [RouteEnums.DASHBOARD, RouteEnums.STAFF, RouteEnums.STUDENT, RouteEnums.SCHOOL, RouteEnums.CLASS, RouteEnums.SUBJECT_LIST];
+const protectedRoutes = [RouteEnums.DASHBOARD, RouteEnums.STAFF, RouteEnums.STUDENT, RouteEnums.SCHOOL, RouteEnums.CLASS, RouteEnums.SUBJECT];
 
 // Helper to check if path starts with any protected route
 function isProtectedRoute(pathname: string) {
