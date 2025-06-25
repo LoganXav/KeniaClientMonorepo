@@ -8,6 +8,8 @@ import { DataTable } from "@/components/data-table";
 import { LoadingContent } from "@/components/loading-content";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
 import { RouteEnums } from "@/constants/router/route-constants";
+import { PermissionRestrictor } from "@/components/permission-restrictor";
+import { PERMISSIONS } from "@/constants/permissions/permission-constants";
 import { Badge, Button, Card, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { useGetClassPromotionListQuery, useGetClassPromotionTemplateQuery } from "@/apis/core-class-api/class-promotion";
 
@@ -128,11 +130,13 @@ export function ClassPromotionListTable({}: Props) {
             </SelectContent>
           </Select>
         </div>
-        <Link className="w-full md:w-fit" href={RouteEnums.CLASS_PROMOTION_CREATE}>
-          <Button className="w-full">
-            Manage Promotions <ChartNoAxesCombined size={18} strokeWidth={1} />
-          </Button>
-        </Link>
+        <PermissionRestrictor requiredPermissions={[PERMISSIONS.CLASS_PROMOTION.CREATE]}>
+          <Link className="w-full md:w-fit" href={RouteEnums.CLASS_PROMOTION_CREATE}>
+            <Button className="w-full">
+              Manage Promotions <ChartNoAxesCombined size={18} strokeWidth={1} />
+            </Button>
+          </Link>
+        </PermissionRestrictor>
       </div>
       <Card className="overflow-hidden">
         <LoadingContent loading={classListQueryResult?.isLoading} data={classListQueryResult?.data} error={classListQueryResult?.error} retry={classListQueryResult?.refetch}>

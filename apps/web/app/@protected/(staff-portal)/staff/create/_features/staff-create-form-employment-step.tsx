@@ -50,7 +50,7 @@ export function StaffCreateFormEmploymentStep({ form, staffTemplateQuery }: Step
           </FormItem>
         )}
       />
-      <FormField
+      {/* <FormField
         control={form.control}
         name="tin"
         render={({ field }) => (
@@ -62,7 +62,7 @@ export function StaffCreateFormEmploymentStep({ form, staffTemplateQuery }: Step
             <FormMessage />
           </FormItem>
         )}
-      />
+      /> */}
 
       <FormField
         control={form.control}
@@ -79,6 +79,30 @@ export function StaffCreateFormEmploymentStep({ form, staffTemplateQuery }: Step
                 {staffTemplateQuery?.data?.data?.employmentTypeOptions?.map((type, idx) => (
                   <SelectItem key={idx} value={String(type)}>
                     {type}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
+        name="roleId"
+        render={({ field }) => (
+          <FormItem>
+            <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={staffTemplateQuery?.isLoading}>
+              <FormControl>
+                <SelectTrigger>
+                  <SelectValue placeholder="Assign a role" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                {staffTemplateQuery?.data?.data?.roleOptions?.map((role, idx) => (
+                  <SelectItem key={idx} value={String(role.id)}>
+                    {role.name}
                   </SelectItem>
                 ))}
               </SelectContent>

@@ -5,11 +5,13 @@ import useToggle from "@/hooks/use-toggle";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { SubjectDetailsTabs } from "./subject-details-tabs";
 import { LoadingContent } from "@/components/loading-content";
-import { MinusIcon, CirclePlus, EqualIcon } from "lucide-react";
+import { MinusIcon, CirclePlus, EqualIcon, EyeIcon } from "lucide-react";
 import { useGetSingleSubjectQuery } from "@/apis/core-subject-api/subject";
 import { SubjectGradingStructureCreateDialog } from "./subject-grading-structure-create-dialog";
 import { useGetSchoolGradingStructureQuery } from "@/apis/core-tenant-api/tenant-grading-structure";
 import { Button, Card, CardDescription, CardTitle, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Typography } from "@repo/ui";
+import { PermissionRestrictor } from "@/components/permission-restrictor";
+import { PERMISSIONS } from "@/constants/permissions/permission-constants";
 
 export function SubjectDetails({ subjectId }: { subjectId: number }) {
   const { authUserIds } = useAuthUser();
@@ -53,36 +55,40 @@ export function SubjectDetails({ subjectId }: { subjectId: number }) {
 
           <div className="grid md:grid-cols-3 gap-4 w-full md:w-auto">
             {subject?.gradingStructure ? (
-              <Button variant={"outline"} className="w-full justify-self-end" onClick={handleViewDialogOpen}>
-                {/* <EyeIcon size={18} strokeWidth={1} /> */}
-                View Grade Breakdown
-              </Button>
+              <PermissionRestrictor requiredPermissions={[PERMISSIONS.SUBJECT_GRADE_BREAKDOWN.READ]}>
+                <Button variant={"outline"} className="w-full justify-self-end" onClick={handleViewDialogOpen}>
+                  View Grade Breakdown
+                  <EyeIcon size={18} strokeWidth={1} />
+                </Button>
+              </PermissionRestrictor>
             ) : (
               <div />
             )}
-            <Button className="w-full" onClick={() => handleOpenDialog()}>
-              {!subject?.gradingStructure ? (
-                <>
+            {!subject?.gradingStructure ? (
+              <PermissionRestrictor requiredPermissions={[PERMISSIONS.SUBJECT_GRADE_BREAKDOWN.CREATE]}>
+                <Button className="w-full" onClick={() => handleOpenDialog()}>
                   Create Grade Breakdown <CirclePlus size={18} strokeWidth={1} />
-                </>
-              ) : (
-                <>
+                </Button>
+              </PermissionRestrictor>
+            ) : (
+              <PermissionRestrictor requiredPermissions={[PERMISSIONS.SUBJECT_GRADE_BREAKDOWN.UPDATE]}>
+                <Button className="w-full" onClick={() => handleOpenDialog()}>
                   Update Grade Breakdown <CirclePlus size={18} strokeWidth={1} />
-                </>
-              )}
-            </Button>
-            <Select value={String("")}>
+                </Button>
+              </PermissionRestrictor>
+            )}
+            {/* <Select value={String("")}>
               <SelectTrigger className="w-auto h-10">
-                <SelectValue placeholder="Quick Actions" />
+              <SelectValue placeholder="Quick Actions" />
               </SelectTrigger>
               <SelectContent>
-                {["Submit Scheme of Work", "Submit Grades"].map((item, idx) => (
-                  <SelectItem key={idx} value={String(item)}>
-                    {item}
-                  </SelectItem>
+              {["Submit Scheme of Work", "Submit Grades"].map((item, idx) => (
+                <SelectItem key={idx} value={String(item)}>
+                {item}
+                </SelectItem>
                 ))}
-              </SelectContent>
-            </Select>
+                </SelectContent>
+                </Select> */}
           </div>
         </div>
 
@@ -94,36 +100,38 @@ export function SubjectDetails({ subjectId }: { subjectId: number }) {
               <CardDescription className="max-w-xl">{subject?.class?.name}</CardDescription>
             </Card>
 
-            <Card className="p-4 space-y-4">
-              <Typography className="font-heading uppercase" size={"small"}>
-                School Grading Policy
-              </Typography>
-              <div className="space-y-2">
-                <LoadingContent loading={schoolGradingStructureQueryResult?.isLoading} data={schoolGradingStructureQueryResult?.data} error={schoolGradingStructureQueryResult?.error} retry={schoolGradingStructureQueryResult?.refetch}>
-                  <div className="grid grid-cols-5 border border-border">
-                    {schoolGradingStructure?.gradeBoundaries.map((boundary, idx) => (
-                      <React.Fragment key={idx}>
-                        <div className="p-2 border border-border text-center">
-                          <Typography>{boundary?.minimumScore}</Typography>
-                        </div>
-                        <div className="p-2 border border-border flex justify-center items-center">
-                          <MinusIcon strokeWidth={1} size={16} />
-                        </div>
-                        <div className="p-2 border border-border text-center">
-                          <Typography>{boundary?.maximumScore}</Typography>
-                        </div>
-                        <div className="p-2 border border-border flex justify-center items-center">
-                          <EqualIcon strokeWidth={1} size={16} />
-                        </div>
-                        <div className="p-2 border border-border text-center">
-                          <Typography>{boundary?.grade}</Typography>
-                        </div>
-                      </React.Fragment>
-                    ))}
-                  </div>
-                </LoadingContent>
-              </div>
-            </Card>
+            <PermissionRestrictor requiredPermissions={[PERMISSIONS.SCHOOL_GRADING_POLICY.READ]}>
+              <Card className="p-4 space-y-4">
+                <Typography className="font-heading uppercase" size={"small"}>
+                  School Grading Policy
+                </Typography>
+                <div className="space-y-2">
+                  <LoadingContent loading={schoolGradingStructureQueryResult?.isLoading} data={schoolGradingStructureQueryResult?.data} error={schoolGradingStructureQueryResult?.error} retry={schoolGradingStructureQueryResult?.refetch}>
+                    <div className="grid grid-cols-5 border border-border">
+                      {schoolGradingStructure?.gradeBoundaries.map((boundary, idx) => (
+                        <React.Fragment key={idx}>
+                          <div className="p-2 border border-border text-center">
+                            <Typography>{boundary?.minimumScore}</Typography>
+                          </div>
+                          <div className="p-2 border border-border flex justify-center items-center">
+                            <MinusIcon strokeWidth={1} size={16} />
+                          </div>
+                          <div className="p-2 border border-border text-center">
+                            <Typography>{boundary?.maximumScore}</Typography>
+                          </div>
+                          <div className="p-2 border border-border flex justify-center items-center">
+                            <EqualIcon strokeWidth={1} size={16} />
+                          </div>
+                          <div className="p-2 border border-border text-center">
+                            <Typography>{boundary?.grade}</Typography>
+                          </div>
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  </LoadingContent>
+                </div>
+              </Card>
+            </PermissionRestrictor>
           </div>
           <SubjectDetailsTabs subjectId={subjectId} classId={subject?.classId} />
         </div>

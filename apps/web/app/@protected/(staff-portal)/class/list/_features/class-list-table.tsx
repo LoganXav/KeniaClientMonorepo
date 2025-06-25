@@ -10,6 +10,8 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { LoadingContent } from "@/components/loading-content";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { useGetClassListQuery } from "@/apis/core-class-api/class";
+import { PermissionRestrictor } from "@/components/permission-restrictor";
+import { PERMISSIONS } from "@/constants/permissions/permission-constants";
 import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@repo/ui";
 type Props = {};
 
@@ -38,11 +40,13 @@ export function ClassListTable({}: Props) {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <Link href={`${RouteEnums.CLASS}/${classItem.id}`}>
-                  <DropdownMenuItem className="flex justify-between">
-                    View <UserRound className="ml-2" size={15} strokeWidth={1} />
-                  </DropdownMenuItem>
-                </Link>
+                <PermissionRestrictor requiredPermissions={[PERMISSIONS.CLASS.READ]}>
+                  <Link href={`${RouteEnums.CLASS}/${classItem.id}`}>
+                    <DropdownMenuItem className="flex justify-between">
+                      View <UserRound className="ml-2" size={15} strokeWidth={1} />
+                    </DropdownMenuItem>
+                  </Link>
+                </PermissionRestrictor>
               </DropdownMenuContent>
             </DropdownMenu>
           );

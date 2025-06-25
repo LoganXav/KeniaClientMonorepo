@@ -7,7 +7,7 @@ import { formatDateToString } from "@/lib/dates";
 import { ColumnDef } from "@tanstack/react-table";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { DataTable } from "@/components/data-table";
-import { CirclePlus, UserRound } from "lucide-react";
+import { CirclePlus, FolderCog } from "lucide-react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { LoadingContent } from "@/components/loading-content";
 import { RouteEnums } from "@/constants/router/route-constants";
@@ -66,7 +66,7 @@ export function SchoolGradingStructureList() {
                 <DropdownMenuSeparator />
                 <Link href={`${RouteEnums.SCHOOL_GRADING_CREATE}?id=${gradeStructureItem?.id}`}>
                   <DropdownMenuItem className="flex justify-between">
-                    Edit <UserRound className="ml-2" size={15} strokeWidth={1} />
+                    Edit <FolderCog className="ml-2" size={15} strokeWidth={1} />
                   </DropdownMenuItem>
                 </Link>
               </DropdownMenuContent>

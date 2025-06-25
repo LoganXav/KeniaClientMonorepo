@@ -40,6 +40,7 @@ export const useStaffCreateMutation = ({ params }: { params?: { tenantId?: numbe
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF, params?.tenantId] });
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.ROLE, params?.tenantId] });
     },
   });
 
@@ -94,6 +95,7 @@ export const useStaffUpdateMutation = ({ path, params }: { path?: { staffId?: nu
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF, params?.tenantId] });
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.ROLE, params?.tenantId] });
     },
   });
 

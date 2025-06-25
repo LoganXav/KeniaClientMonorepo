@@ -9,6 +9,8 @@ import { CirclePlus, UserRound } from "lucide-react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { LoadingContent } from "@/components/loading-content";
 import { RouteEnums } from "@/constants/router/route-constants";
+import { PermissionRestrictor } from "@/components/permission-restrictor";
+import { PERMISSIONS } from "@/constants/permissions/permission-constants";
 import { useGetClassDivisionListQuery } from "@/apis/core-class-api/class-division";
 import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@repo/ui";
 
@@ -51,11 +53,13 @@ export function ClassDivisionListTable() {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <Link href={`${RouteEnums.CLASS_DIVISION}/${classDivision.id}`}>
-                  <DropdownMenuItem className="flex justify-between">
-                    View <UserRound className="ml-2" size={15} strokeWidth={1} />
-                  </DropdownMenuItem>
-                </Link>
+                <PermissionRestrictor requiredPermissions={[PERMISSIONS.CLASS_DIVISION.READ]}>
+                  <Link href={`${RouteEnums.CLASS_DIVISION}/${classDivision.id}`}>
+                    <DropdownMenuItem className="flex justify-between">
+                      View <UserRound className="ml-2" size={15} strokeWidth={1} />
+                    </DropdownMenuItem>
+                  </Link>
+                </PermissionRestrictor>
               </DropdownMenuContent>
             </DropdownMenu>
           );
@@ -72,11 +76,13 @@ export function ClassDivisionListTable() {
       <div className="flex w-full pb-4 mt-8">
         <div className="hidden md:flex md:flex-1" />
 
-        <Link className="w-full md:w-auto" href={RouteEnums.CLASS_DIVISION_CREATE}>
-          <Button className="w-full">
-            Create Class Division <CirclePlus size={18} strokeWidth={1} />
-          </Button>
-        </Link>
+        <PermissionRestrictor requiredPermissions={[PERMISSIONS.CLASS_DIVISION.CREATE]}>
+          <Link className="w-full md:w-auto" href={RouteEnums.CLASS_DIVISION_CREATE}>
+            <Button className="w-full">
+              Create Class Division <CirclePlus size={18} strokeWidth={1} />
+            </Button>
+          </Link>
+        </PermissionRestrictor>
       </div>
 
       <Card className="overflow-hidden">

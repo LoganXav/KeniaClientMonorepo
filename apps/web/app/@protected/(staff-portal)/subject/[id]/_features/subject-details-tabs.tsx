@@ -1,7 +1,9 @@
 "use client";
 
 import { SubjectDetailsGradingTab } from "./subject-details-grading-tab";
+import { PermissionRestrictor } from "@/components/permission-restrictor";
 import { SubjectDetailsStudentsTab } from "./subject-details-students-tab";
+import { PERMISSIONS } from "@/constants/permissions/permission-constants";
 import { ScrollArea, ScrollBar, Tabs, TabsContent, TabsList, TabsTrigger } from "@repo/ui";
 
 export function SubjectDetailsTabs({ subjectId, classId }: { subjectId: number; classId?: number }) {
@@ -10,8 +12,12 @@ export function SubjectDetailsTabs({ subjectId, classId }: { subjectId: number; 
       <ScrollArea>
         <div className="w-full relative h-14">
           <TabsList className="flex absolute">
-            <TabsTrigger value="students">Current Students</TabsTrigger>
-            <TabsTrigger value="grading">Grading</TabsTrigger>
+            <PermissionRestrictor requiredPermissions={[PERMISSIONS.STUDENT.READ]}>
+              <TabsTrigger value="students">Current Students</TabsTrigger>
+            </PermissionRestrictor>
+            <PermissionRestrictor requiredPermissions={[PERMISSIONS.SUBJECT_GRADE.READ]}>
+              <TabsTrigger value="grading">Grading</TabsTrigger>
+            </PermissionRestrictor>
           </TabsList>
         </div>
         <ScrollBar orientation="horizontal" />
