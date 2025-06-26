@@ -1,14 +1,16 @@
 "use client";
 
-import { CalendarCog } from "lucide-react";
-import { RouteEnums } from "@/constants/router/route-constants";
-import { Button, CalendarGrid, Card } from "@repo/ui";
-import Link from "next/link";
 import React from "react";
-import { useGetCalendarQuery } from "@/apis/core-calendar-api/calendar";
+import Link from "next/link";
+import { CalendarCog } from "lucide-react";
+import { useAuthUser } from "@/hooks/use-auth-user";
+import { Button, CalendarGrid, Card } from "@repo/ui";
 import { parseCalendarDataToEvents } from "@/lib/dates";
 import { LoadingContent } from "@/components/loading-content";
-import { useAuthUser } from "@/hooks/use-auth-user";
+import { RouteEnums } from "@/constants/router/route-constants";
+import { useGetCalendarQuery } from "@/apis/core-calendar-api/calendar";
+import { PermissionRestrictor } from "@/components/permission-restrictor";
+import { PERMISSIONS } from "@/constants/permissions/permission-constants";
 
 function SchoolCalendarGrid() {
   const { authUserIds } = useAuthUser();
@@ -22,11 +24,13 @@ function SchoolCalendarGrid() {
         <div className="hidden md:flex md:flex-1" />
         <div className="grid md:grid-cols-2 gap-4 w-full md:w-auto">
           <div />
-          <Link className="" href={RouteEnums.SCHOOL_CALENDAR_CREATE}>
-            <Button className="w-full">
-              Manage Calendar <CalendarCog size={18} strokeWidth={1} />
-            </Button>
-          </Link>
+          <PermissionRestrictor requiredPermissions={[PERMISSIONS.SCHOOL_CALENDAR.CREATE]}>
+            <Link className="" href={RouteEnums.SCHOOL_CALENDAR_CREATE}>
+              <Button className="w-full">
+                Manage Calendar <CalendarCog size={18} strokeWidth={1} />
+              </Button>
+            </Link>
+          </PermissionRestrictor>
         </div>
       </div>
       <LoadingContent loading={calendarQueryResult?.isLoading} error={calendarQueryResult?.error} retry={calendarQueryResult?.refetch} data={calendarQueryResult?.data} shouldLoad={false}>

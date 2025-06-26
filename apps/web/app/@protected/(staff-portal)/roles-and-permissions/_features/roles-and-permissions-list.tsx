@@ -8,6 +8,8 @@ import { useAuthUser } from "@/hooks/use-auth-user";
 import { Badge, Button, Card, Typography } from "@repo/ui";
 import { LoadingContent } from "@/components/loading-content";
 import { useGetRoleListQuery } from "@/apis/core-role-api/role";
+import { PermissionRestrictor } from "@/components/permission-restrictor";
+import { PERMISSIONS } from "@/constants/permissions/permission-constants";
 import { RolesAndPermissionsCreateDialog } from "./roles-and-permissions-create-dialog";
 
 export function RolesAndPermissionsList() {
@@ -57,21 +59,24 @@ export function RolesAndPermissionsList() {
                 <Button className="w-full md:w-auto" size={"sm"} variant={"outline"} onClick={() => handleOpenDialog(role, true)}>
                   View Info
                 </Button>
-
-                {!role.isAdmin && (
-                  <Button className="w-full md:w-auto" size={"sm"} onClick={() => handleOpenDialog(role, false)}>
-                    Edit Role
-                  </Button>
-                )}
+                <PermissionRestrictor requiredPermissions={[PERMISSIONS.ROLE.UPDATE]}>
+                  {!role.isAdmin && (
+                    <Button className="w-full md:w-auto" size={"sm"} onClick={() => handleOpenDialog(role, false)}>
+                      Edit Role
+                    </Button>
+                  )}
+                </PermissionRestrictor>
               </div>
             </Card>
           ))}
-          <Card className="group p-6">
-            <div onClick={() => handleOpenDialog(undefined, false)} className="flex flex-col justify-center items-center border border-dashed gap-2 rounded-md p-6 h-full group-hover:border-foreground group-hover:cursor-pointer transition-border duration-100">
-              <PlusCircle strokeWidth={1} className="text-muted-foreground group-hover:text-foreground transition-border duration-100" />
-              <Typography className="text-muted-foreground group-hover:text-foreground transition-border duration-100">Create a new role</Typography>
-            </div>
-          </Card>
+          <PermissionRestrictor requiredPermissions={[PERMISSIONS.ROLE.CREATE]}>
+            <Card className="group p-6">
+              <div onClick={() => handleOpenDialog(undefined, false)} className="flex flex-col justify-center items-center border border-dashed gap-2 rounded-md p-6 h-full group-hover:border-foreground group-hover:cursor-pointer transition-border duration-100">
+                <PlusCircle strokeWidth={1} className="text-muted-foreground group-hover:text-foreground transition-border duration-100" />
+                <Typography className="text-muted-foreground group-hover:text-foreground transition-border duration-100">Create a new role</Typography>
+              </div>
+            </Card>
+          </PermissionRestrictor>
         </div>
       </LoadingContent>
 

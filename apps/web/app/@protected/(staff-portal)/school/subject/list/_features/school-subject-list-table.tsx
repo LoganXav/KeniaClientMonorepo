@@ -1,17 +1,19 @@
 "use client";
 
 import React from "react";
+import { SubjectType } from "@/types";
+import useToggle from "@/hooks/use-toggle";
+import { CirclePlus, Pencil } from "lucide-react";
+import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
-import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@repo/ui";
+import { useAuthUser } from "@/hooks/use-auth-user";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { LoadingContent } from "@/components/loading-content";
-import { CirclePlus, Pencil } from "lucide-react";
 import { useGetSubjectListQuery } from "@/apis/core-subject-api/subject";
+import { PermissionRestrictor } from "@/components/permission-restrictor";
 import { SchoolSubjectCreateDialog } from "./school-subject-create-dialog";
-import useToggle from "@/hooks/use-toggle";
-import { SubjectType } from "@/types";
-import { ColumnDef } from "@tanstack/react-table";
-import { useAuthUser } from "@/hooks/use-auth-user";
+import { PERMISSIONS } from "@/constants/permissions/permission-constants";
+import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@repo/ui";
 
 type Props = {};
 
@@ -60,15 +62,17 @@ export function SchoolSubjectListTable({}: Props) {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className="flex justify-between"
-                  onSelect={(e) => {
-                    e.preventDefault();
-                    handleOpenDialog(subject);
-                  }}
-                >
-                  Edit <Pencil className="ml-2" size={15} strokeWidth={1} />
-                </DropdownMenuItem>
+                <PermissionRestrictor requiredPermissions={[PERMISSIONS.SUBJECT.UPDATE]}>
+                  <DropdownMenuItem
+                    className="flex justify-between"
+                    onSelect={(e) => {
+                      e.preventDefault();
+                      handleOpenDialog(subject);
+                    }}
+                  >
+                    Edit <Pencil className="ml-2" size={15} strokeWidth={1} />
+                  </DropdownMenuItem>
+                </PermissionRestrictor>
               </DropdownMenuContent>
             </DropdownMenu>
           );
@@ -86,9 +90,11 @@ export function SchoolSubjectListTable({}: Props) {
       <div className="flex w-full pb-4 mt-8">
         <div className="hidden md:flex md:flex-1" />
         <div className="grid gap-4 w-full md:w-auto">
-          <Button className="w-full" onClick={toggle}>
-            Add Subject <CirclePlus size={18} strokeWidth={1} />
-          </Button>
+          <PermissionRestrictor requiredPermissions={[PERMISSIONS.SUBJECT.CREATE]}>
+            <Button className="w-full" onClick={toggle}>
+              Add Subject <CirclePlus size={18} strokeWidth={1} />
+            </Button>
+          </PermissionRestrictor>
         </div>
       </div>
       <Card className="overflow-hidden">
