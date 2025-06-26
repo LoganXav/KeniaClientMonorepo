@@ -6,6 +6,8 @@ import { CalendarCog } from "lucide-react";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { LoadingContent } from "@/components/loading-content";
 import { RouteEnums } from "@/constants/router/route-constants";
+import { PermissionRestrictor } from "@/components/permission-restrictor";
+import { PERMISSIONS } from "@/constants/permissions/permission-constants";
 import { SchoolTimetableTemplateOptions } from "../create/_types/school-timetable-form-types";
 import { Card, Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { useGetTimetableQuery, useGetTimetableTemplateQuery } from "@/apis/core-timetable-api/timetable";
@@ -79,11 +81,14 @@ function SchoolTimetableGrid() {
             </SelectContent>
           </Select>
         </div>
-        <Link className="md:w-fit" href={RouteEnums.SCHOOL_TIMETABLE_CREATE}>
-          <Button className="w-full">
-            Manage Timetable <CalendarCog size={18} strokeWidth={1} />
-          </Button>
-        </Link>
+
+        <PermissionRestrictor requiredPermissions={[PERMISSIONS.SCHOOL_TIMETABLE.CREATE]}>
+          <Link className="md:w-fit" href={RouteEnums.SCHOOL_TIMETABLE_CREATE}>
+            <Button className="w-full">
+              Manage Timetable <CalendarCog size={18} strokeWidth={1} />
+            </Button>
+          </Link>
+        </PermissionRestrictor>
       </div>
 
       <LoadingContent loading={timetableQueryResult?.isLoading} error={timetableQueryResult?.error} retry={timetableQueryResult?.refetch} data={timetableQueryResult?.data} shouldLoad={false}>

@@ -11,6 +11,8 @@ import { CirclePlus, FolderCog } from "lucide-react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { LoadingContent } from "@/components/loading-content";
 import { RouteEnums } from "@/constants/router/route-constants";
+import { PermissionRestrictor } from "@/components/permission-restrictor";
+import { PERMISSIONS } from "@/constants/permissions/permission-constants";
 import { useGetSchoolGradingStructureListQuery } from "@/apis/core-tenant-api/tenant-grading-structure";
 import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@repo/ui";
 
@@ -64,11 +66,13 @@ export function SchoolGradingStructureList() {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <Link href={`${RouteEnums.SCHOOL_GRADING_CREATE}?id=${gradeStructureItem?.id}`}>
-                  <DropdownMenuItem className="flex justify-between">
-                    Edit <FolderCog className="ml-2" size={15} strokeWidth={1} />
-                  </DropdownMenuItem>
-                </Link>
+                <PermissionRestrictor requiredPermissions={[PERMISSIONS.SCHOOL_GRADING_POLICY.UPDATE]}>
+                  <Link href={`${RouteEnums.SCHOOL_GRADING_CREATE}?id=${gradeStructureItem?.id}`}>
+                    <DropdownMenuItem className="flex justify-between">
+                      Edit <FolderCog className="ml-2" size={15} strokeWidth={1} />
+                    </DropdownMenuItem>
+                  </Link>
+                </PermissionRestrictor>
               </DropdownMenuContent>
             </DropdownMenu>
           );
@@ -83,9 +87,11 @@ export function SchoolGradingStructureList() {
       <div className="flex w-full pb-4 mt-8">
         <div className="hidden md:flex md:flex-1" />
         <div className="grid gap-4 w-full md:w-auto">
-          <Button className="w-full" onClick={() => router.push(RouteEnums.SCHOOL_GRADING_CREATE)}>
-            Add Grading Policy <CirclePlus size={18} strokeWidth={1} />
-          </Button>
+          <PermissionRestrictor requiredPermissions={[PERMISSIONS.SCHOOL_GRADING_POLICY.CREATE]}>
+            <Button className="w-full" onClick={() => router.push(RouteEnums.SCHOOL_GRADING_CREATE)}>
+              Add Grading Policy <CirclePlus size={18} strokeWidth={1} />
+            </Button>
+          </PermissionRestrictor>
         </div>
       </div>
       <Card className="overflow-hidden">
