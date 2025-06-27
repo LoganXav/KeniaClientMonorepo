@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useForm } from "react-hook-form";
+import { CirclePlus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import useStepper from "@/hooks/use-stepper";
 import useDataRef from "@/hooks/use-data-ref";
@@ -252,6 +253,16 @@ export function StaffCreateForm({ staffId }: Props) {
 
   return (
     <LoadingContent loading={staffQueryResult?.isLoading} error={staffQueryResult?.error} retry={staffQueryResult?.refetch} data={staffQueryResult?.data} shouldLoad={isEdit}>
+      <div className="flex w-full pb-4 mt-8">
+        <div className="hidden md:flex md:flex-1" />
+        <div className="grid gap-4 w-full md:w-auto">
+          {/* <PermissionRestrictor requiredPermissions={[PERMISSIONS.STAFF.CREATE]}> */}
+          <Button className="w-full">
+            Bulk Import Staff <CirclePlus size={18} strokeWidth={1} />
+          </Button>
+          {/* </PermissionRestrictor> */}
+        </div>
+      </div>
       <Card className="flex items-center xl:justify-center p-4 gap-4 w-full md:max-w-min mx-auto overflow-x-scroll my-8">
         {steps.slice(0, steps.length - 1).map((step, i) => (
           <div key={i}>

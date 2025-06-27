@@ -25,7 +25,7 @@ export function WorkspaceOverview() {
       <div className="flex w-full pb-4">
         <div className="hidden md:flex md:flex-1" />
         <div className="grid md:grid-cols-1 gap-4 w-full md:w-auto">
-          <Select value={String("")}>
+          {/* <Select value={String("")}>
             <SelectTrigger className="w-auto h-10">
               <SelectValue placeholder="Quick Actions" />
             </SelectTrigger>
@@ -36,7 +36,7 @@ export function WorkspaceOverview() {
                 </SelectItem>
               ))}
             </SelectContent>
-          </Select>
+          </Select> */}
         </div>
       </div>
       <div className="grid md:grid-cols-3 gap-4">

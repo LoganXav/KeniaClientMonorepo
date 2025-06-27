@@ -2,19 +2,37 @@
 
 import React from "react";
 import Link from "next/link";
+import useToggle from "@/hooks/use-toggle";
 import { calculateAge } from "@/lib/dates";
 import { DataTable } from "@/components/data-table";
 import { useAuthUser } from "@/hooks/use-auth-user";
-import { CirclePlus, UserPenIcon, UserRound } from "lucide-react";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { LoadingContent } from "@/components/loading-content";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { useGetStudentListQuery } from "@/apis/core-student-api/student";
+import { PermissionRestrictor } from "@/components/permission-restrictor";
+import { PERMISSIONS } from "@/constants/permissions/permission-constants";
+import { CirclePlus, Download, UserPenIcon, UserRound } from "lucide-react";
+import { StudentCreateBulkImportDialog } from "../../create/_features/student-create-bulk-import-dialog";
 import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 
 export function StudentListTable() {
   const { authUserIds } = useAuthUser();
+  const [open, toggle] = useToggle(false);
+
+  const handleOpenDialog = () => {
+    // Ensure we're running this after the dropdown's click event has completed
+    setTimeout(() => {
+      toggle();
+    }, 0);
+  };
+
+  const handleCloseDialog = React.useCallback(() => {
+    toggle();
+    setTimeout(() => {}, 200);
+  }, [toggle]);
+
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
       {
@@ -62,16 +80,20 @@ export function StudentListTable() {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <Link href={`${RouteEnums.STUDENT}/${student?.id}`}>
-                  <DropdownMenuItem className="flex justify-between">
-                    View <UserRound className="ml-2" size={15} strokeWidth={1} />
-                  </DropdownMenuItem>
-                </Link>
-                <Link href={`${RouteEnums.STUDENT}/create?id=${student?.id}`}>
-                  <DropdownMenuItem className="flex justify-between">
-                    Edit <UserPenIcon className="ml-2" size={15} strokeWidth={1} />
-                  </DropdownMenuItem>
-                </Link>
+                <PermissionRestrictor requiredPermissions={[PERMISSIONS.STUDENT.READ]}>
+                  <Link href={`${RouteEnums.STUDENT}/${student?.id}`}>
+                    <DropdownMenuItem className="flex justify-between">
+                      View <UserRound className="ml-2" size={15} strokeWidth={1} />
+                    </DropdownMenuItem>
+                  </Link>
+                </PermissionRestrictor>
+                <PermissionRestrictor requiredPermissions={[PERMISSIONS.STUDENT.UPDATE]}>
+                  <Link href={`${RouteEnums.STUDENT}/create?id=${student?.id}`}>
+                    <DropdownMenuItem className="flex justify-between">
+                      Edit <UserPenIcon className="ml-2" size={15} strokeWidth={1} />
+                    </DropdownMenuItem>
+                  </Link>
+                </PermissionRestrictor>
               </DropdownMenuContent>
             </DropdownMenu>
           );
@@ -87,31 +109,26 @@ export function StudentListTable() {
     <>
       <div className="flex w-full pb-4 mt-8">
         <div className="hidden md:flex md:flex-1" />
-        <div className="grid md:grid-cols-2 gap-4 w-full md:w-auto">
-          <Select onValueChange={() => null} value={""}>
-            <SelectTrigger className="w-auto h-10">
-              <SelectValue placeholder="Filter by" />
-            </SelectTrigger>
-            <SelectContent>
-              {["Class", "Gender"].map((item, idx) => (
-                <SelectItem key={idx} value={item}>
-                  {item}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Link href={RouteEnums.STUDENT_CREATE}>
-            <Button className="w-full">
-              Enroll Student <CirclePlus size={18} strokeWidth={1} />
+        <PermissionRestrictor requiredPermissions={[PERMISSIONS.STUDENT.CREATE]}>
+          <div className="grid md:grid-cols-2 gap-4 w-full md:w-auto">
+            <Button onClick={handleOpenDialog} className="w-full" variant={"outline"}>
+              Bulk Import <Download size={18} strokeWidth={1} />
             </Button>
-          </Link>
-        </div>
+            <Link href={RouteEnums.STUDENT_CREATE}>
+              <Button className="w-full">
+                Enroll Student <CirclePlus size={18} strokeWidth={1} />
+              </Button>
+            </Link>
+          </div>
+        </PermissionRestrictor>
       </div>
       <Card className="overflow-hidden">
         <LoadingContent loading={studentListQueryResult?.isLoading} error={studentListQueryResult?.error} data={studentListQueryResult.data} retry={studentListQueryResult?.refetch}>
           <DataTable data={studentListQueryResult?.data?.data} columns={columns} />
         </LoadingContent>
       </Card>
+
+      <StudentCreateBulkImportDialog open={open} onClose={handleCloseDialog} />
     </>
   );
 }

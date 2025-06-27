@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import useToggle from "@/hooks/use-toggle";
 import { formatDateToString } from "@/lib/dates";
 import { DataTable } from "@/components/data-table";
 import { useAuthUser } from "@/hooks/use-auth-user";
@@ -10,15 +11,29 @@ import { LoadingContent } from "@/components/loading-content";
 import { CellContext, ColumnDef } from "@tanstack/react-table";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { useGetStaffListQuery } from "@/apis/core-staff-api/staff";
-import { CirclePlus, UserRoundPen, UserRound } from "lucide-react";
 import { PermissionRestrictor } from "@/components/permission-restrictor";
 import { PERMISSIONS } from "@/constants/permissions/permission-constants";
+import { CirclePlus, UserRoundPen, UserRound, Download } from "lucide-react";
+import { StaffCreateBulkImportDialog } from "../../create/_features/staff-create-bulk-import-dialog";
 import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 
 type Props = {};
 
 export function StaffListTable({}: Props) {
   const { authUserIds } = useAuthUser();
+  const [open, toggle] = useToggle(false);
+
+  const handleOpenDialog = () => {
+    // Ensure we're running this after the dropdown's click event has completed
+    setTimeout(() => {
+      toggle();
+    }, 0);
+  };
+
+  const handleCloseDialog = React.useCallback(() => {
+    toggle();
+    setTimeout(() => {}, 200);
+  }, [toggle]);
 
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
@@ -99,21 +114,26 @@ export function StaffListTable({}: Props) {
     <>
       <div className="flex w-full pb-4 mt-8">
         <div className="hidden md:flex md:flex-1" />
-        <div className="grid md:grid-cols-2 gap-4 w-full md:w-auto">
-          <PermissionRestrictor requiredPermissions={[PERMISSIONS.STAFF.CREATE]}>
+        <PermissionRestrictor requiredPermissions={[PERMISSIONS.STAFF.CREATE]}>
+          <div className="grid md:grid-cols-2 gap-4 w-full md:w-auto">
+            <Button onClick={handleOpenDialog} className="w-full" variant={"outline"}>
+              Bulk Import <Download size={18} strokeWidth={1} />
+            </Button>
             <Link className="" href={RouteEnums.STAFF_CREATE}>
               <Button className="w-full">
                 Employ Staff <CirclePlus size={18} strokeWidth={1} />
               </Button>
             </Link>
-          </PermissionRestrictor>
-        </div>
+          </div>
+        </PermissionRestrictor>
       </div>
       <Card className="overflow-hidden">
         <LoadingContent loading={staffListQueryResult?.isLoading} error={staffListQueryResult?.error} data={staffListQueryResult.data} retry={staffListQueryResult?.refetch}>
           <DataTable data={staffListQueryResult?.data?.data} columns={columns} />
         </LoadingContent>
       </Card>
+
+      <StaffCreateBulkImportDialog open={open} onClose={handleCloseDialog} tenantId={authUserIds?.tenantId} />
     </>
   );
 }
