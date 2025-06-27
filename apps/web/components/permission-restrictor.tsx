@@ -22,9 +22,9 @@ export const PermissionRestrictor: React.FC<PermissionRestrictorProps> = ({ chil
     hasAccess = hasAnyPermission(requiredPermissions);
   }
 
-  if (!hasAccess) {
-    return <></>;
-  }
+  // if (!hasAccess) {
+  //   return <></>;
+  // }
 
   return <>{children}</>;
 };

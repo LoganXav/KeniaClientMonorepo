@@ -109,7 +109,10 @@ export function StaffAssignForm({}: PageProps) {
   );
 
   const staffId = Number(form.watch("id"));
-  const foundStaff = staffListQueryResult?.data?.data?.find((staff) => staff?.user?.id === staffId);
+
+  const foundStaff = React.useMemo(() => {
+    return staffListQueryResult?.data?.data?.find((staff) => staff?.id === staffId);
+  }, [staffListQueryResult?.data?.data, staffId]);
 
   const staffTemplateQuery = useGetStaffTemplateQuery(
     React.useMemo(
@@ -146,9 +149,9 @@ export function StaffAssignForm({}: PageProps) {
 
   React.useEffect(() => {
     if (foundStaff) {
-      dataRef.current.form.reset((values: any) => ({
+      dataRef.current.form.reset((values: StaffAssignFormSchemaType) => ({
         ...values,
-        id: foundStaff?.user?.id,
+        id: foundStaff?.id,
         roleId: foundStaff?.roleId || values?.roleId,
         subjectIds: foundStaff?.subjects?.map((subject) => subject.id) || values.subjectIds,
         classDivisionIds: foundStaff?.classDivisions?.map((classDivision) => classDivision?.id) || values.classDivisionIds,

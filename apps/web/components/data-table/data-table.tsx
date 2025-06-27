@@ -6,11 +6,12 @@ import { DataTablePagination } from "./data-table-pagination";
 
 interface TableProps<TData, TValue> {
   data: any;
+  showPagination?: boolean;
   columns: ColumnDef<TData, TValue>[];
   props?: any;
 }
 
-export function DataTable<TData, TValue>({ data, columns, props }: TableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ data, columns, showPagination = true, props }: TableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
@@ -56,7 +57,7 @@ export function DataTable<TData, TValue>({ data, columns, props }: TableProps<TD
           )}
         </TableBody>
       </TableRoot>
-      <DataTablePagination table={table} />
+      {showPagination && <DataTablePagination table={table} />}
     </>
   );
 }

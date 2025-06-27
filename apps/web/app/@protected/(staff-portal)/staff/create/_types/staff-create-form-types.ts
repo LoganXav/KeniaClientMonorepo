@@ -34,3 +34,17 @@ export type StaffTemplateQueryResultType =
       refetch: (options?: RefetchOptions) => Promise<any>;
     }
   | undefined;
+
+export type StaffBulkCreateType = {
+  staffs: StaffBulkType[];
+};
+
+export type StaffBulkType = {
+  firstName: string;
+  lastName: string;
+  gender: string;
+  email: string;
+  phoneNumber: string;
+  jobTitle: string;
+  nin: string;
+};

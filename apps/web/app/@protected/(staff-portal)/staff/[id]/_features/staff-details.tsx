@@ -30,7 +30,7 @@ function StaffDetails({ staffId }: { staffId: number }) {
     <>
       <div className="flex w-full pb-4 mt-8">
         <div className="hidden sm:flex sm:flex-1" />
-        <div className="grid sm:grid-cols-2 gap-4 w-full sm:w-auto">
+        <div className="grid sm:grid-cols-1 gap-4 w-full sm:w-auto">
           {/* <Select onValueChange={() => null} value={String("")}>
             <SelectTrigger className="w-auto h-10">
               <SelectValue placeholder="Actions" />

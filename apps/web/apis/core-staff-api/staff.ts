@@ -2,7 +2,7 @@ import { StaffType } from "@/types";
 import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { StaffCreateFormSchemaType, StaffTemplateOptions } from "@/app/@protected/(staff-portal)/staff/create/_types/staff-create-form-types";
+import { StaffBulkCreateType, StaffCreateFormSchemaType, StaffTemplateOptions } from "@/app/@protected/(staff-portal)/staff/create/_types/staff-create-form-types";
 
 const BASE_URL = "staff";
 
@@ -45,6 +45,32 @@ export const useStaffCreateMutation = ({ params }: { params?: { tenantId?: numbe
   });
 
   return { staffCreate, staffCreatePending, staffCreateError };
+};
+
+export const useStaffBulkCreateMutation = ({ params }: { params?: { tenantId?: number } }) => {
+  const queryClient = useQueryClient();
+  const {
+    mutate: staffBulkCreate,
+    isPending: staffBulkCreatePending,
+    error: staffBulkCreateError,
+  } = useMutation({
+    mutationFn: async ({ payload }: { payload: StaffBulkCreateType }) => {
+      const data = await postRequest<StaffType>({
+        endpoint: `${BASE_URL}/bulk/create`,
+        payload,
+        config: { params },
+      });
+
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STAFF, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.ROLE, params?.tenantId] });
+    },
+  });
+
+  return { staffBulkCreate, staffBulkCreatePending, staffBulkCreateError };
 };
 
 export const useGetStaffTemplateQuery = ({ params }: { params: { tenantId?: number; codeValue?: number } }) => {
