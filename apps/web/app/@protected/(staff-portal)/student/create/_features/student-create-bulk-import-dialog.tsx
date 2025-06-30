@@ -4,9 +4,11 @@ import React, { useState } from "react";
 import { DownloadIcon } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
+import { downloadCsvTemplate } from "@/lib/templates";
 import { CsvDropzone } from "@/components/file-upload/csv-dropzone";
-import { StudentCreateFormSchemaType } from "../_types/student-create-form-types";
-import { Dialog, DialogContent, DialogTitle, Typography, Button } from "@repo/ui";
+import { StudentBulkType } from "../_types/student-create-form-types";
+import { useStudentBulkCreateMutation } from "@/apis/core-student-api/student";
+import { Dialog, DialogContent, DialogTitle, Typography, Button, toast } from "@repo/ui";
 
 interface DialogProps {
   open: boolean;
@@ -15,13 +17,20 @@ interface DialogProps {
 }
 
 export function StudentCreateBulkImportDialog({ open, onClose, tenantId }: DialogProps) {
-  const [parsedData, setParsedData] = useState<StudentCreateFormSchemaType[]>([]);
+  const [parsedData, setParsedData] = useState<StudentBulkType[]>([]);
 
+  const { studentBulkCreate, studentBulkCreatePending, studentBulkCreateError } = useStudentBulkCreateMutation({ params: { tenantId } });
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
       {
-        header: "Industry",
-        accessorKey: "Industry",
+        header: "Name",
+        accessorKey: "name",
+        cell: ({ row }) => `${row.original.firstName} ${row.original.lastName}`,
+      },
+      {
+        header: "Enrolled Class",
+        accessorKey: "class",
+        cell: ({ row }) => `${row.original.class} (${row.original.classDivision})`,
       },
     ],
     []
@@ -32,13 +41,27 @@ export function StudentCreateBulkImportDialog({ open, onClose, tenantId }: Dialo
     setParsedData([]);
   };
 
-  const handleParsed = (rows: StudentCreateFormSchemaType[]) => {
+  const handleParsed = (rows: StudentBulkType[]) => {
     setParsedData(rows);
   };
 
   const handleSubmit = () => {
-    // You can now send parsedData to your backend
-    handleClose();
+    studentBulkCreate(
+      {
+        payload: {
+          students: parsedData,
+        },
+      },
+      {
+        onSuccess: (result) => {
+          toast.success(result.message);
+          handleClose();
+        },
+        onError: (error) => {
+          toast.error(error.message);
+        },
+      }
+    );
   };
 
   return (
@@ -63,7 +86,7 @@ export function StudentCreateBulkImportDialog({ open, onClose, tenantId }: Dialo
         </DialogTitle>
 
         <div className="space-y-4">
-          <CsvDropzone<StudentCreateFormSchemaType> onParsed={handleParsed} expectedHeaders={[]} />
+          <CsvDropzone<StudentBulkType> onParsed={handleParsed} expectedHeaders={["firstName", "lastName", "gender", "class", "classDivision", "email"]} />
 
           {parsedData.length > 0 && (
             <>
@@ -80,7 +103,25 @@ export function StudentCreateBulkImportDialog({ open, onClose, tenantId }: Dialo
           )}
 
           <div className="flex flex-col md:flex-row justify-between gap-4 pt-4">
-            <Button variant="outline" onClick={() => null}>
+            <Button
+              variant="outline"
+              onClick={() =>
+                downloadCsvTemplate(
+                  ["firstName", "lastName", "gender", "class", "classDivision", "email"],
+                  [
+                    {
+                      firstName: "John",
+                      lastName: "Doe",
+                      email: "johndoe@email.com",
+                      gender: "Male",
+                      class: "JSS2",
+                      classDivision: "Red",
+                    },
+                  ],
+                  "student-upload-template.csv"
+                )
+              }
+            >
               Download Template <DownloadIcon size={16} strokeWidth={1} />
             </Button>
             <div className="flex flex-col md:flex-row gap-4">

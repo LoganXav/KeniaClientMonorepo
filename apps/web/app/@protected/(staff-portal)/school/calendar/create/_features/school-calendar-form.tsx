@@ -186,7 +186,8 @@ export default function SchoolCalendarForm() {
               </div>
             </div>
 
-            {form.watch("terms")?.length > 0 &&
+            {form.watch("year") &&
+              form.watch("terms")?.length > 0 &&
               form.watch("terms").map((term: Record<string, any>, idx: number) => (
                 <Card key={idx} className="p-4 relative">
                   <div className="flex flex-col md:flex-row justify-between items-center gap-4">
@@ -260,7 +261,7 @@ export default function SchoolCalendarForm() {
                             <hr className="mt-4" />
                             <div className="flex flex-col md:flex-row justify-between items-center gap-4 w-full md:w-auto">
                               <div className="text-center md:text-left">
-                                <Typography size="h4" weight={"bold"} className="font-heading">
+                                <Typography size="h4" className="font-heading">
                                   Break Period
                                 </Typography>
                                 <Typography size="p" color={"muted"}>

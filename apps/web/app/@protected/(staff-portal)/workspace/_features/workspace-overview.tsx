@@ -83,7 +83,7 @@ export function WorkspaceOverview() {
                       <div>
                         <Typography>{period?.subject}</Typography>
                         <Typography size="small" color="muted">
-                          {period?.class}
+                          {period?.class} {period?.classDivision}
                         </Typography>
                       </div>
                       <Typography>{formatTimeRange(period?.startTime, period?.endTime)}</Typography>

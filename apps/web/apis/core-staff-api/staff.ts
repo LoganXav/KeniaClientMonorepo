@@ -55,7 +55,7 @@ export const useStaffBulkCreateMutation = ({ params }: { params?: { tenantId?: n
     error: staffBulkCreateError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: StaffBulkCreateType }) => {
-      const data = await postRequest<StaffType>({
+      const data = await postRequest<null>({
         endpoint: `${BASE_URL}/bulk/create`,
         payload,
         config: { params },
