@@ -15,8 +15,8 @@ export const formatDateToString = (dateString: string | undefined): string => {
   return `${day}${suffix} ${monthYear}`;
 };
 
-export const calculateAge = (dateOfBirth: string | undefined): number => {
-  if (!dateOfBirth) return 0;
+export const calculateAge = (dateOfBirth: string | undefined): number | string => {
+  if (!dateOfBirth) return "-";
 
   const birthDate = parseISO(dateOfBirth);
   return differenceInYears(new Date(), birthDate);

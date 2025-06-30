@@ -27,8 +27,8 @@ export const CsvDropzone = <T extends object>({ onParsed, expectedHeaders }: Csv
           const rows = results.data;
 
           if (expectedHeaders && expectedHeaders.length > 0) {
-            const firstRow = rows[0] ?? {};
-            const missing = expectedHeaders.filter((h) => !(h in firstRow));
+            const headersInFile = results.meta.fields ?? [];
+            const missing = expectedHeaders.filter((h) => !headersInFile.includes(h));
             if (missing.length > 0) {
               toast.error(`Missing headers: ${missing.join(", ")}`);
               setFile(null);

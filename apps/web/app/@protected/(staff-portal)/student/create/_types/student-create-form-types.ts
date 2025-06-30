@@ -40,3 +40,17 @@ export type StudentTemplateQueryResultType =
       refetch: (options?: RefetchOptions) => Promise<any>;
     }
   | undefined;
+
+export type StudentBulkCreateType = {
+  students: StudentBulkType[];
+};
+
+export type StudentBulkType = {
+  firstName: string;
+  lastName: string;
+  gender: string;
+  classId: number;
+  classDivisionId: number;
+  class: string;
+  classDivision: string;
+};

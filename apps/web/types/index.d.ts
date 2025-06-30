@@ -278,6 +278,7 @@ export interface StudentGradingType {
 
 export interface StaffPeriodType {
   class: string;
+  classDivision: string;
   subject: string;
   endTime: string;
   startTime: string;

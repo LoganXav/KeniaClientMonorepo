@@ -128,7 +128,7 @@ export function StudentListTable() {
         </LoadingContent>
       </Card>
 
-      <StudentCreateBulkImportDialog open={open} onClose={handleCloseDialog} />
+      <StudentCreateBulkImportDialog open={open} onClose={handleCloseDialog} tenantId={authUserIds?.tenantId} />
     </>
   );
 }

@@ -45,14 +45,10 @@ export function StaffCreateBulkImportDialog({ open, onClose, tenantId }: DialogP
   };
 
   const handleSubmit = () => {
-    const parsedDataToSubmit = parsedData.map((row) => ({
-      ...row,
-    }));
-
     staffBulkCreate(
       {
         payload: {
-          staffs: [...parsedDataToSubmit],
+          staffs: parsedData,
         },
       },
       {
@@ -89,7 +85,7 @@ export function StaffCreateBulkImportDialog({ open, onClose, tenantId }: DialogP
         </DialogTitle>
 
         <div className="space-y-4">
-          <CsvDropzone<StaffBulkType> onParsed={handleParsed} expectedHeaders={[]} />
+          <CsvDropzone<StaffBulkType> onParsed={handleParsed} expectedHeaders={["firstName", "lastName", "email", "phoneNumber", "gender", "nin", "jobTitle"]} />
 
           {parsedData.length > 0 && (
             <>

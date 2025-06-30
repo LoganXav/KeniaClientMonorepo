@@ -2,7 +2,7 @@ import { StudentType } from "@/types";
 import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { StudentCreateFormSchemaType, StudentTemplateOptions } from "@/app/@protected/(staff-portal)/student/create/_types/student-create-form-types";
+import { StudentBulkCreateType, StudentCreateFormSchemaType, StudentTemplateOptions } from "@/app/@protected/(staff-portal)/student/create/_types/student-create-form-types";
 import { StudentSubjectRegistrationCreateFormSchemaType } from "@/app/@protected/(staff-portal)/student/subject-registration/_types/student-subject-registration-form-types";
 
 const BASE_URL = "student";
@@ -46,6 +46,31 @@ export const useStudentCreateMutation = ({ params }: { params: { tenantId?: numb
   });
 
   return { studentCreate, studentCreatePending, studentCreateError };
+};
+
+export const useStudentBulkCreateMutation = ({ params }: { params?: { tenantId?: number } }) => {
+  const queryClient = useQueryClient();
+  const {
+    mutate: studentBulkCreate,
+    isPending: studentBulkCreatePending,
+    error: studentBulkCreateError,
+  } = useMutation({
+    mutationFn: async ({ payload }: { payload: StudentBulkCreateType }) => {
+      const data = await postRequest<null>({
+        endpoint: `${BASE_URL}/bulk/create`,
+        payload,
+        config: { params },
+      });
+
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.STUDENT, params?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.USER, params?.tenantId] });
+    },
+  });
+
+  return { studentBulkCreate, studentBulkCreatePending, studentBulkCreateError };
 };
 
 export const useGetStudentTemplateQuery = ({ params }: { params: { tenantId?: number; codeValue?: number; classId?: number; classDivisionId?: number; calendarId?: number } }) => {
