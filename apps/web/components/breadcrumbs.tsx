@@ -38,7 +38,7 @@ export function PageBreadcrumbs({ pages, fallbackPath = "/" }: Props) {
         <ChevronLeft strokeWidth={1} />
       </Button>
       <div>
-        <Typography size={"h3"} className="font-heading">
+        <Typography size={"h4"} className="font-heading">
           {currentPage?.title}
         </Typography>
         <Breadcrumb>

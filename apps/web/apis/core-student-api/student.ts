@@ -1,4 +1,4 @@
-import { StudentType } from "@/types";
+import { StudentType, SubjectsRegisteredType } from "@/types";
 import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -73,9 +73,9 @@ export const useStudentBulkCreateMutation = ({ params }: { params?: { tenantId?:
   return { studentBulkCreate, studentBulkCreatePending, studentBulkCreateError };
 };
 
-export const useGetStudentTemplateQuery = ({ params }: { params: { tenantId?: number; codeValue?: number; classId?: number; classDivisionId?: number; calendarId?: number } }) => {
+export const useGetStudentTemplateQuery = ({ params }: { params: { tenantId?: number; codeValue?: number; classId?: number; classDivisionId?: number; calendarId?: number; studentId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.USER, params?.tenantId, params?.codeValue, params?.classId, params?.classDivisionId, params?.calendarId],
+    queryKey: [QueryTagEnums.USER, params?.tenantId, params?.codeValue, params?.classId, params?.classDivisionId, params?.calendarId, params?.studentId],
     queryFn: async () => {
       return await getRequest<StudentTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
@@ -155,4 +155,18 @@ export const useStudentSubjectRegistrationCreateMutation = ({ params }: { params
   });
 
   return { studentSubjectRegistrationCreate, studentSubjectRegistrationCreatePending, studentSubjectRegistrationCreateError };
+};
+
+export const useGetStudentSubjectRegistrationListQuery = ({ params }: { params: { tenantId?: number; classId?: number; subjectId?: number; calendarId?: number } }) => {
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: [QueryTagEnums.STUDENT, params?.tenantId, params?.subjectId, params?.classId, params?.calendarId],
+    queryFn: async () => {
+      return await getRequest<SubjectsRegisteredType[]>({
+        endpoint: `${BASE_URL}/subjectregistration/list`,
+        config: { params },
+      });
+    },
+  });
+
+  return { data, isLoading, error, refetch };
 };

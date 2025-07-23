@@ -15,13 +15,14 @@ import { Button, Dialog, DialogContent, DialogTitle, Form, FormControl, FormFiel
 
 interface DialogProps {
   open: boolean;
+  classId?: number;
   onClose: () => void;
   subjectId: number;
   tenantId?: number;
   subjectGradingStructureQueryResult: SubjectGradingStructureQueryResultType;
 }
 
-export function SubjectGradingCreateDialog({ open, onClose, subjectId, subjectGradingStructureQueryResult, tenantId }: DialogProps) {
+export function SubjectGradingCreateDialog({ open, onClose, subjectId, classId, subjectGradingStructureQueryResult, tenantId }: DialogProps) {
   const { authUserIds } = useAuthUser();
 
   const subjectGradingStructure = subjectGradingStructureQueryResult?.data?.data;
@@ -31,7 +32,7 @@ export function SubjectGradingCreateDialog({ open, onClose, subjectId, subjectGr
   const defaultValues = {
     subjectId,
     studentId: "",
-    classId: "",
+    classId,
     calendarId: "",
     classDivisionId: "",
     termId: "",
@@ -96,8 +97,6 @@ export function SubjectGradingCreateDialog({ open, onClose, subjectId, subjectGr
   };
 
   const calendarId = Number(form.watch("calendarId"));
-  const termId = Number(form.watch("termId"));
-  const classId = Number(form.watch("classId"));
 
   const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(React.useMemo(() => ({ params: { calendarId, classId, tenantId: authUserIds?.tenantId, subjectId } }), [calendarId, classId, authUserIds?.tenantId, subjectId])) as SubjectGradingTemplateOptions;
   const gradingTemplate = gradingTemplateQueryResult?.data?.data;
@@ -180,7 +179,7 @@ export function SubjectGradingCreateDialog({ open, onClose, subjectId, subjectGr
                       name="classId"
                       render={({ field }) => (
                         <FormItem>
-                          <Select onValueChange={field.onChange} value={String(field.value)} disabled={!termId}>
+                          <Select onValueChange={field.onChange} value={String(field.value)} disabled>
                             <FormControl>
                               <SelectTrigger className="h-10">
                                 <SelectValue placeholder="Class" />

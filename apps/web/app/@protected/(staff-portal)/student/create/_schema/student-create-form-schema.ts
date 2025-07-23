@@ -122,4 +122,12 @@ export const StudentCreateFormSchema = z.object({
 
   classId: z.number({ required_error: "Class is required", invalid_type_error: "Class must be a number" }),
   classDivisionId: z.number({ required_error: "Class division is required", invalid_type_error: "Class division must be a number" }),
+
+  admissionNo: z
+    .string({
+      required_error: "Admission number is required",
+      invalid_type_error: "Admission number must be a string",
+    })
+    .min(1, "Admission number is required")
+    .max(20, "Admission number must be less than 50 characters"),
 });

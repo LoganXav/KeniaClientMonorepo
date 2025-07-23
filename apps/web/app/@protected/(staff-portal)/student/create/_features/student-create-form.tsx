@@ -113,6 +113,7 @@ export function StudentCreateForm({ studentId }: Props) {
 
     classId: 0,
     classDivisionId: 0,
+    admissionNo: "",
   };
 
   const form = useForm<StudentCreateFormSchemaType>({
@@ -162,6 +163,7 @@ export function StudentCreateForm({ studentId }: Props) {
 
         classId: student?.class?.id || values.classId,
         classDivisionId: Number(student?.classDivisionId) || values.classDivisionId,
+        admissionNo: student?.admissionNo || values.admissionNo,
       }));
     }
   }, [student, dataRef, isEdit]);
@@ -213,14 +215,14 @@ export function StudentCreateForm({ studentId }: Props) {
     {
       id: 3,
       label: "Admission Information",
-      description: "Enter your admission details such as class, admission number, and enrollment date.",
-      content: <StudentCreateFormAdmissionStep {...stepProps} />,
+      description: isEdit ? "The student's admission information has been decided." : "Enter your admission details such as class, admission number, and enrollment date.",
+      content: !isEdit && <StudentCreateFormAdmissionStep {...stepProps} />,
       fields: [""],
     },
     {
       id: 4,
       label: "Submission Successful!",
-      description: isEdit ? "Your student profile has been successfully edited." : "The student has been successfully registered.",
+      description: isEdit ? "The student profile has been successfully edited." : "The student has been successfully registered.",
       content: <StudentCreateFormSuccessStep />,
       fields: [""],
     },

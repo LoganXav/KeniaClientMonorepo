@@ -1,6 +1,6 @@
 import Link from "next/link";
 import AuthResetPasswordRequestForm from "./_features/auth-reset-password-form";
-import { Button } from "@repo/ui";
+import { Button, Typography } from "@repo/ui";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { Earth } from "lucide-react";
 
@@ -11,8 +11,12 @@ export default function AuthResetPasswordPage() {
         <div className="hidden lg:flex xl:col-span-1" />
         <div className="grid space-y-8 lg:col-span-2 xl:col-span-2 mt-20 max-w-xl">
           <div className="w-full space-y-2">
-            <h4 className="font-heading text-3xl md:text-4xl font-bold">Forgot your password?</h4>
-            <p className="text-sm text-muted-foreground max-w-sm">Please enter the email address associated with your account and we will email you a confirmation code to reset your password.</p>
+            <Typography size={"h2"} className="font-heading">
+              Forgot your password?
+            </Typography>
+            <Typography color={"muted"} className="max-w-sm">
+              Please enter the email address associated with your account and we will email you a confirmation code to reset your password.
+            </Typography>
           </div>
           <AuthResetPasswordRequestForm />
         </div>

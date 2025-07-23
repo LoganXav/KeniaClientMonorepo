@@ -20,24 +20,27 @@ export default function SchoolTimetableForm() {
 
   const { timetableMutate, timetableMutatePending, timetableMutateError } = useTimetableMutation({ params: { tenantId: authUserIds?.tenantId } });
 
-  const handleMutateTimetable = () => {
-    const values = form.getValues();
-
+  const handleMutateTimetable = (values: SchoolTimetableFormSchemaType) => {
     // Filter periods to include only the necessary fields
     const filteredPeriods = values.periods.map((period) => {
-      period.startTime = period.startTime ? new Date(period.startTime) : "";
-      period.endTime = period.endTime ? new Date(period.endTime) : "";
+      const startTime = new Date(period.startTime);
+      const endTime = new Date(period.endTime);
 
       if (period.isBreak) {
-        // If it's a break, remove subjectId
-        const { subjectId, ...rest } = period;
-        return rest;
-      } else {
-        // If it's not a break, remove breakType
-        const { breakType, ...rest } = period;
-        rest.subjectId = Number(rest.subjectId);
-        return rest;
+        return {
+          startTime,
+          endTime,
+          isBreak: true,
+          breakType: period.breakType?.trim(),
+        };
       }
+
+      return {
+        startTime,
+        endTime,
+        subjectId: Number(period.subjectId),
+        isBreak: false,
+      };
     });
 
     timetableMutate(
@@ -101,7 +104,6 @@ export default function SchoolTimetableForm() {
       periods:
         (timetable?.periods &&
           timetable.periods.map((period: Record<string, any>) => ({
-            ...period,
             subjectId: Number(period?.subjectId),
             startTime: period?.startTime ? new Date(period.startTime) : undefined,
             endTime: period?.endTime ? new Date(period.endTime) : undefined,
@@ -390,7 +392,7 @@ export default function SchoolTimetableForm() {
 
           <div className="grid md:grid-cols-2 md:max-w-lg gap-4 mx-auto my-12">
             <Button variant={"outline"} type="button" onClick={() => router.push(RouteEnums.SCHOOL_TIMETABLE)}>
-              Cancel
+              Go Back
             </Button>
             <Button loading={timetableMutatePending} disabled={!classDivisionId}>
               Save

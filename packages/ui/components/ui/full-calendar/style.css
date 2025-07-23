@@ -50,6 +50,13 @@
   border: none;
 }
 
+.fc-event .fc-event-main {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+
 .fc-toolbar-title {
   color: hsl(var(--foreground));
   font-weight: 600;
@@ -244,4 +251,11 @@
   cursor: not-allowed !important;
   outline: none !important;
   box-shadow: none !important;
+}
+
+/* === CUSTOM CELL HEIGHTS === */
+
+/* For timeGrid views (week/day) */
+.fc-timegrid-slot {
+  height: 70px !important;
 }

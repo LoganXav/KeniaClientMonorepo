@@ -119,8 +119,6 @@ export function StaffCreateForm({ staffId }: Props) {
     startDate: undefined,
     highestLevelEdu: "",
     roleId: "",
-    // subjectIds: [],
-    // classDivisionIds: [],
   };
 
   const form = useForm<StaffCreateFormSchemaType>({
@@ -158,8 +156,6 @@ export function StaffCreateForm({ staffId }: Props) {
         employmentType: staff?.employmentType || values.employmentType,
         startDate: staff?.startDate || values.startDate,
         highestLevelEdu: staff?.highestLevelEdu || values.highestLevelEdu,
-        // subjectIds: staff?.subjects?.map((subject) => subject.id) || values.subjectIds,
-        // classDivisionIds: staff?.classDivisions?.map((classDivision) => classDivision?.id) || values.classDivisionIds,
       }));
     }
   }, [isEdit, staff, dataRef]);
