@@ -3,7 +3,7 @@ import { UseFormReturn } from "react-hook-form";
 import { RefetchOptions } from "@tanstack/react-query";
 import { GetRequestReturnType } from "@/config/base-query";
 import { StudentCreateFormSchema } from "../_schema/student-create-form-schema";
-import { CalendarType, ClassDivisionType, ClassType, StudentType, SubjectType } from "@/types";
+import { CalendarType, ClassDivisionType, ClassType, StudentType, SubjectsRegisteredType, SubjectType } from "@/types";
 
 export type StudentCreateFormSchemaType = z.infer<typeof StudentCreateFormSchema>;
 
@@ -30,6 +30,7 @@ export type StudentTemplateOptions = {
   subjectOptions: SubjectType[];
   calendarOptions: CalendarType[];
   studentOptions: StudentType[];
+  studentSubjectRegistrationOptions: SubjectsRegisteredType[];
 };
 
 export type StudentTemplateQueryResultType =

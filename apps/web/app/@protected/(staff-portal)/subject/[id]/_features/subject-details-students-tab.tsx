@@ -1,16 +1,19 @@
 "use client";
 
 import React from "react";
-import { Card } from "@repo/ui";
 import { calculateAge } from "@/lib/dates";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { LoadingContent } from "@/components/loading-content";
-import { useGetSingleSubjectQuery } from "@/apis/core-subject-api/subject";
+import { useGetSubjectGradingTemplateQuery } from "@/apis/core-subject-api/subject-grading";
+import { useGetStudentSubjectRegistrationListQuery } from "@/apis/core-student-api/student";
+import { Card, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
+import { SubjectGradingTemplateOptions } from "../../../student/grading/_types/subject-grading-types";
 
 export function SubjectDetailsStudentsTab({ subjectId, classId }: { subjectId: number; classId?: number }) {
   const { authUserIds } = useAuthUser();
+  const [calendarId, setCalendarId] = React.useState(0);
 
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
@@ -24,6 +27,11 @@ export function SubjectDetailsStudentsTab({ subjectId, classId }: { subjectId: n
         ),
       },
 
+      {
+        header: "Class",
+        accessorKey: "classId",
+        cell: ({ row }) => <p>{row?.original?.class?.name}</p>,
+      },
       {
         header: "Admission Number",
         accessorKey: "admissionNo",
@@ -43,22 +51,46 @@ export function SubjectDetailsStudentsTab({ subjectId, classId }: { subjectId: n
     []
   );
 
-  const subjectQueryResult = useGetSingleSubjectQuery({
-    params: { tenantId: authUserIds?.tenantId, subjectId },
-  });
+  const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(React.useMemo(() => ({ params: { tenantId: authUserIds?.tenantId } }), [authUserIds?.tenantId])) as SubjectGradingTemplateOptions;
+  const gradingTemplate = gradingTemplateQueryResult?.data?.data;
 
-  const subject = subjectQueryResult?.data?.data;
+  const registration = useGetStudentSubjectRegistrationListQuery(
+    React.useMemo(
+      () => ({
+        params: { tenantId: authUserIds?.tenantId, subjectId, classId, calendarId },
+      }),
+      [authUserIds?.tenantId, subjectId, classId, calendarId]
+    )
+  );
+
+  const subjectRegistration = registration?.data?.data;
 
   // Extract students offering the subject
   const students =
-    subject?.subjectRegistration?.map((reg) => ({
-      ...reg.student,
-    })) || [];
+    (calendarId &&
+      subjectRegistration?.map((reg) => ({
+        ...reg.student,
+      }))) ||
+    [];
 
   return (
     <>
+      <div className="grid md:grid-cols-4 xl:grid-cols-4 gap-4 w-full md:w-auto">
+        <Select value={String(calendarId || "")} onValueChange={(value) => setCalendarId(Number(value))} disabled={gradingTemplateQueryResult?.isLoading}>
+          <SelectTrigger>
+            <SelectValue placeholder="Select Year" />
+          </SelectTrigger>
+          <SelectContent>
+            {gradingTemplate?.calendarOptions?.map((calendarOption, idx) => (
+              <SelectItem key={idx} value={String(calendarOption?.id)}>
+                {calendarOption?.year}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
       <Card className="overflow-hidden mt-8">
-        <LoadingContent data={subjectQueryResult?.data} loading={subjectQueryResult?.isLoading} error={subjectQueryResult?.error} retry={subjectQueryResult?.refetch}>
+        <LoadingContent data={registration?.data} loading={registration?.isLoading} error={registration?.error} retry={registration?.refetch}>
           <DataTable data={students} columns={columns} />
         </LoadingContent>
       </Card>

@@ -1,7 +1,8 @@
-import AuthSignInForm from "./_features/auth-signin-form";
 import Link from "next/link";
-import { RouteEnums } from "@/constants/router/route-constants";
 import { Earth } from "lucide-react";
+import { Typography } from "@repo/ui";
+import AuthSignInForm from "./_features/auth-signin-form";
+import { RouteEnums } from "@/constants/router/route-constants";
 
 export default function AuthSignInPage() {
   return (
@@ -10,8 +11,10 @@ export default function AuthSignInPage() {
         <div className="hidden lg:flex xl:col-span-1" />
         <div className="grid space-y-8 lg:col-span-2 xl:col-span-2 mt-20 max-w-xl">
           <div className="w-full space-y-2">
-            <h4 className="font-heading text-3xl md:text-4xl font-bold">Continue with Kenia</h4>
-            <p className="text-sm text-muted-foreground">Log in to your school</p>
+            <Typography size={"h2"} className="font-heading">
+              Continue with Kenia
+            </Typography>
+            <Typography color={"muted"}>Log in to your school.</Typography>
           </div>
           <AuthSignInForm />
         </div>

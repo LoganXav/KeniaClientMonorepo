@@ -65,7 +65,7 @@ function SchoolMenu({}: Props) {
           return (
             <Link key={idx} href={url} className="block">
               <Card className="rounded-lg border p-6 space-y-1 hover:border-foreground transition-border duration-100 h-36">
-                <Typography size="h3" className="font-heading line-clamp-1">
+                <Typography size="h4" className="font-heading line-clamp-1">
                   {label}
                 </Typography>
                 <Typography color="muted" className="line-clamp-2">

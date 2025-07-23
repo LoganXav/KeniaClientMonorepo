@@ -53,7 +53,7 @@ export function SubjectDetails({ subjectId }: { subjectId: number }) {
         <div className="flex w-full pb-4 mt-8">
           <div className="hidden md:flex md:flex-1" />
 
-          <div className="grid md:grid-cols-3 gap-4 w-full md:w-auto">
+          <div className="grid md:grid-cols-2 gap-4 w-full md:w-auto">
             {subject?.gradingStructure ? (
               <PermissionRestrictor requiredPermissions={[PERMISSIONS.SUBJECT_GRADE_BREAKDOWN.READ]}>
                 <Button variant={"outline"} className="w-full justify-self-end" onClick={handleViewDialogOpen}>

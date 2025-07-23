@@ -4,7 +4,7 @@ import * as React from "react";
 import { Period } from "./time-picker-utils";
 import { Label } from "../label";
 import { TimePickerInput } from "./time-picker-input";
-import { TimePeriodSelect } from "./period-select";
+import { TimePeriodSelect } from "./time-picker-period-select";
 
 interface TimePickerProps {
   date: string | Date | undefined;

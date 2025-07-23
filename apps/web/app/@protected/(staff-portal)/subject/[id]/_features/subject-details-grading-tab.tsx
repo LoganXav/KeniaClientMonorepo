@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { FileCheck2 } from "lucide-react";
 import useToggle from "@/hooks/use-toggle";
 import { ColumnDef } from "@tanstack/react-table";
@@ -12,6 +11,7 @@ import { LoadingContent } from "@/components/loading-content";
 import { PermissionRestrictor } from "@/components/permission-restrictor";
 import { PERMISSIONS } from "@/constants/permissions/permission-constants";
 import { SubjectGradingCreateDialog } from "./subject-grading-create-dialog";
+import { SubjectBulkGradingCreateDialog } from "./subject-bulk-grading-create-dialog";
 import { Button, Card, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { useGetSubjectGradingStructureQuery } from "@/apis/core-subject-api/subject-grading-structure";
 import { useGetSubjectGradingListQuery, useGetSubjectGradingTemplateQuery } from "@/apis/core-subject-api/subject-grading";
@@ -20,6 +20,7 @@ import { SubjectGradingTemplateOptions } from "@/app/@protected/(staff-portal)/s
 export function SubjectDetailsGradingTab({ subjectId, classId }: { subjectId: number; classId?: number }) {
   const { authUserIds } = useAuthUser();
   const [open, toggle] = useToggle(false);
+  const [bulkOpen, bulkToggle] = useToggle(false);
   const [termId, setTermId] = React.useState(0);
   const [calendarId, setCalendarId] = React.useState(0);
   const [classDivisionId, setClassDivisionId] = React.useState(0);
@@ -98,14 +99,26 @@ export function SubjectDetailsGradingTab({ subjectId, classId }: { subjectId: nu
     subjectGradingStructureQueryResult?.refetch();
   };
 
+  const handleOpenBulkDialog = () => {
+    // Ensure we're running this after the dropdown's click event has completed
+    setTimeout(() => {
+      bulkToggle();
+    }, 0);
+    subjectGradingStructureQueryResult?.refetch();
+  };
+
   const handleCloseDialog = React.useCallback(() => {
     toggle();
+  }, [toggle]);
+
+  const handleCloseBulkDialog = React.useCallback(() => {
+    bulkToggle();
   }, [toggle]);
 
   return (
     <>
       <div className="flex w-full flex-col md:flex-row gap-4 pb-4 mt-8">
-        <div className="grid md:grid-cols-3 xl:grid-cols-4 gap-4 w-full md:w-auto">
+        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 w-full md:w-auto">
           <Select value={String(calendarId || "")} onValueChange={(value) => setCalendarId(Number(value))} disabled={gradingTemplateQueryResult?.isLoading}>
             <SelectTrigger>
               <SelectValue placeholder="Session" />
@@ -160,11 +173,14 @@ export function SubjectDetailsGradingTab({ subjectId, classId }: { subjectId: nu
         <div className="hidden md:flex md:flex-1" />
 
         <PermissionRestrictor requiredPermissions={[PERMISSIONS.SUBJECT_GRADE.CREATE]}>
-          <Link className="" href={"#"}>
+          <div className="grid md:grid-cols-2 gap-4">
+            <Button variant={"outline"} className="w-full md:w-max" onClick={handleOpenBulkDialog}>
+              Bulk Submit Grades <FileCheck2 size={18} strokeWidth={1} />
+            </Button>
             <Button className="w-full" onClick={handleOpenDialog}>
               Submit Grades <FileCheck2 size={18} strokeWidth={1} />
             </Button>
-          </Link>
+          </div>
         </PermissionRestrictor>
       </div>
       <Card className="overflow-hidden mt-8">
@@ -173,7 +189,8 @@ export function SubjectDetailsGradingTab({ subjectId, classId }: { subjectId: nu
         </LoadingContent>
       </Card>
 
-      <SubjectGradingCreateDialog open={open} onClose={handleCloseDialog} subjectId={subjectId} subjectGradingStructureQueryResult={subjectGradingStructureQueryResult} tenantId={authUserIds?.tenantId} />
+      <SubjectGradingCreateDialog open={open} onClose={handleCloseDialog} subjectId={subjectId} classId={classId} subjectGradingStructureQueryResult={subjectGradingStructureQueryResult} tenantId={authUserIds?.tenantId} />
+      <SubjectBulkGradingCreateDialog open={bulkOpen} onClose={handleCloseBulkDialog} subjectId={subjectId} classId={classId} subjectGradingStructureQueryResult={subjectGradingStructureQueryResult} tenantId={authUserIds?.tenantId} />
     </>
   );
 }

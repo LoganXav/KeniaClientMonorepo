@@ -1,12 +1,12 @@
 // @ts-nocheck
 "use client";
 
+import "./style.css";
+import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import multiMonthPlugin from "@fullcalendar/multimonth";
-import FullCalendar from "@fullcalendar/react";
-import "./style.css";
 
 interface CalendarGridProps {
   events: { title: string; start?: string; end?: string; date?: string }[] | undefined;
@@ -16,7 +16,7 @@ interface CalendarGridProps {
 
 const CalendarGrid = ({ events = [], views = [], ...props }: CalendarGridProps) => {
   const renderEventContent = (eventInfo: any) => {
-    return <div className="w-full rounded-none h-auto text-wrap">{eventInfo.event.title}</div>;
+    return <div className="w-full truncate text-center px-1">{eventInfo.event.title}</div>;
   };
 
   const viewsString = views.join(",");
@@ -41,9 +41,37 @@ const CalendarGrid = ({ events = [], views = [], ...props }: CalendarGridProps) 
       }}
       titleFormat={{ year: "numeric", month: "long" }}
       weekends={false}
-      {...props} // Spread additional props here
+      eventDidMount={(info) => attachTooltip(info)}
+      {...props}
     />
   );
 };
 
 export { CalendarGrid };
+
+// Show full title as native browser tooltip
+const attachTooltip = (info) => {
+  const tooltip = document.createElement("div");
+  tooltip.innerText = info.event.title;
+  tooltip.className = "custom-tooltip";
+  tooltip.style.position = "absolute";
+  tooltip.style.background = "#333";
+  tooltip.style.color = "#fff";
+  tooltip.style.padding = "4px 8px";
+  tooltip.style.borderRadius = "4px";
+  tooltip.style.fontSize = "12px";
+  tooltip.style.zIndex = "1000";
+  tooltip.style.display = "none";
+
+  document.body.appendChild(tooltip);
+
+  info.el.addEventListener("mouseenter", (e) => {
+    tooltip.style.left = `${e.pageX + 10}px`;
+    tooltip.style.top = `${e.pageY + 10}px`;
+    tooltip.style.display = "block";
+  });
+
+  info.el.addEventListener("mouseleave", () => {
+    tooltip.style.display = "none";
+  });
+};

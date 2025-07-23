@@ -2,7 +2,7 @@
 
 import React from "react";
 import { StudentCreateFormReturn, StudentTemplateQueryResultType } from "../_types/student-create-form-types";
-import { DatePicker, FormControl, FormField, FormItem, FormMessage, SelectValue, SelectTrigger, SelectItem, SelectContent, Select, MultiSelect } from "@repo/ui";
+import { DatePicker, FormControl, FormField, FormItem, FormMessage, SelectValue, SelectTrigger, SelectItem, SelectContent, Select, MultiSelect, Input } from "@repo/ui";
 
 type StepProps = {
   form: StudentCreateFormReturn;
@@ -13,6 +13,19 @@ type StepProps = {
 export function StudentCreateFormAdmissionStep({ form, isEdit, studentTemplateQuery }: StepProps) {
   return (
     <div className="grid gap-4 md:grid-cols-2">
+      <FormField
+        control={form.control}
+        name="admissionNo"
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <Input placeholder="Admission Number" {...field} disabled={isEdit} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
       <FormField
         control={form.control}
         name="classId"

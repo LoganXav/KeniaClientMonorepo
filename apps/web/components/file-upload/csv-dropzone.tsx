@@ -9,9 +9,10 @@ import { toast, Typography, Button } from "@repo/ui";
 interface CsvDropzoneProps<T extends object> {
   onParsed: (data: T[]) => void;
   expectedHeaders?: string[];
+  disabled?: boolean;
 }
 
-export const CsvDropzone = <T extends object>({ onParsed, expectedHeaders }: CsvDropzoneProps<T>) => {
+export const CsvDropzone = <T extends object>({ onParsed, expectedHeaders, disabled = false }: CsvDropzoneProps<T>) => {
   const [file, setFile] = useState<File | null>(null);
 
   const onDrop = useCallback(
@@ -51,7 +52,7 @@ export const CsvDropzone = <T extends object>({ onParsed, expectedHeaders }: Csv
     onDrop,
     accept: { "text/csv": [".csv"] },
     multiple: false,
-    disabled: !!file,
+    disabled: !!file || disabled,
   });
 
   const handleRemove = () => {
@@ -62,11 +63,11 @@ export const CsvDropzone = <T extends object>({ onParsed, expectedHeaders }: Csv
   return (
     <div className="w-full">
       {!file ? (
-        <div {...getRootProps()} className="w-full p-4 h-40 border border-border border-dashed rounded-md flex flex-col items-center justify-center cursor-pointer hover:bg-accent transition">
+        <div {...getRootProps()} className={`w-full p-4 h-40 border border-border border-dashed rounded-md flex flex-col items-center justify-center transition ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer hover:bg-accent"}`}>
           <input {...getInputProps()} />
           <div className="flex flex-col items-center space-y-2 text-center">
             <FileDown size={40} />
-            <Typography>{isDragActive ? "Drop your CSV here..." : "Drag & drop a CSV file here, or click to select one"}</Typography>
+            <Typography>{isDragActive ? "Drop your CSV here..." : disabled ? "Please select the options first" : "Drag & drop a CSV file here, or click to select one"}</Typography>
           </div>
         </div>
       ) : (

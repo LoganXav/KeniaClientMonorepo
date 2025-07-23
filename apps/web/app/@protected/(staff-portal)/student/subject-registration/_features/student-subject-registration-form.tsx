@@ -47,9 +47,10 @@ export function StudentSubjectRegistrationForm({ studentId }: Props) {
           classId: Number(classId),
           classDivisionId: Number(classDivisionId),
           calendarId: Number(calendarId),
+          studentId: Number(selectedStudentId),
         },
       }),
-      [classId, classDivisionId, calendarId, authUserIds?.tenantId]
+      [classId, classDivisionId, calendarId, selectedStudentId, authUserIds?.tenantId]
     )
   );
 
@@ -85,11 +86,11 @@ export function StudentSubjectRegistrationForm({ studentId }: Props) {
   const dataRef = useDataRef({ form });
 
   React.useEffect(() => {
-    dataRef.current.form.reset((values: any) => ({
+    dataRef.current.form.reset((values: StudentSubjectRegistrationCreateFormSchemaType) => ({
       ...values,
       id: foundStudent?.id || "",
-      subjectIds: foundStudent?.subjectsRegistered?.map((subject) => subject.subjectId) || values.subjectIds,
-      classDivisionId: foundStudent?.classDivisionId || values.classDivisionId,
+      subjectIds: studentTemplate?.studentSubjectRegistrationOptions?.map((subject) => subject.subjectId) || values.subjectIds,
+      // classDivisionId: foundStudent?.classDivisionId || values.classDivisionId,
     }));
   }, [foundStudent, dataRef]);
 

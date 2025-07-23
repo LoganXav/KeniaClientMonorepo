@@ -1,6 +1,7 @@
-import { RouteEnums } from "@/constants/router/route-constants";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
+import { Typography } from "@repo/ui";
+import { RouteEnums } from "@/constants/router/route-constants";
 
 export default function AuthLayout({ children }: React.PropsWithChildren) {
   return (
@@ -8,12 +9,14 @@ export default function AuthLayout({ children }: React.PropsWithChildren) {
       <div className="hidden md:flex items-center justify-center flex-col w-full border-r border-border">
         <div className="hidden 2xl:flex 2xl:h-1/3 bg-card w-full p-4">
           <div className="w-full space-y-8">
-            <Link href={RouteEnums.HOME} className="font-heading text-2xl font-bold">
-              KENIA .
+            <Link href={RouteEnums.HOME} className="font-heading">
+              <Typography size={"h4"}>KENIA .</Typography>
             </Link>
             <div className="space-y-4">
-              <h4 className="font-heading text-3xl font-bold">Empowering education through technology</h4>
-              <p className="text-sm text-muted-foreground">Join the platform designed to connect students and educators, simplifying learning and school management.</p>
+              <Typography size={"h3"} className="font-heading">
+                Empowering education through technology
+              </Typography>
+              <Typography color={"muted"}>Join the platform designed to connect students and educators, simplifying learning and school management.</Typography>
             </div>
           </div>
         </div>

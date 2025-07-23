@@ -13,7 +13,7 @@ export function SubjectDetailsTabs({ subjectId, classId }: { subjectId: number; 
         <div className="w-full relative h-14">
           <TabsList className="flex absolute">
             <PermissionRestrictor requiredPermissions={[PERMISSIONS.STUDENT.READ]}>
-              <TabsTrigger value="students">Current Students</TabsTrigger>
+              <TabsTrigger value="students">Students</TabsTrigger>
             </PermissionRestrictor>
             <PermissionRestrictor requiredPermissions={[PERMISSIONS.SUBJECT_GRADE.READ]}>
               <TabsTrigger value="grading">Grading</TabsTrigger>

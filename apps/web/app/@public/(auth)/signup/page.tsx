@@ -1,7 +1,8 @@
-import AuthSignUpForm from "./_features/auth-signup-form";
 import Link from "next/link";
-import { RouteEnums } from "@/constants/router/route-constants";
 import { Earth } from "lucide-react";
+import { Typography } from "@repo/ui";
+import AuthSignUpForm from "./_features/auth-signup-form";
+import { RouteEnums } from "@/constants/router/route-constants";
 
 export default function AuthSignUpPage() {
   return (
@@ -9,8 +10,10 @@ export default function AuthSignUpPage() {
       <div className="hidden lg:flex xl:col-span-1" />
       <div className="grid space-y-8 lg:col-span-2 xl:col-span-2 mt-20 max-w-xl">
         <div className="w-full space-y-2">
-          <h4 className="font-heading text-3xl md:text-4xl font-bold">Get started with Kenia</h4>
-          <p className="text-sm text-muted-foreground">Fill out this form to register your school</p>
+          <Typography size={"h2"} className="font-heading">
+            Get started with Kenia
+          </Typography>
+          <Typography color={"muted"}>Fill out this form to register your school</Typography>
         </div>
         <AuthSignUpForm />
       </div>
