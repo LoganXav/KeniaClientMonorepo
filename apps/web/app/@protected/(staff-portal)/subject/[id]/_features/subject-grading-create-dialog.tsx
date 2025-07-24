@@ -8,7 +8,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoadingContent } from "@/components/loading-content";
 import { SubjectGradingCreateFormSchema } from "../_schema/subject-grading-schema";
 import { SubjectGradingCreateFormSchemaType } from "../_types/subject-grading-form-types";
-import { SubjectGradingTemplateOptions } from "../../../student/grading/_types/subject-grading-types";
 import { SubjectGradingStructureQueryResultType } from "../_types/subject-grading-structure-form-types";
 import { useGetSubjectGradingTemplateQuery, useSubjectGradingCreateMutation } from "@/apis/core-subject-api/subject-grading";
 import { Button, Dialog, DialogContent, DialogTitle, Form, FormControl, FormField, FormItem, FormMessage, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, toast, Typography } from "@repo/ui";
@@ -98,7 +97,19 @@ export function SubjectGradingCreateDialog({ open, onClose, subjectId, classId, 
 
   const calendarId = Number(form.watch("calendarId"));
 
-  const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(React.useMemo(() => ({ params: { calendarId, classId, tenantId: authUserIds?.tenantId, subjectId } }), [calendarId, classId, authUserIds?.tenantId, subjectId])) as SubjectGradingTemplateOptions;
+  const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(
+    React.useMemo(
+      () => ({
+        params: {
+          calendarId,
+          classId,
+          tenantId: authUserIds?.tenantId,
+          subjectId,
+        },
+      }),
+      [calendarId, classId, authUserIds?.tenantId, subjectId]
+    )
+  );
   const gradingTemplate = gradingTemplateQueryResult?.data?.data;
 
   return (
@@ -234,9 +245,9 @@ export function SubjectGradingCreateDialog({ open, onClose, subjectId, classId, 
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {gradingTemplate?.studentOptions?.map((student: Record<string, any>, idx: number) => (
+                            {gradingTemplate?.studentOptions?.map((student, idx: number) => (
                               <SelectItem key={idx} value={String(student.id)}>
-                                {student?.user?.lastName} {student?.user?.firstName}
+                                {student.admissionNo} {student?.user?.lastName} {student?.user?.firstName}
                               </SelectItem>
                             ))}
                           </SelectContent>

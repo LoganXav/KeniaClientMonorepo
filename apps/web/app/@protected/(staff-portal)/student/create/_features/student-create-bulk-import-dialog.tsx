@@ -23,9 +23,13 @@ export function StudentCreateBulkImportDialog({ open, onClose, tenantId }: Dialo
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
       {
-        header: "Name",
+        header: "Info",
         accessorKey: "name",
-        cell: ({ row }) => `${row.original.firstName} ${row.original.lastName}`,
+        cell: ({ row }) => `${row.original.admissionNo || "-"} ${row.original.firstName} ${row.original.lastName}`,
+      },
+      {
+        header: "Gender",
+        accessorKey: "gender",
       },
       {
         header: "Enrolled Class",
@@ -88,28 +92,31 @@ export function StudentCreateBulkImportDialog({ open, onClose, tenantId }: Dialo
         <div className="space-y-4">
           <CsvDropzone<StudentBulkType> onParsed={handleParsed} expectedHeaders={["firstName", "lastName", "gender", "class", "classDivision", "email"]} />
 
-          {parsedData.length > 0 && (
-            <>
-              <Typography size="small" className="uppercase font-heading">
-                Upload Preview :
-              </Typography>
-              <div className="relative overflow-x-auto rounded-md border text-sm max-w-2xl">
-                <DataTable data={parsedData.slice(0, 5)} columns={columns} showPagination={false} />
-              </div>
-              <Typography color={"muted"} size={"small"} className="mt-2 italic">
-                Showing first 5 rows. Total rows ({parsedData.length})
-              </Typography>
-            </>
-          )}
+          <div className="max-w-[20rem] sm:max-w-full space-y-4 mx-auto">
+            {parsedData.length > 0 && (
+              <>
+                <Typography size="small" className="uppercase font-heading">
+                  Upload Preview :
+                </Typography>
+                <div className="relative overflow-x-auto rounded-md border text-sm max-w-2xl">
+                  <DataTable data={parsedData.slice(0, 5)} columns={columns} showPagination={false} />
+                </div>
+                <Typography color={"muted"} size={"small"} className="mt-2 italic">
+                  Showing first 5 rows. Total rows ({parsedData.length})
+                </Typography>
+              </>
+            )}
+          </div>
 
           <div className="flex flex-col md:flex-row justify-between gap-4 pt-4">
             <Button
               variant="outline"
               onClick={() =>
                 downloadCsvTemplate(
-                  ["firstName", "lastName", "gender", "class", "classDivision", "email"],
+                  ["admissionNo", "firstName", "lastName", "gender", "class", "classDivision", "email"],
                   [
                     {
+                      admissionNo: "AD12345",
                       firstName: "John",
                       lastName: "Doe",
                       email: "johndoe@email.com",
@@ -128,7 +135,7 @@ export function StudentCreateBulkImportDialog({ open, onClose, tenantId }: Dialo
               <Button variant="outline" onClick={handleClose}>
                 Cancel
               </Button>
-              <Button onClick={handleSubmit} disabled={parsedData.length === 0}>
+              <Button onClick={handleSubmit} disabled={parsedData.length === 0} loading={studentBulkCreatePending}>
                 Import Students
               </Button>
             </div>

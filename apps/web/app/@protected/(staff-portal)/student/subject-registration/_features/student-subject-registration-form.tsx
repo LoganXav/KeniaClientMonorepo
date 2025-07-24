@@ -90,7 +90,7 @@ export function StudentSubjectRegistrationForm({ studentId }: Props) {
       ...values,
       id: foundStudent?.id || "",
       subjectIds: studentTemplate?.studentSubjectRegistrationOptions?.map((subject) => subject.subjectId) || values.subjectIds,
-      // classDivisionId: foundStudent?.classDivisionId || values.classDivisionId,
+      classDivisionId: foundStudent?.classDivisionId || values.classDivisionId,
     }));
   }, [foundStudent, dataRef]);
 
