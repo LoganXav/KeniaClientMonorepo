@@ -170,7 +170,7 @@ export interface CalendarType {
 }
 
 export interface TermType {
-  id: number;
+  id?: number;
   name: string;
   startDate: string;
   endDate: string;
