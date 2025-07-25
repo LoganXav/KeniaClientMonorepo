@@ -47,6 +47,7 @@ export type StudentBulkCreateType = {
 };
 
 export type StudentBulkType = {
+  admissionNo: string;
   firstName: string;
   lastName: string;
   gender: string;

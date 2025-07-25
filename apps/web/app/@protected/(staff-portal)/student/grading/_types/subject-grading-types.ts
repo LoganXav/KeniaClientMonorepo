@@ -1,19 +1,9 @@
-import { GetRequestReturnType } from "@/config/base-query";
-import { RefetchOptions } from "@tanstack/react-query";
+import { CalendarType, ClassDivisionType, ClassType, StudentType, TermType } from "@/types";
 
-export type SubjectGradingTemplateOptions =
-  | {
-      data:
-        | GetRequestReturnType<{
-            classOptions: { id: number; name: string }[];
-            classDivisionOptions: { id: number; name: string }[];
-            calendarOptions: { id: number; year: string }[];
-            termOptions: { id: number; name: string; startDate: string; endDate: string; tenantId: number }[];
-            studentOptions: {}[];
-          }>
-        | undefined;
-      isLoading: boolean;
-      error: Error | null;
-      refetch: (options?: RefetchOptions) => Promise<any>;
-    }
-  | undefined;
+export type SubjectGradingTemplateOptions = {
+  termOptions: TermType[];
+  classOptions: ClassType[];
+  studentOptions: StudentType[];
+  calendarOptions: CalendarType[];
+  classDivisionOptions: ClassDivisionType[];
+};

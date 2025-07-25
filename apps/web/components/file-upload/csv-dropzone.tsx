@@ -74,7 +74,7 @@ export const CsvDropzone = <T extends object>({ onParsed, expectedHeaders, disab
         <div className="flex items-center justify-between p-4 border rounded-md bg-accent/20">
           <div className="flex items-center space-x-2">
             <FileDown size={24} />
-            <Typography>{file.name}</Typography>
+            <Typography className="line-clamp-1">{file.name}</Typography>
           </div>
           <Button variant="ghost" size="sm" onClick={handleRemove} className="p-1">
             <X size={16} strokeWidth={1} />

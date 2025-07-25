@@ -65,6 +65,7 @@ export interface StaffType {
 }
 
 export interface StudentType {
+  admissionNo: string;
   id: number;
   admissionNo: string;
   studentId: string;
@@ -169,7 +170,7 @@ export interface CalendarType {
 }
 
 export interface TermType {
-  // id: number;
+  id?: number;
   name: string;
   startDate: string;
   endDate: string;
