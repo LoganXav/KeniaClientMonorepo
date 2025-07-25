@@ -15,7 +15,6 @@ import { SubjectBulkGradingCreateDialog } from "./subject-bulk-grading-create-di
 import { Button, Card, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { useGetSubjectGradingStructureQuery } from "@/apis/core-subject-api/subject-grading-structure";
 import { useGetSubjectGradingListQuery, useGetSubjectGradingTemplateQuery } from "@/apis/core-subject-api/subject-grading";
-import { SubjectGradingTemplateOptions } from "@/app/@protected/(staff-portal)/student/grading/_types/subject-grading-types";
 
 export function SubjectDetailsGradingTab({ subjectId, classId }: { subjectId: number; classId?: number }) {
   const { authUserIds } = useAuthUser();
@@ -25,7 +24,7 @@ export function SubjectDetailsGradingTab({ subjectId, classId }: { subjectId: nu
   const [calendarId, setCalendarId] = React.useState(0);
   const [classDivisionId, setClassDivisionId] = React.useState(0);
 
-  const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(React.useMemo(() => ({ params: { calendarId, classId, tenantId: authUserIds?.tenantId, subjectId } }), [calendarId, classId, authUserIds?.tenantId, subjectId])) as SubjectGradingTemplateOptions;
+  const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(React.useMemo(() => ({ params: { calendarId, classId, tenantId: authUserIds?.tenantId, subjectId } }), [calendarId, classId, authUserIds?.tenantId, subjectId]));
   const gradingTemplate = gradingTemplateQueryResult?.data?.data;
 
   const gradingQueryResult = useGetSubjectGradingListQuery(React.useMemo(() => ({ path: {}, params: { calendarId, termId, subjectId, classId, classDivisionId, tenantId: authUserIds?.tenantId } }), [calendarId, termId, subjectId, classId, classDivisionId, authUserIds?.tenantId]));

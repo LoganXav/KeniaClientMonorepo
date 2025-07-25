@@ -5,7 +5,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { LoadingContent } from "@/components/loading-content";
-import { SubjectGradingTemplateOptions } from "../_types/subject-grading-types";
 import { useGetStudentGradingListQuery } from "@/apis/core-student-api/student-grading";
 import { useGetSubjectGradingTemplateQuery } from "@/apis/core-subject-api/subject-grading";
 import { Card, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
@@ -17,7 +16,7 @@ export function StudentGradingTable() {
   const [calendarId, setCalendarId] = React.useState(0);
   const [classDivisionId, setClassDivisionId] = React.useState(0);
 
-  const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(React.useMemo(() => ({ params: { calendarId, classId, tenantId: authUserIds?.tenantId } }), [calendarId, classId, authUserIds?.tenantId])) as SubjectGradingTemplateOptions;
+  const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(React.useMemo(() => ({ params: { calendarId, classId, tenantId: authUserIds?.tenantId } }), [calendarId, classId, authUserIds?.tenantId]));
   const gradingTemplate = gradingTemplateQueryResult?.data?.data;
 
   const gradingQueryResult = useGetStudentGradingListQuery(React.useMemo(() => ({ path: {}, params: { calendarId, termId, classId, classDivisionId, tenantId: authUserIds?.tenantId } }), [calendarId, termId, classId, classDivisionId, authUserIds?.tenantId]));

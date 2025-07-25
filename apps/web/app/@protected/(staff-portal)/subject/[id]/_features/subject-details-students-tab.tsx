@@ -9,7 +9,6 @@ import { LoadingContent } from "@/components/loading-content";
 import { useGetSubjectGradingTemplateQuery } from "@/apis/core-subject-api/subject-grading";
 import { useGetStudentSubjectRegistrationListQuery } from "@/apis/core-student-api/student";
 import { Card, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
-import { SubjectGradingTemplateOptions } from "../../../student/grading/_types/subject-grading-types";
 
 export function SubjectDetailsStudentsTab({ subjectId, classId }: { subjectId: number; classId?: number }) {
   const { authUserIds } = useAuthUser();
@@ -51,7 +50,7 @@ export function SubjectDetailsStudentsTab({ subjectId, classId }: { subjectId: n
     []
   );
 
-  const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(React.useMemo(() => ({ params: { tenantId: authUserIds?.tenantId } }), [authUserIds?.tenantId])) as SubjectGradingTemplateOptions;
+  const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(React.useMemo(() => ({ params: { tenantId: authUserIds?.tenantId } }), [authUserIds?.tenantId]));
   const gradingTemplate = gradingTemplateQueryResult?.data?.data;
 
   const registration = useGetStudentSubjectRegistrationListQuery(
