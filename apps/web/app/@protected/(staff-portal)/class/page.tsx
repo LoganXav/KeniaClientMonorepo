@@ -39,6 +39,18 @@ function ClassMenu({}: Props) {
             permissionNames: [PERMISSIONS.CLASS_DIVISION.READ],
           },
           {
+            label: "Term Results Collation",
+            desc: "Compile and finalize students' term results across all subjects.",
+            url: RouteEnums.CLASS_TERM_RESULT_COLLATION,
+            permissionNames: [PERMISSIONS.CLASS_TERM_RESULT_COLLATION.READ],
+          },
+          {
+            label: "Session Results Collation",
+            desc: "Compile and finalize students' session results across all subjects.",
+            url: RouteEnums.CLASS_CALENDAR_RESULT_COLLATION,
+            permissionNames: [PERMISSIONS.CLASS_CALENDAR_RESULT_COLLATION.READ],
+          },
+          {
             label: "Promotion Decision",
             desc: "Promote or repeat students based on their academic performance.",
             url: RouteEnums.CLASS_PROMOTION,
