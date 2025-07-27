@@ -2,45 +2,47 @@
 
 import React from "react";
 import { Logs } from "lucide-react";
+import { StudentType } from "@/types";
+import useToggle from "@/hooks/use-toggle";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
 import { useAuthUser } from "@/hooks/use-auth-user";
 import { LoadingContent } from "@/components/loading-content";
 import { useGetSubjectGradingTemplateQuery } from "@/apis/core-subject-api/subject-grading";
+import ClassTermResultCollationGradesDialog from "./class-term-result-collation-grades-dialog";
+import { useGetStudentTermResultListQuery } from "@/apis/core-student-api/student-term-result";
 import { Badge, Button, Card, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 
 type Props = {};
 
 export function ClassTermResultCollationListTable({}: Props) {
   const { authUserIds } = useAuthUser();
+  const [open, toggle] = useToggle(false);
   const [termId, setTermId] = React.useState(0);
   const [classId, setClassId] = React.useState(0);
   const [calendarId, setCalendarId] = React.useState(0);
   const [classDivisionId, setClassDivisionId] = React.useState(0);
+  const [selectedStudent, setSelectedStudent] = React.useState<StudentType | null>(null);
+
+  const handleOpenDialog = (student: StudentType) => {
+    // Ensure we're running this after the dropdown's click event has completed
+    setTimeout(() => {
+      setSelectedStudent(student);
+      toggle();
+    }, 0);
+  };
+
+  const handleCloseDialog = React.useCallback(() => {
+    toggle();
+    setSelectedStudent(null);
+    setTimeout(() => {}, 200);
+  }, [toggle]);
 
   const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(React.useMemo(() => ({ params: { calendarId, classId, tenantId: authUserIds?.tenantId } }), [calendarId, classId, authUserIds?.tenantId]));
   const gradingTemplate = gradingTemplateQueryResult?.data?.data;
 
-  const data = [
-    {
-      id: 1,
-      student: { user: { firstName: "John", lastName: "Doe" } },
-      subjectCountGraded: 5,
-      subjectCountOffered: 6,
-      totalScore: 85,
-      average: 85,
-      finalized: true,
-    },
-    {
-      id: 2,
-      student: { user: { firstName: "Jane", lastName: "Smith" } },
-      subjectCountGraded: 6,
-      subjectCountOffered: 6,
-      totalScore: 90,
-      average: 90,
-      finalized: false,
-    },
-  ];
+  const studentTermResultListQuery = useGetStudentTermResultListQuery({ params: { tenantId: authUserIds?.tenantId, classId, classDivisionId, termId } });
+  const studentTermResultList = studentTermResultListQuery?.data?.data || [];
 
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
     () => [
@@ -67,7 +69,7 @@ export function ClassTermResultCollationListTable({}: Props) {
       },
       {
         header: "Average",
-        accessorKey: "average",
+        accessorKey: "averageScore",
       },
       {
         header: "Status",
@@ -95,16 +97,17 @@ export function ClassTermResultCollationListTable({}: Props) {
         id: "actions",
         cell: ({ row }) => {
           const termResult = row.original;
-          const variant = termResult.finalized ? "default" : "outline";
-          const text = termResult.finalized ? "Unfinalize Grades" : "Finalize Grades";
+          const student = termResult.student;
+          const variant = termResult.finalized ? "outline" : "default";
+          const buttonText = termResult.finalized ? "Undo Confirmation" : "Confirm Results";
 
           return (
-            <div className="w-full justify-end flex items-center space-x-2">
-              <Button variant={"ghost"} className="">
+            <div className="w-full flex justify-end items-center space-x-2">
+              <Button variant="ghost" onClick={() => handleOpenDialog(student)}>
                 <Logs strokeWidth={1} size={24} />
               </Button>
               <Button variant={variant} className="w-[200px] line-clamp-1" size="sm">
-                {text}
+                {buttonText}
               </Button>
             </div>
           );
@@ -172,10 +175,12 @@ export function ClassTermResultCollationListTable({}: Props) {
         <div className="hidden md:flex md:flex-1" />
       </div>
       <Card className="overflow-hidden mt-8">
-        <LoadingContent loading={false} data={{}}>
-          <DataTable data={data} columns={columns} />
+        <LoadingContent loading={studentTermResultListQuery?.isLoading} data={studentTermResultListQuery?.data} error={studentTermResultListQuery?.error} retry={studentTermResultListQuery?.refetch}>
+          <DataTable data={studentTermResultList} columns={columns} />
         </LoadingContent>
       </Card>
+
+      <ClassTermResultCollationGradesDialog open={open} onClose={handleCloseDialog} student={selectedStudent || undefined} />
     </>
   );
 }
