@@ -77,6 +77,7 @@ export interface StudentType {
   tenantId: number;
   tenant: TenantType;
   classDivisionId: number;
+  subjectGrades: SubjectGradingType[];
   subjectsRegistered: SubjectsRegisteredType[];
 }
 
@@ -253,6 +254,9 @@ export interface ContinuousAssessmentBreakdownItemType {
 
 export interface SubjectGradingType {
   continuousAssessmentScores: ContinuousAssessmentScore[];
+  subject?: SubjectType;
+  totalScore: number;
+  grade: string;
   classId: number;
   classDivisionId: number;
   student: {
@@ -300,4 +304,21 @@ export interface ClassPromotionType {
   student: StudentType;
   fromClass: ClassType;
   toClass: ClassType;
+}
+
+export interface StudentTermResultType {
+  id: number;
+  termId: number;
+  classId: number;
+  tenantId: number;
+  studentId: number;
+  createdAt: string;
+  updatedAt: string;
+  totalScore: number;
+  finalized: boolean;
+  student: StudentType;
+  averageScore: number;
+  classDivisionId: number;
+  subjectCountOffered: number;
+  subjectCountGraded: number;
 }
