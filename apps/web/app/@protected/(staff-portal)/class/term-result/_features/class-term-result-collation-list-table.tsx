@@ -43,10 +43,10 @@ export function ClassTermResultCollationListTable({}: Props) {
     React.useState<StudentType | null>(null);
 
   const defaultValues = {
-    calendarId: 0,
-    termId: 0,
-    classId: 0,
-    classDivisionId: 0,
+    calendarId: "",
+    termId: "",
+    classId: "",
+    classDivisionId: "",
   };
 
   const form = useForm<ClassTermResultCollationFormType>({
