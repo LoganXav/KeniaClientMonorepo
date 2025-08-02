@@ -12,7 +12,16 @@ import { RouteEnums } from "@/constants/router/route-constants";
 import { useGetClassListQuery } from "@/apis/core-class-api/class";
 import { PermissionRestrictor } from "@/components/permission-restrictor";
 import { PERMISSIONS } from "@/constants/permissions/permission-constants";
-import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@repo/ui";
+import {
+  Button,
+  Card,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@repo/ui";
 type Props = {};
 
 export function ClassListTable({}: Props) {
@@ -40,10 +49,13 @@ export function ClassListTable({}: Props) {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <PermissionRestrictor requiredPermissions={[PERMISSIONS.CLASS.READ]}>
+                <PermissionRestrictor
+                  requiredPermissions={[PERMISSIONS.CLASS.READ]}
+                >
                   <Link href={`${RouteEnums.CLASS}/${classItem.id}`}>
                     <DropdownMenuItem className="flex justify-between">
-                      View <UserRound className="ml-2" size={15} strokeWidth={1} />
+                      View{" "}
+                      <UserRound className="ml-2" size={15} strokeWidth={1} />
                     </DropdownMenuItem>
                   </Link>
                 </PermissionRestrictor>
@@ -53,16 +65,26 @@ export function ClassListTable({}: Props) {
         },
       },
     ],
-    []
+    [],
   );
 
-  const classListQueryResult = useGetClassListQuery({ params: { tenantId: authUserIds?.tenantId } });
+  const classListQueryResult = useGetClassListQuery({
+    params: { tenantId: authUserIds?.tenantId },
+  });
 
   return (
     <>
       <Card className="overflow-hidden mt-8">
-        <LoadingContent loading={classListQueryResult?.isLoading} error={classListQueryResult?.error} data={classListQueryResult.data} retry={classListQueryResult?.refetch}>
-          <DataTable data={classListQueryResult?.data?.data} columns={columns} />
+        <LoadingContent
+          loading={classListQueryResult?.isLoading}
+          error={classListQueryResult?.error}
+          data={classListQueryResult.data}
+          retry={classListQueryResult?.refetch}
+        >
+          <DataTable
+            data={classListQueryResult?.data?.data}
+            columns={columns}
+          />
         </LoadingContent>
       </Card>
     </>
