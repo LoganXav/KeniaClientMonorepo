@@ -1,6 +1,9 @@
 import { RouteEnums } from "@/constants/router/route-constants";
 import { env } from "@/env.mjs";
-import { clearAuthUserAction, getAuthUserAction } from "@/helpers/server/auth-user-action";
+import {
+  clearAuthUserAction,
+  getAuthUserAction,
+} from "@/helpers/server/auth-user-action";
 import axios from "axios";
 import CryptoJS from "crypto-js";
 
@@ -16,7 +19,7 @@ export const apiConfig = axios.create({
 apiConfig.interceptors.request.use(async (config) => {
   const authUser = await getAuthUserAction();
 
-  let data: Record<string, any> = {
+  let data: Record<string, string | number | undefined> = {
     userId: authUser?.data?.id,
     tenantId: authUser?.data?.tenantId,
     userRoleId: authUser?.data?.staff?.roleId,
@@ -100,11 +103,15 @@ apiConfig.interceptors.response.use(
   async (error) => {
     if (error?.response) {
       if (error?.response?.data?.encoded) {
-        const decrypted = CryptoJS.AES.decrypt(error?.response?.data?.result, KEY, {
-          mode: CryptoJS.mode.CBC,
-          padding: CryptoJS.pad.Pkcs7,
-          iv: IV,
-        });
+        const decrypted = CryptoJS.AES.decrypt(
+          error?.response?.data?.result,
+          KEY,
+          {
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.Pkcs7,
+            iv: IV,
+          },
+        );
 
         // Convert decrypted WordArray to UTF-8 string
         const decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
@@ -120,7 +127,11 @@ apiConfig.interceptors.response.use(
       }
 
       if (env.NODE_ENV === DEV) {
-        console.groupCollapsed(`@Response`, error.response.config.url, error.response.status);
+        console.groupCollapsed(
+          `@Response`,
+          error.response.config.url,
+          error.response.status,
+        );
         if (error.response.data) {
           console.groupCollapsed("Data");
           console.info(error.response.data);
@@ -157,7 +168,7 @@ apiConfig.interceptors.response.use(
         : {
             message: "Something went wrong. Please contact admin.",
             status: 500,
-          }
+          },
     );
-  }
+  },
 );

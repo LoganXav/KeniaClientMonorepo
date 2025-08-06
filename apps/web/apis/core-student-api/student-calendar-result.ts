@@ -1,12 +1,12 @@
-import { StudentTermResultType } from "@/types";
+import { StudentCalendarResultType } from "@/types";
 import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { StudentTermResultUpdatePayload } from "@/app/@protected/(staff-portal)/class/term-result/_features/_types/class-term-result-collation-form-types";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { StudentCalendarResultUpdatePayload } from "@/app/@protected/(staff-portal)/class/calendar-result/_types/class-calendar-result-collation-form-types";
 
-const BASE_URL = "student/termresult";
+const BASE_URL = "student/calendarresult";
 
-export const useGetStudentTermResultListQuery = ({
+export const useGetStudentCalendarResultListQuery = ({
   params,
   enabled = true,
 }: {
@@ -14,20 +14,20 @@ export const useGetStudentTermResultListQuery = ({
     tenantId?: number;
     classId?: number;
     classDivisionId?: number;
-    termId?: number;
+    calendarId?: number;
   };
   enabled?: boolean;
 }) => {
   const { data, isLoading, error, refetch, isFetching } = useQuery({
     queryKey: [
-      QueryTagEnums.STUDENT_TERM_RESULT,
+      QueryTagEnums.STUDENT_CALENDAR_RESULT,
       params?.tenantId,
-      params?.termId,
+      params?.calendarId,
       params?.classId,
       params?.classDivisionId,
     ],
     queryFn: async () => {
-      return await getRequest<StudentTermResultType[]>({
+      return await getRequest<StudentCalendarResultType[]>({
         endpoint: `${BASE_URL}/list`,
         config: { params },
       });
@@ -38,25 +38,25 @@ export const useGetStudentTermResultListQuery = ({
   return { data, isLoading, error, refetch, isFetching };
 };
 
-export const useStudentTermResultUpdateMutation = ({
+export const useStudentCalendarResultUpdateMutation = ({
   params,
 }: {
   params: { tenantId?: number };
 }) => {
   const queryClient = useQueryClient();
   const {
-    mutate: studentTermResultUpdate,
-    isPending: studentTermResultUpdatePending,
-    error: studentTermResultUpdateError,
+    mutate: studentCalendarResultUpdate,
+    isPending: studentCalendarResultUpdatePending,
+    error: studentCalendarResultUpdateError,
   } = useMutation({
     mutationFn: async ({
       payload,
       path,
     }: {
-      payload: StudentTermResultUpdatePayload;
+      payload: StudentCalendarResultUpdatePayload;
       path: { studentId: number };
     }) => {
-      const data = await postRequest<StudentTermResultType>({
+      const data = await postRequest<StudentCalendarResultType>({
         endpoint: `${BASE_URL}/${path.studentId}`,
         payload,
         config: { params },
@@ -66,14 +66,14 @@ export const useStudentTermResultUpdateMutation = ({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QueryTagEnums.STUDENT_TERM_RESULT, params.tenantId],
+        queryKey: [QueryTagEnums.STUDENT_CALENDAR_RESULT, params.tenantId],
       });
     },
   });
 
   return {
-    studentTermResultUpdate,
-    studentTermResultUpdatePending,
-    studentTermResultUpdateError,
+    studentCalendarResultUpdate,
+    studentCalendarResultUpdatePending,
+    studentCalendarResultUpdateError,
   };
 };
