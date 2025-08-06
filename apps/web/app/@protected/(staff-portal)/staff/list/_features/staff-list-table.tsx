@@ -15,7 +15,21 @@ import { PermissionRestrictor } from "@/components/permission-restrictor";
 import { PERMISSIONS } from "@/constants/permissions/permission-constants";
 import { CirclePlus, UserRoundPen, UserRound, Download } from "lucide-react";
 import { StaffCreateBulkImportDialog } from "../../create/_features/staff-create-bulk-import-dialog";
-import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
+import {
+  Button,
+  Card,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@repo/ui";
 
 type Props = {};
 
@@ -66,7 +80,9 @@ export function StaffListTable({}: Props) {
       {
         header: "Date Joined",
         accessorKey: "startDate",
-        cell: ({ row }) => <p>{formatDateToString(row?.original?.startDate)}</p>,
+        cell: ({ row }) => (
+          <p>{formatDateToString(row?.original?.startDate)}</p>
+        ),
       },
 
       {
@@ -85,17 +101,27 @@ export function StaffListTable({}: Props) {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <PermissionRestrictor requiredPermissions={[PERMISSIONS.STAFF.READ]}>
+                <PermissionRestrictor
+                  requiredPermissions={[PERMISSIONS.STAFF.READ]}
+                >
                   <Link href={`${RouteEnums.STAFF}/${staff.id}`}>
                     <DropdownMenuItem className="flex justify-between">
-                      View <UserRound className="ml-2" size={15} strokeWidth={1} />
+                      View{" "}
+                      <UserRound className="ml-2" size={15} strokeWidth={1} />
                     </DropdownMenuItem>
                   </Link>
                 </PermissionRestrictor>
-                <PermissionRestrictor requiredPermissions={[PERMISSIONS.STAFF.UPDATE]}>
+                <PermissionRestrictor
+                  requiredPermissions={[PERMISSIONS.STAFF.UPDATE]}
+                >
                   <Link href={`${RouteEnums.STAFF_CREATE}?id=${staff?.id}`}>
                     <DropdownMenuItem className="flex justify-between">
-                      Edit <UserRoundPen className="ml-2" size={15} strokeWidth={1} />
+                      Edit{" "}
+                      <UserRoundPen
+                        className="ml-2"
+                        size={15}
+                        strokeWidth={1}
+                      />
                     </DropdownMenuItem>
                   </Link>
                 </PermissionRestrictor>
@@ -105,10 +131,12 @@ export function StaffListTable({}: Props) {
         },
       },
     ],
-    []
+    [],
   );
 
-  const staffListQueryResult = useGetStaffListQuery({ params: { tenantId: authUserIds?.tenantId } });
+  const staffListQueryResult = useGetStaffListQuery({
+    params: { tenantId: authUserIds?.tenantId },
+  });
 
   return (
     <>
@@ -116,7 +144,11 @@ export function StaffListTable({}: Props) {
         <div className="hidden md:flex md:flex-1" />
         <PermissionRestrictor requiredPermissions={[PERMISSIONS.STAFF.CREATE]}>
           <div className="grid md:grid-cols-2 gap-4 w-full md:w-auto">
-            <Button onClick={handleOpenDialog} className="w-full" variant={"outline"}>
+            <Button
+              onClick={handleOpenDialog}
+              className="w-full"
+              variant={"outline"}
+            >
               Bulk Import <Download size={18} strokeWidth={1} />
             </Button>
             <Link className="" href={RouteEnums.STAFF_CREATE}>
@@ -128,12 +160,24 @@ export function StaffListTable({}: Props) {
         </PermissionRestrictor>
       </div>
       <Card className="overflow-hidden">
-        <LoadingContent loading={staffListQueryResult?.isLoading} error={staffListQueryResult?.error} data={staffListQueryResult.data} retry={staffListQueryResult?.refetch}>
-          <DataTable data={staffListQueryResult?.data?.data} columns={columns} />
+        <LoadingContent
+          loading={staffListQueryResult?.isLoading}
+          error={staffListQueryResult?.error}
+          data={staffListQueryResult.data}
+          retry={staffListQueryResult?.refetch}
+        >
+          <DataTable
+            data={staffListQueryResult?.data?.data}
+            columns={columns}
+          />
         </LoadingContent>
       </Card>
 
-      <StaffCreateBulkImportDialog open={open} onClose={handleCloseDialog} tenantId={authUserIds?.tenantId} />
+      <StaffCreateBulkImportDialog
+        open={open}
+        onClose={handleCloseDialog}
+        tenantId={authUserIds?.tenantId}
+      />
     </>
   );
 }
