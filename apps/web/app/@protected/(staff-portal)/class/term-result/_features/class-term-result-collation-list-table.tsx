@@ -161,6 +161,9 @@ export function ClassTermResultCollationListTable({}: Props) {
       {
         header: "Subjects Offered",
         accessorKey: "subjectCountOffered",
+        cell: ({ row }) => (
+          <p>{row?.original?.student?._count?.subjectsRegistered}</p>
+        ),
       },
       {
         header: "Total Score",
@@ -212,7 +215,7 @@ export function ClassTermResultCollationListTable({}: Props) {
               </Button>
               <Button
                 variant={variant}
-                className="w-[230px] line-clamp-1"
+                className="w-[230px]"
                 size="sm"
                 onClick={() => handleRowSubmit(index, student?.id)}
                 loading={isLoadingThisRow}

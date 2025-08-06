@@ -319,6 +319,21 @@ export interface StudentTermResultType {
   student: StudentType;
   averageScore: number;
   classDivisionId: number;
-  subjectCountOffered: number;
+  subjectCountGraded: number;
+}
+
+export interface StudentCalendarResultType {
+  id: number;
+  calendarId: number;
+  classId: number;
+  tenantId: number;
+  studentId: number;
+  createdAt: string;
+  updatedAt: string;
+  totalScore: number;
+  finalized: boolean;
+  student: StudentType;
+  averageScore: number;
+  classDivisionId: number;
   subjectCountGraded: number;
 }

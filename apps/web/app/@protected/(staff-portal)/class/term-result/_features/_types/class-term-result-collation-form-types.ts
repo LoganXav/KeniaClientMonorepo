@@ -4,3 +4,10 @@ import { classTermResultCollationFormSchema } from "../_schema/class-term-result
 export type ClassTermResultCollationFormType = z.infer<
   typeof classTermResultCollationFormSchema
 >;
+
+export interface StudentTermResultUpdatePayload {
+  finalized: boolean;
+  classId: number;
+  calendarId: number;
+  termId: number;
+}

@@ -7,6 +7,7 @@ export const QueryTagEnums = {
   STUDENT: "student",
   STUDENT_GRADING: "student-grading",
   STUDENT_TERM_RESULT: "student-term-result",
+  STUDENT_CALENDAR_RESULT: "student-calendar-result",
 
   GUARDIAN: "guardian",
 
