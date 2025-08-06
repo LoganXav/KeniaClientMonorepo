@@ -26,7 +26,6 @@ type Props = {};
 
 export function ClassCalendarResultCollationListTable({}: Props) {
   const { authUserIds } = useAuthUser();
-  const [termId, setTermId] = React.useState(0);
   const [classId, setClassId] = React.useState(0);
   const [calendarId, setCalendarId] = React.useState(0);
   const [classDivisionId, setClassDivisionId] = React.useState(0);
@@ -67,7 +66,7 @@ export function ClassCalendarResultCollationListTable({}: Props) {
         finalized: !studentCalendarResult?.finalized,
         classId: Number(classId),
         calendarId: Number(calendarId),
-        termId: Number(termId),
+        classDivisionId: Number(classDivisionId),
       };
       setSubmittingId(studentId);
 
@@ -90,7 +89,6 @@ export function ClassCalendarResultCollationListTable({}: Props) {
       studentCalendarResultList,
       classId,
       calendarId,
-      termId,
       setSubmittingId,
       studentCalendarResultUpdate,
       studentCalendarResultListQuery?.refetch,
@@ -201,26 +199,9 @@ export function ClassCalendarResultCollationListTable({}: Props) {
           </Select>
 
           <Select
-            value={String(termId || "")}
-            onValueChange={(value) => setTermId(Number(value))}
-            disabled={!calendarId}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Term" />
-            </SelectTrigger>
-            <SelectContent>
-              {gradingTemplate?.termOptions?.map((termOption, idx) => (
-                <SelectItem key={idx} value={String(termOption?.id)}>
-                  {termOption?.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select
             value={String(classId || "")}
             onValueChange={(value) => setClassId(Number(value))}
-            disabled={!termId}
+            disabled={!calendarId}
           >
             <SelectTrigger>
               <SelectValue placeholder="Class" />

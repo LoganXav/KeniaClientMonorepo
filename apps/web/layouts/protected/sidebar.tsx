@@ -5,8 +5,26 @@ import { usePathname } from "next/navigation";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { usePermissions } from "@/providers/permission-provider";
 // import { PERMISSIONS } from "@/constants/permissions/permission-constants";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, Typography } from "@repo/ui";
-import { Home, Users, User, Building2, Settings, Sliders, FileText, Shield, Building, BookType, Workflow } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  Typography,
+} from "@repo/ui";
+import {
+  Home,
+  Users,
+  User,
+  Building2,
+  Settings,
+  Sliders,
+  FileText,
+  Shield,
+  Building,
+  BookType,
+  Workflow,
+} from "lucide-react";
 
 export default function ProtectedSidebar() {
   const pathname = usePathname();
@@ -107,9 +125,13 @@ export default function ProtectedSidebar() {
 
   const getBaseSegment = (path: string) => path.split("/")[1]; // returns "subject" from "/subject/list"
 
-  const isActiveRoute = (path: string) => getBaseSegment(pathname) === getBaseSegment(path);
+  const isActiveRoute = (path: string) =>
+    getBaseSegment(pathname) === getBaseSegment(path);
 
-  const isActiveSubRoute = (subRoutes: Record<string, any>[]) => subRoutes?.some((subRoute) => getBaseSegment(pathname) === getBaseSegment(subRoute.path));
+  const isActiveSubRoute = (subRoutes: Record<string, any>[]) =>
+    subRoutes?.some(
+      (subRoute) => getBaseSegment(pathname) === getBaseSegment(subRoute.path),
+    );
 
   return (
     <nav className="w-[250px] px-2 pb-20 fixed overflow-scroll h-screen border-r border-border bg-card">
@@ -124,32 +146,62 @@ export default function ProtectedSidebar() {
 
           return (
             <div key={groupIndex}>
-              <Typography size="small" className="font-heading uppercase pb-2 pl-2">
+              <Typography
+                size="small"
+                className="font-heading uppercase pb-2 pl-2"
+              >
                 {group.header}
               </Typography>
 
               {group.routes.map((route, routeIndex) => {
-                if (route.permissions && !hasAllPermissions(route.permissions)) {
+                if (
+                  route.permissions &&
+                  !hasAllPermissions(route.permissions)
+                ) {
                   return null;
                 }
 
                 return route.subRoutes ? (
-                  <Accordion type="single" collapsible className="w-full" key={routeIndex}>
-                    <AccordionItem className="border-0" value={`item-${groupIndex}-${routeIndex}`}>
-                      <AccordionTrigger className={`w-full px-4 py-3 rounded-sm ${isActiveRoute(route.path) || isActiveSubRoute(route.subRoutes) ? "bg-black/5" : "hover:bg-accent"}`}>
+                  <Accordion
+                    type="single"
+                    collapsible
+                    className="w-full"
+                    key={routeIndex}
+                  >
+                    <AccordionItem
+                      className="border-0"
+                      value={`item-${groupIndex}-${routeIndex}`}
+                    >
+                      <AccordionTrigger
+                        className={`w-full px-4 py-3 rounded-sm ${isActiveRoute(route.path) || isActiveSubRoute(route.subRoutes) ? "bg-black/5" : "hover:bg-accent"}`}
+                      >
                         <div className="flex items-center gap-2">
-                          {route.icon && <route.icon strokeWidth={1} size={16} />}
+                          {route.icon && (
+                            <route.icon strokeWidth={1} size={16} />
+                          )}
                           <Typography>{route.name}</Typography>
                         </div>
                       </AccordionTrigger>
 
                       {route.subRoutes
-                        .filter((subRoute) => (subRoute.permissions ? hasAllPermissions(subRoute.permissions) : true))
+                        .filter((subRoute) =>
+                          subRoute.permissions
+                            ? hasAllPermissions(subRoute.permissions)
+                            : true,
+                        )
                         .map((subRoute, subRouteIndex) => (
-                          <Link className="w-full" key={subRouteIndex} href={subRoute.path}>
-                            <AccordionContent className={`w-auto px-4 py-3 rounded-sm ${isActiveRoute(subRoute.path) ? "bg-black/10 border-foreground" : "hover:bg-accent"}`}>
+                          <Link
+                            className="w-full"
+                            key={subRouteIndex}
+                            href={subRoute.path}
+                          >
+                            <AccordionContent
+                              className={`w-auto px-4 py-3 rounded-sm ${isActiveRoute(subRoute.path) ? "bg-black/10 border-foreground" : "hover:bg-accent"}`}
+                            >
                               <div className="flex items-center gap-2">
-                                {subRoute.icon && <subRoute.icon strokeWidth={1} size={16} />}
+                                {subRoute.icon && (
+                                  <subRoute.icon strokeWidth={1} size={16} />
+                                )}
                                 <Typography>{subRoute.name}</Typography>
                               </div>
                             </AccordionContent>
@@ -159,7 +211,9 @@ export default function ProtectedSidebar() {
                   </Accordion>
                 ) : (
                   <Link href={route.path} key={routeIndex}>
-                    <div className={`w-full px-4 py-3 rounded-sm ${isActiveRoute(route.path) ? "text-foreground bg-black/10 border-foreground" : "hover:bg-accent"}`}>
+                    <div
+                      className={`w-full px-4 py-3 rounded-sm ${isActiveRoute(route.path) ? "text-foreground bg-black/10 border-foreground" : "hover:bg-accent"}`}
+                    >
                       <div className="flex items-center gap-2">
                         {route.icon && <route.icon strokeWidth={1} size={16} />}
                         <Typography>{route.name}</Typography>
