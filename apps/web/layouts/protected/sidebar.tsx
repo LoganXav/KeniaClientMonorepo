@@ -10,6 +10,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  cn,
   Typography,
 } from "@repo/ui";
 import {
@@ -24,6 +25,8 @@ import {
   Building,
   BookType,
   Workflow,
+  Dot,
+  EarthLock,
 } from "lucide-react";
 
 export default function ProtectedSidebar() {
@@ -52,12 +55,12 @@ export default function ProtectedSidebar() {
             {
               name: "Staff",
               path: RouteEnums.STAFF,
-              icon: Users,
+              icon: Dot,
             },
             {
               name: "Students",
               path: RouteEnums.STUDENT,
-              icon: User,
+              icon: Dot,
             },
           ],
         },
@@ -69,12 +72,12 @@ export default function ProtectedSidebar() {
             {
               name: "Classes",
               path: RouteEnums.CLASS,
-              icon: Building,
+              icon: Dot,
             },
             {
               name: "Subjects",
               path: RouteEnums.SUBJECT_LIST,
-              icon: BookType,
+              icon: Dot,
             },
           ],
         },
@@ -104,18 +107,18 @@ export default function ProtectedSidebar() {
             {
               name: "General Settings",
               path: "/admin/settings/general",
-              icon: Sliders,
+              icon: Dot,
               permissions: ["PERMISSIONS.SETTINGS_GENERAL"],
             },
             {
               name: "System Logs",
               path: RouteEnums.LOGS,
-              icon: FileText,
+              icon: Dot,
             },
             {
               name: "Permissions",
               path: RouteEnums.ROLES_AND_PERMISSIONS,
-              icon: Shield,
+              icon: Dot,
             },
           ],
         },
@@ -135,8 +138,13 @@ export default function ProtectedSidebar() {
 
   return (
     <nav className="w-[250px] px-2 pb-20 fixed overflow-scroll h-screen border-r border-border bg-card">
-      <div className="border border-border h-[70px] flex items-center justify-center">
-        <div className="font-heading">KENIA .</div>
+      <div className="h-[70px] flex items-center justify-center">
+        <div className="flex items-center gap-2">
+          <Typography size={"h5"} className="font-heading">
+            KENIA
+          </Typography>
+          <EarthLock strokeWidth={1.25} size={20} />
+        </div>
       </div>
       <div className="mt-4 flex flex-col gap-4 overflow-y-auto">
         {routeGroups.map((group, groupIndex) => {
@@ -161,6 +169,10 @@ export default function ProtectedSidebar() {
                   return null;
                 }
 
+                const isActive = isActiveRoute(route.path);
+                const isSubActive =
+                  route.subRoutes && isActiveSubRoute(route.subRoutes);
+
                 return route.subRoutes ? (
                   <Accordion
                     type="single"
@@ -173,13 +185,32 @@ export default function ProtectedSidebar() {
                       value={`item-${groupIndex}-${routeIndex}`}
                     >
                       <AccordionTrigger
-                        className={`w-full px-4 py-3 rounded-sm ${isActiveRoute(route.path) || isActiveSubRoute(route.subRoutes) ? "bg-black/5" : "hover:bg-accent"}`}
+                        className={`group w-full px-4 py-3 rounded-sm ${
+                          isActive || isSubActive
+                            ? "bg-black/5"
+                            : "hover:bg-accent"
+                        }`}
+                        isActive={isActive || isSubActive}
                       >
                         <div className="flex items-center gap-2">
                           {route.icon && (
-                            <route.icon strokeWidth={1} size={16} />
+                            <route.icon
+                              strokeWidth={isActive || isSubActive ? 2 : 1}
+                              size={16}
+                              className={cn(
+                                "group-hover:stroke-2 group-hover:text-primary transition-all",
+                                isActive || (isSubActive && "text-primary"),
+                              )}
+                            />
                           )}
-                          <Typography>{route.name}</Typography>
+                          <Typography
+                            className={cn(
+                              "group-hover:text-primary",
+                              isSubActive && "text-primary",
+                            )}
+                          >
+                            {route.name}
+                          </Typography>
                         </div>
                       </AccordionTrigger>
 
@@ -189,34 +220,76 @@ export default function ProtectedSidebar() {
                             ? hasAllPermissions(subRoute.permissions)
                             : true,
                         )
-                        .map((subRoute, subRouteIndex) => (
-                          <Link
-                            className="w-full"
-                            key={subRouteIndex}
-                            href={subRoute.path}
-                          >
-                            <AccordionContent
-                              className={`w-auto px-4 py-3 rounded-sm ${isActiveRoute(subRoute.path) ? "bg-black/10 border-foreground" : "hover:bg-accent"}`}
+                        .map((subRoute, subRouteIndex) => {
+                          const isSubRouteActive = isActiveRoute(subRoute.path);
+                          return (
+                            <Link
+                              className="w-full"
+                              key={subRouteIndex}
+                              href={subRoute.path}
                             >
-                              <div className="flex items-center gap-2">
-                                {subRoute.icon && (
-                                  <subRoute.icon strokeWidth={1} size={16} />
-                                )}
-                                <Typography>{subRoute.name}</Typography>
-                              </div>
-                            </AccordionContent>
-                          </Link>
-                        ))}
+                              <AccordionContent
+                                className={`group w-auto px-4 py-3 rounded-sm ${
+                                  isSubRouteActive
+                                    ? "bg-black/10 border-foreground"
+                                    : "hover:bg-accent"
+                                }`}
+                              >
+                                <div className="flex items-center gap-2">
+                                  {subRoute.icon && (
+                                    <subRoute.icon
+                                      strokeWidth={isSubRouteActive ? 2 : 1}
+                                      size={28}
+                                      className={cn(
+                                        "group-hover:stroke-2 group-hover:text-primary transition-all",
+                                        isActive ||
+                                          (isSubActive && "text-primary"),
+                                      )}
+                                    />
+                                  )}
+                                  <Typography
+                                    className={cn(
+                                      "transition-all group-hover:text-primary",
+                                      isSubRouteActive && "text-primary",
+                                    )}
+                                  >
+                                    {subRoute.name}
+                                  </Typography>
+                                </div>
+                              </AccordionContent>
+                            </Link>
+                          );
+                        })}
                     </AccordionItem>
                   </Accordion>
                 ) : (
                   <Link href={route.path} key={routeIndex}>
                     <div
-                      className={`w-full px-4 py-3 rounded-sm ${isActiveRoute(route.path) ? "text-foreground bg-black/10 border-foreground" : "hover:bg-accent"}`}
+                      className={`group w-full px-4 py-3 rounded-sm ${
+                        isActive
+                          ? "text-foreground bg-black/10 border-foreground"
+                          : "hover:bg-accent"
+                      }`}
                     >
                       <div className="flex items-center gap-2">
-                        {route.icon && <route.icon strokeWidth={1} size={16} />}
-                        <Typography>{route.name}</Typography>
+                        {route.icon && (
+                          <route.icon
+                            strokeWidth={isActive ? 2 : 1}
+                            size={16}
+                            className={cn(
+                              "group-hover:stroke-2 group-hover:text-primary transition-all",
+                              isActive && "text-primary",
+                            )}
+                          />
+                        )}
+                        <Typography
+                          className={cn(
+                            "transition-all group-hover:text-primary",
+                            isActive && "text-primary",
+                          )}
+                        >
+                          {route.name}
+                        </Typography>
                       </div>
                     </div>
                   </Link>

@@ -12,11 +12,28 @@ import { PermissionRestrictor } from "@/components/permission-restrictor";
 import { PERMISSIONS } from "@/constants/permissions/permission-constants";
 import { SubjectGradingCreateDialog } from "./subject-grading-create-dialog";
 import { SubjectBulkGradingCreateDialog } from "./subject-bulk-grading-create-dialog";
-import { Button, Card, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
+import {
+  Button,
+  Card,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@repo/ui";
 import { useGetSubjectGradingStructureQuery } from "@/apis/core-subject-api/subject-grading-structure";
-import { useGetSubjectGradingListQuery, useGetSubjectGradingTemplateQuery } from "@/apis/core-subject-api/subject-grading";
+import {
+  useGetSubjectGradingListQuery,
+  useGetSubjectGradingTemplateQuery,
+} from "@/apis/core-subject-api/subject-grading";
 
-export function SubjectDetailsGradingTab({ subjectId, classId }: { subjectId: number; classId?: number }) {
+export function SubjectDetailsGradingTab({
+  subjectId,
+  classId,
+}: {
+  subjectId: number;
+  classId?: number;
+}) {
   const { authUserIds } = useAuthUser();
   const [open, toggle] = useToggle(false);
   const [bulkOpen, bulkToggle] = useToggle(false);
@@ -24,27 +41,74 @@ export function SubjectDetailsGradingTab({ subjectId, classId }: { subjectId: nu
   const [calendarId, setCalendarId] = React.useState(0);
   const [classDivisionId, setClassDivisionId] = React.useState(0);
 
-  const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(React.useMemo(() => ({ params: { calendarId, classId, tenantId: authUserIds?.tenantId, subjectId } }), [calendarId, classId, authUserIds?.tenantId, subjectId]));
+  const gradingTemplateQueryResult = useGetSubjectGradingTemplateQuery(
+    React.useMemo(
+      () => ({
+        params: {
+          calendarId,
+          classId,
+          tenantId: authUserIds?.tenantId,
+          subjectId,
+        },
+      }),
+      [calendarId, classId, authUserIds?.tenantId, subjectId],
+    ),
+  );
   const gradingTemplate = gradingTemplateQueryResult?.data?.data;
 
-  const gradingQueryResult = useGetSubjectGradingListQuery(React.useMemo(() => ({ path: {}, params: { calendarId, termId, subjectId, classId, classDivisionId, tenantId: authUserIds?.tenantId } }), [calendarId, termId, subjectId, classId, classDivisionId, authUserIds?.tenantId]));
+  const gradingQueryResult = useGetSubjectGradingListQuery(
+    React.useMemo(
+      () => ({
+        path: {},
+        params: {
+          calendarId,
+          termId,
+          subjectId,
+          classId,
+          classDivisionId,
+          tenantId: authUserIds?.tenantId,
+        },
+      }),
+      [
+        calendarId,
+        termId,
+        subjectId,
+        classId,
+        classDivisionId,
+        authUserIds?.tenantId,
+      ],
+    ),
+  );
   const grading = gradingQueryResult?.data?.data;
 
-  const subjectGradingStructureQueryResult = useGetSubjectGradingStructureQuery({ path: {}, params: { tenantId: authUserIds?.tenantId, subjectId } });
+  const subjectGradingStructureQueryResult = useGetSubjectGradingStructureQuery(
+    { path: {}, params: { tenantId: authUserIds?.tenantId, subjectId } },
+  );
 
   const dynamicColumns = React.useMemo(() => {
     if (!grading || grading.length === 0) return [];
 
-    const assessmentNames = Array.from(new Set(grading.flatMap((item) => item.continuousAssessmentScores?.map((score) => score.name) ?? [])));
+    const assessmentNames = Array.from(
+      new Set(
+        grading.flatMap(
+          (item) =>
+            item.continuousAssessmentScores?.map((score) => score.name) ?? [],
+        ),
+      ),
+    );
 
-    const caColumns: ColumnDef<any, unknown>[] = assessmentNames.map((name) => ({
-      header: name,
-      accessorKey: `ca-${name}`,
-      cell: ({ row }) => {
-        const scoreObj = row.original.continuousAssessmentScores?.find((s: ContinuousAssessmentScore) => s.name === name);
-        return <p>{scoreObj?.score ?? "-"}</p>;
-      },
-    }));
+    const caColumns: ColumnDef<any, unknown>[] = assessmentNames.map(
+      (name) => ({
+        header: name,
+        accessorKey: `ca-${name}`,
+        cell: ({ row }) => {
+          const scoreObj = row.original.continuousAssessmentScores?.find(
+            (s: ContinuousAssessmentScore) => s.name === name,
+          );
+          return <p>{scoreObj?.score ?? "-"}</p>;
+        },
+      }),
+    );
 
     return caColumns;
   }, [grading]);
@@ -57,7 +121,8 @@ export function SubjectDetailsGradingTab({ subjectId, classId }: { subjectId: nu
         cell: ({ row }) => {
           return (
             <p>
-              {row?.original?.student?.user?.lastName} {row?.original?.student?.user?.firstName}
+              {row?.original?.student?.user?.lastName}{" "}
+              {row?.original?.student?.user?.firstName}
             </p>
           );
         },
@@ -87,7 +152,7 @@ export function SubjectDetailsGradingTab({ subjectId, classId }: { subjectId: nu
         accessorKey: "remark",
       },
     ],
-    [dynamicColumns]
+    [dynamicColumns],
   );
 
   const handleOpenDialog = () => {
@@ -116,9 +181,13 @@ export function SubjectDetailsGradingTab({ subjectId, classId }: { subjectId: nu
 
   return (
     <>
-      <div className="flex w-full flex-col md:flex-row gap-4 pb-4 mt-8">
+      <div className="flex w-full flex-col md:flex-row gap-4 pb-4">
         <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4 w-full md:w-auto">
-          <Select value={String(calendarId || "")} onValueChange={(value) => setCalendarId(Number(value))} disabled={gradingTemplateQueryResult?.isLoading}>
+          <Select
+            value={String(calendarId || "")}
+            onValueChange={(value) => setCalendarId(Number(value))}
+            disabled={gradingTemplateQueryResult?.isLoading}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Session" />
             </SelectTrigger>
@@ -131,7 +200,11 @@ export function SubjectDetailsGradingTab({ subjectId, classId }: { subjectId: nu
             </SelectContent>
           </Select>
 
-          <Select value={String(termId || "")} onValueChange={(value) => setTermId(Number(value))} disabled={!calendarId}>
+          <Select
+            value={String(termId || "")}
+            onValueChange={(value) => setTermId(Number(value))}
+            disabled={!calendarId}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Term" />
             </SelectTrigger>
@@ -156,24 +229,36 @@ export function SubjectDetailsGradingTab({ subjectId, classId }: { subjectId: nu
               ))}
             </SelectContent>
           </Select>
-          <Select value={String(classDivisionId || "")} onValueChange={(value) => setClassDivisionId(Number(value))} disabled={!classId}>
+          <Select
+            value={String(classDivisionId || "")}
+            onValueChange={(value) => setClassDivisionId(Number(value))}
+            disabled={!classId}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Class Division" />
             </SelectTrigger>
             <SelectContent>
-              {gradingTemplate?.classDivisionOptions?.map((classDivisionOption, idx) => (
-                <SelectItem key={idx} value={String(classDivisionOption?.id)}>
-                  {classDivisionOption?.name}
-                </SelectItem>
-              ))}
+              {gradingTemplate?.classDivisionOptions?.map(
+                (classDivisionOption, idx) => (
+                  <SelectItem key={idx} value={String(classDivisionOption?.id)}>
+                    {classDivisionOption?.name}
+                  </SelectItem>
+                ),
+              )}
             </SelectContent>
           </Select>
         </div>
         <div className="hidden md:flex md:flex-1" />
 
-        <PermissionRestrictor requiredPermissions={[PERMISSIONS.SUBJECT_GRADE.CREATE]}>
+        <PermissionRestrictor
+          requiredPermissions={[PERMISSIONS.SUBJECT_GRADE.CREATE]}
+        >
           <div className="grid md:grid-cols-2 gap-4">
-            <Button variant={"outline"} className="w-full md:w-max" onClick={handleOpenBulkDialog}>
+            <Button
+              variant={"outline"}
+              className="w-full md:w-max"
+              onClick={handleOpenBulkDialog}
+            >
               Bulk Submit Grades <FileCheck2 size={18} strokeWidth={1} />
             </Button>
             <Button className="w-full" onClick={handleOpenDialog}>
@@ -182,14 +267,36 @@ export function SubjectDetailsGradingTab({ subjectId, classId }: { subjectId: nu
           </div>
         </PermissionRestrictor>
       </div>
-      <Card className="overflow-hidden mt-8">
-        <LoadingContent loading={gradingQueryResult?.isLoading} data={gradingQueryResult?.data} error={gradingQueryResult?.error} retry={gradingQueryResult?.refetch} shouldLoad={gradingQueryResult?.isFetched || gradingQueryResult?.isError}>
+      <Card className="overflow-hidden">
+        <LoadingContent
+          loading={gradingQueryResult?.isLoading}
+          data={gradingQueryResult?.data}
+          error={gradingQueryResult?.error}
+          retry={gradingQueryResult?.refetch}
+          shouldLoad={
+            gradingQueryResult?.isFetched || gradingQueryResult?.isError
+          }
+        >
           <DataTable data={grading || []} columns={columns} />
         </LoadingContent>
       </Card>
 
-      <SubjectGradingCreateDialog open={open} onClose={handleCloseDialog} subjectId={subjectId} classId={classId} subjectGradingStructureQueryResult={subjectGradingStructureQueryResult} tenantId={authUserIds?.tenantId} />
-      <SubjectBulkGradingCreateDialog open={bulkOpen} onClose={handleCloseBulkDialog} subjectId={subjectId} classId={classId} subjectGradingStructureQueryResult={subjectGradingStructureQueryResult} tenantId={authUserIds?.tenantId} />
+      <SubjectGradingCreateDialog
+        open={open}
+        onClose={handleCloseDialog}
+        subjectId={subjectId}
+        classId={classId}
+        subjectGradingStructureQueryResult={subjectGradingStructureQueryResult}
+        tenantId={authUserIds?.tenantId}
+      />
+      <SubjectBulkGradingCreateDialog
+        open={bulkOpen}
+        onClose={handleCloseBulkDialog}
+        subjectId={subjectId}
+        classId={classId}
+        subjectGradingStructureQueryResult={subjectGradingStructureQueryResult}
+        tenantId={authUserIds?.tenantId}
+      />
     </>
   );
 }

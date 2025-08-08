@@ -3,7 +3,16 @@
 import React, { useCallback } from "react";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Button, Typography } from "@repo/ui";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  Button,
+  Typography,
+} from "@repo/ui";
 
 type Page = { title: string; path?: string };
 type Props = {
@@ -16,7 +25,12 @@ export function PageBreadcrumbs({ pages, fallbackPath = "/" }: Props) {
 
   const handleBack = useCallback(() => {
     // Check for SPA history index
-    if (typeof window !== "undefined" && window.history.state && typeof window.history.state.idx === "number" && window.history.state.idx > 0) {
+    if (
+      typeof window !== "undefined" &&
+      window.history.state &&
+      typeof window.history.state.idx === "number" &&
+      window.history.state.idx > 0
+    ) {
       router.back();
     } else {
       // No meaningful history: fall back to previous breadcrumb path if available
@@ -34,7 +48,11 @@ export function PageBreadcrumbs({ pages, fallbackPath = "/" }: Props) {
 
   return (
     <div className="flex items-center gap-4">
-      <Button variant={"outline"} className="border-border bg-card" onClick={handleBack}>
+      <Button
+        variant={"outline"}
+        className="border-border bg-card"
+        onClick={handleBack}
+      >
         <ChevronLeft strokeWidth={1} />
       </Button>
       <div>
@@ -47,7 +65,7 @@ export function PageBreadcrumbs({ pages, fallbackPath = "/" }: Props) {
               <div key={idx} className="flex items-center space-x-2">
                 <BreadcrumbItem>
                   {page.path ? (
-                    <BreadcrumbLink href={page.path} className="underline">
+                    <BreadcrumbLink href={page.path} className="">
                       {page.title}
                     </BreadcrumbLink>
                   ) : (
