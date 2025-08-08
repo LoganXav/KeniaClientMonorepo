@@ -140,7 +140,7 @@ export default function ProtectedSidebar() {
     <nav className="w-[250px] px-2 pb-20 fixed overflow-scroll h-screen border-r border-border bg-card">
       <div className="h-[70px] flex items-center justify-center">
         <div className="flex items-center gap-2">
-          <Typography size={"h5"} className="font-heading">
+          <Typography size={"h5"} className="" weight={"bold"}>
             KENIA
           </Typography>
           <EarthLock strokeWidth={1.25} size={20} />
@@ -185,11 +185,10 @@ export default function ProtectedSidebar() {
                       value={`item-${groupIndex}-${routeIndex}`}
                     >
                       <AccordionTrigger
-                        className={`group w-full px-4 py-3 rounded-sm ${
-                          isActive || isSubActive
-                            ? "bg-black/5"
-                            : "hover:bg-accent"
-                        }`}
+                        className={cn(
+                          "group w-full px-4 py-3 rounded-sm hover:bg-accent",
+                          (isActive || isSubActive) && "bg-accent",
+                        )}
                         isActive={isActive || isSubActive}
                       >
                         <div className="flex items-center gap-2">
@@ -198,15 +197,16 @@ export default function ProtectedSidebar() {
                               strokeWidth={isActive || isSubActive ? 2 : 1}
                               size={16}
                               className={cn(
-                                "group-hover:stroke-2 group-hover:text-primary transition-all",
-                                isActive || (isSubActive && "text-primary"),
+                                "group-hover:stroke-2 group-hover:text-accent-foreground transition-all",
+                                isActive ||
+                                  (isSubActive && "text-accent-foreground"),
                               )}
                             />
                           )}
                           <Typography
                             className={cn(
-                              "group-hover:text-primary",
-                              isSubActive && "text-primary",
+                              "group-hover:text-accent-foreground",
+                              isSubActive && "text-accent-foreground",
                             )}
                           >
                             {route.name}
@@ -229,11 +229,12 @@ export default function ProtectedSidebar() {
                               href={subRoute.path}
                             >
                               <AccordionContent
-                                className={`group w-auto px-4 py-3 rounded-sm ${
+                                className={cn(
+                                  "group w-auto px-4 py-3 rounded-sm",
                                   isSubRouteActive
-                                    ? "bg-black/10 border-foreground"
-                                    : "hover:bg-accent"
-                                }`}
+                                    ? "bg-accent border-foreground"
+                                    : "hover:bg-accent",
+                                )}
                               >
                                 <div className="flex items-center gap-2">
                                   {subRoute.icon && (
@@ -241,16 +242,18 @@ export default function ProtectedSidebar() {
                                       strokeWidth={isSubRouteActive ? 2 : 1}
                                       size={28}
                                       className={cn(
-                                        "group-hover:stroke-2 group-hover:text-primary transition-all",
+                                        "group-hover:stroke-2 group-hover:text-accent-foreground transition-all",
                                         isActive ||
-                                          (isSubActive && "text-primary"),
+                                          (isSubActive &&
+                                            "text-accent-foreground"),
                                       )}
                                     />
                                   )}
                                   <Typography
                                     className={cn(
-                                      "transition-all group-hover:text-primary",
-                                      isSubRouteActive && "text-primary",
+                                      "transition-all group-hover:text-accent-foreground",
+                                      isSubRouteActive &&
+                                        "text-accent-foreground",
                                     )}
                                   >
                                     {subRoute.name}
@@ -265,11 +268,11 @@ export default function ProtectedSidebar() {
                 ) : (
                   <Link href={route.path} key={routeIndex}>
                     <div
-                      className={`group w-full px-4 py-3 rounded-sm ${
-                        isActive
-                          ? "text-foreground bg-black/10 border-foreground"
-                          : "hover:bg-accent"
-                      }`}
+                      className={cn(
+                        "group w-full px-4 py-3 rounded-sm hover:bg-accent",
+                        isActive &&
+                          "text-foreground bg-accent border-foreground",
+                      )}
                     >
                       <div className="flex items-center gap-2">
                         {route.icon && (
@@ -277,15 +280,15 @@ export default function ProtectedSidebar() {
                             strokeWidth={isActive ? 2 : 1}
                             size={16}
                             className={cn(
-                              "group-hover:stroke-2 group-hover:text-primary transition-all",
-                              isActive && "text-primary",
+                              "group-hover:stroke-2 group-hover:text-accent-foreground transition-all",
+                              isActive && "text-accent-foreground",
                             )}
                           />
                         )}
                         <Typography
                           className={cn(
-                            "transition-all group-hover:text-primary",
-                            isActive && "text-primary",
+                            "transition-all group-hover:text-accent-foreground",
+                            isActive && "text-accent-foreground",
                           )}
                         >
                           {route.name}
