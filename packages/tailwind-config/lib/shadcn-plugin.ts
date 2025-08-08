@@ -17,7 +17,7 @@ export const shadcnPlugin = plugin(
         "--border": "0 0% 90%",
         "--border-foreground": "0, 0%, 100%, 0.059",
         "--input": "214.3 31.8% 91.4%",
-        "--primary": "222.2 47.4% 11.2%",
+        "--primary": "165 100% 13%",
         "--primary-foreground": "210 40% 98%",
         "--secondary": "210 40% 96.1%",
         "--secondary-foreground": "222.2 47.4% 11.2%",
@@ -155,5 +155,5 @@ export const shadcnPlugin = plugin(
         },
       },
     },
-  }
+  },
 );

@@ -10,7 +10,7 @@ export default function ProtectedLayout({ children }: React.PropsWithChildren) {
       <PermissionProvider>
         <div className="relative flex">
           <ProtectedSidebar />
-          <div className="relative w-full bg-background ml-[0px] lg:ml-[250px] flex-1">
+          <div className="relative w-full bg-card ml-[0px] lg:ml-[250px] flex-1">
             <ProtectedNavbar />
             <main className="container min-h-[calc(100vh-70px)]">
               <div className="mt-4">

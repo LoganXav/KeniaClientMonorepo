@@ -17,15 +17,15 @@ const fontHeading = localFont({
 });
 
 const fontSans = localFont({
-  src: "../assets/fonts/Nunito-Regular.ttf",
+  src: "../assets/fonts/MonaSans-Regular.ttf",
   variable: "--font-sans",
 });
 const fontSansSemiBold = localFont({
-  src: "../assets/fonts/Nunito-SemiBold.ttf",
+  src: "../assets/fonts/MonaSans-SemiBold.ttf",
   variable: "--font-sans-semibold",
 });
 const fontSansMedium = localFont({
-  src: "../assets/fonts/Nunito-Medium.ttf",
+  src: "../assets/fonts/MonaSans-Medium.ttf",
   variable: "--font-sans-medium",
 });
 
@@ -46,11 +46,28 @@ export const viewport: Viewport = baseViewport;
  * Only the root layout can contain <html> and <body> tags.
  * @see https://nextjs.org/docs/app/api-reference/file-conventions/layout#root-layouts
  */
-export default function RootLayout({ public: publicPages, protected: protectedPages, children }: { children: React.ReactNode; public: React.ReactNode; protected: React.ReactNode }): JSX.Element {
+export default function RootLayout({
+  public: publicPages,
+  protected: protectedPages,
+  children,
+}: {
+  children: React.ReactNode;
+  public: React.ReactNode;
+  protected: React.ReactNode;
+}): JSX.Element {
   const authUser = getAuthUserServer();
 
   return (
-    <html lang="en" className={cn(fontSans.variable, fontHeading.variable, fontSansMedium.variable, fontSansSemiBold.variable)} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={cn(
+        fontSans.variable,
+        fontHeading.variable,
+        fontSansMedium.variable,
+        fontSansSemiBold.variable,
+      )}
+      suppressHydrationWarning
+    >
       <body>
         <QueryClientContextProvider>
           <ThemeProvider
@@ -63,7 +80,12 @@ export default function RootLayout({ public: publicPages, protected: protectedPa
               {children}
               {authUser ? protectedPages : publicPages}
             </BaseLayout>
-            <Toaster expand={true} visibleToasts={2} position="top-right" pauseWhenPageIsHidden />
+            <Toaster
+              expand={true}
+              visibleToasts={2}
+              position="top-right"
+              pauseWhenPageIsHidden
+            />
             <TailwindIndicator />
           </ThemeProvider>
         </QueryClientContextProvider>

@@ -44,25 +44,40 @@ function StaffMenu({}: Props) {
             url: RouteEnums.STAFF_ASSIGN,
             permissionNames: [PERMISSIONS.STAFF.UPDATE],
           },
-        ].map(({ label, desc, url, permissionNames }: { label: string; desc: string; url: string; permissionNames: string[] }, idx: number) => {
-          {
-            if (!hasAllPermissions(permissions, permissionNames)) {
-              return null;
+        ].map(
+          (
+            {
+              label,
+              desc,
+              url,
+              permissionNames,
+            }: {
+              label: string;
+              desc: string;
+              url: string;
+              permissionNames: string[];
+            },
+            idx: number,
+          ) => {
+            {
+              if (!hasAllPermissions(permissions, permissionNames)) {
+                return null;
+              }
             }
-          }
-          return (
-            <Link key={idx} href={url} className="block">
-              <Card className="rounded-lg border p-6 space-y-1 hover:border-foreground transition-border duration-100 h-36">
-                <Typography size="h4" className="font-heading line-clamp-1">
-                  {label}
-                </Typography>
-                <Typography color="muted" className="line-clamp-2">
-                  {desc}
-                </Typography>
-              </Card>
-            </Link>
-          );
-        })}
+            return (
+              <Link key={idx} href={url} className="block">
+                <Card className="rounded-lg border p-6 space-y-1 hover:border-primary transition-border duration-100 h-36">
+                  <Typography size="h4" className="font-heading line-clamp-1">
+                    {label}
+                  </Typography>
+                  <Typography color="muted" className="line-clamp-2">
+                    {desc}
+                  </Typography>
+                </Card>
+              </Link>
+            );
+          },
+        )}
       </div>
     </>
   );
