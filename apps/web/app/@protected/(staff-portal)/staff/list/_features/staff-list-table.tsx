@@ -29,7 +29,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Typography,
 } from "@repo/ui";
+import Image from "next/image";
 
 type Props = {};
 
@@ -55,10 +57,27 @@ export function StaffListTable({}: Props) {
         header: "Name",
         accessorKey: "name",
         cell: ({ row }: CellContext<any, unknown>) => (
-          <div className="flex space-x-2">
-            <p>
-              {row?.original?.user?.firstName} {row?.original?.user?.lastName}
-            </p>
+          <div className="flex items-center space-x-4">
+            <div className="relative w-12 h-12 border bg-primary rounded-full overflow-hidden flex items-center justify-center">
+              <Typography className="font-heading text-background">
+                {row?.original?.user?.firstName.charAt(0)}{" "}
+                {row?.original?.user?.lastName.charAt(0)}
+              </Typography>
+              {/* <Image */}
+              {/*   src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/backgrounds/login-security.svg" */}
+              {/*   alt="staff-image" */}
+              {/*   fill */}
+              {/*   className="object-cover rounded-full" */}
+              {/* /> */}
+            </div>
+            <div>
+              <p>
+                {row?.original?.user?.firstName} {row?.original?.user?.lastName}
+              </p>
+              <Typography color="muted">
+                {row?.original?.user?.email}
+              </Typography>
+            </div>
           </div>
         ),
       },
