@@ -30,16 +30,14 @@ export function DashboardLessons() {
       </div>
       <div className="space-y-2">
         {[1, 2, 3].map((id) => (
-          <>
-            <Card key={id} className="p-4 flex items-center justify-between">
-              <div>
-                <Typography>126</Typography>
-                <Typography size={"small"} color="muted">
-                  Total quiz
-                </Typography>
-              </div>
-            </Card>
-          </>
+          <Card key={id} className="p-4 flex items-center justify-between">
+            <div>
+              <Typography>126</Typography>
+              <Typography size={"small"} color="muted">
+                Total quiz
+              </Typography>
+            </div>
+          </Card>
         ))}
       </div>
     </Card>

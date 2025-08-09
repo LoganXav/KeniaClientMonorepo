@@ -173,7 +173,7 @@ export function DashboardScheduleCalendar({
 
     return (
       <div
-        key={event.id}
+        key={Number(event.id)}
         className="group flex items-center gap-3 p-3 hover:bg-accent rounded-lg cursor-pointer transition-colors"
         onClick={() => onEventClick?.(event)}
       >
