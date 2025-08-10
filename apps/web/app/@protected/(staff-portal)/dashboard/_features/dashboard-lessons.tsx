@@ -14,7 +14,9 @@ export function DashboardLessons() {
   return (
     <Card className="p-4 space-y-4">
       <div className="flex items-center justify-between">
-        <Typography weight="bold">Lessons</Typography>
+        <Typography size="small" className="uppercase font-heading">
+          Lessons
+        </Typography>
         <Select onValueChange={() => null} value={String("")}>
           <SelectTrigger className="w-auto h-auto leading-none">
             <SelectValue placeholder="Period" />

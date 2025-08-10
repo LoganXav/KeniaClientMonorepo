@@ -9,35 +9,8 @@ import { ThemeToggler } from "@/components/theme-tooggler";
 import { useGetAuthUserQuery } from "@/apis/core-user-api/user";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { clearAuthUserAction } from "@/helpers/server/auth-user-action";
-import {
-  Bell,
-  CircleAlert,
-  LoaderCircle,
-  Menu,
-  UserCircle,
-  X,
-} from "lucide-react";
-import {
-  Button,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  SearchInput,
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-  DialogTitle,
-  VisuallyHidden,
-  SheetTitle,
-  Typography,
-} from "@repo/ui";
+import { Bell, CircleAlert, LoaderCircle, Menu, UserCircle, X } from "lucide-react";
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger, SearchInput, Sheet, SheetContent, SheetTrigger, Tabs, TabsContent, TabsList, TabsTrigger, DialogTitle, VisuallyHidden, SheetTitle, Typography } from "@repo/ui";
 
 export default function ProtectedNavbar() {
   const router = useRouter();
@@ -76,11 +49,7 @@ export default function ProtectedNavbar() {
 
             <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
               <DropdownMenuTrigger asChild>
-                <Button
-                  className="rounded-lg border-none bg-transparent shadow-none"
-                  variant="outline"
-                  size="icon"
-                >
+                <Button className="rounded-lg border-none bg-transparent shadow-none" variant="outline" size="icon">
                   <Bell strokeWidth={1} />
                 </Button>
               </DropdownMenuTrigger>
@@ -88,21 +57,12 @@ export default function ProtectedNavbar() {
                 <div className="px-1 md:px-4 pt-4">
                   <DropdownMenuLabel className="flex justify-between items-center">
                     <p className="text-base">Notifications</p>
-                    <Button
-                      className="rounded-lg border-none bg-transparent shadow-none"
-                      variant="outline"
-                      size="icon"
-                      onClick={() => setIsOpen(false)}
-                    >
+                    <Button className="rounded-lg border-none bg-transparent shadow-none" variant="outline" size="icon" onClick={() => setIsOpen(false)}>
                       <X size={16} strokeWidth={1} />
                     </Button>
                   </DropdownMenuLabel>
 
-                  <Tabs
-                    value={notificationType}
-                    onValueChange={(value) => setNotificationType(value)}
-                    className="w-full space-y-8 py-6"
-                  >
+                  <Tabs value={notificationType} onValueChange={(value) => setNotificationType(value)} className="w-full space-y-8 py-6">
                     <TabsList className="grid grid-cols-2 h-9">
                       <TabsTrigger className="h-9 text-sm" value="all">
                         All
@@ -113,18 +73,12 @@ export default function ProtectedNavbar() {
                     </TabsList>
                     <TabsContent value="all">
                       <div className="border p-4 flex items-center space-x-2 rounded-md">
-                        <CircleAlert size={16} strokeWidth={1} />{" "}
-                        <p className="text-sm text-muted-foreground">
-                          You have no notifications.
-                        </p>
+                        <CircleAlert size={16} strokeWidth={1} /> <p className="text-sm text-muted-foreground">You have no notifications.</p>
                       </div>
                     </TabsContent>
                     <TabsContent value="unread">
                       <div className="border p-4 flex items-center space-x-2 rounded-md">
-                        <CircleAlert size={16} strokeWidth={1} />{" "}
-                        <p className="text-sm text-muted-foreground">
-                          You have no notifications.
-                        </p>
+                        <CircleAlert size={16} strokeWidth={1} /> <p className="text-sm text-muted-foreground">You have no notifications.</p>
                       </div>
                     </TabsContent>
                   </Tabs>
@@ -134,10 +88,7 @@ export default function ProtectedNavbar() {
                   <div className="flex-1" />
                   <div className="flex items-center gap-4">
                     <p className="border-foreground pl-4 text-xs">
-                      <Link
-                        href={"#"}
-                        className="font-semibold text-muted-foreground transition-colors hover:text-link underline pl-1"
-                      >
+                      <Link href={"#"} className="font-semibold text-muted-foreground transition-colors hover:text-link underline pl-1">
                         Go to settings.
                       </Link>
                     </p>
@@ -151,28 +102,31 @@ export default function ProtectedNavbar() {
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  className="rounded-lg border-none bg-transparent shadow-none"
-                  variant="outline"
-                  size="icon"
-                >
-                  <UserCircle strokeWidth={1} />
-                </Button>
+                <div className="border-l pl-8 flex items-start gap-2 cursor-pointer">
+                  <div>
+                    {/* <UserCircle strokeWidth={1} /> */}
+                    <Typography>
+                      {authUser?.lastName} {authUser?.firstName}
+                    </Typography>
+                    <Typography size={"small"} color={"muted"}>
+                      {authUser?.staff?.jobTitle}
+                    </Typography>
+                  </div>
+                  <div className="relative w-10 h-10 border bg-primary rounded-full overflow-hidden flex items-center justify-center">
+                    <Typography className="font-heading text-background">
+                      {authUser?.firstName.charAt(0)} {authUser?.lastName.charAt(0)}
+                    </Typography>
+                  </div>
+                </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>
+                {/* <DropdownMenuLabel>
                   {authUserQueryResult?.isLoading ? (
-                    <LoaderCircle
-                      className="animate-spin duration-300 mx-auto"
-                      size={15}
-                    />
+                    <LoaderCircle className="animate-spin duration-300 mx-auto" size={15} />
                   ) : (
                     <div className="grid">
                       <Typography>
-                        {authUser?.firstName}{" "}
-                        <span className="font-sans-semibold">
-                          {authUser?.lastName}
-                        </span>
+                        <span className="font-sans-semibold">{authUser?.lastName}</span> {authUser?.firstName}
                       </Typography>
                       <Typography color={"muted"} size={"small"}>
                         {authUser?.email}
@@ -180,11 +134,8 @@ export default function ProtectedNavbar() {
                     </div>
                   )}
                 </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  disabled={authUserQueryResult?.isLoading}
-                  onClick={handleSignOut}
-                >
+                <DropdownMenuSeparator /> */}
+                <DropdownMenuItem disabled={authUserQueryResult?.isLoading} onClick={handleSignOut}>
                   Log out
                 </DropdownMenuItem>
               </DropdownMenuContent>
