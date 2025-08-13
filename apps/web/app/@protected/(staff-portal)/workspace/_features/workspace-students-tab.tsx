@@ -10,7 +10,16 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { LoadingContent } from "@/components/loading-content";
 import { RouteEnums } from "@/constants/router/route-constants";
 import { useGetSubjectListQuery } from "@/apis/core-subject-api/subject";
-import { Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@repo/ui";
+import {
+  Button,
+  Card,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@repo/ui";
 
 export function WorkspaceStudentsTab() {
   const router = useRouter();
@@ -34,7 +43,14 @@ export function WorkspaceStudentsTab() {
       {
         header: "Subjects",
         accessorKey: "subjects",
-        cell: ({ row }) => <p>{row?.original?.subjects?.join(", ")}</p>,
+        cell: ({ row }) => (
+          <p>
+            {row?.original?.subjects?.join(", ")}{" "}
+            {row?.original?.subjects?.join(", ")}{" "}
+            {row?.original?.subjects?.join(", ")}{" "}
+            {row?.original?.subjects?.join(", ")}
+          </p>
+        ),
       },
       {
         header: "Gender",
@@ -57,7 +73,12 @@ export function WorkspaceStudentsTab() {
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="flex justify-between" onClick={() => router.push(`${RouteEnums.STUDENT}/${student?.id}`)}>
+                <DropdownMenuItem
+                  className="flex justify-between"
+                  onClick={() =>
+                    router.push(`${RouteEnums.STUDENT}/${student?.id}`)
+                  }
+                >
                   View <UserRound className="ml-2" size={15} strokeWidth={1} />
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -66,10 +87,20 @@ export function WorkspaceStudentsTab() {
         },
       },
     ],
-    []
+    [],
   );
 
-  const subjectListQueryResult = useGetSubjectListQuery(React.useMemo(() => ({ params: { tenantId: authUserIds?.tenantId, staffIds: String(authUserIds?.id) } }), [authUserIds?.tenantId, authUserIds?.id]));
+  const subjectListQueryResult = useGetSubjectListQuery(
+    React.useMemo(
+      () => ({
+        params: {
+          tenantId: authUserIds?.tenantId,
+          staffIds: String(authUserIds?.id),
+        },
+      }),
+      [authUserIds?.tenantId, authUserIds?.id],
+    ),
+  );
 
   const subjectList = subjectListQueryResult?.data?.data;
 
@@ -99,7 +130,12 @@ export function WorkspaceStudentsTab() {
   return (
     <>
       <Card className="overflow-hidden mt-8">
-        <LoadingContent loading={subjectListQueryResult?.isLoading} data={subjectListQueryResult?.data} error={subjectListQueryResult?.error} retry={subjectListQueryResult?.refetch}>
+        <LoadingContent
+          loading={subjectListQueryResult?.isLoading}
+          data={subjectListQueryResult?.data}
+          error={subjectListQueryResult?.error}
+          retry={subjectListQueryResult?.refetch}
+        >
           <DataTable data={studentsWithSubjects} columns={columns} />
         </LoadingContent>
       </Card>

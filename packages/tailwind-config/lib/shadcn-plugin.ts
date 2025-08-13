@@ -29,6 +29,13 @@ export const shadcnPlugin = plugin(
         "--radius": "0.7rem",
 
         "--link": "213.12 93.9% 67.84%",
+
+        /* Chart palette (light) */
+        "--chart-1": "oklch(0.321 0.121 166.8)",
+        "--chart-2": "oklch(0.857 0.0546 93.34)",
+        "--chart-3": "oklch(0.398 0.07 227.392)",
+        "--chart-4": "oklch(0.828 0.189 84.429)",
+        "--chart-5": "oklch(0.769 0.188 70.08)",
       },
       ".dark": {
         "--background": "0, 0%, 10.6%",
@@ -53,6 +60,13 @@ export const shadcnPlugin = plugin(
         "--ring": "217.2 32.6% 17.5%",
 
         "--link": "213.12 93.9% 67.84%",
+
+        /* Chart palette (dark) */
+        "--chart-1": "oklch(0.977 0.013 239.8)",
+        "--chart-2": "oklch(0.393 0 0)",
+        "--chart-3": "oklch(0.769 0.188 70.08)",
+        "--chart-4": "oklch(0.627 0.265 303.9)",
+        "--chart-5": "oklch(0.645 0.246 16.439)",
       },
     });
 

@@ -38,6 +38,7 @@ import {
   SheetTitle,
   Typography,
 } from "@repo/ui";
+import NavbarGreeting from "./navbar-greeting";
 
 export default function ProtectedNavbar() {
   const router = useRouter();
@@ -67,7 +68,8 @@ export default function ProtectedNavbar() {
             </SheetTrigger>
 
             <div className="hidden md:flex">
-              <SearchInput placeholder="Search..." />
+              {/* <SearchInput placeholder="Search..." /> */}
+              <NavbarGreeting name={authUser?.firstName} />
             </div>
           </div>
 
@@ -151,28 +153,32 @@ export default function ProtectedNavbar() {
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  className="rounded-lg border-none bg-transparent shadow-none"
-                  variant="outline"
-                  size="icon"
-                >
-                  <UserCircle strokeWidth={1} />
-                </Button>
+                <div className="border-l pl-8 flex items-start gap-2 cursor-pointer">
+                  <div>
+                    {/* <UserCircle strokeWidth={1} /> */}
+                    <Typography>
+                      {authUser?.lastName} {authUser?.firstName}
+                    </Typography>
+                    <Typography size={"small"} color={"muted"}>
+                      {authUser?.staff?.jobTitle}
+                    </Typography>
+                  </div>
+                  <div className="relative w-10 h-10 border bg-primary rounded-full overflow-hidden flex items-center justify-center">
+                    <Typography className="font-heading text-background">
+                      {authUser?.firstName.charAt(0)}{" "}
+                      {authUser?.lastName.charAt(0)}
+                    </Typography>
+                  </div>
+                </div>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuLabel>
+                {/* <DropdownMenuLabel>
                   {authUserQueryResult?.isLoading ? (
-                    <LoaderCircle
-                      className="animate-spin duration-300 mx-auto"
-                      size={15}
-                    />
+                    <LoaderCircle className="animate-spin duration-300 mx-auto" size={15} />
                   ) : (
                     <div className="grid">
                       <Typography>
-                        {authUser?.firstName}{" "}
-                        <span className="font-sans-semibold">
-                          {authUser?.lastName}
-                        </span>
+                        <span className="font-sans-semibold">{authUser?.lastName}</span> {authUser?.firstName}
                       </Typography>
                       <Typography color={"muted"} size={"small"}>
                         {authUser?.email}
@@ -180,7 +186,7 @@ export default function ProtectedNavbar() {
                     </div>
                   )}
                 </DropdownMenuLabel>
-                <DropdownMenuSeparator />
+                <DropdownMenuSeparator /> */}
                 <DropdownMenuItem
                   disabled={authUserQueryResult?.isLoading}
                   onClick={handleSignOut}

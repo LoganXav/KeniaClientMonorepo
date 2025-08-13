@@ -131,10 +131,10 @@ export function SubjectDetails({ subjectId }: { subjectId: number }) {
           <div className="grid md:grid-cols-3 gap-4">
             <Card className="md:col-span-2 border shadow-none p-4 md:p-8 space-y-4">
               <CardTitle className="font-heading">{subject?.name}</CardTitle>
-              <CardDescription className="max-w-xl">
+              <CardDescription className="text-md">
                 {subject?.description}
               </CardDescription>
-              <CardDescription className="max-w-xl">
+              <CardDescription className="text-md">
                 {subject?.class?.name}
               </CardDescription>
             </Card>

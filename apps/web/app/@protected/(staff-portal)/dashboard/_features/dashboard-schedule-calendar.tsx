@@ -1,14 +1,8 @@
 "use client";
 
-import {
-  Zap,
-  Grid3X3,
-  Briefcase,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { Zap, Grid3X3, Briefcase, ChevronLeft, ChevronRight } from "lucide-react";
 import * as React from "react";
-import { Button } from "@repo/ui";
+import { Button, cn } from "@repo/ui";
 import { Typography } from "@repo/ui";
 import { Card, CardContent } from "@repo/ui";
 
@@ -37,7 +31,7 @@ const iconMap = {
 const sampleEvents: CalendarEvent[] = [
   {
     id: "1",
-    title: "Element of Design Test",
+    title: "English Language Class",
     startTime: "10:00 AM",
     endTime: "11:00 AM",
     date: new Date(), // Today
@@ -45,14 +39,30 @@ const sampleEvents: CalendarEvent[] = [
   },
   {
     id: "2",
-    title: "Design Principle Test",
+    title: "2nd Semester Test",
     startTime: "10:00 AM",
     endTime: "11:00 AM",
-    date: new Date(Date.now() + 24 * 60 * 60 * 1000), // Tomorrow
-    icon: "zap",
+    date: new Date(), // Today
+    icon: "grid",
   },
   {
     id: "3",
+    title: "Midterm Holiday",
+    startTime: "10:00 AM",
+    endTime: "11:00 AM",
+    date: new Date(), // Today
+    icon: "grid",
+  },
+  {
+    id: "4",
+    title: "Children's Day",
+    startTime: "10:00 AM",
+    endTime: "11:00 AM",
+    date: new Date(), // Today
+    icon: "grid",
+  },
+  {
+    id: "6",
     title: "Prepare Job Interview",
     startTime: "09:00 AM",
     endTime: "10:30 AM",
@@ -60,7 +70,7 @@ const sampleEvents: CalendarEvent[] = [
     icon: "briefcase",
   },
   {
-    id: "4",
+    id: "7",
     title: "Team Meeting",
     startTime: "2:00 PM",
     endTime: "3:00 PM",
@@ -68,7 +78,7 @@ const sampleEvents: CalendarEvent[] = [
     icon: "grid",
   },
   {
-    id: "5",
+    id: "8",
     title: "Client Presentation",
     startTime: "4:00 PM",
     endTime: "5:30 PM",
@@ -77,10 +87,7 @@ const sampleEvents: CalendarEvent[] = [
   },
 ];
 
-export function DashboardScheduleCalendar({
-  events = sampleEvents,
-  onEventClick,
-}: ScheduleCalendarProps) {
+export function DashboardScheduleCalendar({ events = sampleEvents, onEventClick }: ScheduleCalendarProps) {
   const [currentDate, setCurrentDate] = React.useState(new Date());
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
@@ -135,17 +142,13 @@ export function DashboardScheduleCalendar({
 
   // Get events for a specific date
   const getEventsForDate = (date: Date) => {
-    return events.filter(
-      (event) => event.date.toDateString() === date.toDateString(),
-    );
+    return events.filter((event) => event.date.toDateString() === date.toDateString());
   };
 
   // Get today's events
   const getTodayEvents = () => {
     const today = new Date();
-    return events.filter(
-      (event) => event.date.toDateString() === today.toDateString(),
-    );
+    return events.filter((event) => event.date.toDateString() === today.toDateString());
   };
 
   // Get events for selected date (if not today)
@@ -172,27 +175,15 @@ export function DashboardScheduleCalendar({
     const IconComponent = iconMap[event.icon || "default"];
 
     return (
-      <div
-        key={Number(event.id)}
-        className="group flex items-center gap-3 p-3 hover:bg-accent rounded-lg cursor-pointer transition-colors"
-        onClick={() => onEventClick?.(event)}
-      >
-        <div className="w-8 h-8 bg-border rounded-lg flex items-center justify-center">
+      <div key={Number(event.id)} className="group flex items-center gap-3 p-3 bg-accent rounded-lg cursor-pointer transition-colors" onClick={() => onEventClick?.(event)}>
+        <div className="w-8 h-8 bg-card group-hover:bg-accent rounded-lg flex items-center justify-center">
           <IconComponent className="w-4 h-4 group-hover:text-primary" />
         </div>
         <div className="flex-1">
-          <Typography
-            as="div"
-            className="group-hover:text-primary"
-            weight="medium"
-          >
+          <Typography as="div" className="group-hover:text-primary" weight="medium">
             {event.title}
           </Typography>
-          <Typography
-            as="div"
-            size="small"
-            className="text-xs text-muted-foreground group-hover:text-primary"
-          >
+          <Typography as="div" size="small" className="text-xs text-muted-foreground group-hover:text-primary">
             {event.startTime} - {event.endTime}
           </Typography>
         </div>
@@ -202,10 +193,10 @@ export function DashboardScheduleCalendar({
 
   return (
     <Card className="w-full">
-      <CardContent className="p-4">
+      <CardContent className="px-4 pb-0">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <Typography as="h2" size="large" weight="semibold">
+          <Typography size="small" className="uppercase font-heading">
             {formatMonthYear(currentDate)}
           </Typography>
           <div className="flex items-center gap-1">
@@ -219,31 +210,15 @@ export function DashboardScheduleCalendar({
         </div>
 
         {/* Week View */}
-        {/* Week View */}
         <div className="grid grid-cols-7 gap-1 mb-6">
           {weekDays.map((day) => {
             const dayName = dayNames[day.getDay() === 0 ? 6 : day.getDay() - 1]; // Adjust so Mon is first
             return (
-              <div
-                key={day.toISOString()}
-                className="flex flex-col items-center gap-2"
-              >
+              <div key={day.toISOString()} className="flex flex-col items-center gap-2">
                 <Typography as="div" size="small" color="muted">
                   {dayName}
                 </Typography>
-                <button
-                  onClick={() => setSelectedDate(day)}
-                  className={`
-            h-10 w-10 rounded-full font-medium transition-colors
-            ${
-              isSelected(day)
-                ? "bg-primary text-card"
-                : isToday(day)
-                  ? "bg-accent text-primary"
-                  : "hover:bg-accent"
-            }
-          `}
-                >
+                <button onClick={() => setSelectedDate(day)} className={cn("h-10 w-10 rounded-full font-medium transition-colors", isSelected(day) ? "bg-primary text-card" : isToday(day) ? "bg-accent text-primary" : "hover:bg-accent")}>
                   {day.getDate()}
                 </button>
               </div>
@@ -253,48 +228,36 @@ export function DashboardScheduleCalendar({
 
         {/* Today Section */}
         {getTodayEvents().length > 0 && (
-          <div className="mb-6">
-            <Typography
-              size="small"
-              color="muted"
-              weight="medium"
-              className="mb-3"
-            >
-              Today
-            </Typography>
+          <div className="mb-4">
+            <div className="flex items-center gap-8 mb-3">
+              <Typography size="small" color="muted" className="whitespace-nowrap">
+                Today
+              </Typography>
+              <div className="flex-1 border-t border-dashed border-border" />
+            </div>
             <div className="space-y-1">{getTodayEvents().map(renderEvent)}</div>
           </div>
         )}
 
         {/* Selected Date Events */}
         {getSelectedDateEvents().length > 0 && (
-          <div>
-            <Typography
-              size="small"
-              color="muted"
-              weight="medium"
-              className="mb-3"
-            >
-              {formatEventDate(selectedDate)}
-            </Typography>
-            <div className="space-y-1">
-              {getSelectedDateEvents().map(renderEvent)}
+          <div className="mb-4">
+            <div className="flex items-center gap-8 mb-3">
+              <Typography size="small" color="muted" className="whitespace-nowrap">
+                {formatEventDate(selectedDate)}
+              </Typography>
+              <div className="flex-1 border-t border-dashed border-border" />
             </div>
+            <div className="space-y-1">{getSelectedDateEvents().map(renderEvent)}</div>
           </div>
         )}
 
         {/* No events message */}
-        {getTodayEvents().length === 0 &&
-          getSelectedDateEvents().length === 0 && (
-            <Typography
-              as="div"
-              size="small"
-              color="muted"
-              className="text-center py-8"
-            >
-              No events scheduled
-            </Typography>
-          )}
+        {getTodayEvents().length === 0 && getSelectedDateEvents().length === 0 && (
+          <Typography color="muted" className="text-center py-4">
+            No events scheduled
+          </Typography>
+        )}
       </CardContent>
     </Card>
   );
