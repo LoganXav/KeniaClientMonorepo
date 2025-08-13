@@ -20,11 +20,34 @@ import { StaffDetailsDisciplinaryRecordsTab } from "./staff-details-disciplinary
 import { StaffDetailsPerformanceAppraisalsTab } from "./staff-details-performance-appraisals-tab";
 import { StaffDetailsDocumentsCertificationsTab } from "./staff-details-documents-certifications-tab";
 import { StaffDetailsSubjectsResponsibilitiesTab } from "./staff-details-subjects-responsibilities-tab";
-import { Card, ScrollBar, ScrollArea, Tabs, TabsContent, TabsList, TabsTrigger, SelectValue, Select, SelectTrigger, SelectContent, SelectItem, Button, Typography } from "@repo/ui";
+import {
+  Card,
+  ScrollBar,
+  ScrollArea,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  SelectValue,
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  Button,
+  Typography,
+} from "@repo/ui";
 
 function StaffDetails({ staffId }: { staffId: number }) {
   const { authUserIds } = useAuthUser();
-  const { data: staff, isLoading, error, refetch } = useGetSingleStaffQuery({ path: { staffId }, params: { tenantId: authUserIds?.tenantId } });
+  const {
+    data: staff,
+    isLoading,
+    error,
+    refetch,
+  } = useGetSingleStaffQuery({
+    path: { staffId },
+    params: { tenantId: authUserIds?.tenantId },
+  });
 
   return (
     <>
@@ -43,7 +66,9 @@ function StaffDetails({ staffId }: { staffId: number }) {
               ))}
             </SelectContent>
           </Select> */}
-          <PermissionRestrictor requiredPermissions={[PERMISSIONS.STAFF.UPDATE]}>
+          <PermissionRestrictor
+            requiredPermissions={[PERMISSIONS.STAFF.UPDATE]}
+          >
             <Link href={`${RouteEnums.STAFF_CREATE}?id=${staff?.data?.id}`}>
               <Button className="w-full">
                 Edit Staff <UserRoundPen size={18} strokeWidth={1} />
@@ -52,27 +77,50 @@ function StaffDetails({ staffId }: { staffId: number }) {
           </PermissionRestrictor>
         </div>
       </div>
-      <LoadingContent loading={isLoading} error={error} data={staff} retry={refetch}>
+      <LoadingContent
+        loading={isLoading}
+        error={error}
+        data={staff}
+        retry={refetch}
+      >
         <div className="grid md:grid-cols-3 gap-4 pb-8">
           <div className="md:sticky top-0 space-y-4">
             <Card>
               <div className="p-4 border-b flex items-center gap-4">
-                <div className="relative w-20 h-20 border rounded-md overflow-hidden">
-                  <Image src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/backgrounds/login-security.svg" alt="staff-image" fill className="object-cover rounded-full" />
+                <div className="relative w-20 h-20 border bg-primary rounded-md overflow-hidden flex items-center justify-center">
+                  <Typography className="font-heading text-background">
+                    {staff?.data?.user?.firstName.charAt(0)}{" "}
+                    {staff?.data?.user?.lastName.charAt(0)}
+                  </Typography>
+                  {/* <Image */}
+                  {/*   src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/backgrounds/login-security.svg" */}
+                  {/*   alt="staff-image" */}
+                  {/*   fill */}
+                  {/*   className="object-cover rounded-full" */}
+                  {/* /> */}
                 </div>
                 <div>
                   <Typography className="font-heading">
                     {staff?.data?.user?.firstName} {staff?.data?.user?.lastName}
                   </Typography>
                   <Typography>{staff?.data?.jobTitle}</Typography>
-                  <Typography>Joined: {formatDateToString(staff?.data?.startDate)}</Typography>
+                  <Typography>
+                    Joined: {formatDateToString(staff?.data?.startDate)}
+                  </Typography>
                 </div>
               </div>
               <div className="p-4 space-y-2">
-                <div className="uppercase text-sm font-heading pb-2">Basic Information</div>
+                <div className="uppercase text-sm font-heading pb-2">
+                  Basic Information
+                </div>
                 {[
                   { label: "Gender", value: staff?.data?.user?.gender },
-                  { label: "Date of Birth", value: formatDateToString(staff?.data?.user?.dateOfBirth || "") },
+                  {
+                    label: "Date of Birth",
+                    value: formatDateToString(
+                      staff?.data?.user?.dateOfBirth || "",
+                    ),
+                  },
                 ].map((info, idx) => (
                   <div key={idx} className="flex justify-between md:flex-col">
                     <Typography size="small" color="muted">
@@ -85,7 +133,9 @@ function StaffDetails({ staffId }: { staffId: number }) {
             </Card>
             <Card>
               <div className="p-4 space-y-2">
-                <div className="uppercase text-sm font-heading pb-2">Contact Information</div>
+                <div className="uppercase text-sm font-heading pb-2">
+                  Contact Information
+                </div>
                 {[
                   { label: "Email", value: staff?.data?.user?.email },
                   { label: "Phone", value: staff?.data?.user?.phoneNumber },
@@ -106,14 +156,28 @@ function StaffDetails({ staffId }: { staffId: number }) {
                 <div className="w-full relative h-14">
                   <TabsList className="flex absolute">
                     <TabsTrigger value="personal">Personal Info</TabsTrigger>
-                    <TabsTrigger value="qualifications">Qualifications</TabsTrigger>
-                    <TabsTrigger value="work-schedule">Work Schedule</TabsTrigger>
-                    <TabsTrigger value="subjects-responsibilities">Subjects & Responsibilities</TabsTrigger>
-                    <TabsTrigger value="performance-appraisals">Performance & Appraisals</TabsTrigger>
+                    <TabsTrigger value="qualifications">
+                      Qualifications
+                    </TabsTrigger>
+                    <TabsTrigger value="work-schedule">
+                      Work Schedule
+                    </TabsTrigger>
+                    <TabsTrigger value="subjects-responsibilities">
+                      Subjects & Responsibilities
+                    </TabsTrigger>
+                    <TabsTrigger value="performance-appraisals">
+                      Performance & Appraisals
+                    </TabsTrigger>
                     <TabsTrigger value="salary">Salary</TabsTrigger>
-                    <TabsTrigger value="disciplinary-records">Disciplinary Records</TabsTrigger>
-                    <TabsTrigger value="documents-certifications">Documents & Certifications</TabsTrigger>
-                    <TabsTrigger value="system-permissions">System & Permissions</TabsTrigger>
+                    <TabsTrigger value="disciplinary-records">
+                      Disciplinary Records
+                    </TabsTrigger>
+                    <TabsTrigger value="documents-certifications">
+                      Documents & Certifications
+                    </TabsTrigger>
+                    <TabsTrigger value="system-permissions">
+                      System & Permissions
+                    </TabsTrigger>
                   </TabsList>
                 </div>
                 <ScrollBar orientation="horizontal" />

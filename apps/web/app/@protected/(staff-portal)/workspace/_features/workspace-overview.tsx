@@ -61,13 +61,16 @@ export function WorkspaceOverview() {
             retry={authUserQueryResult?.refetch}
           >
             <div className="p-4 border-b flex items-center gap-4">
-              <div className="relative w-20 h-20 border rounded-md overflow-hidden">
-                <Image
-                  src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/backgrounds/login-security.svg"
-                  alt="staff-image"
-                  fill
-                  className="object-cover rounded-full"
-                />
+              <div className="relative w-20 h-20 border bg-primary rounded-md overflow-hidden flex items-center justify-center">
+                <Typography className="font-heading text-background">
+                  {authUser?.firstName.charAt(0)} {authUser?.lastName.charAt(0)}
+                </Typography>
+                {/* <Image */}
+                {/*   src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/backgrounds/login-security.svg" */}
+                {/*   alt="staff-image" */}
+                {/*   fill */}
+                {/*   className="object-cover rounded-full" */}
+                {/* /> */}
               </div>
               <div>
                 <Typography className="font-heading">

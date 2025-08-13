@@ -5,23 +5,27 @@ import { MoveRight } from "lucide-react";
 import { Card, Typography } from "@repo/ui";
 
 export function DashboardQuickActions() {
+  const dashboardMetrics = [
+    {
+      img: "/audience.png",
+      number: 56,
+      title: "Number of Staff",
+    },
+    { img: "/students.png", number: 723, title: "Number of Students" },
+    { img: "/school.png", number: 25, title: "Upcoming Events" },
+  ];
   return (
     <div className="grid sm:grid-cols-3 gap-4 overflow-x-scroll">
-      {Array.from({ length: 3 }).map((_, index) => (
+      {dashboardMetrics.map(({ img, number, title }, index) => (
         <Card key={index} className="px-4">
           <div className="flex items-center gap-3 border-b border-dashed py-4">
             <div className="rounded-md overflow-hidden w-12 h-12 relative bg-border">
-              <Image
-                src="https://bootstrapdemos.adminmart.com/modernize/dist/assets/images/backgrounds/login-security.svg"
-                fill
-                alt="placeholder-img"
-                className="h-full w-full object-center dark:brightness-[0.2] dark:grayscale"
-              />
+              <Image src={img} fill alt="placeholder-img" className="h-full w-full object-center" />
             </div>
             <div className="">
-              <Typography>56</Typography>
+              <Typography>{number}</Typography>
               <Typography size="small" color="muted">
-                Enrolled courses
+                {title}
               </Typography>
             </div>
           </div>
