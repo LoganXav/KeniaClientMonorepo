@@ -1,15 +1,7 @@
 "use client";
 
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
-import {
-  Card,
-  Typography,
-  CardContent,
-  ChartContainer,
-  ChartConfig,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@repo/ui";
+import { Card, Typography, CardContent, ChartContainer, ChartConfig, ChartTooltip, ChartTooltipContent } from "@repo/ui";
 import React from "react";
 
 export const description = "An interactive line chart";
@@ -29,9 +21,6 @@ export function DashboardEnrollment() {
   ];
 
   const chartConfig = {
-    views: {
-      label: "Students",
-    },
     male: {
       label: "Male",
       color: "var(--chart-1)",
@@ -42,12 +31,11 @@ export function DashboardEnrollment() {
     },
     both: {
       label: "All",
-      color: "",
+      color: "var(--chart-3)",
     },
   } satisfies ChartConfig;
 
-  const [activeChart, setActiveChart] =
-    React.useState<keyof typeof chartConfig>("male");
+  const [activeChart, setActiveChart] = React.useState<"male" | "female" | "both">("male");
 
   const totals = React.useMemo(
     () => ({
@@ -55,7 +43,7 @@ export function DashboardEnrollment() {
       female: chartData.reduce((acc, curr) => acc + curr.female, 0),
       both: chartData.reduce((acc, curr) => acc + curr.male + curr.female, 0),
     }),
-    [],
+    []
   );
 
   return (
@@ -68,32 +56,20 @@ export function DashboardEnrollment() {
       <div className="">
         <div className="flex flex-col">
           <div className="flex">
-            {(
-              ["male", "female", "both"] as Array<keyof typeof chartConfig>
-            ).map((chart) => {
+            {(["male", "female", "both"] as Array<keyof typeof chartConfig>).map((chart) => {
               return (
-                <button
-                  key={chart}
-                  data-active={activeChart === chart}
-                  className="data-[active=true]:bg-accent flex flex-1 flex-col justify-center gap-1 border data-[active=true]:border-primary px-6 py-4 text-left"
-                  onClick={() => setActiveChart(chart)}
-                >
+                <button key={chart} data-active={activeChart === chart} className="data-[active=true]:bg-accent flex flex-1 flex-col justify-center gap-1 border data-[active=true]:border-primary px-6 py-4 text-left" onClick={() => setActiveChart(chart)}>
                   <Typography size="small" color="muted">
                     {chartConfig[chart].label}
                   </Typography>
-                  <Typography weight="medium">
-                    {totals[chart].toLocaleString()}
-                  </Typography>
+                  <Typography weight="medium">{totals[chart].toLocaleString()}</Typography>
                 </button>
               );
             })}
           </div>
         </div>
         <CardContent className="px-2 sm:p-6">
-          <ChartContainer
-            config={chartConfig}
-            className="aspect-auto h-[250px] w-full"
-          >
+          <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
             <LineChart
               accessibilityLayer
               data={chartData}
@@ -119,15 +95,13 @@ export function DashboardEnrollment() {
                 }}
               />
               <ChartTooltip
-                content={
+                content={(props) => (
                   <ChartTooltipContent
+                    {...props}
                     className="w-[180px]"
-                    // if showing a single series, the tooltip will use that nameKey.
-                    // when 'both' is active we omit nameKey so tooltip shows both values.
-                    {...(activeChart === "both"
-                      ? {}
-                      : { nameKey: activeChart })}
-                    labelFormatter={(value) => {
+                    {...(activeChart === "both" ? {} : { nameKey: activeChart })}
+                    labelFormatter={(value: string | number | undefined) => {
+                      if (!value) return "";
                       const date = new Date(value);
                       return date.toLocaleDateString("en-NG", {
                         month: "long",
@@ -135,37 +109,17 @@ export function DashboardEnrollment() {
                       });
                     }}
                   />
-                }
+                )}
               />
 
               {/* If 'both', render both lines. Otherwise render the selected series. */}
               {activeChart === "both" ? (
                 <>
-                  <Line
-                    dataKey="male"
-                    type="monotone"
-                    stroke={chartConfig.male.color}
-                    strokeWidth={2}
-                    dot={true}
-                    name={chartConfig.male.label}
-                  />
-                  <Line
-                    dataKey="female"
-                    type="monotone"
-                    stroke={chartConfig.female.color}
-                    strokeWidth={2}
-                    dot={true}
-                    name={chartConfig.female.label}
-                  />
+                  <Line dataKey="male" type="monotone" stroke={chartConfig.male.color} strokeWidth={2} dot={true} name={chartConfig.male.label} />
+                  <Line dataKey="female" type="monotone" stroke={chartConfig.female.color} strokeWidth={2} dot={true} name={chartConfig.female.label} />
                 </>
               ) : (
-                <Line
-                  dataKey={activeChart}
-                  type="monotone"
-                  stroke={chartConfig[activeChart].color || "currentColor"}
-                  strokeWidth={2}
-                  dot={true}
-                />
+                <Line dataKey={activeChart} type="monotone" stroke={chartConfig[activeChart].color || "currentColor"} strokeWidth={2} dot={true} />
               )}
             </LineChart>
           </ChartContainer>

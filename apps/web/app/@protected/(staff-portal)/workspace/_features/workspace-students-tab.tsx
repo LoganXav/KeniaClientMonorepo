@@ -43,14 +43,7 @@ export function WorkspaceStudentsTab() {
       {
         header: "Subjects",
         accessorKey: "subjects",
-        cell: ({ row }) => (
-          <p>
-            {row?.original?.subjects?.join(", ")}{" "}
-            {row?.original?.subjects?.join(", ")}{" "}
-            {row?.original?.subjects?.join(", ")}{" "}
-            {row?.original?.subjects?.join(", ")}
-          </p>
-        ),
+        cell: ({ row }) => <p>{row?.original?.subjects?.join(", ")}</p>,
       },
       {
         header: "Gender",

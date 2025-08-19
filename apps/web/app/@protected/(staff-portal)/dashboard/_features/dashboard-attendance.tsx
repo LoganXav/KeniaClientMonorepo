@@ -4,8 +4,20 @@ import * as React from "react";
 import { TrendingUp } from "lucide-react";
 import { Label, Pie, PieChart } from "recharts";
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, Typography } from "@repo/ui";
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@repo/ui";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  Typography,
+} from "@repo/ui";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@repo/ui";
 
 export const description = "A donut chart showing attendance rate";
 
@@ -39,7 +51,8 @@ export function DashboardAttendance() {
   }, []);
 
   const attendanceRate = React.useMemo(() => {
-    const presentCount = chartData.find((d) => d.status === "Present")?.value || 0;
+    const presentCount =
+      chartData.find((d) => d.status === "Present")?.value || 0;
     return ((presentCount / totalStudents) * 100).toFixed(1);
   }, [totalStudents]);
 
@@ -54,19 +67,45 @@ export function DashboardAttendance() {
         <Typography color="muted">January - June 2024</Typography>
       </div>
       <div className="flex-1 pb-0">
-        <ChartContainer config={chartConfig} className="mx-auto aspect-square max-h-[250px]">
+        <ChartContainer
+          config={chartConfig}
+          className="mx-auto aspect-square max-h-[250px]"
+        >
           <PieChart>
-            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Pie data={chartData} dataKey="value" nameKey="status" innerRadius={60} strokeWidth={5}>
+            <ChartTooltip
+              cursor={false}
+              content={(props) => <ChartTooltipContent {...props} hideLabel />}
+            />
+
+            <Pie
+              data={chartData}
+              dataKey="value"
+              nameKey="status"
+              innerRadius={60}
+              strokeWidth={5}
+            >
               <Label
                 content={({ viewBox }) => {
                   if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                     return (
-                      <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle" dominantBaseline="middle">
-                        <tspan x={viewBox.cx} y={viewBox.cy} className="fill-foreground text-2xl font-bold">
+                      <text
+                        x={viewBox.cx}
+                        y={viewBox.cy}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                      >
+                        <tspan
+                          x={viewBox.cx}
+                          y={viewBox.cy}
+                          className="fill-foreground text-2xl font-bold"
+                        >
                           {attendanceRate}%
                         </tspan>
-                        <tspan x={viewBox.cx} y={(viewBox.cy || 0) + 24} className="fill-muted-foreground">
+                        <tspan
+                          x={viewBox.cx}
+                          y={(viewBox.cy || 0) + 24}
+                          className="fill-muted-foreground"
+                        >
                           Present
                         </tspan>
                       </text>
@@ -82,7 +121,11 @@ export function DashboardAttendance() {
         <div className="flex items-center gap-2 leading-none font-medium text-center">
           Trending up by 3.5% this term <TrendingUp className="h-4 w-4" />
         </div>
-        <Typography size="small" color={"muted"} className="leading-none text-center">
+        <Typography
+          size="small"
+          color={"muted"}
+          className="leading-none text-center"
+        >
           Showing attendance breakdown for the last 6 months
         </Typography>
       </CardFooter>

@@ -5,7 +5,7 @@ import { Typography } from "@repo/ui";
 
 export interface NavbarGreetingProps {
   /** Required: the person's name to greet */
-  name: string;
+  name?: string;
   /** Optional: locale for time formatting, defaults to Lagos, Nigeria (en-NG) */
   locale?: string;
   /** Optional: show 24-hour clock (true) or 12-hour with AM/PM (false). Defaults to false. */
@@ -21,7 +21,7 @@ export interface NavbarGreetingProps {
  * - Defaults to Lagos, Nigeria locale (en-NG) when `locale` is not provided.
  */
 export default function NavbarGreeting({
-  name,
+  name = "",
   locale = "en-NG",
   twentyFourHour = false,
   className = "",
