@@ -12,10 +12,9 @@ export default function DashboardPage() {
       <div className="space-y-4 xl:col-span-2">
         <DashboardQuickActions />
         <div className="grid gap-4 md:grid-cols-2">
-          <DashboardAttendance />
+          <DashboardEnrollment />
           <DashboardAttendance />
         </div>
-        <DashboardEnrollment />
         {/* <DashboardAgendaAndNoticeBoard /> */}
       </div>
 
