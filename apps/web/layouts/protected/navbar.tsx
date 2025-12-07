@@ -157,7 +157,7 @@ export default function ProtectedNavbar() {
                   <div>
                     {/* <UserCircle strokeWidth={1} /> */}
                     <Typography>
-                      {authUser?.lastName} {authUser?.firstName}
+                      {authUser?.firstName} {authUser?.lastName}
                     </Typography>
                     <Typography size={"small"} color={"muted"}>
                       {authUser?.staff?.jobTitle}
@@ -165,8 +165,8 @@ export default function ProtectedNavbar() {
                   </div>
                   <div className="relative w-10 h-10 border bg-primary rounded-full overflow-hidden flex items-center justify-center">
                     <Typography className="font-heading text-background">
-                      {authUser?.firstName.charAt(0)}{" "}
                       {authUser?.lastName.charAt(0)}
+                      {authUser?.firstName.charAt(0)}
                     </Typography>
                   </div>
                 </div>

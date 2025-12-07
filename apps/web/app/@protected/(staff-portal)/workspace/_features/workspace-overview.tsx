@@ -97,7 +97,7 @@ export function WorkspaceOverview() {
                   <Typography size="small" color="muted">
                     {info.label}
                   </Typography>
-                  <Typography>{info.value}</Typography>
+                  <Typography>{info.value || "-"}</Typography>
                 </div>
               ))}
             </div>
