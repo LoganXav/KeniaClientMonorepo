@@ -24,11 +24,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
   Typography,
 } from "@repo/ui";
 import Image from "next/image";
@@ -89,7 +84,7 @@ export function StaffListTable({}: Props) {
       {
         header: "Gender",
         accessorKey: "gender",
-        cell: ({ row }) => <p>{row?.original?.user?.gender}</p>,
+        cell: ({ row }) => <p>{row?.original?.user?.gender || "-"}</p>,
       },
       {
         header: "Job Title",

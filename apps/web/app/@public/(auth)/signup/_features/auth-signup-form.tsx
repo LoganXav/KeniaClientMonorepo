@@ -1,10 +1,23 @@
 "use client";
 
 import { useSignUpMutation } from "@/apis/core-authentication-api/authentication";
-import { Button, PasswordInput, Input, toast, Form, FormField, FormItem, FormControl, FormMessage } from "@repo/ui";
+import {
+  Button,
+  PasswordInput,
+  Input,
+  toast,
+  Form,
+  FormField,
+  FormItem,
+  FormControl,
+  FormMessage,
+} from "@repo/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { AuthSignUpSchema, AuthSignUpSchemaType } from "../_validators/auth-signup-schema";
+import {
+  AuthSignUpSchema,
+  AuthSignUpSchemaType,
+} from "../_validators/auth-signup-schema";
 import { useRouter } from "next/navigation";
 import { RouteEnums } from "@/constants/router/route-constants";
 
@@ -19,12 +32,14 @@ export default function AuthSignUpForm() {
       {
         onSuccess: (result) => {
           toast.success(result.message);
-          router.push(`${RouteEnums.VERIFY}?id=${result.data.id}&email=${values.email}`);
+          router.push(
+            `${RouteEnums.VERIFY}?id=${result.data.id}&email=${values.email}`,
+          );
         },
         onError: (error) => {
           toast.error(error.message);
         },
-      }
+      },
     );
   };
 
@@ -34,6 +49,7 @@ export default function AuthSignUpForm() {
     phoneNumber: "",
     email: "",
     password: "",
+    name: "",
   };
 
   const form = useForm<AuthSignUpSchemaType>({
@@ -97,35 +113,56 @@ export default function AuthSignUpForm() {
             />
             <FormField
               control={form.control}
-              name="password"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <PasswordInput placeholder="Password" {...field} />
+                    <Input placeholder="School Name" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <PasswordInput placeholder="Confirm Password" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <PasswordInput placeholder="Password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <PasswordInput
+                        placeholder="Confirm Password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
 
           <Button className="w-full py-6 rounded-lg" loading={isPending}>
             Create Your Kenia Account
           </Button>
 
-          <p className="text-sm text-muted-foreground">By clicking "Create Your Kenia Account", you agree to our Terms of Service, our Product T&C's and that you have read and understood our Privacy Policy.</p>
+          <p className="text-sm text-muted-foreground">
+            By clicking "Create Your Kenia Account", you agree to our Terms of
+            Service, our Product T&C's and that you have read and understood our
+            Privacy Policy.
+          </p>
         </form>
       </Form>
     </>

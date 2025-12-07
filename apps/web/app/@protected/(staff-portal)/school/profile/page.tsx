@@ -11,7 +11,7 @@ function SchoolProfile({}: Props) {
       title: "School",
       path: RouteEnums.SCHOOL,
     },
-    { title: "Onboarding", path: RouteEnums.SCHOOL_PROFILE },
+    { title: "Profile", path: RouteEnums.SCHOOL_PROFILE },
   ];
 
   return (
