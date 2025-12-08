@@ -1,65 +1,9 @@
 import { z } from "zod";
 
-export const SchoolProfileFormPersonalSchema = z.object({
+export const SchoolProfileFormSchema = z.object({
   userId: z.number().optional(),
   id: z.number().optional(),
 
-  firstName: z
-    .string({
-      required_error: "First name is required",
-    })
-    .min(1, "First name must be at least 1 character")
-    .max(50, "First name cannot exceed 50 characters"),
-  lastName: z
-    .string({
-      required_error: "Last name is required",
-    })
-    .min(1, "Last name must be at least 1 character")
-    .max(50, "Last name cannot exceed 50 characters"),
-
-  email: z.string({
-    required_error: "Email address is required",
-  }),
-  gender: z.string({
-    required_error: "Gender is required",
-  }),
-  phoneNumber: z
-    .string({
-      required_error: "Phone number is required",
-    })
-    .min(10, "Phone number must be at least 10 digits")
-    .max(15, "Phone number cannot exceed 15 digits"),
-
-  dateOfBirth: z.date({
-    required_error: "Date of birth is required",
-    invalid_type_error: "Invalid date format",
-  }),
-});
-
-export const SchoolProfileFormResidentialSchema = z.object({
-  userId: z.number().optional(),
-  residentialAddress: z
-    .string({
-      required_error: "Residential address is required",
-    })
-    .min(1, "Residential address must be at least 1 character")
-    .max(255, "Residential address is too long"),
-  residentialLgaId: z.union([z.string(), z.number()], {
-    required_error: "Local government is required",
-  }),
-  residentialStateId: z.union([z.string(), z.number()], {
-    required_error: "State is required",
-  }),
-  residentialCountryId: z.union([z.string(), z.number()], {
-    required_error: "Country is required",
-  }),
-  residentialZipCode: z.union([z.string(), z.number()], {
-    required_error: "Zip code is required",
-  }),
-});
-
-export const SchoolProfileFormSchoolSchema = z.object({
-  userId: z.number().optional(),
   name: z
     .string({
       required_error: "School name is required",
@@ -84,16 +28,16 @@ export const SchoolProfileFormSchoolSchema = z.object({
     .min(10, "Contact phone must be at least 10 digits")
     .max(15, "Contact phone cannot exceed 15 digits"),
 
-  establishedDate: z.date({
+  establishedDate: z.string({
     required_error: "Established date is required",
     invalid_type_error: "Invalid date format",
   }),
-  logoUrl: z
-    .string({
-      invalid_type_error: "School's logo URL must be a string",
-    })
-    .url("Invalid URL for school logo")
-    .optional(),
+  logoUrl: z.any(),
+  // logoUrl: z
+  // .string({
+  //   invalid_type_error: "School's logo URL must be a string",
+  // })
+  // .optional(),
   address: z
     .string({
       required_error: "School address is required",
@@ -119,5 +63,3 @@ export const SchoolProfileFormSchoolSchema = z.object({
     .min(5, "Postal code must be at least 5 characters")
     .max(10, "Postal code cannot exceed 10 characters"),
 });
-
-export const SchoolProfileFormSchema = SchoolProfileFormPersonalSchema.merge(SchoolProfileFormResidentialSchema);
