@@ -8,12 +8,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { SchoolProfileFormSchemaType } from "../_types/school-profile-form-types";
 import { SchoolProfileFormSchema } from "../_schema/school-profile-form-schema";
-import { useGetTenantQuery, useUpdateTenantProfileMutation } from "@/apis/core-tenant-api/tenant";
+import { useGetSchoolProfileTemplateQuery, useGetTenantQuery, useUpdateTenantProfileMutation } from "@/apis/core-tenant-api/tenant";
 import useDataRef from "@/hooks/use-data-ref";
 import { LoadingContent } from "@/components/loading-content";
 import { useAuthUser } from "@/hooks/use-auth-user";
 
-import { useGetOnboardingTemplateQuery } from "@/apis/core-onboarding-api/onboarding";
 import { DatePicker, FormControl, FormField, FormItem, FormMessage, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@repo/ui";
 import { FileUpload } from "@/components/file-upload";
 
@@ -52,6 +51,20 @@ function SchoolProfileForm({}: Props) {
 
   const dataRef = useDataRef({ form });
 
+  const schoolStateId = form.watch("stateId");
+
+  const schoolProfileTemplateQuery = useGetSchoolProfileTemplateQuery(
+    React.useMemo(
+      () => ({
+        params: {
+          codeValue: Number(schoolStateId),
+          tenantId: authUserIds?.tenantId,
+        },
+      }),
+      [schoolStateId, authUserIds?.tenantId]
+    )
+  );
+
   // Initial Values
   React.useEffect(() => {
     dataRef.current.form.reset((values: SchoolProfileFormSchemaType) => ({
@@ -69,23 +82,9 @@ function SchoolProfileForm({}: Props) {
       countryId: Number(tenant?.countryId) || values.countryId,
       postalCode: tenant?.postalCode || values.postalCode,
     }));
-  }, [dataRef, tenant]);
+  }, [dataRef, tenant, schoolProfileTemplateQuery?.data?.data]);
 
-  const schoolStateId = form.watch("stateId");
-
-  const onboardingTemplateQuery = useGetOnboardingTemplateQuery(
-    React.useMemo(
-      () => ({
-        params: {
-          codeValue: Number(schoolStateId),
-          tenantId: authUserIds?.tenantId,
-        },
-      }),
-      [schoolStateId, authUserIds?.tenantId]
-    )
-  );
-
-  const handleOnboarding = (values: SchoolProfileFormSchemaType) => {
+  const handleUpdateSchoolProfile = (values: SchoolProfileFormSchemaType) => {
     console.log(values);
 
     updateTenantProfile(
@@ -107,7 +106,7 @@ function SchoolProfileForm({}: Props) {
     <LoadingContent loading={tenantQueryResult?.isLoading} error={tenantQueryResult?.error} retry={tenantQueryResult?.refetch} data={tenantQueryResult?.data}>
       <div className="grid gap-8 w-full">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleOnboarding)} className="">
+          <form onSubmit={form.handleSubmit(handleUpdateSchoolProfile)} className="">
             <div className="max-w-4xl mx-auto">
               <div className="grid md:grid-cols-2 gap-4">
                 <div className="md:col-span-2">
@@ -142,7 +141,7 @@ function SchoolProfileForm({}: Props) {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input placeholder="School Email" {...field} />
+                        <Input disabled placeholder="School Email" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -214,7 +213,7 @@ function SchoolProfileForm({}: Props) {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {onboardingTemplateQuery?.data?.data?.countryIdOptions?.map((country, idx) => (
+                          {schoolProfileTemplateQuery?.data?.data?.countryIdOptions?.map((country, idx) => (
                             <SelectItem key={idx} value={String(country?.codeValue)}>
                               {country?.name}
                             </SelectItem>
@@ -238,7 +237,7 @@ function SchoolProfileForm({}: Props) {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {onboardingTemplateQuery?.data?.data?.stateIdOptions?.map((state, idx) => (
+                          {schoolProfileTemplateQuery?.data?.data?.stateIdOptions?.map((state, idx) => (
                             <SelectItem key={idx} value={String(state?.id)}>
                               {state?.name}
                             </SelectItem>
@@ -255,14 +254,14 @@ function SchoolProfileForm({}: Props) {
                   name="lgaId"
                   render={({ field }) => (
                     <FormItem>
-                      <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={onboardingTemplateQuery?.isLoading || !onboardingTemplateQuery?.data?.data?.lgaIdOptions?.length}>
+                      <Select value={String(field.value || "")} onValueChange={field.onChange} disabled={schoolProfileTemplateQuery?.isLoading || !schoolProfileTemplateQuery?.data?.data?.lgaIdOptions?.length}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Local Government" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {onboardingTemplateQuery?.data?.data?.lgaIdOptions?.map((lga, idx) => (
+                          {schoolProfileTemplateQuery?.data?.data?.lgaIdOptions?.map((lga, idx) => (
                             <SelectItem key={idx} value={String(lga?.id)}>
                               {lga?.name}
                             </SelectItem>

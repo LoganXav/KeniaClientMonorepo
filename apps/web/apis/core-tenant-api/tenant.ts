@@ -1,4 +1,4 @@
-import { SchoolProfileFormSchemaType } from "@/app/@protected/(staff-portal)/school/profile/_types/school-profile-form-types";
+import { SchoolProfileFormSchemaType, SchoolProfileFormTemplateType } from "@/app/@protected/(staff-portal)/school/profile/_types/school-profile-form-types";
 import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { SchoolType } from "@/types";
@@ -42,4 +42,18 @@ export const useUpdateTenantProfileMutation = ({ params }: { params: { tenantId?
   });
 
   return { updateTenantProfile, updateTenantProfilePending, updateTenantProfileError };
+};
+
+export const useGetSchoolProfileTemplateQuery = ({ params }: { params: { tenantId?: number; codeValue?: number } }) => {
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: [QueryTagEnums.USER, params?.tenantId, params?.codeValue],
+    queryFn: async () => {
+      return await getRequest<SchoolProfileFormTemplateType>({
+        endpoint: `${BASE_URL}/template`,
+        config: { params },
+      });
+    },
+  });
+
+  return { data, isLoading, error, refetch };
 };
