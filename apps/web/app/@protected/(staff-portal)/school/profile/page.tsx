@@ -1,6 +1,6 @@
 import React from "react";
-import SchoolProfileOnboardingForm from "./_features/school-profile-onboarding-form";
 import { PageBreadcrumbs } from "@/components/breadcrumbs";
+import SchoolProfileForm from "./_features/school-profile-form";
 import { RouteEnums } from "@/constants/router/route-constants";
 
 type Props = {};
@@ -18,7 +18,7 @@ function SchoolProfile({}: Props) {
     <div>
       <PageBreadcrumbs pages={pageBreadcrumbs} />
       <div className="mt-8">
-        <SchoolProfileOnboardingForm />
+        <SchoolProfileForm />
       </div>
     </div>
   );

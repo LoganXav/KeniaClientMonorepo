@@ -1,14 +1,9 @@
 import { z } from "zod";
-import { SchoolProfileFormPersonalSchema } from "../_schema/school-profile-form-schema";
-import { SchoolProfileFormResidentialSchema } from "../_schema/school-profile-form-schema";
-import { SchoolProfileFormSchoolSchema } from "../_schema/school-profile-form-schema";
+import { SchoolProfileFormSchema } from "../_schema/school-profile-form-schema";
 import { UseFormReturn } from "react-hook-form";
 
-export type SchoolProfileFormPersonalSchemaType = z.infer<typeof SchoolProfileFormPersonalSchema>;
-export type SchoolProfileFormResidentialSchemaType = z.infer<typeof SchoolProfileFormResidentialSchema>;
-export type SchoolProfileFormSchoolSchemaType = z.infer<typeof SchoolProfileFormSchoolSchema>;
+export type SchoolProfileFormSchemaType = z.infer<typeof SchoolProfileFormSchema>;
 
-export type SchoolProfileFormSchemaType = SchoolProfileFormPersonalSchemaType & SchoolProfileFormResidentialSchemaType & SchoolProfileFormSchoolSchemaType;
 export type SchoolProfileFormFieldName = keyof SchoolProfileFormSchemaType;
 
 export type SchoolProfileFormReturn = UseFormReturn<SchoolProfileFormSchemaType, any, undefined>;
