@@ -189,7 +189,7 @@ export function ClassTermResultCollationListTable({}: Props) {
               break;
             case false:
               color = "destructive";
-              text = "Not Finalized";
+              text = "Pending";
               break;
           }
 

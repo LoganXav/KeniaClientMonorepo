@@ -68,6 +68,9 @@ export const useStudentTermResultUpdateMutation = ({
       queryClient.invalidateQueries({
         queryKey: [QueryTagEnums.STUDENT_TERM_RESULT, params.tenantId],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QueryTagEnums.STUDENT_CALENDAR_RESULT, params.tenantId],
+      });
     },
   });
 

@@ -1,24 +1,11 @@
 "use client";
 
-import {
-  Badge,
-  Button,
-  Card,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  toast,
-} from "@repo/ui";
+import { Badge, Button, Card, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, toast } from "@repo/ui";
 import React from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
 import { useAuthUser } from "@/hooks/use-auth-user";
-import {
-  useGetStudentCalendarResultListQuery,
-  useStudentCalendarResultUpdateMutation,
-} from "@/apis/core-student-api/student-calendar-result";
+import { useGetStudentCalendarResultListQuery, useStudentCalendarResultUpdateMutation } from "@/apis/core-student-api/student-calendar-result";
 import { LoadingContent } from "@/components/loading-content";
 import { useGetSubjectGradingTemplateQuery } from "@/apis/core-subject-api/subject-grading";
 
@@ -36,8 +23,8 @@ export function ClassCalendarResultCollationListTable({}: Props) {
       () => ({
         params: { calendarId, classId, tenantId: authUserIds?.tenantId },
       }),
-      [calendarId, classId, authUserIds?.tenantId],
-    ),
+      [calendarId, classId, authUserIds?.tenantId]
+    )
   );
   const gradingTemplate = gradingTemplateQueryResult?.data?.data;
 
@@ -50,13 +37,45 @@ export function ClassCalendarResultCollationListTable({}: Props) {
     },
     enabled: !!calendarId && !!calendarId && !!classId && !!classDivisionId,
   });
-  const studentCalendarResultList =
-    studentCalendarResultListQuery?.data?.data || [];
+  const studentCalendarResultList = studentCalendarResultListQuery?.data?.data || [];
 
-  const { studentCalendarResultUpdate, studentCalendarResultUpdatePending } =
-    useStudentCalendarResultUpdateMutation({
-      params: { tenantId: authUserIds?.tenantId },
+  const { studentCalendarResultUpdate, studentCalendarResultUpdatePending } = useStudentCalendarResultUpdateMutation({
+    params: { tenantId: authUserIds?.tenantId },
+  });
+
+  const allTermNames = React.useMemo(() => {
+    const termsSet = new Set<string>();
+    studentCalendarResultList.forEach((student) => {
+      student.studentCalendarTermAverageScores.forEach((score) => {
+        termsSet.add(score.term.name);
+      });
     });
+    return Array.from(termsSet);
+  }, [studentCalendarResultList]);
+
+  const tableData = React.useMemo(() => {
+    return studentCalendarResultList.map((student) => {
+      const termScores: Record<string, number | null> = {};
+      student.studentCalendarTermAverageScores.forEach((score) => {
+        termScores[score.term.name] = score.averageScore;
+      });
+
+      return {
+        ...student,
+        ...termScores,
+      };
+    });
+  }, [studentCalendarResultList]);
+
+  const termColumns = React.useMemo<ColumnDef<any, unknown>[]>(
+    () =>
+      allTermNames.map((termName) => ({
+        header: termName + " " + "Average",
+        accessorKey: termName,
+        cell: ({ row }) => <p>{row.original[termName] ?? "-"}</p>,
+      })),
+    [allTermNames]
+  );
 
   const handleRowSubmit = React.useCallback(
     (index: number, studentId: number) => {
@@ -82,17 +101,10 @@ export function ClassCalendarResultCollationListTable({}: Props) {
             toast.error(error.message);
             setSubmittingId(null);
           },
-        },
+        }
       );
     },
-    [
-      studentCalendarResultList,
-      classId,
-      calendarId,
-      setSubmittingId,
-      studentCalendarResultUpdate,
-      studentCalendarResultListQuery?.refetch,
-    ],
+    [studentCalendarResultList, classId, calendarId, setSubmittingId, studentCalendarResultUpdate, studentCalendarResultListQuery?.refetch]
   );
 
   const columns = React.useMemo<ColumnDef<any, unknown>[]>(
@@ -102,90 +114,37 @@ export function ClassCalendarResultCollationListTable({}: Props) {
         accessorKey: "name",
         cell: ({ row }) => (
           <p>
-            {row?.original?.student?.user?.lastName}{" "}
-            {row?.original?.student?.user?.firstName}
+            {row?.original?.student?.user?.lastName} {row?.original?.student?.user?.firstName}
           </p>
         ),
       },
-      {
-        header: "Subjects Graded",
-        accessorKey: "subjectCountGraded",
-      },
-      {
-        header: "Total Score",
-        accessorKey: "totalScore",
-      },
-      {
-        header: "Average",
-        accessorKey: "averageScore",
-      },
+      ...termColumns,
       {
         header: "Status",
         accessorKey: "finalized",
-        cell: ({ row }) => {
-          const status = row.original.finalized;
-          let color: "default" | "destructive" | "secondary" | "outline" =
-            "default";
-          let text = "Finalized";
-
-          switch (status) {
-            case true:
-              color = "default";
-              text = "Finalized";
-              break;
-            case false:
-              color = "destructive";
-              text = "Not Finalized";
-              break;
-          }
-
-          return <Badge variant={color}>{text}</Badge>;
-        },
+        cell: ({ row }) => <Badge variant={row.original.finalized ? "default" : "destructive"}>{row.original.finalized ? "Finalized" : "Not Finalized"}</Badge>,
       },
       {
         id: "actions",
         cell: ({ row }) => {
-          const index = row?.index;
-          const termResult = row.original;
-          const student = termResult.student;
+          const student = row.original.student;
           const isLoadingThisRow = submittingId === student?.id;
-          const variant = termResult.finalized ? "outline" : "default";
-          const buttonText = termResult.finalized
-            ? "Undo Confirmation"
-            : "Confirm Results";
-
           return (
-            <div className="w-full flex justify-end items-center space-x-2">
-              {/* <Button variant="ghost" onClick={() => handleOpenDialog(student)}> */}
-              {/*   <Logs strokeWidth={1} size={24} /> */}
-              {/* </Button> */}
-              <Button
-                variant={variant}
-                className="w-[230px]"
-                size="sm"
-                onClick={() => handleRowSubmit(index, student?.id)}
-                loading={isLoadingThisRow}
-                disabled={false}
-              >
-                {buttonText}
-              </Button>
-            </div>
+            <Button variant={row.original.finalized ? "outline" : "default"} onClick={() => handleRowSubmit(row.index, student?.id)} loading={isLoadingThisRow}>
+              {row.original.finalized ? "Undo Confirmation" : "Confirm Results"}
+            </Button>
           );
         },
       },
     ],
-    [submittingId, handleRowSubmit, studentCalendarResultUpdatePending],
+    [submittingId, handleRowSubmit, termColumns]
   );
 
   return (
     <>
       <div className="flex w-full flex-col md:flex-row gap-4 pb-4 mt-8">
         <div className="grid md:grid-cols-4 xl:grid-cols-4 gap-4 w-full md:w-auto">
-          <Select
-            value={String(calendarId || "")}
-            onValueChange={(value) => setCalendarId(Number(value))}
-            disabled={gradingTemplateQueryResult?.isLoading}
-          >
+          <Select value={String(calendarId || "")} onValueChange={(value) => setCalendarId(Number(value))} disabled={gradingTemplateQueryResult?.isLoading}>
             <SelectTrigger>
               <SelectValue placeholder="Session" />
             </SelectTrigger>
@@ -198,11 +157,7 @@ export function ClassCalendarResultCollationListTable({}: Props) {
             </SelectContent>
           </Select>
 
-          <Select
-            value={String(classId || "")}
-            onValueChange={(value) => setClassId(Number(value))}
-            disabled={!calendarId}
-          >
+          <Select value={String(classId || "")} onValueChange={(value) => setClassId(Number(value))} disabled={!calendarId}>
             <SelectTrigger>
               <SelectValue placeholder="Class" />
             </SelectTrigger>
@@ -214,30 +169,24 @@ export function ClassCalendarResultCollationListTable({}: Props) {
               ))}
             </SelectContent>
           </Select>
-          <Select
-            value={String(classDivisionId || "")}
-            onValueChange={(value) => setClassDivisionId(Number(value))}
-            disabled={!classId}
-          >
+          <Select value={String(classDivisionId || "")} onValueChange={(value) => setClassDivisionId(Number(value))} disabled={!classId}>
             <SelectTrigger>
               <SelectValue placeholder="Class Division" />
             </SelectTrigger>
             <SelectContent>
-              {gradingTemplate?.classDivisionOptions?.map(
-                (classDivisionOption, idx) => (
-                  <SelectItem key={idx} value={String(classDivisionOption?.id)}>
-                    {classDivisionOption?.name}
-                  </SelectItem>
-                ),
-              )}
+              {gradingTemplate?.classDivisionOptions?.map((classDivisionOption, idx) => (
+                <SelectItem key={idx} value={String(classDivisionOption?.id)}>
+                  {classDivisionOption?.name}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
         <div className="hidden md:flex md:flex-1" />
       </div>
       <Card className="overflow-hidden mt-8">
-        <LoadingContent loading={false} data={{}}>
-          <DataTable data={studentCalendarResultList} columns={columns} />
+        <LoadingContent loading={studentCalendarResultUpdatePending} data={studentCalendarResultListQuery.data}>
+          <DataTable data={tableData} columns={columns} />
         </LoadingContent>
       </Card>
     </>
