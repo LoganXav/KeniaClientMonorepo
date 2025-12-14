@@ -336,4 +336,5 @@ export interface StudentCalendarResultType {
   averageScore: number;
   classDivisionId: number;
   subjectCountGraded: number;
+  studentCalendarTermAverageScores: { termId: number; term: Term; averageScore: number }[];
 }

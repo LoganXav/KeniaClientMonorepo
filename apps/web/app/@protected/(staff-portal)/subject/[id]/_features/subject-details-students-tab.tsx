@@ -39,11 +39,11 @@ export function SubjectDetailsStudentsTab({
         ),
       },
 
-      {
-        header: "Class",
-        accessorKey: "classId",
-        cell: ({ row }) => <p>{row?.original?.class?.name}</p>,
-      },
+      // {
+      //   header: "Class",
+      //   accessorKey: "classId",
+      //   cell: ({ row }) => <p>{row?.original?.class?.name}</p>,
+      // },
       {
         header: "Admission Number",
         accessorKey: "admissionNo",
