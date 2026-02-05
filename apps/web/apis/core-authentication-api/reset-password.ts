@@ -1,5 +1,10 @@
 import { postRequest } from "@/config/base-query";
+import { isMockApisMode } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
+import {
+  mockResetPasswordRequestResponse,
+  mockChangePasswordResponse,
+} from "./authentication.mocks";
 
 const BASE_URL = "auth/password-reset";
 
@@ -10,12 +15,13 @@ export const useResetPasswordRequestMutation = () => {
     error,
   } = useMutation({
     mutationFn: async (payload: { email: string }) => {
-      const data = await postRequest<unknown>({
+      if (isMockApisMode()) {
+        return mockResetPasswordRequestResponse;
+      }
+      return await postRequest<unknown>({
         endpoint: `${BASE_URL}/request`,
         payload,
       });
-
-      return data;
     },
   });
 
@@ -29,12 +35,13 @@ export const useChangePasswordMutation = () => {
     error,
   } = useMutation({
     mutationFn: async ({ payload, path }: { payload: { password: string }; path: { token: string } }) => {
-      const data = await postRequest<unknown>({
+      if (isMockApisMode()) {
+        return mockChangePasswordResponse;
+      }
+      return await postRequest<unknown>({
         endpoint: `${BASE_URL}/${path?.token}`,
         payload,
       });
-
-      return data;
     },
   });
 

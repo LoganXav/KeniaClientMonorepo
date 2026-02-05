@@ -1,11 +1,21 @@
 import { AuthUserType } from "@/types";
 import { cookies } from "next/headers";
+import { mockSignInResponseAdmin } from "@/apis/core-authentication-api/authentication.mocks";
+import { isMockApisMode } from "@/lib/utils";
+
+
 
 export const getAuthUserServer = (): { data: AuthUserType; accessToken: string } | null => {
   const cookieStore = cookies();
   const authUser = cookieStore.get("authUser");
 
   if (!authUser || !authUser.value) {
+    if (isMockApisMode()) {
+      return {
+        data: mockSignInResponseAdmin.data,
+        accessToken: mockSignInResponseAdmin.accessToken,
+      };
+    }
     return null;
   }
 
@@ -14,6 +24,12 @@ export const getAuthUserServer = (): { data: AuthUserType; accessToken: string }
     return JSON.parse(authUser.value);
   } catch (error) {
     console.error("Error parsing authUser cookie:", error);
+    if (isMockApisMode()) {
+      return {
+        data: mockSignInResponseAdmin.data,
+        accessToken: mockSignInResponseAdmin.accessToken,
+      };
+    }
     return null;
   }
 };

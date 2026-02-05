@@ -13,6 +13,7 @@ export const env = createEnv({
     NEXT_PUBLIC_AES_ENCRYPTION_IV: z.string(),
     NEXT_PUBLIC_APP_URL: z.string().min(1).optional(),
     NEXT_PUBLIC_BASE_URL: z.string().min(1),
+    NEXT_PUBLIC_USE_MOCK_APIS: z.string().optional(),
   },
   runtimeEnv: {
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
@@ -20,5 +21,6 @@ export const env = createEnv({
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
     NEXT_PUBLIC_AES_ENCRYPTION_KEY: process.env.NEXT_PUBLIC_AES_ENCRYPTION_KEY,
     NEXT_PUBLIC_AES_ENCRYPTION_IV: process.env.NEXT_PUBLIC_AES_ENCRYPTION_IV,
+    NEXT_PUBLIC_USE_MOCK_APIS: process.env.NEXT_PUBLIC_USE_MOCK_APIS,
   },
 });

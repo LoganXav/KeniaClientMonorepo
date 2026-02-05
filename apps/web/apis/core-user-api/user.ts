@@ -1,7 +1,9 @@
 import { getRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
+import { isMockApisMode } from "@/lib/utils";
 import { UserWithRelationsType } from "@/types";
 import { useQuery } from "@tanstack/react-query";
+import { mockGetAuthUserResponse } from "./user.mocks";
 
 const BASE_URL = "user";
 
@@ -9,6 +11,11 @@ export const useGetAuthUserQuery = ({ params }: { params: { tenantId?: number; u
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.USER, params?.tenantId, params?.userId],
     queryFn: async () => {
+
+      if (isMockApisMode()) {
+        return mockGetAuthUserResponse;
+      }
+      
       return await getRequest<UserWithRelationsType>({
         endpoint: `${BASE_URL}/me`,
         config: { params },

@@ -2,8 +2,13 @@ import { AuthVerifySchemaType } from "@/app/@public/(auth)/verify/_validators/au
 import { postRequest } from "@/config/base-query";
 import { setAuthUserAction } from "@/helpers/server/auth-user-action";
 import { useAuthUser } from "@/hooks/use-auth-user";
+import { isMockApisMode } from "@/lib/utils";
 import { AuthUserType } from "@/types";
 import { useMutation } from "@tanstack/react-query";
+import {
+  mockVerifyOtpResponse,
+  mockResendOtpResponse,
+} from "./authentication.mocks";
 
 const BASE_URL = "auth";
 
@@ -16,12 +21,17 @@ export const useVerifyOtpMutation = () => {
     error,
   } = useMutation({
     mutationFn: async (payload: AuthVerifySchemaType) => {
-      const data = await postRequest<AuthUserType>({
-        endpoint: `${BASE_URL}/otp/verify`,
-        payload,
-      });
+      let data;
+      if (isMockApisMode()) {
+        data = mockVerifyOtpResponse;
+      } else {
+        data = await postRequest<AuthUserType>({
+          endpoint: `${BASE_URL}/otp/verify`,
+          payload,
+        });
+      }
 
-      setAuthUserAction({
+      await setAuthUserAction({
         accessToken: data?.accessToken!,
         data: data?.data,
       });
@@ -41,12 +51,13 @@ export const useResendOtpMutation = () => {
     error,
   } = useMutation({
     mutationFn: async (payload: { email: string }) => {
-      const data = await postRequest<unknown>({
+      if (isMockApisMode()) {
+        return mockResendOtpResponse;
+      }
+      return await postRequest<unknown>({
         endpoint: `${BASE_URL}/otp/refresh`,
         payload,
       });
-
-      return data;
     },
   });
 

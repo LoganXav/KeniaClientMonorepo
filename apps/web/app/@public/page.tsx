@@ -9,9 +9,10 @@ export default function HomePage(): JSX.Element {
         Home Page.
       </Typography>
       <div className="flex flex-col text-center items-center">
-        <p>To check out the authentication screens,</p>
+        {/* <p>To check out the authentication screens,</p> */}
+        <p>Welcome to Kenia. A platform that helps you manage your school better.</p>
         <p>
-          Navigate to{" "}
+          Click here to{" "}
           <Link href={RouteEnums.LOBBY} className="underline hover:text-link">
             Get Started
           </Link>{" "}

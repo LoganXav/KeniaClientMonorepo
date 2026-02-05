@@ -3,6 +3,11 @@
 import { env } from "@/env.mjs";
 import { AuthUserType } from "@/types";
 import { cookies } from "next/headers";
+import { isMockApisMode } from "@/lib/utils";
+import { mockSignInResponseAdmin } from "@/apis/core-authentication-api/authentication.mocks";
+
+
+
 
 export const getAuthUserAction = async (): Promise<{
   data: AuthUserType;
@@ -13,6 +18,12 @@ export const getAuthUserAction = async (): Promise<{
     const authUser = cookieStore.get("authUser");
 
     if (!authUser || !authUser.value) {
+      if (isMockApisMode()) {
+        return {
+          data: mockSignInResponseAdmin.data,
+          accessToken: mockSignInResponseAdmin.accessToken,
+        };
+      }
       return null;
     }
 
@@ -20,6 +31,12 @@ export const getAuthUserAction = async (): Promise<{
     return JSON.parse(authUser.value);
   } catch (error) {
     console.error("Error parsing authUser cookie:", error);
+    if (isMockApisMode()) {
+      return {
+        data: mockSignInResponseAdmin.data,
+        accessToken: mockSignInResponseAdmin.accessToken,
+      };
+    }
     return null;
   }
 };

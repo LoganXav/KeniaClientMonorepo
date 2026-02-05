@@ -17,3 +17,8 @@ export function debounce(func: (...args: any[]) => void, delay: number) {
     timeout = setTimeout(() => func(...args), delay);
   };
 }
+
+
+export function isMockApisMode(): boolean {
+  return env.NEXT_PUBLIC_USE_MOCK_APIS === "true";
+}
