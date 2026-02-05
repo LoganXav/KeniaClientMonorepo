@@ -3,6 +3,11 @@ import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { StudentTermResultUpdatePayload } from "@/app/@protected/(staff-portal)/class/term-result/_features/_types/class-term-result-collation-form-types";
+import { isMockApisMode } from "@/lib/utils";
+import {
+  mockGetStudentTermResultListResponse,
+  mockStudentTermResultUpdateResponse,
+} from "./student-term-result.mocks";
 
 const BASE_URL = "student/termresult";
 
@@ -27,6 +32,9 @@ export const useGetStudentTermResultListQuery = ({
       params?.classDivisionId,
     ],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetStudentTermResultListResponse;
+      }
       return await getRequest<StudentTermResultType[]>({
         endpoint: `${BASE_URL}/list`,
         config: { params },
@@ -56,6 +64,9 @@ export const useStudentTermResultUpdateMutation = ({
       payload: StudentTermResultUpdatePayload;
       path: { studentId: number };
     }) => {
+      if (isMockApisMode()) {
+        return mockStudentTermResultUpdateResponse;
+      }
       const data = await postRequest<StudentTermResultType>({
         endpoint: `${BASE_URL}/${path.studentId}`,
         payload,

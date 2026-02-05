@@ -1,8 +1,10 @@
-import { SubjectType } from "@/types";
+import { SubjectCreateFormSchemaType, SubjectTemplateOptions } from "@/app/@protected/(staff-portal)/school/subject/list/_types/school-subject-create-types";
 import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
+import { isMockApisMode } from "@/lib/utils";
+import { SubjectType } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { SubjectCreateFormSchemaType, SubjectTemplateOptions } from "@/app/@protected/(staff-portal)/school/subject/list/_types/school-subject-create-types";
+import { mockGetSubjectListResponse } from "./subject.mocks";
 
 const BASE_URL = "subject";
 
@@ -24,6 +26,9 @@ export const useGetSubjectListQuery = ({ params }: { params?: { tenantId?: numbe
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.SUBJECT, params?.tenantId, params?.staffIds],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetSubjectListResponse;
+      }
       return await getRequest<SubjectType[]>({
         endpoint: `${BASE_URL}/list`,
         config: { params },

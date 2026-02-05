@@ -3,6 +3,15 @@ import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { StaffBulkCreateType, StaffCreateFormSchemaType, StaffTemplateOptions } from "@/app/@protected/(staff-portal)/staff/create/_types/staff-create-form-types";
+import { isMockApisMode } from "@/lib/utils";
+import {
+  mockGetStaffListResponse,
+  mockGetSingleStaffResponse,
+  mockGetStaffTemplateResponse,
+  mockStaffCreateResponse,
+  mockStaffUpdateResponse,
+  mockStaffBulkCreateResponse,
+} from "./staff.mocks";
 
 const BASE_URL = "staff";
 
@@ -10,6 +19,9 @@ export const useGetStaffListQuery = ({ params, enabled }: { params?: Partial<Rec
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.STAFF, params?.tenantId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetStaffListResponse;
+      }
       return await getRequest<StaffType[]>({
         endpoint: `${BASE_URL}/list`,
         config: { params },
@@ -29,6 +41,9 @@ export const useStaffCreateMutation = ({ params }: { params?: { tenantId?: numbe
     error: staffCreateError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: StaffCreateFormSchemaType }) => {
+      if (isMockApisMode()) {
+        return mockStaffCreateResponse;
+      }
       const data = await postRequest<StaffType>({
         endpoint: `${BASE_URL}/create`,
         payload,
@@ -55,6 +70,9 @@ export const useStaffBulkCreateMutation = ({ params }: { params?: { tenantId?: n
     error: staffBulkCreateError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: StaffBulkCreateType }) => {
+      if (isMockApisMode()) {
+        return mockStaffBulkCreateResponse;
+      }
       const data = await postRequest<null>({
         endpoint: `${BASE_URL}/bulk/create`,
         payload,
@@ -77,6 +95,9 @@ export const useGetStaffTemplateQuery = ({ params }: { params: { tenantId?: numb
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.STAFF_TEMPLATE, params?.tenantId, params?.codeValue],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetStaffTemplateResponse;
+      }
       return await getRequest<StaffTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
         config: { params },
@@ -91,6 +112,9 @@ export const useGetSingleStaffQuery = ({ path, params }: { path: { staffId?: num
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.STAFF, params?.tenantId, path?.staffId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetSingleStaffResponse;
+      }
       return await getRequest<StaffType>({
         endpoint: `${BASE_URL}/info/${path?.staffId}`,
         config: { params },
@@ -110,6 +134,9 @@ export const useStaffUpdateMutation = ({ path, params }: { path?: { staffId?: nu
     error: staffUpdateError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: Partial<StaffCreateFormSchemaType> }) => {
+      if (isMockApisMode()) {
+        return mockStaffUpdateResponse;
+      }
       const data = await postRequest<StaffType>({
         endpoint: `${BASE_URL}/update/${path?.staffId}`,
         payload,

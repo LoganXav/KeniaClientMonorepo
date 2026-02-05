@@ -3,6 +3,11 @@ import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { StudentCalendarResultUpdatePayload } from "@/app/@protected/(staff-portal)/class/calendar-result/_types/class-calendar-result-collation-form-types";
+import { isMockApisMode } from "@/lib/utils";
+import {
+  mockGetStudentCalendarResultListResponse,
+  mockStudentCalendarResultUpdateResponse,
+} from "./student-calendar-result.mocks";
 
 const BASE_URL = "student/calendarresult";
 
@@ -56,6 +61,9 @@ export const useStudentCalendarResultUpdateMutation = ({
       payload: StudentCalendarResultUpdatePayload;
       path: { studentId: number };
     }) => {
+      if (isMockApisMode()) {
+        return mockStudentCalendarResultUpdateResponse;
+      }
       const data = await postRequest<StudentCalendarResultType>({
         endpoint: `${BASE_URL}/${path.studentId}`,
         payload,

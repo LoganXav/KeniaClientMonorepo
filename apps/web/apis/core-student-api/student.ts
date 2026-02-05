@@ -4,6 +4,17 @@ import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { StudentBulkCreateType, StudentCreateFormSchemaType, StudentTemplateOptions } from "@/app/@protected/(staff-portal)/student/create/_types/student-create-form-types";
 import { StudentSubjectRegistrationCreateFormSchemaType } from "@/app/@protected/(staff-portal)/student/subject-registration/_types/student-subject-registration-form-types";
+import { isMockApisMode } from "@/lib/utils";
+import {
+  mockGetStudentListResponse,
+  mockGetSingleStudentResponse,
+  mockGetStudentTemplateResponse,
+  mockStudentCreateResponse,
+  mockStudentUpdateResponse,
+  mockStudentBulkCreateResponse,
+  mockStudentSubjectRegistrationCreateResponse,
+  mockGetStudentSubjectRegistrationListResponse,
+} from "./student.mocks";
 
 const BASE_URL = "student";
 
@@ -11,6 +22,9 @@ export const useGetStudentListQuery = ({ params, enabled = true }: { params: { t
   const { data, isLoading, error, refetch, isFetching } = useQuery({
     queryKey: [QueryTagEnums.STUDENT, params?.tenantId, params?.excludePromotedInCalendarId, params?.classId, params?.classDivisionId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetStudentListResponse;
+      }
       return await getRequest<StudentType[]>({
         endpoint: `${BASE_URL}/list`,
         config: { params },
@@ -30,6 +44,9 @@ export const useStudentCreateMutation = ({ params }: { params: { tenantId?: numb
     error: studentCreateError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: StudentCreateFormSchemaType }) => {
+      if (isMockApisMode()) {
+        return mockStudentCreateResponse;
+      }
       const data = await postRequest<StudentType>({
         endpoint: `${BASE_URL}/create`,
         payload,
@@ -56,6 +73,9 @@ export const useStudentBulkCreateMutation = ({ params }: { params?: { tenantId?:
     error: studentBulkCreateError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: StudentBulkCreateType }) => {
+      if (isMockApisMode()) {
+        return mockStudentBulkCreateResponse;
+      }
       const data = await postRequest<null>({
         endpoint: `${BASE_URL}/bulk/create`,
         payload,
@@ -77,6 +97,9 @@ export const useGetStudentTemplateQuery = ({ params }: { params: { tenantId?: nu
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.USER, params?.tenantId, params?.codeValue, params?.classId, params?.classDivisionId, params?.calendarId, params?.studentId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetStudentTemplateResponse;
+      }
       return await getRequest<StudentTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
         config: { params },
@@ -95,6 +118,9 @@ export const useGetSingleStudentQuery = ({ path, params }: { path: { studentId?:
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.STUDENT, params?.tenantId, path?.studentId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetSingleStudentResponse;
+      }
       return await getRequest<StudentType>({
         endpoint: `${BASE_URL}/info/${path?.studentId}`,
         config: { params },
@@ -114,6 +140,9 @@ export const useStudentUpdateMutation = ({ path, params }: { path: { studentId?:
     error: studentUpdateError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: StudentCreateFormSchemaType }) => {
+      if (isMockApisMode()) {
+        return mockStudentUpdateResponse;
+      }
       const data = await postRequest<StudentType>({
         endpoint: `${BASE_URL}/update/${path?.studentId}`,
         payload,
@@ -140,6 +169,9 @@ export const useStudentSubjectRegistrationCreateMutation = ({ params }: { params
     error: studentSubjectRegistrationCreateError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: StudentSubjectRegistrationCreateFormSchemaType }) => {
+      if (isMockApisMode()) {
+        return mockStudentSubjectRegistrationCreateResponse;
+      }
       const data = await postRequest<StudentType>({
         endpoint: `${BASE_URL}/subjectregistration/create`,
         payload,
@@ -161,6 +193,9 @@ export const useGetStudentSubjectRegistrationListQuery = ({ params }: { params: 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.STUDENT, params?.tenantId, params?.subjectId, params?.classId, params?.calendarId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetStudentSubjectRegistrationListResponse;
+      }
       return await getRequest<SubjectsRegisteredType[]>({
         endpoint: `${BASE_URL}/subjectregistration/list`,
         config: { params },

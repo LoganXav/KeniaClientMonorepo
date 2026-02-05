@@ -1,8 +1,10 @@
-import { ClassDivisionType } from "@/types";
+import { ClassDivisionCreateFormSchemaType } from "@/app/@protected/(staff-portal)/class/division/create/_types/class-division-create-types";
 import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
+import { isMockApisMode } from "@/lib/utils";
+import { ClassDivisionType } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ClassDivisionCreateFormSchemaType } from "@/app/@protected/(staff-portal)/class/division/create/_types/class-division-create-types";
+import { mockGetClassDivisionListResponse } from "./class-division.mocks";
 
 const BASE_URL = "classdivision";
 
@@ -10,6 +12,9 @@ export const useGetClassDivisionListQuery = ({ params }: { params: { tenantId?: 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.CLASS_DIVISION, params?.tenantId, params?.classTeacherId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetClassDivisionListResponse;
+      }
       return await getRequest<ClassDivisionType[]>({
         endpoint: `${BASE_URL}/list`,
         config: { params },

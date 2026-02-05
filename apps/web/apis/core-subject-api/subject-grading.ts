@@ -4,6 +4,8 @@ import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SubjectGradingTemplateOptions } from "@/app/@protected/(staff-portal)/student/grading/_types/subject-grading-types";
 import { SubjectBulkGradingCreateType, SubjectGradingCreateFormSchemaType } from "@/app/@protected/(staff-portal)/subject/[id]/_types/subject-grading-form-types";
+import { isMockApisMode } from "@/lib/utils";
+import { mockGetSubjectGradingTemplateResponse } from "./subject-grading.mocks";
 
 const BASE_URL = "subject/grading";
 
@@ -20,6 +22,9 @@ export const useGetSubjectGradingTemplateQuery = ({
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.SUBJECT_GRADING_TEMPLATE, params?.tenantId, params?.calendarId, params?.classId, params?.subjectId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetSubjectGradingTemplateResponse;
+      }
       return await getRequest<SubjectGradingTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
         config: { params },

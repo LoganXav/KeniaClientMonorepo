@@ -2,6 +2,8 @@ import { StudentGradingType } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { getRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
+import { isMockApisMode } from "@/lib/utils";
+import { mockGetStudentGradingListResponse } from "./student-grading.mocks";
 
 const BASE_URL = "student/grading";
 
@@ -9,6 +11,9 @@ export const useGetStudentGradingListQuery = ({ path, params }: { path: {}; para
   const { data, isLoading, error, refetch, isFetched, isError } = useQuery({
     queryKey: [QueryTagEnums.STUDENT_GRADING, params?.tenantId, params?.calendarId, params?.termId, params?.classId, params?.classDivisionId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetStudentGradingListResponse;
+      }
       return await getRequest<StudentGradingType[]>({
         endpoint: `${BASE_URL}/list`,
         config: { params },
