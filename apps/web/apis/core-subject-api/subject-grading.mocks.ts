@@ -1,5 +1,6 @@
-import { GetRequestReturnType } from "@/config/base-query";
+import { GetRequestReturnType, PostRequestReturnType } from "@/config/base-query";
 import { SubjectGradingTemplateOptions } from "@/app/@protected/(staff-portal)/student/grading/_types/subject-grading-types";
+import { SubjectGradingType } from "@/types";
 import { createMockStudent } from "../core-student-api/student.mocks";
 
 /**
@@ -60,4 +61,78 @@ export const mockGetSubjectGradingTemplateResponse: GetRequestReturnType<Subject
   },
   message: "Resource fetched successfully",
   statusCode: 200,
+};
+
+/**
+ * Mock response for GET subject/grading/list
+ * Returns array of subject grading records
+ */
+export const mockGetSubjectGradingListResponse: GetRequestReturnType<SubjectGradingType[]> = {
+  data: [
+    {
+      continuousAssessmentScores: [
+        { id: 1, name: "Assignment", score: 15 },
+        { id: 2, name: "Quiz", score: 12 },
+        { id: 3, name: "Project", score: 18 },
+      ],
+      subject: {} as any,
+      totalScore: 75,
+      grade: "A",
+      classId: 1,
+      classDivisionId: 1,
+      student: {
+        classDivision: {} as any,
+      },
+    },
+    {
+      continuousAssessmentScores: [
+        { id: 4, name: "Assignment", score: 12 },
+        { id: 5, name: "Quiz", score: 10 },
+      ],
+      subject: {} as any,
+      totalScore: 68,
+      grade: "B",
+      classId: 1,
+      classDivisionId: 1,
+      student: {
+        classDivision: {} as any,
+      },
+    },
+  ],
+  message: "Resource fetched successfully",
+  statusCode: 200,
+};
+
+/**
+ * Mock response for POST subject/grading/create
+ * Returns created subject grading
+ */
+export const mockSubjectGradingCreateResponse: PostRequestReturnType<SubjectGradingType> = {
+  data: {
+    continuousAssessmentScores: [
+      { id: 6, name: "Assignment", score: 18 },
+      { id: 7, name: "Quiz", score: 15 },
+      { id: 8, name: "Project", score: 20 },
+    ],
+    subject: {} as any,
+    totalScore: 83,
+    grade: "A",
+    classId: 1,
+    classDivisionId: 1,
+    student: {
+      classDivision: {} as any,
+    },
+  },
+  message: "Subject grading created successfully",
+  statusCode: 201,
+};
+
+/**
+ * Mock response for POST subject/grading/bulk/create
+ * Returns null (bulk operations typically return success message only)
+ */
+export const mockSubjectGradingBulkCreateResponse: PostRequestReturnType<null> = {
+  data: null,
+  message: "Subject grading created successfully",
+  statusCode: 201,
 };

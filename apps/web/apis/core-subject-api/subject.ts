@@ -4,7 +4,13 @@ import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { isMockApisMode } from "@/lib/utils";
 import { SubjectType } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { mockGetSubjectListResponse } from "./subject.mocks";
+import {
+  mockGetSubjectListResponse,
+  mockGetSubjectTemplateResponse,
+  mockGetSingleSubjectResponse,
+  mockSubjectCreateResponse,
+  mockSubjectUpdateResponse,
+} from "./subject.mocks";
 
 const BASE_URL = "subject";
 
@@ -12,6 +18,9 @@ export const useGetSingleSubjectQuery = ({ params }: { params?: { tenantId?: num
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.SUBJECT, params?.tenantId, params?.subjectId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetSingleSubjectResponse;
+      }
       return await getRequest<SubjectType>({
         endpoint: `${BASE_URL}/info/${params?.subjectId}`,
         config: { params },
@@ -47,6 +56,9 @@ export const useSubjectCreateMutation = ({ params }: { params?: { tenantId?: num
     error: subjectCreateError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: SubjectCreateFormSchemaType }) => {
+      if (isMockApisMode()) {
+        return mockSubjectCreateResponse;
+      }
       const data = await postRequest<SubjectType>({
         endpoint: `${BASE_URL}/create`,
         payload,
@@ -71,6 +83,9 @@ export const useSubjectUpdateMutation = ({ path, params }: { path?: { subjectId?
     error: subjectUpdateError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: SubjectCreateFormSchemaType }) => {
+      if (isMockApisMode()) {
+        return mockSubjectUpdateResponse;
+      }
       const data = await postRequest<SubjectType>({
         endpoint: `${BASE_URL}/update/${path?.subjectId}`,
         payload,
@@ -89,8 +104,11 @@ export const useSubjectUpdateMutation = ({ path, params }: { path?: { subjectId?
 
 export const useGetSubjectTemplateQuery = ({ params }: { params: { tenantId?: number } }) => {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [],
+    queryKey: [QueryTagEnums.SUBJECT_TEMPLATE, params?.tenantId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetSubjectTemplateResponse;
+      }
       return await getRequest<SubjectTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
         config: { params },

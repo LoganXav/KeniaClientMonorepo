@@ -4,7 +4,12 @@ import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { isMockApisMode } from "@/lib/utils";
 import { ClassDivisionType } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { mockGetClassDivisionListResponse } from "./class-division.mocks";
+import {
+  mockGetClassDivisionListResponse,
+  mockGetSingleClassDivisionResponse,
+  mockCreateClassDivisionResponse,
+  mockUpdateClassDivisionResponse,
+} from "./class-division.mocks";
 
 const BASE_URL = "classdivision";
 
@@ -48,6 +53,9 @@ export const useCreateClassDivisionMutation = ({ params }: { params: { tenantId?
     error: createClassDivisionError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: ClassDivisionCreateFormSchemaType }) => {
+      if (isMockApisMode()) {
+        return mockCreateClassDivisionResponse;
+      }
       const data = await postRequest<ClassDivisionType>({
         endpoint: `${BASE_URL}/create`,
         payload,
@@ -72,6 +80,9 @@ export const useUpdateClassDivisionMutation = ({ path, params }: { path: { class
     error: updateClassDivisionError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: ClassDivisionCreateFormSchemaType }) => {
+      if (isMockApisMode()) {
+        return mockUpdateClassDivisionResponse;
+      }
       const data = await postRequest<ClassDivisionType>({
         endpoint: `${BASE_URL}/update/${path?.classDivisionId}`,
         payload,

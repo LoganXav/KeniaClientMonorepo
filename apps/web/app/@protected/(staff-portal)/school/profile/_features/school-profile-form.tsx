@@ -73,7 +73,13 @@ function SchoolProfileForm({}: Props) {
       registrationNo: tenant?.registrationNo || values.registrationNo,
       contactEmail: tenant?.contactEmail || values.contactEmail,
       contactPhone: tenant?.contactPhone || values.contactPhone,
-      establishedDate: tenant?.establishedDate || values.establishedDate,
+      establishedDate: tenant?.establishedDate
+        ? typeof tenant.establishedDate === "string"
+          ? tenant.establishedDate
+          : tenant.establishedDate instanceof Date
+            ? tenant.establishedDate.toISOString()
+            : values.establishedDate
+        : values.establishedDate,
       logoUrl: tenant?.logoUrl || values.logoUrl,
       address: tenant?.address || values.address,
       stateId: Number(tenant?.stateId) || values.stateId,

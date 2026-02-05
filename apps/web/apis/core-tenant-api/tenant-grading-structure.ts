@@ -3,6 +3,13 @@ import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SchoolGradingStructureCreateFormSchemaType, SchoolGradingStructureTemplateOptions } from "@/app/@protected/(staff-portal)/school/grading/create/_types/school-grading-structure-form-types";
+import { isMockApisMode } from "@/lib/utils";
+import {
+  mockGetSchoolGradingStructureResponse,
+  mockGetSchoolGradingStructureListResponse,
+  mockGetSchoolGradingStructureTemplateResponse,
+  mockCreateSchoolGradingStructureResponse,
+} from "./tenant-grading-structure.mocks";
 
 const BASE_URL = "tenant/gradingstructure";
 
@@ -10,6 +17,9 @@ export const useGetSchoolGradingStructureQuery = ({ path, params }: { path: { gr
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.TENANT_GRADING_STRUCTURE, params?.tenantId, params?.classId, path?.gradeStructureId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetSchoolGradingStructureResponse;
+      }
       return await getRequest<SchoolGradingStructureType>({
         endpoint: `${BASE_URL}/info/${path?.gradeStructureId}`,
         config: { params },
@@ -25,6 +35,9 @@ export const useGetSchoolGradingStructureListQuery = ({ path, params }: { path: 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.TENANT_GRADING_STRUCTURE, params?.tenantId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetSchoolGradingStructureListResponse;
+      }
       return await getRequest<SchoolGradingStructureType[]>({
         endpoint: `${BASE_URL}/list`,
         config: { params },
@@ -39,6 +52,9 @@ export const useGetSchoolGradingStructureTemplateQuery = ({ path, params }: { pa
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.TENANT_GRADING_STRUCTURE_TEMPLATE, params.tenantId, params.classIds],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetSchoolGradingStructureTemplateResponse;
+      }
       return await getRequest<SchoolGradingStructureTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
         config: { params },
@@ -62,6 +78,9 @@ export const useCreateSchoolGradingStructureMutation = ({ params }: { params: { 
     error: createGradingStructureError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: SchoolGradingStructureCreateFormSchemaType }) => {
+      if (isMockApisMode()) {
+        return mockCreateSchoolGradingStructureResponse;
+      }
       const data = await postRequest<SchoolGradingStructureType>({
         endpoint: `${BASE_URL}/create`,
         payload,

@@ -3,6 +3,12 @@ import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { SchoolType } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { isMockApisMode } from "@/lib/utils";
+import {
+  mockGetTenantResponse,
+  mockGetSchoolProfileTemplateResponse,
+  mockUpdateTenantProfileResponse,
+} from "./tenant.mocks";
 
 const BASE_URL = "tenant";
 
@@ -10,6 +16,9 @@ export const useGetTenantQuery = ({ params }: { params: { tenantId?: number } })
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.TENANT, params?.tenantId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetTenantResponse;
+      }
       return await getRequest<SchoolType>({
         endpoint: `${BASE_URL}`,
         config: { params },
@@ -28,6 +37,9 @@ export const useUpdateTenantProfileMutation = ({ params }: { params: { tenantId?
     error: updateTenantProfileError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: SchoolProfileFormSchemaType }) => {
+      if (isMockApisMode()) {
+        return mockUpdateTenantProfileResponse;
+      }
       const data = await postRequest<null>({
         endpoint: `${BASE_URL}/update`,
         payload,
@@ -48,6 +60,9 @@ export const useGetSchoolProfileTemplateQuery = ({ params }: { params: { tenantI
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.USER, params?.tenantId, params?.codeValue],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetSchoolProfileTemplateResponse;
+      }
       return await getRequest<SchoolProfileFormTemplateType>({
         endpoint: `${BASE_URL}/template`,
         config: { params },

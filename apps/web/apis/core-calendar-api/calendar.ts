@@ -3,6 +3,13 @@ import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SchoolCalendarTemplateOptions } from "@/app/@protected/(staff-portal)/school/calendar/create/_types/school-calendar-form-types";
+import { isMockApisMode } from "@/lib/utils";
+import {
+  mockGetCalendarResponse,
+  mockGetSingleCalendarResponse,
+  mockGetCalendarTemplateResponse,
+  mockCalendarCreateResponse,
+} from "./calendar.mocks";
 
 const BASE_URL = "calendar";
 
@@ -10,6 +17,9 @@ export const useGetCalendarQuery = ({ params }: { params?: { tenantId?: number }
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.CALENDAR, params?.tenantId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetCalendarResponse;
+      }
       return await getRequest<CalendarType[]>({
         endpoint: `${BASE_URL}/list`,
         config: { params },
@@ -24,6 +34,9 @@ export const useGetSingleCalendarQuery = ({ params }: { params?: { tenantId?: nu
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.CALENDAR, params?.tenantId, params?.year],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetSingleCalendarResponse;
+      }
       return await getRequest<CalendarType>({
         endpoint: `${BASE_URL}/info`,
         config: { params },
@@ -43,6 +56,9 @@ export const useCalendarMutation = ({ params }: { params?: { tenantId?: number }
     error: calendarMutateError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: Record<string, any> }) => {
+      if (isMockApisMode()) {
+        return mockCalendarCreateResponse;
+      }
       return await postRequest<CalendarType>({
         endpoint: `${BASE_URL}/create`,
         payload,
@@ -61,6 +77,9 @@ export const useGetCalendarTemplateQuery = ({ params }: { params: { tenantId?: n
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.CALENDAR_TEMPLATE, params?.tenantId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetCalendarTemplateResponse;
+      }
       return await getRequest<SchoolCalendarTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
         config: { params },

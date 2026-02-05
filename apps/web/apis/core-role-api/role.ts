@@ -3,6 +3,13 @@ import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { RoleAndPermissionsCreateFormSchemaType, RolesAndPermissionsTemplateOptions } from "@/app/@protected/(staff-portal)/roles-and-permissions/_types/roles-and-permissions-form-types";
+import { isMockApisMode } from "@/lib/utils";
+import {
+  mockGetRoleListResponse,
+  mockGetRoleTemplateResponse,
+  mockRoleCreateResponse,
+  mockRoleUpdateResponse,
+} from "./role.mocks";
 
 const BASE_URL = "role";
 
@@ -10,6 +17,9 @@ export const useGetRoleTemplateQuery = ({ params }: { params?: { tenantId?: numb
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.ROLE_TEMPLATE, params?.tenantId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetRoleTemplateResponse;
+      }
       return await getRequest<RolesAndPermissionsTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
         config: { params },
@@ -24,6 +34,9 @@ export const useGetRoleListQuery = ({ params }: { params?: { tenantId?: number }
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.ROLE, params?.tenantId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetRoleListResponse;
+      }
       return await getRequest<RoleType[]>({
         endpoint: `${BASE_URL}/list`,
         config: { params },
@@ -42,6 +55,9 @@ export const useRoleCreateMutation = ({ params }: { params?: { tenantId?: number
     error: roleCreateError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: RoleAndPermissionsCreateFormSchemaType }) => {
+      if (isMockApisMode()) {
+        return mockRoleCreateResponse;
+      }
       const data = await postRequest<RoleType>({
         endpoint: `${BASE_URL}/create`,
         payload,
@@ -68,6 +84,9 @@ export const useRoleUpdateMutation = ({ path, params }: { path: { id?: number };
     error: roleUpdateError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: RoleAndPermissionsCreateFormSchemaType }) => {
+      if (isMockApisMode()) {
+        return mockRoleUpdateResponse;
+      }
       const data = await postRequest<RoleType>({
         endpoint: `${BASE_URL}/update/${path?.id}`,
         payload,

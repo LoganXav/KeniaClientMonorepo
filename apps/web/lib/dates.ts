@@ -54,3 +54,21 @@ export function formatTimeRange(start: string, end: string): string {
   const endTime = format(new Date(end), "HH:mm");
   return `${startTime} - ${endTime}`;
 }
+
+/**
+ * Converts a date value (Date object or ISO string) to an ISO string
+ * Used in mock responses to ensure dates are properly serialized as strings
+ * @param date - Date object or ISO string
+ * @returns ISO string representation of the date
+ */
+export function toISOString(date: Date | string): string {
+  if (typeof date === "string") {
+    // If it's already a string, validate it's a valid ISO string
+    const parsed = new Date(date);
+    if (isNaN(parsed.getTime())) {
+      throw new Error(`Invalid date string: ${date}`);
+    }
+    return parsed.toISOString();
+  }
+  return date.toISOString();
+}

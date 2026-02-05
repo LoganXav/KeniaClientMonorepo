@@ -3,6 +3,12 @@ import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ClassPromotionTemplateOptions } from "@/app/@protected/(staff-portal)/class/promotion/_types/class-promotion-types";
+import { isMockApisMode } from "@/lib/utils";
+import {
+  mockGetClassPromotionListResponse,
+  mockGetClassPromotionTemplateResponse,
+  mockCreateClassPromotionResponse,
+} from "./class-promotion.mocks";
 
 const BASE_URL = "class/promotion";
 
@@ -10,6 +16,9 @@ export const useGetClassPromotionListQuery = ({ params }: { params: { tenantId?:
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.CLASS_PROMOTION, params?.tenantId, params?.calendarId, params?.classId, params?.classDivisionId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetClassPromotionListResponse;
+      }
       return await getRequest<ClassPromotionType[]>({
         endpoint: `${BASE_URL}/list`,
         config: { params },
@@ -25,6 +34,9 @@ export const useGetClassPromotionTemplateQuery = ({ params }: { params: { tenant
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.CLASS_PROMOTION_TEMPLATE, params?.tenantId, params?.classId, params?.classDivisionId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetClassPromotionTemplateResponse;
+      }
       return await getRequest<ClassPromotionTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
         config: { params },
@@ -43,6 +55,9 @@ export const useCreateClassPromotionMutation = ({ params }: { params: { tenantId
     error: createClassPromotionError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: any }) => {
+      if (isMockApisMode()) {
+        return mockCreateClassPromotionResponse;
+      }
       const data = await postRequest<ClassPromotionType>({
         endpoint: `${BASE_URL}/create`,
         payload,

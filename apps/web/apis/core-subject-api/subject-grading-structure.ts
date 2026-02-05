@@ -3,6 +3,11 @@ import { getRequest, postRequest } from "@/config/base-query";
 import { QueryTagEnums } from "@/constants/query-store/query-constants";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SubjectGradingStructureCreateFormSchemaType } from "@/app/@protected/(staff-portal)/subject/[id]/_types/subject-grading-structure-form-types";
+import { isMockApisMode } from "@/lib/utils";
+import {
+  mockGetSubjectGradingStructureResponse,
+  mockCreateSubjectGradingStructureResponse,
+} from "./subject-grading-structure.mocks";
 
 const BASE_URL = "subject/gradingstructure";
 
@@ -33,6 +38,9 @@ export const useCreateSubjectGradingStructureMutation = ({ params }: { params: {
     error: createGradingStructureError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: SubjectGradingStructureCreateFormSchemaType }) => {
+      if (isMockApisMode()) {
+        return mockCreateSubjectGradingStructureResponse;
+      }
       const data = await postRequest<SubjectGradingStructureType>({
         endpoint: `${BASE_URL}/create`,
         payload,

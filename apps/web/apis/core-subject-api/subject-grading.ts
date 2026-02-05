@@ -5,7 +5,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SubjectGradingTemplateOptions } from "@/app/@protected/(staff-portal)/student/grading/_types/subject-grading-types";
 import { SubjectBulkGradingCreateType, SubjectGradingCreateFormSchemaType } from "@/app/@protected/(staff-portal)/subject/[id]/_types/subject-grading-form-types";
 import { isMockApisMode } from "@/lib/utils";
-import { mockGetSubjectGradingTemplateResponse } from "./subject-grading.mocks";
+import {
+  mockGetSubjectGradingTemplateResponse,
+  mockGetSubjectGradingListResponse,
+  mockSubjectGradingCreateResponse,
+  mockSubjectGradingBulkCreateResponse,
+} from "./subject-grading.mocks";
 
 const BASE_URL = "subject/grading";
 
@@ -56,6 +61,9 @@ export const useGetSubjectGradingListQuery = ({
   const { data, isLoading, error, refetch, isFetched, isError } = useQuery({
     queryKey: [QueryTagEnums.SUBJECT_GRADING, params?.tenantId, params?.subjectId, params?.calendarId, params?.termId, params?.classId, params?.classDivisionId],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetSubjectGradingListResponse;
+      }
       return await getRequest<SubjectGradingType[]>({
         endpoint: `${BASE_URL}/list`,
         config: { params },
@@ -75,6 +83,9 @@ export const useSubjectGradingCreateMutation = ({ params }: { params?: { tenantI
     error: subjectGradingCreateError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: SubjectGradingCreateFormSchemaType }) => {
+      if (isMockApisMode()) {
+        return mockSubjectGradingCreateResponse;
+      }
       const data = await postRequest<SubjectGradingType>({
         endpoint: `${BASE_URL}/create`,
         payload,
@@ -105,6 +116,9 @@ export const useSubjectGradingBulkCreateMutation = ({ params }: { params?: { ten
     error: subjectBulkGradingCreateError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: SubjectBulkGradingCreateType }) => {
+      if (isMockApisMode()) {
+        return mockSubjectGradingBulkCreateResponse;
+      }
       const data = await postRequest<null>({
         endpoint: `${BASE_URL}/bulk/create`,
         payload,
