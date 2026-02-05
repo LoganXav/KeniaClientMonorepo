@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { mockSignInResponseAdmin } from "@/apis/core-authentication-api/authentication.mocks";
 import { isMockApisMode } from "@/lib/utils";
 
-
+const MOCK_LOGGED_OUT_COOKIE = "mock_logged_out";
 
 export const getAuthUserServer = (): { data: AuthUserType; accessToken: string } | null => {
   const cookieStore = cookies();
@@ -11,6 +11,8 @@ export const getAuthUserServer = (): { data: AuthUserType; accessToken: string }
 
   if (!authUser || !authUser.value) {
     if (isMockApisMode()) {
+      const mockLoggedOut = cookieStore.get(MOCK_LOGGED_OUT_COOKIE);
+      if (mockLoggedOut?.value) return null;
       return {
         data: mockSignInResponseAdmin.data,
         accessToken: mockSignInResponseAdmin.accessToken,
@@ -25,6 +27,8 @@ export const getAuthUserServer = (): { data: AuthUserType; accessToken: string }
   } catch (error) {
     console.error("Error parsing authUser cookie:", error);
     if (isMockApisMode()) {
+      const mockLoggedOut = cookieStore.get(MOCK_LOGGED_OUT_COOKIE);
+      if (mockLoggedOut?.value) return null;
       return {
         data: mockSignInResponseAdmin.data,
         accessToken: mockSignInResponseAdmin.accessToken,

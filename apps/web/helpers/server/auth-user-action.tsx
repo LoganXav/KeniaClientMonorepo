@@ -6,8 +6,7 @@ import { cookies } from "next/headers";
 import { isMockApisMode } from "@/lib/utils";
 import { mockSignInResponseAdmin } from "@/apis/core-authentication-api/authentication.mocks";
 
-
-
+const MOCK_LOGGED_OUT_COOKIE = "mock_logged_out";
 
 export const getAuthUserAction = async (): Promise<{
   data: AuthUserType;
@@ -19,6 +18,8 @@ export const getAuthUserAction = async (): Promise<{
 
     if (!authUser || !authUser.value) {
       if (isMockApisMode()) {
+        const mockLoggedOut = cookieStore.get(MOCK_LOGGED_OUT_COOKIE);
+        if (mockLoggedOut?.value) return null;
         return {
           data: mockSignInResponseAdmin.data,
           accessToken: mockSignInResponseAdmin.accessToken,
@@ -54,9 +55,24 @@ export const setAuthUserAction = async (user: { data: AuthUserType; accessToken:
     path: "/",
     // maxAge: 60 * 60 * 24 * 7,
   });
+
+  // In mock mode, clear the "logged out" flag so auth helpers return the user
+  if (isMockApisMode()) {
+    cookieStore.delete(MOCK_LOGGED_OUT_COOKIE);
+  }
 };
 
 export const clearAuthUserAction = async () => {
   const cookieStore = cookies();
   cookieStore.delete("authUser");
+  // In mock mode, set flag so auth helpers return null (logout takes effect)
+  if (isMockApisMode()) {
+    cookieStore.set(MOCK_LOGGED_OUT_COOKIE, "1", {
+      secure: false,
+      httpOnly: false,
+      sameSite: "strict",
+      path: "/",
+      maxAge: 60 * 60 * 24,
+    });
+  }
 };
