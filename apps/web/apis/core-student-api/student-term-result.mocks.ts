@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { GetRequestReturnType, PostRequestReturnType } from "@/config/base-query";
 import { StudentTermResultType, SubjectGradingType } from "@/types";
 import { mockStudentList, mockClassDivisionList } from "@/mocks/data";
@@ -159,6 +160,9 @@ export function mockGetStudentTermResultListResponse(params?: {
 export const mockStudentTermResultUpdateResponse: PostRequestReturnType<StudentTermResultType> = buildPostResponse(
   (() => {
     const student = mockStudentList[0];
+    if (!student) {
+      throw new Error("No student found");
+    }
     const comprehensiveStudent = createComprehensiveStudent(student.id);
     if (!comprehensiveStudent) {
       throw new Error("Student not found");

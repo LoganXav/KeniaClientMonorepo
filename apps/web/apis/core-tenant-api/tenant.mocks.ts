@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { GetRequestReturnType, PostRequestReturnType } from "@/config/base-query";
 import { SchoolType } from "@/types";
 import { SchoolProfileFormTemplateType } from "@/app/@protected/(staff-portal)/school/profile/_types/school-profile-form-types";

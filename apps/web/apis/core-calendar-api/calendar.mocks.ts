@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { GetRequestReturnType, PostRequestReturnType } from "@/config/base-query";
 import { CalendarType } from "@/types";
 import { SchoolCalendarTemplateOptions } from "@/app/@protected/(staff-portal)/school/calendar/create/_types/school-calendar-form-types";

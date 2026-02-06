@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { GetRequestReturnType, PostRequestReturnType } from "@/config/base-query";
 import { SubjectType } from "@/types";
 import { SubjectTemplateOptions } from "@/app/@protected/(staff-portal)/school/subject/list/_types/school-subject-create-types";

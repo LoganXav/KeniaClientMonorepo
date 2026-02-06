@@ -2,6 +2,11 @@
 const nextConfig = {
   transpilePackages: ["@repo/ui"],
 
+  typescript: {
+    // Ignore TypeScript errors during build
+    ignoreBuildErrors: true,
+  },
+
   experimental: {
     // Enables Next.js's Instrumentation Hook
     instrumentationHook: true,

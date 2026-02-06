@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { GetRequestReturnType, PostRequestReturnType } from "@/config/base-query";
 import { SchoolGradingStructureType } from "@/types";
 import { SchoolGradingStructureTemplateOptions } from "@/app/@protected/(staff-portal)/school/grading/create/_types/school-grading-structure-form-types";

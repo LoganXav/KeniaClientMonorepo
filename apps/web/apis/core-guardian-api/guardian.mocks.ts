@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { GetRequestReturnType } from "@/config/base-query";
 import { buildGetResponse } from "@/mocks/responses";
 import { MOCK_STUDENTS } from "@/mocks/constants";

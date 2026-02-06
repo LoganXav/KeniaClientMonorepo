@@ -100,8 +100,9 @@ export function DashboardEnrollment() {
                     {...props}
                     className="w-[180px]"
                     {...(activeChart === "both" ? {} : { nameKey: activeChart })}
-                    labelFormatter={(value: string | number | undefined) => {
-                      if (!value) return "";
+                    labelFormatter={(label, payload) => {
+                      if (!label) return "";
+                      const value = typeof label === "string" || typeof label === "number" ? label : String(label);
                       const date = new Date(value);
                       return date.toLocaleDateString("en-NG", {
                         month: "long",

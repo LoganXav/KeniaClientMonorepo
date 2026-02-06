@@ -24,6 +24,7 @@ export const QueryTagEnums = {
   PERIOD: "period",
 
   SUBJECT: "subject",
+  SUBJECT_TEMPLATE: "subject-template",
   SUBJECT_GRADING: "subject-grading",
   SUBJECT_GRADING_STRUCTURE: "subject-grading-structure",
   SUBJECT_GRADING_TEMPLATE: "subject-grading-template",

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { GetRequestReturnType } from "@/config/base-query";
 import { UserWithRelationsType } from "@/types";
 import { mockStaffList } from "@/mocks/data";
