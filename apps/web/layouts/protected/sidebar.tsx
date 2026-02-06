@@ -104,17 +104,17 @@ export default function ProtectedSidebar() {
           path: "#",
           icon: Settings,
           subRoutes: [
-            {
-              name: "General Settings",
-              path: "/admin/settings/general",
-              icon: Dot,
-              permissions: ["PERMISSIONS.SETTINGS_GENERAL"],
-            },
-            {
-              name: "System Logs",
-              path: RouteEnums.LOGS,
-              icon: Dot,
-            },
+            // {
+            //   name: "General Settings",
+            //   path: "/admin/settings/general",
+            //   icon: Dot,
+            //   permissions: ["PERMISSIONS.SETTINGS_GENERAL"],
+            // },
+            // {
+            //   name: "System Logs",
+            //   path: RouteEnums.LOGS,
+            //   icon: Dot,
+            // },
             {
               name: "Permissions",
               path: RouteEnums.ROLES_AND_PERMISSIONS,
@@ -187,7 +187,7 @@ export default function ProtectedSidebar() {
                       <AccordionTrigger
                         className={cn(
                           "group w-full px-4 py-3 rounded-sm hover:bg-accent",
-                          (isActive || isSubActive) && "bg-accent",
+                          (isActive || isSubActive) && "bg-transparent",
                         )}
                         isActive={isActive || isSubActive}
                       >

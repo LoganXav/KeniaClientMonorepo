@@ -2,6 +2,8 @@ import { GetRequestReturnType, PostRequestReturnType } from "@/config/base-query
 import { SubjectGradingTemplateOptions } from "@/app/@protected/(staff-portal)/student/grading/_types/subject-grading-types";
 import { SubjectGradingType } from "@/types";
 import { createMockStudent } from "../core-student-api/student.mocks";
+import { mockCalendar, mockClassList, mockClassDivisionList, mockStudentList } from "@/mocks/data";
+import { buildGetResponse, buildPostResponse } from "@/mocks/responses";
 
 /**
  * Mock responses for subject grading API endpoints
@@ -11,128 +13,191 @@ import { createMockStudent } from "../core-student-api/student.mocks";
 /**
  * Mock response for GET subject/grading/template
  * Returns template options for subject grading
+ * Filters options based on calendarId, classId, and subjectId
  */
-export const mockGetSubjectGradingTemplateResponse: GetRequestReturnType<SubjectGradingTemplateOptions> = {
-  data: {
-    calendarOptions: [
-      { id: 1, year: 2024, terms: [] },
-      { id: 2, year: 2025, terms: [] },
-    ],
-    termOptions: [
-      {
-        id: 1,
-        name: "First Term",
-        startDate: "2024-09-01",
-        endDate: "2024-12-15",
-        breakWeeks: [],
-      },
-      {
-        id: 2,
-        name: "Second Term",
-        startDate: "2025-01-08",
-        endDate: "2025-04-15",
-        breakWeeks: [],
-      },
-      {
-        id: 3,
-        name: "Third Term",
-        startDate: "2025-05-01",
-        endDate: "2025-07-15",
-        breakWeeks: [],
-      },
-    ],
-    classOptions: [
-      { id: 1, name: "SS 1", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-      { id: 2, name: "SS 2", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-      { id: 3, name: "SS 3", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-    ],
-    classDivisionOptions: [
-      { id: 1, name: "A", classId: 1, classDivisionTeacherId: 1, class: {} as any, tenantId: 1, tenant: {} as any, students: [], classDivionTeacher: {} as any },
-      { id: 2, name: "B", classId: 1, classDivisionTeacherId: 1, class: {} as any, tenantId: 1, tenant: {} as any, students: [], classDivionTeacher: {} as any },
-      { id: 3, name: "A", classId: 2, classDivisionTeacherId: 1, class: {} as any, tenantId: 1, tenant: {} as any, students: [], classDivionTeacher: {} as any },
-    ],
-    studentOptions: [
-      createMockStudent(1, "ADM001", "Alice", "Johnson", "alice.johnson@example.com", 1, 1),
-      createMockStudent(2, "ADM002", "Bob", "Williams", "bob.williams@example.com", 1, 1),
-      createMockStudent(3, "ADM003", "Charlie", "Brown", "charlie.brown@example.com", 1, 2),
-      createMockStudent(4, "ADM004", "Diana", "Davis", "diana.davis@example.com", 2, 1),
-      createMockStudent(5, "ADM005", "Eve", "Miller", "eve.miller@example.com", 2, 2),
-    ],
-  },
-  message: "Resource fetched successfully",
-  statusCode: 200,
-};
+export function mockGetSubjectGradingTemplateResponse(params?: {
+  calendarId?: number;
+  classId?: number;
+  tenantId?: number;
+  subjectId?: number;
+}): GetRequestReturnType<SubjectGradingTemplateOptions> {
+  // Filter class divisions by classId if provided
+  let classDivisionOptions = mockClassDivisionList;
+  if (params?.classId) {
+    classDivisionOptions = mockClassDivisionList.filter((cd) => cd.classId === params.classId);
+  }
+  
+  // Filter students by classId and calendarId, and subjectId if provided
+  let studentOptions = mockStudentList;
+  if (params?.classId) {
+    studentOptions = studentOptions.filter((s) => s.class.id === params.classId);
+  }
+  if (params?.calendarId) {
+    // Filter students registered for the calendar
+    studentOptions = studentOptions.filter((s) => 
+      s.subjectsRegistered.some((reg) => reg.subject?.id !== undefined)
+    );
+  }
+  if (params?.subjectId) {
+    // Filter students offering the specific subject
+    studentOptions = studentOptions.filter((s) =>
+      s.subjectsRegistered.some((reg) => reg.subjectId === params.subjectId)
+    );
+  }
+  
+  return buildGetResponse({
+    calendarOptions: [mockCalendar],
+    termOptions: mockCalendar.terms,
+    classOptions: mockClassList,
+    classDivisionOptions,
+    studentOptions,
+  });
+}
 
 /**
  * Mock response for GET subject/grading/list
- * Returns array of subject grading records
+ * Returns array of subject grading records filtered by subjectId, classId, classDivisionId, calendarId, and termId
  */
-export const mockGetSubjectGradingListResponse: GetRequestReturnType<SubjectGradingType[]> = {
-  data: [
-    {
+export function mockGetSubjectGradingListResponse(params?: {
+  tenantId?: number;
+  subjectId?: number;
+  calendarId?: number;
+  termId?: number;
+  classId?: number;
+  classDivisionId?: number;
+}): GetRequestReturnType<SubjectGradingType[]> {
+  // Filter students based on params
+  let filteredStudents = [...mockStudentList];
+  
+  if (params?.classId) {
+    filteredStudents = filteredStudents.filter((s) => s.class.id === params.classId);
+  }
+  
+  if (params?.classDivisionId) {
+    filteredStudents = filteredStudents.filter((s) => s.classDivisionId === params.classDivisionId);
+  }
+  
+  // Get subject registrations for filtered students
+  let subjectRegistrations = filteredStudents.flatMap((student) => student.subjectsRegistered || []);
+  
+  // Filter by subjectId if provided
+  if (params?.subjectId) {
+    subjectRegistrations = subjectRegistrations.filter((reg) => reg.subjectId === params.subjectId);
+  }
+  
+  // Create grading records for students registered for the subject
+  // Use the actual student objects from mockStudentList to ensure we have complete user data
+  const gradingRecords: SubjectGradingType[] = [];
+  
+  for (const registration of subjectRegistrations) {
+    // Find the actual student from mockStudentList to get complete user data
+    const actualStudent = mockStudentList.find((s) => s.id === registration.student.id);
+    if (!actualStudent) continue;
+    
+    const student = actualStudent;
+    const subject = registration.subject;
+    if (!subject) continue;
+    
+    // Generate realistic grades based on student ID for consistency
+    const gradeRanges: { grade: string; min: number; max: number }[] = [
+      { grade: "A", min: 85, max: 100 },
+      { grade: "B", min: 70, max: 84 },
+      { grade: "C", min: 60, max: 69 },
+      { grade: "D", min: 50, max: 59 },
+      { grade: "F", min: 0, max: 49 },
+    ];
+    
+    const gradeIndex = student.id % gradeRanges.length;
+    const gradeRange = gradeRanges[gradeIndex];
+    if (!gradeRange) continue;
+    
+    // Use deterministic score based on student ID for consistency
+    const totalScore = Math.floor((gradeRange.min + gradeRange.max) / 2) + (student.id % 10);
+    
+    const classDivision = mockClassDivisionList.find((cd) => cd.id === student.classDivisionId);
+    if (!classDivision) continue;
+    
+    // Calculate exam score (typically 40-60% of total score)
+    const continuousScore = Math.floor(totalScore * 0.4);
+    const examScore = totalScore - continuousScore;
+    
+    // Generate remark based on grade
+    const remarks: Record<string, string> = {
+      A: "Excellent",
+      B: "Very Good",
+      C: "Good",
+      D: "Fair",
+      F: "Needs Improvement",
+    };
+    
+    gradingRecords.push({
       continuousAssessmentScores: [
-        { id: 1, name: "Assignment", score: 15 },
-        { id: 2, name: "Quiz", score: 12 },
-        { id: 3, name: "Project", score: 18 },
+        { id: student.id * 10 + 1, name: "Assignment 1", score: Math.floor(continuousScore * 0.3) },
+        { id: student.id * 10 + 2, name: "Quiz 1", score: Math.floor(continuousScore * 0.2) },
+        { id: student.id * 10 + 3, name: "Mid-term Test", score: Math.floor(continuousScore * 0.5) },
       ],
-      subject: {} as any,
-      totalScore: 75,
-      grade: "A",
-      classId: 1,
-      classDivisionId: 1,
+      subject: subject,
+      totalScore,
+      grade: gradeRange.grade,
+      classId: student.class.id,
+      classDivisionId: student.classDivisionId,
       student: {
-        classDivision: {} as any,
+        id: student.id,
+        classDivision: classDivision,
+        user: {
+          id: student.user.id,
+          firstName: student.user.firstName,
+          lastName: student.user.lastName,
+        },
       },
-    },
-    {
-      continuousAssessmentScores: [
-        { id: 4, name: "Assignment", score: 12 },
-        { id: 5, name: "Quiz", score: 10 },
-      ],
-      subject: {} as any,
-      totalScore: 68,
-      grade: "B",
-      classId: 1,
-      classDivisionId: 1,
-      student: {
-        classDivision: {} as any,
-      },
-    },
-  ],
-  message: "Resource fetched successfully",
-  statusCode: 200,
-};
+      // Include examScore and remark even though TypeScript type doesn't have them
+      // The backend and UI expect these fields
+      examScore,
+      remark: remarks[gradeRange.grade] || "No remark",
+    } as SubjectGradingType & { examScore: number; remark: string });
+  }
+  
+  return buildGetResponse(gradingRecords);
+}
 
 /**
  * Mock response for POST subject/grading/create
  * Returns created subject grading
  */
-export const mockSubjectGradingCreateResponse: PostRequestReturnType<SubjectGradingType> = {
-  data: {
+export const mockSubjectGradingCreateResponse: PostRequestReturnType<SubjectGradingType> = buildPostResponse(
+  {
     continuousAssessmentScores: [
       { id: 6, name: "Assignment", score: 18 },
       { id: 7, name: "Quiz", score: 15 },
       { id: 8, name: "Project", score: 20 },
     ],
-    subject: {} as any,
+    subject: mockStudentList[0]?.subjectsRegistered[0]?.subject || ({} as any),
     totalScore: 83,
     grade: "A",
-    classId: 1,
-    classDivisionId: 1,
+    classId: mockStudentList[0]?.class.id || 1,
+    classDivisionId: mockStudentList[0]?.classDivisionId || 1,
     student: {
-      classDivision: {} as any,
+      id: mockStudentList[0]?.id || 1,
+      classDivision: mockClassDivisionList[0] || ({} as any),
+      user: mockStudentList[0]?.user ? {
+        id: mockStudentList[0].user.id,
+        firstName: mockStudentList[0].user.firstName,
+        lastName: mockStudentList[0].user.lastName,
+      } : ({} as any),
     },
-  },
-  message: "Subject grading created successfully",
-  statusCode: 201,
-};
+    examScore: 50,
+    remark: "Excellent",
+  } as SubjectGradingType & { examScore: number; remark: string },
+  "Subject grading created successfully",
+  201
+);
 
 /**
  * Mock response for POST subject/grading/bulk/create
  * Returns null (bulk operations typically return success message only)
  */
-export const mockSubjectGradingBulkCreateResponse: PostRequestReturnType<null> = {
-  data: null,
-  message: "Subject grading created successfully",
-  statusCode: 201,
-};
+export const mockSubjectGradingBulkCreateResponse: PostRequestReturnType<null> = buildPostResponse(
+  null,
+  "Subject grading created successfully",
+  201
+);

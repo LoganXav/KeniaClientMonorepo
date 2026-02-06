@@ -19,7 +19,7 @@ export const useGetSingleSubjectQuery = ({ params }: { params?: { tenantId?: num
     queryKey: [QueryTagEnums.SUBJECT, params?.tenantId, params?.subjectId],
     queryFn: async () => {
       if (isMockApisMode()) {
-        return mockGetSingleSubjectResponse;
+        return mockGetSingleSubjectResponse(params);
       }
       return await getRequest<SubjectType>({
         endpoint: `${BASE_URL}/info/${params?.subjectId}`,

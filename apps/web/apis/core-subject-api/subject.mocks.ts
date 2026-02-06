@@ -1,6 +1,9 @@
 import { GetRequestReturnType, PostRequestReturnType } from "@/config/base-query";
 import { SubjectType } from "@/types";
 import { SubjectTemplateOptions } from "@/app/@protected/(staff-portal)/school/subject/list/_types/school-subject-create-types";
+import { mockSubjectList, mockClassList, mockStaffList, mockStudentList, mockClassDivisionList } from "@/mocks/data";
+import { buildGetResponse, buildPostResponse } from "@/mocks/responses";
+import { createSubject } from "@/mocks/factories";
 
 /**
  * Mock responses for subject API endpoints
@@ -11,188 +14,98 @@ import { SubjectTemplateOptions } from "@/app/@protected/(staff-portal)/school/s
  * Mock response for GET subject/list
  * Returns array of subjects
  */
-export const mockGetSubjectListResponse: GetRequestReturnType<SubjectType[]> = {
-  data: [
-    {
-      id: 1,
-      name: "Mathematics",
-      description: "Mathematics subject",
-      classId: 1,
-      class: { id: 1, name: "SS 1", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-      staffs: [],
-      subjectRegistration: [],
-      gradingStructure: {} as any,
-      tenantId: 1,
-      tenant: {} as SubjectType["tenant"],
-    },
-    {
-      id: 2,
-      name: "English",
-      description: "English Language",
-      classId: 1,
-      class: { id: 1, name: "SS 1", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-      staffs: [],
-      subjectRegistration: [],
-      gradingStructure: {} as any,
-      tenantId: 1,
-      tenant: {} as SubjectType["tenant"],
-    },
-    {
-      id: 3,
-      name: "Physics",
-      description: "Physics subject",
-      classId: 2,
-      class: { id: 2, name: "SS 2", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-      staffs: [],
-      subjectRegistration: [],
-      gradingStructure: {} as any,
-      tenantId: 1,
-      tenant: {} as SubjectType["tenant"],
-    },
-    {
-      id: 4,
-      name: "Chemistry",
-      description: "Chemistry subject",
-      classId: 2,
-      class: { id: 2, name: "SS 2", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-      staffs: [],
-      subjectRegistration: [],
-      gradingStructure: {} as any,
-      tenantId: 1,
-      tenant: {} as SubjectType["tenant"],
-    },
-    {
-      id: 5,
-      name: "Biology",
-      description: "Biology subject",
-      classId: 2,
-      class: { id: 2, name: "SS 2", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-      staffs: [],
-      subjectRegistration: [],
-      gradingStructure: {} as any,
-      tenantId: 1,
-      tenant: {} as SubjectType["tenant"],
-    },
-  ],
-  message: "Resource fetched successfully",
-  statusCode: 200,
-};
+export const mockGetSubjectListResponse: GetRequestReturnType<SubjectType[]> = buildGetResponse(
+  mockSubjectList
+);
 
 /**
  * Mock response for GET subject/template
  * Returns template options for subject creation form
  */
-export const mockGetSubjectTemplateResponse: GetRequestReturnType<SubjectTemplateOptions> = {
-  data: {
-    staffOptions: [
-      {
-        id: 1,
-        jobTitle: "Mathematics Teacher",
-        userId: 1,
-        user: {} as any,
-        roleId: 1,
-        role: null,
-        nin: null,
-        tin: null,
-        cvUrl: null,
-        employmentType: "Fulltime",
-        highestLevelEdu: "Masters",
-        group: [],
-        classDivisions: [],
-        subjects: [],
-        tenantId: 1,
-        tenant: {} as any,
-        startDate: new Date().toISOString(),
-      },
-      {
-        id: 2,
-        jobTitle: "English Teacher",
-        userId: 2,
-        user: {} as any,
-        roleId: 1,
-        role: null,
-        nin: null,
-        tin: null,
-        cvUrl: null,
-        employmentType: "Fulltime",
-        highestLevelEdu: "Bachelors",
-        group: [],
-        classDivisions: [],
-        subjects: [],
-        tenantId: 1,
-        tenant: {} as any,
-        startDate: new Date().toISOString(),
-      },
-    ],
-    classOptions: [
-      { id: 1, name: "SS 1", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-      { id: 2, name: "SS 2", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-      { id: 3, name: "SS 3", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-    ],
-  },
-  message: "Resource fetched successfully",
-  statusCode: 200,
-};
+export const mockGetSubjectTemplateResponse: GetRequestReturnType<SubjectTemplateOptions> = buildGetResponse({
+  staffOptions: mockStaffList.slice(0, 2),
+  classOptions: mockClassList.slice(0, 3),
+});
 
 /**
  * Mock response for POST subject/create
  * Returns created subject
  */
-export const mockSubjectCreateResponse: PostRequestReturnType<SubjectType> = {
-  data: {
-    id: 6,
-    name: "New Subject",
-    description: "New subject description",
-    classId: 1,
-    class: { id: 1, name: "SS 1", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-    staffs: [],
-    subjectRegistration: [],
-    gradingStructure: {} as any,
-    tenantId: 1,
-    tenant: {} as SubjectType["tenant"],
-  },
-  message: "Subject created successfully",
-  statusCode: 201,
-};
+export const mockSubjectCreateResponse: PostRequestReturnType<SubjectType> = buildPostResponse(
+  createSubject(7, "New Subject", "New subject description", 1, mockClassList[0]),
+  "Subject created successfully",
+  201
+);
 
 /**
  * Mock response for POST subject/update/:subjectId
  * Returns updated subject
  */
-export const mockSubjectUpdateResponse: PostRequestReturnType<SubjectType> = {
-  data: {
-    id: 1,
+export const mockSubjectUpdateResponse: PostRequestReturnType<SubjectType> = (() => {
+  const subject = mockSubjectList[0];
+  if (!subject) {
+    throw new Error("No subject found");
+  }
+  
+  const updatedSubject: SubjectType = {
+    id: subject.id,
     name: "Mathematics Updated",
     description: "Updated mathematics subject",
-    classId: 1,
-    class: { id: 1, name: "SS 1", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-    staffs: [],
-    subjectRegistration: [],
-    gradingStructure: {} as any,
-    tenantId: 1,
-    tenant: {} as SubjectType["tenant"],
-  },
-  message: "Subject updated successfully",
-  statusCode: 200,
-};
+    classId: subject.classId,
+    class: subject.class,
+    staffs: subject.staffs,
+    subjectRegistration: subject.subjectRegistration,
+    gradingStructure: subject.gradingStructure,
+    tenantId: subject.tenantId,
+    tenant: subject.tenant,
+  };
+  
+  return buildPostResponse(updatedSubject, "Subject updated successfully", 200);
+})();
 
 /**
  * Mock response for GET subject/info/:subjectId
- * Returns single subject details
+ * Returns single subject details filtered by subjectId
+ * Includes staffs, subjectRegistration, and gradingStructure
  */
-export const mockGetSingleSubjectResponse: GetRequestReturnType<SubjectType> = {
-  data: {
-    id: 1,
-    name: "Mathematics",
-    description: "Mathematics subject",
-    classId: 1,
-    class: { id: 1, name: "SS 1", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-    staffs: [],
-    subjectRegistration: [],
-    gradingStructure: {} as any,
-    tenantId: 1,
-    tenant: {} as SubjectType["tenant"],
-  },
-  message: "Resource fetched successfully",
-  statusCode: 200,
-};
+export function mockGetSingleSubjectResponse(params?: {
+  tenantId?: number;
+  subjectId?: number;
+}): GetRequestReturnType<SubjectType> {
+  // Find subject by ID
+  const foundSubject = mockSubjectList.find((s) => s.id === params?.subjectId);
+  
+  // If not found, use first subject as fallback
+  const subject = foundSubject || mockSubjectList[0];
+  
+  if (!subject) {
+    throw new Error("No subject found");
+  }
+  
+  const subjectId = subject.id;
+  
+  // Get students registered for this subject
+  const subjectRegistrations = mockStudentList
+    .flatMap((student: any) => student.subjectsRegistered || [])
+    .filter((reg: any) => reg.subjectId === subjectId);
+  
+  // Get staff assigned to this subject (for now, assign some staff based on subject)
+  // In a real scenario, this would come from a subject-staff relationship
+  const assignedStaff = mockStaffList.slice(0, 2); // Assign first 2 staff members
+  
+  // Build comprehensive subject object
+  const comprehensiveSubject: SubjectType = {
+    id: subject.id,
+    name: subject.name,
+    description: subject.description,
+    classId: subject.classId,
+    class: subject.class,
+    staffs: assignedStaff,
+    subjectRegistration: subjectRegistrations,
+    gradingStructure: subject.gradingStructure || ({} as any),
+    tenantId: subject.tenantId,
+    tenant: subject.tenant,
+  };
+  
+  return buildGetResponse(comprehensiveSubject);
+}

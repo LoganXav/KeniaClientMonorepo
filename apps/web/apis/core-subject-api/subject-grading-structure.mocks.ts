@@ -1,5 +1,7 @@
 import { GetRequestReturnType, PostRequestReturnType } from "@/config/base-query";
 import { SubjectGradingStructureType } from "@/types";
+import { buildGetResponse, buildPostResponse } from "@/mocks/responses";
+import { MOCK_TENANT_ID, MOCK_SUBJECTS, MOCK_STAFF } from "@/mocks/constants";
 
 /**
  * Mock responses for subject grading structure API endpoints
@@ -8,14 +10,22 @@ import { SubjectGradingStructureType } from "@/types";
 
 /**
  * Mock response for GET subject/gradingstructure/info/:gradeStructureId
- * Returns single subject grading structure
+ * Returns single subject grading structure filtered by subjectId
  */
-export const mockGetSubjectGradingStructureResponse: GetRequestReturnType<SubjectGradingStructureType> = {
-  data: {
-    id: 1,
-    tenantId: 1,
-    subjectId: 1,
-    staffId: 1,
+export function mockGetSubjectGradingStructureResponse(params?: {
+  tenantId?: number;
+  subjectId?: number;
+}): GetRequestReturnType<SubjectGradingStructureType> {
+  // Find subject by ID
+  const subjectId = params?.subjectId || MOCK_SUBJECTS[0].id;
+  
+  // Return grading structure for the subject
+  // In a real scenario, this would be stored per subject
+  return buildGetResponse({
+    id: subjectId,
+    tenantId: params?.tenantId || MOCK_TENANT_ID,
+    subjectId: subjectId,
+    staffId: MOCK_STAFF.TEACHER_1.id,
     continuousAssessmentBreakdownItems: [
       {
         id: 1,
@@ -39,21 +49,19 @@ export const mockGetSubjectGradingStructureResponse: GetRequestReturnType<Subjec
         updatedAt: new Date().toISOString(),
       },
     ],
-  },
-  message: "Resource fetched successfully",
-  statusCode: 200,
-};
+  });
+}
 
 /**
  * Mock response for POST subject/gradingstructure/create
  * Returns created subject grading structure
  */
-export const mockCreateSubjectGradingStructureResponse: PostRequestReturnType<SubjectGradingStructureType> = {
-  data: {
+export const mockCreateSubjectGradingStructureResponse: PostRequestReturnType<SubjectGradingStructureType> = buildPostResponse(
+  {
     id: 2,
-    tenantId: 1,
-    subjectId: 2,
-    staffId: 1,
+    tenantId: MOCK_TENANT_ID,
+    subjectId: MOCK_SUBJECTS[1].id,
+    staffId: MOCK_STAFF.TEACHER_1.id,
     continuousAssessmentBreakdownItems: [
       {
         id: 4,
@@ -71,6 +79,6 @@ export const mockCreateSubjectGradingStructureResponse: PostRequestReturnType<Su
       },
     ],
   },
-  message: "Subject grading structure created successfully",
-  statusCode: 201,
-};
+  "Subject grading structure created successfully",
+  201
+);

@@ -32,6 +32,9 @@ export const useGetStudentCalendarResultListQuery = ({
       params?.classDivisionId,
     ],
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetStudentCalendarResultListResponse(params);
+      }
       return await getRequest<StudentCalendarResultType[]>({
         endpoint: `${BASE_URL}/list`,
         config: { params },

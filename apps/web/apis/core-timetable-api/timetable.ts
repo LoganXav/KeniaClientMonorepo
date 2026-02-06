@@ -18,7 +18,7 @@ export const useGetTimetableQuery = ({ params }: { params?: { tenantId?: number;
     queryKey: [QueryTagEnums.TIMETABLE, params?.tenantId, params?.classDivisionId, params?.termId],
     queryFn: async () => {
       if (isMockApisMode()) {
-        return mockGetTimetableResponse;
+        return mockGetTimetableResponse(params);
       }
       return await getRequest<TimetablePeriodType[]>({
         endpoint: `${BASE_URL}/list`,
@@ -61,7 +61,7 @@ export const useGetTimetableTemplateQuery = ({ params }: { params: { classId?: n
     queryKey: [QueryTagEnums.TIMETABLE_TEMPLATE, params?.tenantId, params?.calendarId, params?.classId],
     queryFn: async () => {
       if (isMockApisMode()) {
-        return mockGetTimetableTemplateResponse;
+        return mockGetTimetableTemplateResponse(params);
       }
       return await getRequest<SchoolTimetableTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
@@ -81,7 +81,7 @@ export const useGetSingleTimetableQuery = ({ params }: { params: { tenantId?: nu
     queryKey: [QueryTagEnums.TIMETABLE, params?.tenantId, params?.classDivisionId, params?.day, params?.termId],
     queryFn: async () => {
       if (isMockApisMode()) {
-        return mockGetSingleTimetableResponse;
+        return mockGetSingleTimetableResponse(params);
       }
       return await getRequest<TimetableType>({
         endpoint: `${BASE_URL}/info`,

@@ -18,7 +18,7 @@ export const useGetSchoolGradingStructureQuery = ({ path, params }: { path: { gr
     queryKey: [QueryTagEnums.TENANT_GRADING_STRUCTURE, params?.tenantId, params?.classId, path?.gradeStructureId],
     queryFn: async () => {
       if (isMockApisMode()) {
-        return mockGetSchoolGradingStructureResponse;
+        return mockGetSchoolGradingStructureResponse(params);
       }
       return await getRequest<SchoolGradingStructureType>({
         endpoint: `${BASE_URL}/info/${path?.gradeStructureId}`,

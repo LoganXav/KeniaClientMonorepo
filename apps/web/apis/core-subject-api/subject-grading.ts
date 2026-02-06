@@ -28,7 +28,7 @@ export const useGetSubjectGradingTemplateQuery = ({
     queryKey: [QueryTagEnums.SUBJECT_GRADING_TEMPLATE, params?.tenantId, params?.calendarId, params?.classId, params?.subjectId],
     queryFn: async () => {
       if (isMockApisMode()) {
-        return mockGetSubjectGradingTemplateResponse;
+        return mockGetSubjectGradingTemplateResponse(params);
       }
       return await getRequest<SubjectGradingTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
@@ -62,7 +62,7 @@ export const useGetSubjectGradingListQuery = ({
     queryKey: [QueryTagEnums.SUBJECT_GRADING, params?.tenantId, params?.subjectId, params?.calendarId, params?.termId, params?.classId, params?.classDivisionId],
     queryFn: async () => {
       if (isMockApisMode()) {
-        return mockGetSubjectGradingListResponse;
+        return mockGetSubjectGradingListResponse(params);
       }
       return await getRequest<SubjectGradingType[]>({
         endpoint: `${BASE_URL}/list`,

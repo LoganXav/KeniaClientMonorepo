@@ -1,55 +1,18 @@
 import { GetRequestReturnType, PostRequestReturnType } from "@/config/base-query";
 import { StudentType, SubjectsRegisteredType } from "@/types";
 import { StudentTemplateOptions } from "@/app/@protected/(staff-portal)/student/create/_types/student-create-form-types";
+import { mockStudentList, mockClassList, mockClassDivisionList, mockSubjectList } from "@/mocks/data";
+import { mockCalendar } from "@/mocks/data";
+import { buildGetResponse, buildPostResponse } from "@/mocks/responses";
+import { createStudent } from "@/mocks/factories";
+import { MOCK_CLASSES, MOCK_STUDENTS } from "@/mocks/constants";
 
 /**
  * Mock responses for student API endpoints
  * All responses match backend schema structures
  */
 
-const todayISO = new Date().toISOString().split("T")[0];
-
-// Mock user data for students
-const createMockStudentUser = (id: number, firstName: string, lastName: string, email: string) => ({
-  id,
-  firstName,
-  lastName,
-  gender: "Male" as const,
-  dateOfBirth: "2005-05-15",
-  phoneNumber: `+234${800000000 + id}`,
-  religion: "Christian",
-  bloodGroup: "O+",
-  email,
-  password: "",
-  hasVerified: true,
-  isFirstTimeLogin: false,
-  lastLoginDate: new Date().toISOString(),
-  userType: "STUDENT" as const,
-  tenantId: 1,
-  tenant: {} as StudentType["tenant"],
-  student: null,
-  staff: null,
-  createdAt: new Date().toISOString(),
-  residentialAddress: null,
-  residentialLgaId: null,
-  residentialStateId: null,
-  residentialCountryId: null,
-  residentialZipCode: null,
-});
-
-// Mock class data
-const mockClass = {
-  id: 1,
-  name: "SS 1",
-  classTeacherId: 1,
-  classTeacher: {} as StudentType["class"]["classTeacher"],
-  students: [] as StudentType[],
-  subjects: [],
-  tenantId: 1,
-  tenant: {} as StudentType["class"]["tenant"],
-};
-
-// Helper to create mock student
+// Helper to create mock student (exported for use in other mocks)
 export const createMockStudent = (
   id: number,
   admissionNo: string,
@@ -59,60 +22,72 @@ export const createMockStudent = (
   classId: number = 1,
   classDivisionId: number = 1
 ): StudentType => {
-  const user = createMockStudentUser(id, firstName, lastName, email);
-  return {
-    admissionNo,
-    id,
-    studentId: `STU${id.toString().padStart(6, "0")}`,
-    userId: id,
-    user: user as StudentType["user"],
-    enrollmentDate: new Date().toISOString(),
-    class: {
-      ...mockClass,
-      id: classId,
-      name: classId === 1 ? "SS 1" : classId === 2 ? "SS 2" : "SS 3",
-    },
-    guardians: [],
-    tenantId: 1,
-    tenant: {} as StudentType["tenant"],
-    classDivisionId,
-    subjectGrades: [],
-    subjectsRegistered: [],
-  };
+  const classData = mockClassList.find((c) => c.id === classId);
+  return createStudent(id, admissionNo, firstName, lastName, email, classId, classDivisionId, classData);
 };
 
 /**
  * Mock response for GET student/list
  * Returns array of students
  */
-export const mockGetStudentListResponse: GetRequestReturnType<StudentType[]> = {
-  data: [
-    createMockStudent(1, "ADM001", "Alice", "Johnson", "alice.johnson@example.com", 1, 1),
-    createMockStudent(2, "ADM002", "Bob", "Williams", "bob.williams@example.com", 1, 1),
-    createMockStudent(3, "ADM003", "Charlie", "Brown", "charlie.brown@example.com", 1, 2),
-    createMockStudent(4, "ADM004", "Diana", "Davis", "diana.davis@example.com", 2, 1),
-    createMockStudent(5, "ADM005", "Eve", "Miller", "eve.miller@example.com", 2, 2),
-  ],
-  message: "Resource fetched successfully",
-  statusCode: 200,
-};
+export const mockGetStudentListResponse: GetRequestReturnType<StudentType[]> = buildGetResponse(
+  mockStudentList
+);
 
 /**
  * Mock response for GET student/info/:studentId
  * Returns single student details
  */
-export const mockGetSingleStudentResponse: GetRequestReturnType<StudentType> = {
-  data: createMockStudent(1, "ADM001", "Alice", "Johnson", "alice.johnson@example.com", 1, 1),
-  message: "Resource fetched successfully",
-  statusCode: 200,
-};
+export const mockGetSingleStudentResponse: GetRequestReturnType<StudentType> = buildGetResponse(
+  mockStudentList[0]
+);
 
 /**
  * Mock response for GET student/template
  * Returns template options for student creation form
+ * Filters options based on classId, classDivisionId, calendarId, and studentId
  */
-export const mockGetStudentTemplateResponse: GetRequestReturnType<StudentTemplateOptions> = {
-  data: {
+export function mockGetStudentTemplateResponse(params?: {
+  tenantId?: number;
+  codeValue?: number;
+  classId?: number;
+  classDivisionId?: number;
+  calendarId?: number;
+  studentId?: number;
+}): GetRequestReturnType<StudentTemplateOptions> {
+  // Filter class divisions by classId if provided
+  let classDivisionOptions = mockClassDivisionList;
+  if (params?.classId) {
+    classDivisionOptions = mockClassDivisionList.filter((cd) => cd.classId === params.classId);
+  }
+  
+  // Filter subjects by classId if provided
+  let subjectOptions = mockSubjectList;
+  if (params?.classId) {
+    subjectOptions = mockSubjectList.filter((s) => s.classId === params.classId);
+  }
+  
+  // Filter students by classId and classDivisionId if provided
+  let studentOptions = mockStudentList;
+  if (params?.classId) {
+    studentOptions = studentOptions.filter((s) => s.class.id === params.classId);
+  }
+  if (params?.classDivisionId) {
+    studentOptions = studentOptions.filter((s) => s.classDivisionId === params.classDivisionId);
+  }
+  
+  // Get subject registrations for specific student and calendar if provided
+  let studentSubjectRegistrationOptions: SubjectsRegisteredType[] = [];
+  if (params?.studentId && params?.calendarId) {
+    const student = mockStudentList.find((s) => s.id === params.studentId);
+    if (student) {
+      studentSubjectRegistrationOptions = student.subjectsRegistered.filter(
+        (reg) => reg.subject?.id !== undefined // Filter by calendarId if needed
+      );
+    }
+  }
+  
+  return buildGetResponse({
     educationLevelOptions: ["Primary", "Secondary", "Bachelor's", "Master's", "PhD"],
     countryIdOptions: [
       { id: 1, codeValue: 1, name: "Nigeria", acronym: "NG" },
@@ -129,129 +104,91 @@ export const mockGetStudentTemplateResponse: GetRequestReturnType<StudentTemplat
       { codeValue: "02", id: 2, name: "Abuja" },
       { codeValue: "03", id: 3, name: "Kano" },
     ],
-    classOptions: [
-      { id: 1, name: "SS 1", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-      { id: 2, name: "SS 2", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-      { id: 3, name: "SS 3", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-    ],
-    classDivisionOptions: [
-      { id: 1, name: "A", classId: 1, classDivisionTeacherId: 1, class: {} as any, tenantId: 1, tenant: {} as any, students: [], classDivionTeacher: {} as any },
-      { id: 2, name: "B", classId: 1, classDivisionTeacherId: 1, class: {} as any, tenantId: 1, tenant: {} as any, students: [], classDivionTeacher: {} as any },
-      { id: 3, name: "A", classId: 2, classDivisionTeacherId: 1, class: {} as any, tenantId: 1, tenant: {} as any, students: [], classDivionTeacher: {} as any },
-    ],
+    classOptions: mockClassList,
+    classDivisionOptions,
     religionOptions: ["Christian", "Muslim", "Traditional", "Other"],
     genderOptions: ["Male", "Female"],
     bloodGroupOptions: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
-    subjectOptions: [
-      { id: 1, name: "Mathematics", description: "", classId: 1, class: {} as any, staffs: [], subjectRegistration: [], gradingStructure: {} as any, tenantId: 1, tenant: {} as any },
-      { id: 2, name: "English", description: "", classId: 1, class: {} as any, staffs: [], subjectRegistration: [], gradingStructure: {} as any, tenantId: 1, tenant: {} as any },
-      { id: 3, name: "Physics", description: "", classId: 1, class: {} as any, staffs: [], subjectRegistration: [], gradingStructure: {} as any, tenantId: 1, tenant: {} as any },
-    ],
-    calendarOptions: [
-      { id: 1, year: 2024, terms: [] },
-      { id: 2, year: 2025, terms: [] },
-    ],
-    studentOptions: [
-      createMockStudent(1, "ADM001", "Alice", "Johnson", "alice.johnson@example.com"),
-      createMockStudent(2, "ADM002", "Bob", "Williams", "bob.williams@example.com"),
-    ],
-    studentSubjectRegistrationOptions: [] as SubjectsRegisteredType[],
-  },
-  message: "Resource fetched successfully",
-  statusCode: 200,
-};
+    subjectOptions,
+    calendarOptions: [mockCalendar],
+    studentOptions,
+    studentSubjectRegistrationOptions,
+  });
+}
 
 /**
  * Mock response for POST student/create
  * Returns created student
  */
-export const mockStudentCreateResponse: PostRequestReturnType<StudentType> = {
-  data: createMockStudent(6, "ADM006", "New", "Student", "new.student@example.com"),
-  message: "Student created successfully",
-  statusCode: 201,
-};
+export const mockStudentCreateResponse: PostRequestReturnType<StudentType> = buildPostResponse(
+  createMockStudent(11, "ADM011", "New", "Student", "new.student@example.com"),
+  "Student created successfully",
+  201
+);
 
 /**
  * Mock response for POST student/update/:studentId
  * Returns updated student
  */
-export const mockStudentUpdateResponse: PostRequestReturnType<StudentType> = {
-  data: createMockStudent(1, "ADM001", "Alice", "Johnson Updated", "alice.johnson@example.com"),
-  message: "Student updated successfully",
-  statusCode: 200,
-};
+export const mockStudentUpdateResponse: PostRequestReturnType<StudentType> = buildPostResponse(
+  {
+    ...mockStudentList[0],
+    user: {
+      ...mockStudentList[0].user,
+      lastName: "Johnson Updated",
+    },
+  },
+  "Student updated successfully",
+  200
+);
 
 /**
  * Mock response for POST student/bulk/create
  * Returns null (bulk operations typically return success message only)
  */
-export const mockStudentBulkCreateResponse: PostRequestReturnType<null> = {
-  data: null,
-  message: "Students created successfully",
-  statusCode: 201,
-};
+export const mockStudentBulkCreateResponse: PostRequestReturnType<null> = buildPostResponse(
+  null,
+  "Students created successfully",
+  201
+);
 
 /**
  * Mock response for POST student/subjectregistration/create
  * Returns student with updated subject registrations
  */
-export const mockStudentSubjectRegistrationCreateResponse: PostRequestReturnType<StudentType> = {
-  data: {
-    ...createMockStudent(1, "ADM001", "Alice", "Johnson", "alice.johnson@example.com"),
-    subjectsRegistered: [
-      {
-        id: 1,
-        name: "Mathematics",
-        description: "",
-        subjectId: 1,
-        subject: {} as any,
-        student: {} as any,
-      },
-      {
-        id: 2,
-        name: "English",
-        description: "",
-        subjectId: 2,
-        subject: {} as any,
-        student: {} as any,
-      },
-    ] as SubjectsRegisteredType[],
+export const mockStudentSubjectRegistrationCreateResponse: PostRequestReturnType<StudentType> = buildPostResponse(
+  {
+    ...mockStudentList[0],
+    subjectsRegistered: mockStudentList[0].subjectsRegistered || [],
   },
-  message: "Subject registration created successfully",
-  statusCode: 201,
-};
+  "Subject registration created successfully",
+  201
+);
 
 /**
  * Mock response for GET student/subjectregistration/list
- * Returns array of subject registrations
+ * Returns array of subject registrations filtered by subjectId, classId, and calendarId
  */
-export const mockGetStudentSubjectRegistrationListResponse: GetRequestReturnType<SubjectsRegisteredType[]> = {
-  data: [
-    {
-      id: 1,
-      name: "Mathematics",
-      description: "",
-      subjectId: 1,
-      subject: {} as any,
-      student: createMockStudent(1, "ADM001", "Alice", "Johnson", "alice.johnson@example.com") as any,
-    },
-    {
-      id: 2,
-      name: "English",
-      description: "",
-      subjectId: 2,
-      subject: {} as any,
-      student: createMockStudent(1, "ADM001", "Alice", "Johnson", "alice.johnson@example.com") as any,
-    },
-    {
-      id: 3,
-      name: "Physics",
-      description: "",
-      subjectId: 3,
-      subject: {} as any,
-      student: createMockStudent(2, "ADM002", "Bob", "Williams", "bob.williams@example.com") as any,
-    },
-  ],
-  message: "Resource fetched successfully",
-  statusCode: 200,
-};
+export function mockGetStudentSubjectRegistrationListResponse(params?: {
+  tenantId?: number;
+  classId?: number;
+  subjectId?: number;
+  calendarId?: number;
+}): GetRequestReturnType<SubjectsRegisteredType[]> {
+  let registrations = mockStudentList.flatMap((student) => student.subjectsRegistered || []);
+  
+  // Filter by subjectId if provided
+  if (params?.subjectId) {
+    registrations = registrations.filter((reg) => reg.subjectId === params.subjectId);
+  }
+  
+  // Filter by classId if provided
+  if (params?.classId) {
+    registrations = registrations.filter((reg) => reg.student.class.id === params.classId);
+  }
+  
+  // Filter by calendarId if provided (all registrations use MOCK_CALENDAR.id currently)
+  // In a real scenario, this would filter by calendarId
+  
+  return buildGetResponse(registrations);
+}

@@ -33,7 +33,7 @@ export const useGetStudentTermResultListQuery = ({
     ],
     queryFn: async () => {
       if (isMockApisMode()) {
-        return mockGetStudentTermResultListResponse;
+        return mockGetStudentTermResultListResponse(params);
       }
       return await getRequest<StudentTermResultType[]>({
         endpoint: `${BASE_URL}/list`,

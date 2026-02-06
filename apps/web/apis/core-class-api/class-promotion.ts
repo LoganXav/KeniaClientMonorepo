@@ -17,7 +17,7 @@ export const useGetClassPromotionListQuery = ({ params }: { params: { tenantId?:
     queryKey: [QueryTagEnums.CLASS_PROMOTION, params?.tenantId, params?.calendarId, params?.classId, params?.classDivisionId],
     queryFn: async () => {
       if (isMockApisMode()) {
-        return mockGetClassPromotionListResponse;
+        return mockGetClassPromotionListResponse(params);
       }
       return await getRequest<ClassPromotionType[]>({
         endpoint: `${BASE_URL}/list`,
@@ -35,7 +35,7 @@ export const useGetClassPromotionTemplateQuery = ({ params }: { params: { tenant
     queryKey: [QueryTagEnums.CLASS_PROMOTION_TEMPLATE, params?.tenantId, params?.classId, params?.classDivisionId],
     queryFn: async () => {
       if (isMockApisMode()) {
-        return mockGetClassPromotionTemplateResponse;
+        return mockGetClassPromotionTemplateResponse(params);
       }
       return await getRequest<ClassPromotionTemplateOptions>({
         endpoint: `${BASE_URL}/template`,

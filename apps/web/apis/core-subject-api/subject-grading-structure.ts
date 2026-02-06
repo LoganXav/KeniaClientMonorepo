@@ -16,6 +16,9 @@ export const useGetSubjectGradingStructureQuery = ({ path, params }: { path: { g
     queryKey: [QueryTagEnums.SUBJECT_GRADING_STRUCTURE, params?.tenantId, params?.subjectId, path?.gradeStructureId],
 
     queryFn: async () => {
+      if (isMockApisMode()) {
+        return mockGetSubjectGradingStructureResponse(params);
+      }
       return await getRequest<SubjectGradingStructureType>({
         endpoint: `${BASE_URL}/info/${path?.gradeStructureId}`,
         config: { params },

@@ -98,7 +98,7 @@ export const useGetStudentTemplateQuery = ({ params }: { params: { tenantId?: nu
     queryKey: [QueryTagEnums.USER, params?.tenantId, params?.codeValue, params?.classId, params?.classDivisionId, params?.calendarId, params?.studentId],
     queryFn: async () => {
       if (isMockApisMode()) {
-        return mockGetStudentTemplateResponse;
+        return mockGetStudentTemplateResponse(params);
       }
       return await getRequest<StudentTemplateOptions>({
         endpoint: `${BASE_URL}/template`,
@@ -194,7 +194,7 @@ export const useGetStudentSubjectRegistrationListQuery = ({ params }: { params: 
     queryKey: [QueryTagEnums.STUDENT, params?.tenantId, params?.subjectId, params?.classId, params?.calendarId],
     queryFn: async () => {
       if (isMockApisMode()) {
-        return mockGetStudentSubjectRegistrationListResponse;
+        return mockGetStudentSubjectRegistrationListResponse(params);
       }
       return await getRequest<SubjectsRegisteredType[]>({
         endpoint: `${BASE_URL}/subjectregistration/list`,

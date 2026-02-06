@@ -1,5 +1,8 @@
 import { PostRequestReturnType } from "@/config/base-query";
 import { AuthUserType, PermissionType } from "@/types";
+import { MOCK_STAFF, MOCK_TENANT_ID, MOCK_ROLES, MOCK_STUDENTS } from "@/mocks/constants";
+import { mockStaffList, mockRoleList } from "@/mocks/data";
+import { buildPostResponse, buildAuthResponse } from "@/mocks/responses";
 
 /**
  * Mock response types matching backend structure
@@ -23,7 +26,7 @@ export interface MockSignInResponse extends PostRequestReturnType<AuthUserType> 
  */
 const mockPermissions: any[] = [
   { id: 1, name: "STAFF_CREATE", roles: [], tenantId: 1 },
-  { id: 2, name: "STAFF_CREATE", roles: [], tenantId: 1 },
+  { id: 2, name: "STAFF_READ", roles: [], tenantId: 1 },
   { id: 3, name: "STUDENT_READ", roles: [], tenantId: 1 },
   { id: 4, name: "STUDENT_CREATE", roles: [], tenantId: 1 },
   { id: 5, name: "CLASS_READ", roles: [], tenantId: 1 },
@@ -34,135 +37,89 @@ const mockPermissions: any[] = [
  * Mock sign up response
  * Matches backend: AuthSignUpService returns { id, tenantId }
  */
-export const mockSignUpResponse: MockSignUpResponse = {
-  data: {
+export const mockSignUpResponse: MockSignUpResponse = buildPostResponse(
+  {
     id: 1,
-    tenantId: 1,
+    tenantId: MOCK_TENANT_ID,
   },
-  message: "Account created successfully",
-  statusCode: 201,
-};
+  "Account created successfully",
+  201
+);
 
 /**
  * Mock sign in response - Admin user
  * Matches backend: AuthSignInService returns user data with staff role info
  */
-export const mockSignInResponseAdmin: MockSignInResponse = {
-  data: {
-    id: 1,
-    tenantId: 1,
-    email: "admin@example.com",
-    firstName: "John",
-    lastName: "Doe",
-    phoneNumber: "+1234567890",
+export const mockSignInResponseAdmin: MockSignInResponse = buildAuthResponse(
+  {
+    id: MOCK_STAFF.ADMIN.id,
+    tenantId: MOCK_TENANT_ID,
+    email: MOCK_STAFF.ADMIN.email,
+    firstName: MOCK_STAFF.ADMIN.firstName,
+    lastName: MOCK_STAFF.ADMIN.lastName,
+    phoneNumber: mockStaffList[0].user.phoneNumber,
     hasVerified: true,
     isFirstTimeLogin: false,
     lastLoginDate: new Date(),
-    userType: "Staff",
+    userType: "Staff" as const,
     staff: {
-      id: 1,
-      jobTitle: "Administrator",
-      userId: 1,
-      user: {} as any, // Not used in auth context
-      roleId: 1,
+      ...mockStaffList[0],
       role: {
-        id: 1,
-        name: "Administrator",
-        isAdmin: true,
-        description: "Full system access",
-        scope: null,
+        ...mockRoleList[0],
         permissions: mockPermissions,
-        staff: [],
-        tenantId: 1,
-        tenant: {} as any,
       },
-      nin: null,
-      tin: null,
-      cvUrl: null,
-      employmentType: "Full-time",
-      highestLevelEdu: "Masters",
-      group: [],
-      classDivisions: [],
-      subjects: [],
-      tenantId: 1,
-      tenant: {} as any,
-      startDate: new Date().toISOString(),
     },
   },
-  accessToken: "mock-jwt-access-token-admin-12345",
-  message: "Sign in successful",
-  statusCode: 200,
-};
+  "mock-jwt-access-token-admin-12345",
+  "Sign in successful"
+);
 
 /**
  * Mock sign in response - Regular staff user
  */
-export const mockSignInResponseStaff: MockSignInResponse = {
-  data: {
-    id: 2,
-    tenantId: 1,
-    email: "teacher@example.com",
-    firstName: "Jane",
-    lastName: "Smith",
-    phoneNumber: "+1234567891",
+export const mockSignInResponseStaff: MockSignInResponse = buildAuthResponse(
+  {
+    id: MOCK_STAFF.TEACHER_1.id,
+    tenantId: MOCK_TENANT_ID,
+    email: MOCK_STAFF.TEACHER_1.email,
+    firstName: MOCK_STAFF.TEACHER_1.firstName,
+    lastName: MOCK_STAFF.TEACHER_1.lastName,
+    phoneNumber: mockStaffList[1].user.phoneNumber,
     hasVerified: true,
     isFirstTimeLogin: false,
     lastLoginDate: new Date(),
-    userType: "Staff",
+    userType: "Staff" as const,
     staff: {
-      id: 2,
-      jobTitle: "Teacher",
-      userId: 2,
-      user: {} as any,
-      roleId: 2,
+      ...mockStaffList[1],
       role: {
-        id: 2,
-        name: "Teacher",
-        isAdmin: false,
-        description: "Teaching staff access",
-        scope: null,
+        ...mockRoleList[1],
         permissions: mockPermissions.slice(2, 4), // Limited permissions
-        staff: [],
-        tenantId: 1,
-        tenant: {} as any,
       },
-      nin: null,
-      tin: null,
-      cvUrl: null,
-      employmentType: "Full-time",
-      highestLevelEdu: "Bachelors",
-      group: [],
-      classDivisions: [],
-      subjects: [],
-      tenantId: 1,
-      tenant: {} as any,
-      startDate: new Date().toISOString(),
     },
   },
-  accessToken: "mock-jwt-access-token-staff-67890",
-  message: "Sign in successful",
-  statusCode: 200,
-};
+  "mock-jwt-access-token-staff-67890",
+  "Sign in successful"
+);
 
 /**
  * Mock sign in response - Student user
  */
-export const mockSignInResponseStudent: MockSignInResponse = {
-  data: {
-    id: 3,
-    tenantId: 1,
-    email: "student@example.com",
-    firstName: "Alice",
-    lastName: "Johnson",
-    phoneNumber: "+1234567892",
+export const mockSignInResponseStudent: MockSignInResponse = buildAuthResponse(
+  {
+    id: MOCK_STUDENTS[0].id,
+    tenantId: MOCK_TENANT_ID,
+    email: MOCK_STUDENTS[0].email,
+    firstName: MOCK_STUDENTS[0].firstName,
+    lastName: MOCK_STUDENTS[0].lastName,
+    phoneNumber: `+234${800000000 + MOCK_STUDENTS[0].id}`,
     hasVerified: true,
     isFirstTimeLogin: false,
     lastLoginDate: new Date(),
-    userType: "Student",
+    userType: "Student" as const,
     staff: {
       id: 0,
       jobTitle: "",
-      userId: 3,
+      userId: MOCK_STUDENTS[0].id,
       user: {} as any,
       roleId: 0,
       role: null,
@@ -174,65 +131,41 @@ export const mockSignInResponseStudent: MockSignInResponse = {
       group: [],
       classDivisions: [],
       subjects: [],
-      tenantId: 1,
+      tenantId: MOCK_TENANT_ID,
       tenant: {} as any,
       startDate: new Date().toISOString(),
     },
   },
-  accessToken: "mock-jwt-access-token-student-11111",
-  message: "Sign in successful",
-  statusCode: 200,
-};
+  "mock-jwt-access-token-student-11111",
+  "Sign in successful"
+);
 
 /**
  * Mock sign in response - First time login user
  */
-export const mockSignInResponseFirstTime: MockSignInResponse = {
-  data: {
-    id: 4,
-    tenantId: 1,
+export const mockSignInResponseFirstTime: MockSignInResponse = buildAuthResponse(
+  {
+    id: MOCK_STAFF.TEACHER_2.id,
+    tenantId: MOCK_TENANT_ID,
     email: "newuser@example.com",
     firstName: "New",
     lastName: "User",
-    phoneNumber: "+1234567893",
+    phoneNumber: mockStaffList[2].user.phoneNumber,
     hasVerified: false,
     isFirstTimeLogin: true,
     lastLoginDate: new Date(),
-    userType: "Staff",
+    userType: "Staff" as const,
     staff: {
-      id: 3,
-      jobTitle: "Teacher",
-      userId: 4,
-      user: {} as any,
-      roleId: 2,
+      ...mockStaffList[2],
       role: {
-        id: 2,
-        name: "Teacher",
-        isAdmin: false,
-        description: "Teaching staff access",
-        scope: null,
+        ...mockRoleList[1],
         permissions: mockPermissions.slice(2, 4),
-        staff: [],
-        tenantId: 1,
-        tenant: {} as any,
       },
-      nin: null,
-      tin: null,
-      cvUrl: null,
-      employmentType: "Full-time",
-      highestLevelEdu: "Bachelors",
-      group: [],
-      classDivisions: [],
-      subjects: [],
-      tenantId: 1,
-      tenant: {} as any,
-      startDate: new Date().toISOString(),
     },
   },
-  accessToken: "mock-jwt-access-token-firsttime-22222",
-  message: "Sign in successful",
-  statusCode: 200,
-};
+  "mock-jwt-access-token-firsttime-22222",
+  "Sign in successful"
+);
 
 /**
  * Mock error responses
@@ -270,40 +203,39 @@ export const createMockSignInResponse = (
  * Mock OTP Verify response
  * Matches backend: AuthVerifyOtpTokenService returns same structure as SignIn
  */
-export const mockVerifyOtpResponse: MockSignInResponse = {
-  ...mockSignInResponseAdmin,
-  accessToken: "mock-jwt-access-token-verify-33333",
-  message: "Token verified successfully",
-  statusCode: 200,
-};
+export const mockVerifyOtpResponse: MockSignInResponse = buildAuthResponse(
+  mockSignInResponseAdmin.data,
+  "mock-jwt-access-token-verify-33333",
+  "Token verified successfully"
+);
 
 /**
  * Mock OTP Resend response
  * Matches backend: AuthRefreshOtpTokenService returns null data
  */
-export const mockResendOtpResponse: PostRequestReturnType<null> = {
-  data: null,
-  message: "OTP token has been resent to your email",
-  statusCode: 200,
-};
+export const mockResendOtpResponse: PostRequestReturnType<null> = buildPostResponse(
+  null,
+  "OTP token has been resent to your email",
+  200
+);
 
 /**
  * Mock Password Reset Request response
  */
-export const mockResetPasswordRequestResponse: PostRequestReturnType<null> = {
-  data: null,
-  message: "Password reset link has been sent to your email",
-  statusCode: 200,
-};
+export const mockResetPasswordRequestResponse: PostRequestReturnType<null> = buildPostResponse(
+  null,
+  "Password reset link has been sent to your email",
+  200
+);
 
 /**
  * Mock Change Password response
  */
-export const mockChangePasswordResponse: PostRequestReturnType<null> = {
-  data: null,
-  message: "Password changed successfully",
-  statusCode: 200,
-};
+export const mockChangePasswordResponse: PostRequestReturnType<null> = buildPostResponse(
+  null,
+  "Password changed successfully",
+  200
+);
 
 /**
  * Mock error responses for OTP and password reset

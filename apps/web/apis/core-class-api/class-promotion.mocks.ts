@@ -2,6 +2,8 @@ import { GetRequestReturnType, PostRequestReturnType } from "@/config/base-query
 import { ClassPromotionType } from "@/types";
 import { ClassPromotionTemplateOptions } from "@/app/@protected/(staff-portal)/class/promotion/_types/class-promotion-types";
 import { createMockStudent } from "../core-student-api/student.mocks";
+import { mockStudentList, mockClassList, mockClassDivisionList, mockCalendar } from "@/mocks/data";
+import { buildGetResponse, buildPostResponse } from "@/mocks/responses";
 
 /**
  * Mock responses for class promotion API endpoints
@@ -11,81 +13,99 @@ import { createMockStudent } from "../core-student-api/student.mocks";
 /**
  * Mock response for GET class/promotion/list
  * Returns array of class promotions
+ * Filters by calendarId, classId, classDivisionId, and tenantId
  */
-export const mockGetClassPromotionListResponse: GetRequestReturnType<ClassPromotionType[]> = {
-  data: [
-    {
-      promotionStatus: "Promoted",
-      comments: "Excellent performance",
-      student: createMockStudent(1, "ADM001", "Alice", "Johnson", "alice.johnson@example.com", 1, 1) as any,
-      fromClass: { id: 1, name: "SS 1", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-      toClass: { id: 2, name: "SS 2", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-    },
-    {
-      promotionStatus: "Awaiting",
-      comments: "Pending review",
-      student: createMockStudent(2, "ADM002", "Bob", "Williams", "bob.williams@example.com", 1, 1) as any,
-      fromClass: { id: 1, name: "SS 1", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-      toClass: { id: 2, name: "SS 2", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-    },
-    {
-      promotionStatus: "Repeated",
-      comments: "Needs improvement",
-      student: createMockStudent(3, "ADM003", "Charlie", "Brown", "charlie.brown@example.com", 1, 2) as any,
-      fromClass: { id: 1, name: "SS 1", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-      toClass: { id: 1, name: "SS 1", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-    },
-  ],
-  message: "Resource fetched successfully",
-  statusCode: 200,
-};
+export function mockGetClassPromotionListResponse(params?: {
+  tenantId?: number;
+  calendarId?: number;
+  classId?: number;
+  classDivisionId?: number;
+}): GetRequestReturnType<ClassPromotionType[]> {
+  // Filter students based on params
+  let filteredStudents = [...mockStudentList];
+  
+  if (params?.classId) {
+    filteredStudents = filteredStudents.filter((s) => s.class.id === params.classId);
+  }
+  
+  if (params?.classDivisionId) {
+    filteredStudents = filteredStudents.filter((s) => s.classDivisionId === params.classDivisionId);
+  }
+  
+  // Create promotions for filtered students
+  const promotions = filteredStudents.slice(0, 3).map((student, index) => {
+    const statuses: Array<"Promoted" | "Awaiting" | "Repeated" | "Withheld"> = [
+      "Promoted",
+      "Awaiting",
+      "Repeated",
+    ];
+    const fromClass = student.class;
+    const toClass = index === 2 ? fromClass : mockClassList.find((c) => c.id === (fromClass.id + 1)) || fromClass;
+    
+    return {
+      promotionStatus: statuses[index] as const,
+      comments: index === 0 ? "Excellent performance" : index === 1 ? "Pending review" : "Needs improvement",
+      student: student as any,
+      fromClass,
+      toClass,
+    };
+  });
+  
+  return buildGetResponse(promotions);
+}
 
 /**
  * Mock response for GET class/promotion/template
  * Returns template options for class promotion
+ * Filters options based on classId and classDivisionId
  */
-export const mockGetClassPromotionTemplateResponse: GetRequestReturnType<ClassPromotionTemplateOptions> = {
-  data: {
-    classOptions: [
-      { id: 1, name: "SS 1", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-      { id: 2, name: "SS 2", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-      { id: 3, name: "SS 3", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-    ],
-    classDivisionOptions: [
-      { id: 1, name: "A", classId: 1, classDivisionTeacherId: 1, class: {} as any, tenantId: 1, tenant: {} as any, students: [], classDivionTeacher: {} as any },
-      { id: 2, name: "B", classId: 1, classDivisionTeacherId: 1, class: {} as any, tenantId: 1, tenant: {} as any, students: [], classDivionTeacher: {} as any },
-    ],
-    promotionClassDivisionOptions: [
-      { id: 3, name: "A", classId: 2, classDivisionTeacherId: 1, class: {} as any, tenantId: 1, tenant: {} as any, students: [], classDivionTeacher: {} as any },
-      { id: 4, name: "B", classId: 2, classDivisionTeacherId: 1, class: {} as any, tenantId: 1, tenant: {} as any, students: [], classDivionTeacher: {} as any },
-    ],
-    calendarOptions: [
-      { id: 1, year: 2024, terms: [] },
-      { id: 2, year: 2025, terms: [] },
-    ],
-    studentOptions: [
-      createMockStudent(1, "ADM001", "Alice", "Johnson", "alice.johnson@example.com", 1, 1),
-      createMockStudent(2, "ADM002", "Bob", "Williams", "bob.williams@example.com", 1, 1),
-      createMockStudent(3, "ADM003", "Charlie", "Brown", "charlie.brown@example.com", 1, 2),
-    ],
+export function mockGetClassPromotionTemplateResponse(params?: {
+  tenantId?: number;
+  classId?: number;
+  classDivisionId?: number;
+}): GetRequestReturnType<ClassPromotionTemplateOptions> {
+  // Filter class divisions by classId if provided
+  let classDivisionOptions = mockClassDivisionList;
+  if (params?.classId) {
+    classDivisionOptions = mockClassDivisionList.filter((cd) => cd.classId === params.classId);
+  }
+  
+  // Filter students by classId and classDivisionId if provided
+  let studentOptions = mockStudentList;
+  if (params?.classId) {
+    studentOptions = studentOptions.filter((s) => s.class.id === params.classId);
+  }
+  if (params?.classDivisionId) {
+    studentOptions = studentOptions.filter((s) => s.classDivisionId === params.classDivisionId);
+  }
+  
+  // Get unique class divisions for promotion (all divisions)
+  const promotionClassDivisionOptions = Array.from(
+    new Map(mockClassDivisionList.map((cd) => [cd.name, cd])).values()
+  );
+  
+  return buildGetResponse({
+    classOptions: mockClassList,
+    classDivisionOptions,
+    promotionClassDivisionOptions,
+    calendarOptions: [mockCalendar],
+    studentOptions,
     promotionDecisionOptions: ["Promoted", "Awaiting", "Repeated", "Withheld"],
-  },
-  message: "Resource fetched successfully",
-  statusCode: 200,
-};
+  });
+}
 
 /**
  * Mock response for POST class/promotion/create
  * Returns created class promotion
  */
-export const mockCreateClassPromotionResponse: PostRequestReturnType<ClassPromotionType> = {
-  data: {
-    promotionStatus: "Promoted",
+export const mockCreateClassPromotionResponse: PostRequestReturnType<ClassPromotionType> = buildPostResponse(
+  {
+    promotionStatus: "Promoted" as const,
     comments: "Promoted successfully",
-    student: createMockStudent(1, "ADM001", "Alice", "Johnson", "alice.johnson@example.com", 1, 1) as any,
-    fromClass: { id: 1, name: "SS 1", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
-    toClass: { id: 2, name: "SS 2", classTeacherId: 1, classTeacher: {} as any, students: [], subjects: [], tenantId: 1, tenant: {} as any },
+    student: mockStudentList[0] as any,
+    fromClass: mockClassList[0],
+    toClass: mockClassList[1],
   },
-  message: "Class promotion created successfully",
-  statusCode: 201,
-};
+  "Class promotion created successfully",
+  201
+);
