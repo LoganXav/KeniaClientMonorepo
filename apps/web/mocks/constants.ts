@@ -8,7 +8,7 @@ export const MOCK_TENANT_NAME = "Demo School";
 
 // Staff IDs and names
 export const MOCK_STAFF = {
-  ADMIN: { id: 1, firstName: "John", lastName: "Doe", email: "admin@example.com", jobTitle: "Administrator" },
+  ADMIN: { id: 1, firstName: "Yasser", lastName: "ElBahr", email: "admin@example.com", jobTitle: "Administrator" },
   TEACHER_1: { id: 2, firstName: "Jane", lastName: "Smith", email: "teacher@example.com", jobTitle: "Mathematics Teacher" },
   TEACHER_2: { id: 3, firstName: "Michael", lastName: "Johnson", email: "michael.johnson@example.com", jobTitle: "English Teacher" },
   TEACHER_3: { id: 4, firstName: "Sarah", lastName: "Williams", email: "sarah.williams@example.com", jobTitle: "Physics Teacher" },
@@ -66,7 +66,9 @@ export const MOCK_SUBJECTS = [
 export const MOCK_ROLES = [
   { id: 1, name: "Administrator", isAdmin: true, description: "Full system access" },
   { id: 2, name: "Teacher", isAdmin: false, description: "Teaching staff role" },
-  { id: 3, name: "Principal", isAdmin: false, description: "School principal role" },
+  { id: 3, name: "ICT & Role Manager", isAdmin: false, description: "ICT & Role Manager role" },
+  { id: 4, name: "Records & Registry Clerk", isAdmin: false, description: "Records & Registry Clerk role" },
+  
 ] as const;
 
 // Calendar/Term IDs

@@ -58,6 +58,9 @@ export default function ProtectedNavbar() {
   });
   const authUser = authUserQueryResult?.data?.data;
 
+
+  console.log({authUser})
+
   return (
     <Sheet>
       <div className="sticky top-0 h-[70px] right-0 left-0 border-b border-border z-50">
@@ -160,13 +163,13 @@ export default function ProtectedNavbar() {
                       {authUser?.firstName} {authUser?.lastName}
                     </Typography>
                     <Typography size={"small"} color={"muted"}>
-                      {authUser?.staff?.jobTitle}
+                      {authUser?.jobTitle}
                     </Typography>
                   </div>
                   <div className="relative w-10 h-10 border bg-primary rounded-full overflow-hidden flex items-center justify-center">
                     <Typography className="font-heading text-background">
-                      {authUser?.lastName.charAt(0)}
                       {authUser?.firstName.charAt(0)}
+                      {authUser?.lastName.charAt(0)}
                     </Typography>
                   </div>
                 </div>

@@ -2,7 +2,8 @@
 import { GetRequestReturnType, PostRequestReturnType } from "@/config/base-query";
 import { RoleType } from "@/types";
 import { RolesAndPermissionsTemplateOptions } from "@/app/@protected/(staff-portal)/roles-and-permissions/_types/roles-and-permissions-form-types";
-import { mockRoleList } from "@/mocks/data";
+import { mockRoleList, mockStaffList } from "@/mocks/data";
+import { mockPermissions } from "@/mocks/data/roles";
 import { buildGetResponse, buildPostResponse } from "@/mocks/responses";
 import { createRole } from "@/mocks/factories";
 import { MOCK_ROLES } from "@/mocks/constants";
@@ -25,14 +26,20 @@ export const mockGetRoleListResponse: GetRequestReturnType<RoleType[]> = buildGe
  * Returns template options for role creation
  */
 export const mockGetRoleTemplateResponse: GetRequestReturnType<RolesAndPermissionsTemplateOptions> = buildGetResponse({
-  staffOptions: [],
-  permissionsOptions: [
-    { id: 1, name: "STAFF.READ", tenantId: 1 },
-    { id: 2, name: "STAFF.CREATE", tenantId: 1 },
-    { id: 3, name: "STAFF.UPDATE", tenantId: 1 },
-    { id: 4, name: "STUDENT.READ", tenantId: 1 },
-    { id: 5, name: "STUDENT.CREATE", tenantId: 1 },
-  ],
+  staffOptions: mockStaffList.map((staff) => ({
+    id: staff.id,
+    user: {
+      firstName: staff.user.firstName,
+      lastName: staff.user.lastName,
+      email: staff.user.email,
+    },
+    jobTitle: staff.jobTitle,
+  })),
+  permissionsOptions: mockPermissions.map((perm) => ({
+    id: perm.id,
+    name: perm.name,
+    tenantId: perm.tenantId,
+  })),
   scopeOptions: [],
 });
 

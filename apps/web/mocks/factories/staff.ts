@@ -15,13 +15,15 @@ export function createStaff(
   role?: RoleType,
   userOverrides?: Partial<UserWithRelationsType>
 ): StaffType {
+
+
   const user = createUser(id, firstName, lastName, email, "STAFF", userOverrides);
   
   return {
     id,
     jobTitle,
     userId: id,
-    user: user as StaffType["user"],
+    user: {...user, jobTitle} as StaffType["user"],
     roleId,
     role: role || ({} as RoleType),
     nin: getNIN(id),
