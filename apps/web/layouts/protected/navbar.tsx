@@ -59,8 +59,6 @@ export default function ProtectedNavbar() {
   const authUser = authUserQueryResult?.data?.data;
 
 
-  console.log({authUser})
-
   return (
     <Sheet>
       <div className="sticky top-0 h-[70px] right-0 left-0 border-b border-border z-50">

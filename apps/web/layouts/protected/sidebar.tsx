@@ -27,6 +27,7 @@ import {
   Workflow,
   Dot,
   EarthLock,
+  BarChart3,
 } from "lucide-react";
 
 export default function ProtectedSidebar() {
@@ -46,6 +47,11 @@ export default function ProtectedSidebar() {
           name: "My Workspace",
           path: RouteEnums.WORKSPACE,
           icon: Workflow,
+        },
+        {
+          name: "Analytics",
+          path: RouteEnums.ANALYTICS,
+          icon: BarChart3,
         },
         {
           name: "People",

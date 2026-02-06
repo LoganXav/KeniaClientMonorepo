@@ -14,6 +14,9 @@ export const RouteEnums = {
 
   WORKSPACE: "/workspace",
 
+  // ANALYTICS
+  ANALYTICS: "/analytics",
+
   // STAFF
   STAFF: "/staff",
   STAFF_CREATE: "/staff/create",

@@ -8,6 +8,7 @@ export * from "./class-divisions";
 export * from "./calendar";
 export * from "./periods";
 export * from "./timetables";
+export * from "./analytics";
 
 // Initialize relationships after all data is loaded
 import { mockClassList } from "./classes";
