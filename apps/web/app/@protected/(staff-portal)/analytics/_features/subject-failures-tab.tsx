@@ -53,7 +53,7 @@ export function SubjectFailuresTab() {
         </div>
         <CardContent className="px-2 sm:p-6">
           <ScrollArea className="w-full">
-            <div className="min-w-[600px]">
+            <div className="min-w-[1000px]">
               <ChartContainer config={chartConfig} className="aspect-auto h-[350px] w-full">
                 <BarChart
                   accessibilityLayer
