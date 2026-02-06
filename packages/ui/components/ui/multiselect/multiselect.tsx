@@ -50,7 +50,7 @@ export function MultiSelect({ options, selected, onChange, placeholder = "Select
   return (
     <div className="relative" ref={containerRef}>
       {selected.length > 0 && (
-        <div className="flex flex-wrap gap-1 bg-card border border-border rounded-lg p-2 mb-2">
+        <div className="flex flex-wrap gap-1 bg-card border border-border rounded-lg p-2 mb-2 max-h-[250px] overflow-y-auto">
           {selected.map((selected) => (
             <Badge variant="secondary" className="rounded text-foreground bg-card border border-border hover:bg-secondary" key={selected}>
               {options.find((option) => option?.id === selected)?.name}
